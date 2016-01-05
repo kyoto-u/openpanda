@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
- * $Id: PDAHandler.java 310832 2014-07-16 22:21:05Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.6/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/PDAHandler.java $
+ * $Id: PDAHandler.java 320283 2015-07-29 15:13:13Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -65,7 +65,7 @@ import org.sakaiproject.util.Web;
  * 
  * @author csev
  * @since Sakai 2.4
- * @version $Rev: 310832 $
+ * @version $Rev: 320283 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -357,8 +357,10 @@ public class PDAHandler extends SiteHandler
 				}
 
 				// Add any device specific information to the context
+				session.setAttribute("PDAHandler", Boolean.TRUE);
 				portal.setupMobileDevice(req, rcontext);
-				
+				portal.includeLogin(rcontext,req, session);
+			
 				addLocale(rcontext,site);
 
 				portal.sendResponse(rcontext, res, "pda", null);

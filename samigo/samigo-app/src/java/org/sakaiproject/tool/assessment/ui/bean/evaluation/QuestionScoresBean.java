@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/QuestionScoresBean.java $
- * $Id: QuestionScoresBean.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/evaluation/QuestionScoresBean.java $
+ * $Id: QuestionScoresBean.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -38,6 +38,7 @@ import javax.faces.event.ActionEvent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.jsf.model.PhaseAware;
 import org.sakaiproject.tool.assessment.business.entity.RecordingData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
@@ -70,7 +71,7 @@ public class QuestionScoresBean
   private String itemId;
   private String anonymous;
   private String groupName;
-  private String maxScore;
+  private double maxScore;
   private Collection agents;
   //private Collection sortedAgents;
   private Collection sections;
@@ -336,9 +337,9 @@ public class QuestionScoresBean
    *
    * @return the max score
    */
-  public String getMaxScore()
+  public double getMaxScore()
   {
-    return Validator.check(maxScore, "N/A");
+    return MathUtils.round(maxScore, 2);
   }
 
   /**
@@ -346,10 +347,11 @@ public class QuestionScoresBean
    *
    * @param pmaxScore set the max score
    */
-  public void setMaxScore(String pmaxScore)
+  public void setMaxScore(double pmaxScore)
   {
     maxScore = pmaxScore;
   }
+
 /**
    * get the max Point
    *
@@ -359,9 +361,8 @@ public class QuestionScoresBean
     {  
 	  ResourceLoader rb=new ResourceLoader("org.sakaiproject.tool.assessment.bundle.EvaluationMessages");
 	try{
-		if (Double.parseDouble(this.getMaxScore())==1.0)
+		if (this.getMaxScore() == 1.0)
 			return this.getMaxScore()+ " " + rb.getString("point");
-
 	else
 		return this.getMaxScore()+ " " + rb.getString("points");
 	}

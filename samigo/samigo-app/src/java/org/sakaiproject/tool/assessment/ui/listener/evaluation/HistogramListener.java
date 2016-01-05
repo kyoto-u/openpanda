@@ -75,7 +75,7 @@ import org.sakaiproject.util.ResourceLoader;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @version $Id: HistogramListener.java 315812 2014-12-01 17:53:40Z enietzel@anisakai.com $
+ * @version $Id: HistogramListener.java 320400 2015-08-05 13:31:44Z enietzel@anisakai.com $
  */
 
 public class HistogramListener
@@ -1726,7 +1726,7 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
     results.put(INCORRECT, Integer.valueOf(0));
     
     for (ItemGradingData score : scores) {
-        if (score.getAutoScore() > 0) {
+        if (score.getAutoScore() != null && score.getAutoScore() > 0) {
             Integer value = results.get(CORRECT);
             results.put(CORRECT, ++value);
         } else {
@@ -1765,7 +1765,7 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
     // us a count of assessmnets that had an incorrect answer 
     Set<Long> assessmentQuestionIncorrect = new HashSet<Long>();
     for (ItemGradingData score : scores) {
-        if (score.getAutoScore() == 0) {
+        if (score.getAutoScore() == null || score.getAutoScore() == 0) {
             assessmentQuestionIncorrect.add(score.getAssessmentGradingId());
         }
     }

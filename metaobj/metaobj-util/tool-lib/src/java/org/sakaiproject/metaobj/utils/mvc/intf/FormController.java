@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.5/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/FormController.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.6/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/FormController.java $
  * $Id: FormController.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
@@ -26,9 +26,9 @@ import java.util.Map;
 import org.springframework.validation.Errors;
 
 /*
- * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.5/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/FormController.java $
+ * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.6/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/FormController.java $
  * $Revision: 105079 $
- * $Date: 2012-02-25 08:08:11 +0900 (Sat, 25 Feb 2012) $
+ * $Date: 2012-02-25 08:08:11 +0900 (土, 25  2 2012) $
  */
 
 /**

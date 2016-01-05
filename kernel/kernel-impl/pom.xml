@@ -4,7 +4,7 @@
   <parent>
     <artifactId>kernel</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>10.5</version><!-- KernelVersion -->
+    <version>10.6</version><!-- KernelVersion -->
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>Sakai Core Kernel Implementation</name>
@@ -95,12 +95,12 @@
 	<dependency>
 		<groupId>org.apache.tika</groupId>
 		<artifactId>tika-core</artifactId>
-		<version>1.5</version>
+		<version>${sakai.tika.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.tika</groupId>
 		<artifactId>tika-parsers</artifactId>
-		<version>1.5</version>
+		<version>${sakai.tika.version}</version>
 		<exclusions>
 			<exclusion>
 				<groupId>de.l3s.boilerpipe</groupId>

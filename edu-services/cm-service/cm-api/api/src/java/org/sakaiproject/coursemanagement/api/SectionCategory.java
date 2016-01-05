@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.5/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
+ * $URL: https://source.sakaiproject.org/svn/edu-services/tags/sakai-10.6/cm-service/cm-api/api/src/java/org/sakaiproject/coursemanagement/api/SectionCategory.java $
  * $Id: SectionCategory.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -145,7 +145,12 @@ public class RosterSiteEntityProvider extends AbstractEntityProvider implements
 			enrollmentSetId = parameters.get(KEY_ENROLLMENT_SET_ID).toString();
 		}
 		
-		return sakaiProxy.getEnrollmentMembership(reference.getId(), enrollmentSetId);
+		// If no enrollment set id is specified, then return all
+		if (enrollmentSetId == null) {
+			return sakaiProxy.getAllEnrollmentMemberships(reference.getId());
+		} else {
+			return sakaiProxy.getEnrollmentMembership(reference.getId(), enrollmentSetId);
+		}
 	}
 
 	/**

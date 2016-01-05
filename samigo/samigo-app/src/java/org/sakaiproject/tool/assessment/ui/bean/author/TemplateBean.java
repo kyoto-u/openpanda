@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/TemplateBean.java $
- * $Id: TemplateBean.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/TemplateBean.java $
+ * $Id: TemplateBean.java 322031 2015-12-07 15:35:55Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -55,7 +55,7 @@ public class TemplateBean implements Serializable
   private Boolean markForReview = Boolean.TRUE;
   private String submissionModel = "1";
   private String submissionNumber;
-  private String lateHandling = "1";
+  private String lateHandling = "2";
   private Boolean automaticSubmission = Boolean.FALSE;
   private String autoSave = "1";
   private String feedbackType = "1";
@@ -518,8 +518,10 @@ public class TemplateBean implements Serializable
   public String getLateHandling()
   {
     if ("0".equals(lateHandling))
-      return "1";
-    return checker(lateHandling, "1");
+    {
+      return "2";
+    }
+    return checker(lateHandling, "2");
   }
 
   // Feedback

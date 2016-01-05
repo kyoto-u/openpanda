@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/queue/delivery/SubmitTimedAssessmentThread.java $
- * $Id: SubmitTimedAssessmentThread.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/queue/delivery/SubmitTimedAssessmentThread.java $
+ * $Id: SubmitTimedAssessmentThread.java 322188 2015-12-22 21:07:54Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -49,7 +49,7 @@ import java.util.ResourceBundle;
 /**
  * <p>Title: Samigo</p>
  * <p>Description: Sakai Assessment Manager</p>
- * @version $Id: SubmitTimedAssessmentThread.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
+ * @version $Id: SubmitTimedAssessmentThread.java 322188 2015-12-22 21:07:54Z enietzel@anisakai.com $
  */
 
 public class SubmitTimedAssessmentThread extends TimerTask
@@ -84,6 +84,12 @@ public class SubmitTimedAssessmentThread extends TimerTask
           GradingService service = new GradingService();
           AssessmentGradingData ag = service.load(timedAG.getAssessmentGradingId().toString(), false);
           if (!ag.getForGrade().booleanValue()) {
+            // Change user id for the Gradebook update (if required) and so the event is associated with the correct userid
+            Session s = SessionManager.getCurrentSession();
+            if (s != null) {
+              s.setUserId(ag.getAgentId());
+            }
+
             ag.setForGrade(Boolean.TRUE);
             ag.setTimeElapsed(Integer.valueOf(timedAG.getTimeLimit()));
             ag.setStatus(AssessmentGradingData.SUBMITTED); // this will change status 0 -> 1
@@ -111,12 +117,15 @@ public class SubmitTimedAssessmentThread extends TimerTask
         	  eventLogData.setEclipseTime(null); 
         	  eventLogData.setErrorMsg(eventLogMessages.getString("error_take"));
           }
-          eventLogFacade.setData(eventLogData);
+            eventLogFacade.setData(eventLogData);
+            eventService.saveOrUpdateEventLog(eventLogFacade);
+
             PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
             String siteId = publishedAssessmentService.getPublishedAssessmentOwner(ag.getPublishedAssessmentId());
-            EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.thread_submit", "siteId=" + AgentFacade.getCurrentSiteId() + ", submissionId=" + ag.getAssessmentGradingId(), siteId, true, NotificationService.NOTI_REQUIRED));
+            EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.thread_submit", "siteId=" + siteId + ", submissionId=" + ag.getAssessmentGradingId(), siteId, true, NotificationService.NOTI_REQUIRED));
             notifyGradebookByScoringType(ag, timedAG.getPublishedAssessment());
             log.debug("**** 4a. time's up, timeLeft+latency buffer reached, saved to DB");
+            log.info("Submitted timed assessment assessmentId=" + eventLogData.getAssessmentId() + " userEid=" + eventLogData.getUserEid() + " siteId=" + siteId + ", submissionId=" + ag.getAssessmentGradingId());
           }
         }
       }
@@ -157,12 +166,7 @@ public class SubmitTimedAssessmentThread extends TimerTask
 		  if (publishedAssessment.getEvaluationModel().getScoringType().equals(EvaluationModelIfc.HIGHEST_SCORE)) {
 			  assessmentGrading = g.getHighestSubmittedAssessmentGrading(publishedAssessment.getPublishedAssessmentId().toString(), ag.getAgentId());
 		  }
-		  Session s = SessionManager.getCurrentSession();
-		  if (s != null)
-		  {
-			  s.setUserId(assessmentGrading.getAgentId());
-			  g.notifyGradebook(assessmentGrading, publishedAssessment);
-		  }
+		  g.notifyGradebook(assessmentGrading, publishedAssessment);
 	  }
   }
 }

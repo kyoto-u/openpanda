@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueries.java $
- * $Id: QuestionPoolFacadeQueries.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/QuestionPoolFacadeQueries.java $
+ * $Id: QuestionPoolFacadeQueries.java 321814 2015-11-12 16:42:15Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -459,7 +459,7 @@ public class QuestionPoolFacadeQueries
         Iterator j = itemList.iterator();
         while (j.hasNext()) {
           ItemData itemData = (ItemData) j.next();
-          h.put(itemData.getItemIdString(), itemData);
+          h.put(itemData.getItemId(), itemData);
         }
         ArrayList itemArrayList = new ArrayList();
         Iterator i = questionPoolItems.iterator();

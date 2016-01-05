@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
- * $Id: BaseAuthzGroupService.java 309209 2014-05-06 16:01:08Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/kernel-impl/src/main/java/org/sakaiproject/authz/impl/BaseAuthzGroupService.java $
+ * $Id: BaseAuthzGroupService.java 321520 2015-10-15 22:16:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -591,7 +591,11 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService
 
 		// allow any advisors to make last minute changes 
 		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
-			authzGroupAdvisor.update(azGroup);
+			try {
+				authzGroupAdvisor.update(azGroup);
+			} catch (Exception e) {
+				M_log.error("Advisor error during completeSave()", e);
+			}
 		}
 		// complete the azGroup
 		m_storage.save(azGroup);
@@ -646,7 +650,11 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService
 
 		// allow any advisors to make last minute changes 
 		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
-			authzGroupAdvisor.groupUpdate(azGroup, userId, roleId);
+			try {
+				authzGroupAdvisor.groupUpdate(azGroup, userId, roleId);
+			} catch (Exception e) {
+				M_log.error("Advisor error during addMemberToGroup()", e);
+			}
 		}
 		
 		// add user to the azGroup
@@ -682,7 +690,11 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService
 
 		// allow any advisors to make last minute changes 
 		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
-			authzGroupAdvisor.groupUpdate(azGroup, userId, azGroup.getMember(userId).getRole().getId());
+			try {
+				authzGroupAdvisor.groupUpdate(azGroup, userId, azGroup.getMember(userId).getRole().getId());
+			} catch (Exception e) {
+				M_log.error("Advisor error during removeMemberFromGroup()", e);
+			}
 		}
 		// remove user from the azGroup
 		m_storage.removeUser(azGroup, userId);
@@ -826,7 +838,11 @@ public abstract class BaseAuthzGroupService implements AuthzGroupService
 
 		// allow any advisors to make last minute changes 
 		for (AuthzGroupAdvisor authzGroupAdvisor : authzGroupAdvisors) {
-			authzGroupAdvisor.remove(azGroup);
+			try {
+				authzGroupAdvisor.remove(azGroup);
+			} catch (Exception e) {
+				M_log.error("Advisor error during removeAuthzGroup()", e);
+			}
 		}
         // KNL-1230 handle removal of authzgroups by processing caching changes
         try {

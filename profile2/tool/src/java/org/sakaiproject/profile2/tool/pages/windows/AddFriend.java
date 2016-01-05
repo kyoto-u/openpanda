@@ -27,14 +27,12 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.profile2.logic.ProfileConnectionsLogic;
-import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfilePreferencesLogic;
 import org.sakaiproject.profile2.logic.ProfilePrivacyLogic;
 import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.ProfilePreferences;
 import org.sakaiproject.profile2.model.ProfilePrivacy;
-import org.sakaiproject.profile2.tool.components.FocusOnLoadBehaviour;
-import org.sakaiproject.profile2.tool.components.ProfileImageRenderer;
+import org.sakaiproject.profile2.tool.components.ProfileImage;
 import org.sakaiproject.profile2.tool.models.FriendAction;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.util.FormattedText;
@@ -77,7 +75,9 @@ public class AddFriend extends Panel {
 		ProfilePrivacy privacy = privacyLogic.getPrivacyRecordForUser(userY);
 		
 		//image
-		add(new ProfileImageRenderer("image", userY, prefs, privacy, ProfileConstants.PROFILE_IMAGE_THUMBNAIL, false));
+		ProfileImage image = new ProfileImage("image", new Model<String>(userY));
+		image.setSize(ProfileConstants.PROFILE_IMAGE_THUMBNAIL);
+		add(image);
 		
         //text
 		final Label text = new Label("text", new StringResourceModel("text.friend.add", null, new Object[]{ friendName } ));
@@ -102,8 +102,8 @@ public class AddFriend extends Panel {
 					text.setDefaultModel(new StringResourceModel("error.friend.already.confirmed", null, new Object[]{ friendName } ));
 					this.setEnabled(false);
 					this.add(new AttributeModifier("class", true, new Model("disabled")));
-					target.addComponent(text);
-					target.addComponent(this);
+					target.add(text);
+					target.add(this);
 					return;
 				}
 				
@@ -112,8 +112,8 @@ public class AddFriend extends Panel {
 					text.setDefaultModel(new StringResourceModel("error.friend.already.pending", null, new Object[]{ friendName } ));
 					this.setEnabled(false);
 					this.add(new AttributeModifier("class", true, new Model("disabled")));
-					target.addComponent(text);
-					target.addComponent(this);
+					target.add(text);
+					target.add(this);
 					return;
 				}
 				
@@ -122,8 +122,8 @@ public class AddFriend extends Panel {
 					text.setDefaultModel(new StringResourceModel("error.friend.already.pending", null, new Object[]{ friendName } ));
 					this.setEnabled(false);
 					this.add(new AttributeModifier("class", true, new Model("disabled")));
-					target.addComponent(text);
-					target.addComponent(this);
+					target.add(text);
+					target.add(this);
 					return;
 				}
 				
@@ -139,14 +139,14 @@ public class AddFriend extends Panel {
 					text.setDefaultModel(new StringResourceModel("error.friend.add.failed", null, new Object[]{ friendName } ));
 					this.setEnabled(false);
 					this.add(new AttributeModifier("class", true, new Model("disabled")));
-					target.addComponent(text);
-					target.addComponent(this);
+					target.add(text);
+					target.add(this);
 					return;
 				}
 				
             }
 		};
-		submitButton.add(new FocusOnLoadBehaviour());
+		//submitButton.add(new FocusOnLoadBehaviour());
 		submitButton.add(new AttributeModifier("title", true, new StringResourceModel("accessibility.connection.add", null, new Object[]{ friendName } )));
 		form.add(submitButton);
 		

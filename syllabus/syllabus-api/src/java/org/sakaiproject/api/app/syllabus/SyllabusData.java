@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.5/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.6/syllabus-api/src/java/org/sakaiproject/api/app/syllabus/SyllabusData.java $
  * $Id: SyllabusData.java 319858 2015-06-17 20:39:56Z enietzel@anisakai.com $
  ***********************************************************************************
  *

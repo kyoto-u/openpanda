@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
- * $Id: AuthorActionListener.java 319085 2015-05-20 22:49:23Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/AuthorActionListener.java $
+ * $Id: AuthorActionListener.java 321483 2015-10-13 21:38:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -76,7 +76,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: AuthorActionListener.java 319085 2015-05-20 22:49:23Z enietzel@anisakai.com $
+ * @version $Id: AuthorActionListener.java 321483 2015-10-13 21:38:33Z enietzel@anisakai.com $
  */
 
 public class AuthorActionListener
@@ -443,7 +443,7 @@ public class AuthorActionListener
 			  returnValue = false;
 		  }
 
-		  if (retractDate != null && retractDate.before(currentDate)) {
+		  if (acceptLateSubmission && retractDate != null && retractDate.before(currentDate)) {
 			  returnValue = false;
 		  }
 

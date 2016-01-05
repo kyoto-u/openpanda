@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.5/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.6/jsf-widgets/src/java/org/sakaiproject/jsf/renderer/RichTextAreaRenderer.java $
 * $Id: RichTextAreaRenderer.java 105668 2012-03-12 11:40:41Z david.horwitz@uct.ac.za $
 ***********************************************************************************
 *

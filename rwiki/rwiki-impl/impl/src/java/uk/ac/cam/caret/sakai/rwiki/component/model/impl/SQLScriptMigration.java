@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.5/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/model/impl/SQLScriptMigration.java $
+ * $URL: https://source.sakaiproject.org/svn/rwiki/tags/sakai-10.6/rwiki-impl/impl/src/java/uk/ac/cam/caret/sakai/rwiki/component/model/impl/SQLScriptMigration.java $
  * $Id: SQLScriptMigration.java 76524 2010-04-23 16:55:28Z aaronz@vt.edu $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.5/content-tool/tool/src/java/org/sakaiproject/content/tool/AttachmentAction.java $
- * $Id: AttachmentAction.java 315495 2014-11-18 11:27:06Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.6/content-tool/tool/src/java/org/sakaiproject/content/tool/AttachmentAction.java $
+ * $Id: AttachmentAction.java 321821 2015-11-12 19:25:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -136,7 +136,8 @@ public class AttachmentAction
 
 		if (state.getAttribute(FILE_UPLOAD_MAX_SIZE) == null)
 		{
-			state.setAttribute(FILE_UPLOAD_MAX_SIZE, ServerConfigurationService.getString("content.upload.max", "1"));
+			state.setAttribute(FILE_UPLOAD_MAX_SIZE, ServerConfigurationService.getString(ResourcesConstants.SAK_PROP_MAX_UPLOAD_FILE_SIZE, 
+																						  ResourcesConstants.DEFAULT_MAX_FILE_SIZE_STRING));
 		}
 
 		// make sure we have attachments

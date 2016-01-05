@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
- * $Id: TotalScoreListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/TotalScoreListener.java $
+ * $Id: TotalScoreListener.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -82,7 +82,7 @@ import org.sakaiproject.util.FormattedText;
  * <p>Copyright: Copyright (c) 2004</p>
  * <p>Organization: Sakai Project</p>
  * @author Ed Smiley
- * @version $Id: TotalScoreListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
+ * @version $Id: TotalScoreListener.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  */
 
 public class TotalScoreListener
@@ -183,7 +183,7 @@ public class TotalScoreListener
     // reset question score page content 
     questionbean.setSections(new ArrayList());
     questionbean.setTypeId("0");   // if setting "", QuestionScoreBean.getTypeId will default to 1. Thus setting it to 0. 
-    questionbean.setMaxScore("");
+    questionbean.setMaxScore(0.0d);
     questionbean.setDeliveryItem(new ArrayList());
     questionbean.setSelectedSARationaleView(QuestionScoresBean.SHOW_SA_RATIONALE_RESPONSES_INLINE);
     

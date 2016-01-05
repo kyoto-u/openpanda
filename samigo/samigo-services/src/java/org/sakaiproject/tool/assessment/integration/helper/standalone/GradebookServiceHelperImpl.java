@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/GradebookServiceHelperImpl.java $
- * $Id: GradebookServiceHelperImpl.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/standalone/GradebookServiceHelperImpl.java $
+ * $Id: GradebookServiceHelperImpl.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -64,11 +64,11 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	 * @return false: cannot add to gradebook
 	 * @throws java.lang.Exception
 	 */
-	public boolean addToGradebook(PublishedAssessmentData publishedAssessment, GradebookExternalAssessmentService g)
+	public boolean addToGradebook(PublishedAssessmentData publishedAssessment, Long categoryId, GradebookExternalAssessmentService g)
 	{
 		return false;
 	}
-
+	
 	/**
 	 * STUB. NO-OP.
 	 * 
@@ -133,4 +133,10 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 		return false;
 	}
 
+	@Override
+	public Long getExternalAssessmentCategoryId(String gradebookUId,
+			String publishedAssessmentId, GradebookExternalAssessmentService g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/authz/AuthorizationBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/authz/AuthorizationBean.java $
  * $Id: AuthorizationBean.java 319811 2015-06-11 18:11:39Z enietzel@anisakai.com $
  ***********************************************************************************
  *

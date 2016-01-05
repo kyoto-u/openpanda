@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.5/message-util/util/src/java/org/sakaiproject/message/util/BaseMessage.java $
- * $Id: BaseMessage.java 319068 2015-05-20 21:51:35Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/message/tags/sakai-10.6/message-util/util/src/java/org/sakaiproject/message/util/BaseMessage.java $
+ * $Id: BaseMessage.java 320150 2015-07-14 20:24:18Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -87,6 +87,8 @@ public abstract class BaseMessage implements MessageService, DoubleStorageUser
 	/** added to allow for scheduled notifications */
 	private static final String SCHED_INV_UUID = "schInvUuid";
 //	private static final String SCHINV_DELETE_EVENT = "schInv.delete";
+	static final int NOTI_IGNORE = -1;
+//	
 	
 
 	/**
@@ -2696,38 +2698,41 @@ public abstract class BaseMessage implements MessageService, DoubleStorageUser
 			// update the properties
 			// addLiveUpdateProperties(edit.getPropertiesEdit());//%%%
 
-			// if this message had a future invocation before, delete it because
-			// this modification changed the date of release so either it will notify it now
-			// or set a new future notification
-			ScheduledInvocationManager scheduledInvocationManager = (ScheduledInvocationManager) 
-							ComponentManager.get(org.sakaiproject.api.app.scheduler.ScheduledInvocationManager.class);
-
-			if (edit.getProperties().getProperty(SCHED_INV_UUID) != null)
-			{
-				scheduledInvocationManager.deleteDelayedInvocation(edit.getProperties().getProperty(SCHED_INV_UUID));
-				edit.getPropertiesEdit().removeProperty(SCHED_INV_UUID);
-
-//				Event event = m_eventTrackingService.newEvent(SCHINV_DELETE_EVENT, edit.getReference(), true, priority);
-//				m_eventTrackingService.post(event);				
-			}
-
-			// For Scheduled Notification, compare header date with now to deterine
-			// if an immediate notification is needed or a scheduled one
-			// Put here since need to store uuid for notification just in case need to
-			// delete/modify
-			Time now = m_timeService.newTime();
 			boolean transientNotification = true;
-			
-			if (now.before(edit.getHeader().getDate()) && priority != NotificationService.NOTI_NONE)
-			{
-				final String uuid = scheduledInvocationManager.createDelayedInvocation(edit.getHeader().getDate(), 
-									invokee, edit.getReference());
-		
-				final ResourcePropertiesEdit editProps = edit.getPropertiesEdit();
-		
-				editProps.addProperty(SCHED_INV_UUID, uuid);
+			if(priority != NOTI_IGNORE){
+				// if this message had a future invocation before, delete it because
+				// this modification changed the date of release so either it will notify it now
+				// or set a new future notification
+				ScheduledInvocationManager scheduledInvocationManager = (ScheduledInvocationManager) 
+						ComponentManager.get(org.sakaiproject.api.app.scheduler.ScheduledInvocationManager.class);
+
+				if (edit.getProperties().getProperty(SCHED_INV_UUID) != null)
+				{
+					scheduledInvocationManager.deleteDelayedInvocation(edit.getProperties().getProperty(SCHED_INV_UUID));
+					edit.getPropertiesEdit().removeProperty(SCHED_INV_UUID);
+
+					//				Event event = m_eventTrackingService.newEvent(SCHINV_DELETE_EVENT, edit.getReference(), true, priority);
+					//				m_eventTrackingService.post(event);				
+				}
+
+				// For Scheduled Notification, compare header date with now to deterine
+				// if an immediate notification is needed or a scheduled one
+				// Put here since need to store uuid for notification just in case need to
+				// delete/modify
+				Time now = m_timeService.newTime();
 				
-				transientNotification = false;
+
+				if (now.before(edit.getHeader().getDate()) && priority != NotificationService.NOTI_NONE)
+				{
+					final String uuid = scheduledInvocationManager.createDelayedInvocation(edit.getHeader().getDate(), 
+							invokee, edit.getReference());
+
+					final ResourcePropertiesEdit editProps = edit.getPropertiesEdit();
+
+					editProps.addProperty(SCHED_INV_UUID, uuid);
+
+					transientNotification = false;
+				}
 			}
 
 			// complete the edit
@@ -2744,7 +2749,7 @@ public abstract class BaseMessage implements MessageService, DoubleStorageUser
 			m_eventTrackingService.post(event);
 
 			// channel notification
-			if (transientNotification) 
+			if (priority != NOTI_IGNORE && transientNotification) 
 			{
 				startNotifyThread(event);
 			}

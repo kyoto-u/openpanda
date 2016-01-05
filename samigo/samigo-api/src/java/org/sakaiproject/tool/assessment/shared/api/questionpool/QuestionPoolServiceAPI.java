@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-api/src/java/org/sakaiproject/tool/assessment/shared/api/questionpool/QuestionPoolServiceAPI.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-api/src/java/org/sakaiproject/tool/assessment/shared/api/questionpool/QuestionPoolServiceAPI.java $
  * $Id: QuestionPoolServiceAPI.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *

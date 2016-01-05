@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.5/tool/src/java/org/sakaiproject/cheftool/VelocityPortletPaneledAction.java $
- * $Id: VelocityPortletPaneledAction.java 307945 2014-04-08 22:58:52Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/velocity/tags/sakai-10.6/tool/src/java/org/sakaiproject/cheftool/VelocityPortletPaneledAction.java $
+ * $Id: VelocityPortletPaneledAction.java 321628 2015-10-27 17:15:30Z hedrick@rutgers.edu $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -1174,6 +1174,18 @@ public abstract class VelocityPortletPaneledAction extends ToolServlet
 		req.setAttribute(ATTR_RUNDATA, rundata);
 
 		super.doGet(req, res);
+	}
+
+	// Set up RunData if it's not already set up    
+	protected void checkRunData(HttpServletRequest req)
+	{
+	    if (req.getAttribute(ATTR_RUNDATA) != null)
+	        return;
+
+	    // set in VmServlet
+	    ParameterParser params = (ParameterParser) req.getAttribute(ATTR_PARAMS);
+	    JetspeedRunData rundata = new JetspeedRunData(req, getState(req), getPid(req), params);
+	    req.setAttribute(ATTR_RUNDATA, rundata);
 	}
 
 	/** Tool session attribute name used to schedule a peer frame refresh. */

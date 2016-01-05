@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
- * $Id: BeginDeliveryActionListener.java 319856 2015-06-17 20:36:35Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/BeginDeliveryActionListener.java $
+ * $Id: BeginDeliveryActionListener.java 321391 2015-09-29 16:20:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -78,7 +78,7 @@ import org.sakaiproject.util.ResourceLoader;
  * <p>Purpose:  this module handles the beginning of the assessment
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: BeginDeliveryActionListener.java 319856 2015-06-17 20:36:35Z enietzel@anisakai.com $
+ * @version $Id: BeginDeliveryActionListener.java 321391 2015-09-29 16:20:06Z enietzel@anisakai.com $
  */
 
 public class BeginDeliveryActionListener implements ActionListener
@@ -266,6 +266,22 @@ public class BeginDeliveryActionListener implements ActionListener
     }
     return component;
   }
+
+  public void populateSubmissionsRemaining(PublishedAssessmentService service, PublishedAssessmentIfc pubAssessment, DeliveryBean delivery) {
+      AssessmentAccessControlIfc control = pubAssessment.getAssessmentAccessControl();
+
+      int totalSubmissions = service.getTotalSubmission(AgentFacade.getAgentString(), pubAssessment.getPublishedAssessmentId().toString()).intValue();
+      delivery.setTotalSubmissions(totalSubmissions);
+
+      if (!(Boolean.TRUE).equals(control.getUnlimitedSubmissions())){
+        // when re-takes are allowed always display 1 as number of remaining submission
+        int submissionsRemaining = control.getSubmissionsAllowed().intValue() - totalSubmissions;
+        if (submissionsRemaining < 1) {
+            submissionsRemaining = 1;
+        }
+        delivery.setSubmissionsRemaining(submissionsRemaining);
+      }
+  }
  
   /**
    * This grabs the assessment and its AssessmentAccessControlIfc &
@@ -324,17 +340,7 @@ public class BeginDeliveryActionListener implements ActionListener
     }
 
     // #1 - set submission remains
-    int totalSubmissions = (service.getTotalSubmission(AgentFacade.getAgentString(),
-        publishedAssessmentId.toString())).intValue();
-    delivery.setTotalSubmissions(totalSubmissions);
-    if (!(Boolean.TRUE).equals(control.getUnlimitedSubmissions())){
-      // when there are retaks, we always display 1 as number of remaining submission	
-      int submissionsRemaining = control.getSubmissionsAllowed().intValue() - totalSubmissions;
-      if (submissionsRemaining < 1) {
-    	  submissionsRemaining = 1;
-      }
-      delivery.setSubmissionsRemaining(submissionsRemaining);
-    }
+    populateSubmissionsRemaining(service, pubAssessment, delivery);
 
     // #2 - check if TOC should be made avaliable
     if (control.getItemNavigation() == null)

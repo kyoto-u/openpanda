@@ -26,11 +26,15 @@
   </directives>
 
   <common-regexps>
+    <!-- Specific names of common fonts -->
+    <regexp name="fontFamily" value="(cambria|trebuchet ms|serif|arial|lucida console|sans-serif|cursive|verdana|tahoma|fantasy|monospace|,)+"/>
+
     <!-- The 16 colors defined by the HTML Spec (also used by the CSS Spec) -->
     <regexp name="colorName" value="(aqua|black|blue|fuchsia|gray|grey|green|lime|maroon|navy|olive|purple|red|silver|teal|white|yellow)" />
 
     <!-- HTML/CSS Spec allows 3 or 6 digit hex to specify color -->
     <regexp name="colorCode" value="(#([0-9a-fA-F]{6}|[0-9a-fA-F]{3}))" />
+
 
     <regexp name="anything" value=".*" />
     <regexp name="numberOrPercent" value="(\d)+(%{0,1})" />
@@ -115,7 +119,7 @@
         Add in your site (e.g. "new.site.host.com/path": with escaped ".": "new\.site\.host\.com/path|"
         Like shown here: (new\.site\.host\.com/path|download\.macromedia\.com/pub|
     -->
-    <regexp name="flashSites" value="(((https?:)?//(download\.macromedia\.com/pub|www\.macromedia\.com/(go|shockwave)|c\.brightcove\.com/services|gamevideos\.1up\.com/swf|(www\.)?youtube(\-nocookie)?\.com/(v|embed)|(www\.)?youtu\.be|(www\.|player\.)?vimeo\.com|www\.gametrailers\.com|videomedia\.ign\.com/ev|image\.com\.com/gamespot|www\.hulu\.com/embed|embed\.break\.com|player\.ordienetworks\.com/flash|www\.adultswim\.com/video/vplayer|www\.dailymotion\.com/swf|www\.ustream\.tv/flash/video|cdn-i\.dmdentertainment\.com|media\.mtvnservices\.com|www\.justin\.tv/widgets|www\.viddler\.com/(player|simple_on_site)|static\.twitter\.com/flash|www\.gamepro\.com/bin|(www|cdnapisec|cdnapi)\.kaltura\.com/p|www\.divshare\.com/flash|www\.facebook\.com/v)/.*)|(/library/(?!.*\.\.[/|\\]).*)/.+)" />
+    <regexp name="flashSites" value="(((https?:)?//(download\.macromedia\.com/pub|www\.macromedia\.com/(go|shockwave)|c\.brightcove\.com/services|gamevideos\.1up\.com/swf|(www\.)?youtube(\-nocookie)?\.com/(v|embed)|(www\.)?youtu\.be|(www\.|player\.)?vimeo\.com|www\.gametrailers\.com|videomedia\.ign\.com/ev|image\.com\.com/gamespot|www\.hulu\.com/embed|embed\.break\.com|player\.ordienetworks\.com/flash|www\.adultswim\.com/video/vplayer|www\.dailymotion\.com/swf|www\.ustream\.tv/flash/video|cdn-i\.dmdentertainment\.com|media\.mtvnservices\.com|www\.justin\.tv/widgets|www\.viddler\.com/(player|simple_on_site)|static\.twitter\.com/flash|www\.gamepro\.com/bin|cdn\.knightlab\.com|(www|cdnapisec|cdnapi)\.kaltura\.com/p|www\.divshare\.com/flash|www\.facebook\.com/v)/.*)|(/library/(?!.*\.\.[/|\\]).*)/.+)" />
 
     <!-- This is a basic alphanumeric and punctuation string -->
     <regexp name="basicAlphaNumeric" value="^[a-zA-Z0-9\s\-_.\?!,]*$" />
@@ -1327,7 +1331,18 @@
         <tag name="blockquote" action="validate"/>
         
         <tag name="hr" action="validate"/>
-        <tag name="br" action="validate"/>
+        <tag name="br" action="validate">
+          <attribute name="clear">
+            <literal-list>
+                <literal value="none"/>
+                <literal value="all"/>
+                <literal value="left"/>
+                <literal value="right"/>
+                <literal value="both"/>
+                <literal value="inherit"/>
+            </literal-list>
+          </attribute>
+        </tag>
         
         <tag name="col" action="validate"/>
         
@@ -1810,6 +1825,58 @@
                 <regexp-list>
                     <regexp name="flashSites" />
                 </regexp-list>
+            </attribute>
+            <attribute name="name">
+                <regexp-list>
+                    <regexp name="anything" />
+                </regexp-list>
+            </attribute>
+            <attribute name="resource" onInvalid="removeTag">
+                <regexp-list>
+                    <regexp name="flashSites" />
+                </regexp-list>
+            </attribute>
+            <attribute name="allowfullscreen">
+                <regexp-list>
+                    <regexp name="boolean"/>
+                </regexp-list>
+            </attribute>
+            <attribute name="webkitallowfullscreen">
+                <regexp-list>
+                    <regexp name="boolean"/>
+                </regexp-list>
+            </attribute>
+            <attribute name="mozallowfullscreen">
+                <regexp-list>
+                    <regexp name="boolean"/>
+                </regexp-list>
+            </attribute>
+            <attribute name="allownetworking">
+                <literal-list>
+                    <literal value="all" />
+                </literal-list>
+            </attribute>
+            <attribute name="xmlns:dc">
+              <regexp-list>
+                <regexp name="offsiteURL"/>
+              </regexp-list>
+            </attribute>
+            <attribute name="xmlns:media">
+              <regexp-list>
+                <regexp name="offsiteURL"/>
+              </regexp-list>
+            </attribute>
+            <attribute name="rel">
+                <literal-list>
+                    <literal value="media:video"/>
+                    <literal value="media:audio"/>
+                </literal-list>
+            </attribute>
+            <attribute name="allowscriptaccess">
+                <literal-list>
+                    <literal value="always" />
+                    <literal value="samedomain" />
+                </literal-list>
             </attribute>
             <attribute name="align" />
             <attribute name="height" />
@@ -2584,6 +2651,10 @@
             <attribute name="accentunder"/>
             <attribute name="align"/>
         </tag>
+
+        <!-- HTML5 figure and figcaption http://html5doctor.com/the-figure-figcaption-elements/ -->
+        <tag name="figure" action="validate"/>
+        <tag name="figcaption" action="validate"/>
     </tag-rules>
 
 
@@ -2856,6 +2927,7 @@
             </category-list>
             <literal-list>
                 <literal value="none"/>
+                <literal value="all"/>
                 <literal value="left"/>
                 <literal value="right"/>
                 <literal value="both"/>
@@ -3503,6 +3575,18 @@
                 <regexp name="percentage"/>
             </regexp-list>
         </property>
+        <property name="text-fit" default="0" description="">
+            <category-list>
+                <category value="visual"/>
+            </category-list>
+            <literal-list>
+                <literal value="inherit"/>
+            </literal-list>
+            <regexp-list>
+                <regexp name="length"/>
+                <regexp name="percentage"/>
+            </regexp-list>
+        </property>
         <property name="text-transform" default="none" description="">
             <category-list>
                 <category value="visual"/>
@@ -3767,6 +3851,7 @@
             </literal-list>
             <regexp-list>
                 <regexp name="positiveLength"/>
+                <regexp name="length"/>
                 <regexp name="positivePercentage"/>             
             </regexp-list>
         </property>
@@ -4190,20 +4275,9 @@
             <category-list>
                 <category value="visual"/>
             </category-list>
-            <!-- allowing only generic font families -->
-            <literal-list>
-                <literal value="serif"/>
-                <literal value="arial"/>
-                <literal value="lucida console"/>
-                <literal value="sans-serif"/>
-                <literal value="cursive"/>
-                <literal value="verdana"/>
-                <literal value="fantasy"/>
-                <literal value="monospace"/>                                            
-            </literal-list>
-            
-                        
+            <!-- allowing only generic font families, but combinations -->
             <regexp-list>
+                <regexp name="fontFamily"/>
                 <regexp value="[\w,\-&apos;&quot; ]+"/>
             </regexp-list>
             

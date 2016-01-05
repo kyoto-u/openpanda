@@ -1,6 +1,6 @@
 /**
  * $Id: SiteEntityProvider.java 316810 2015-01-16 21:16:46Z matthew@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.5/core-providers/src/java/org/sakaiproject/entitybroker/providers/SiteEntityProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.6/core-providers/src/java/org/sakaiproject/entitybroker/providers/SiteEntityProvider.java $
  * SiteEntityProvider.java - entity-broker - Jun 29, 2008 8:35:55 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation

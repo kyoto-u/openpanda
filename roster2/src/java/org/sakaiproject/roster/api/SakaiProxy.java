@@ -175,6 +175,14 @@ public interface SakaiProxy {
 	 *         set.
 	 */
 	public List<RosterMember> getEnrollmentMembership(String siteId, String enrollmentSetId);
+
+	/**
+	 * Returns the members for all enrollment sets for the specified site.
+	 *
+	 * @param siteId the ID of the site.
+	 * @return the enrollment set members for the specified site
+	 */
+	public List<RosterMember> getAllEnrollmentMemberships(String siteId);
 	
 	/**
 	 * Returns whether or not the specified user is allowed the specified

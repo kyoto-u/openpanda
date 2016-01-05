@@ -39,7 +39,7 @@ import org.sakaiproject.profile2.logic.SakaiProxy;
 import org.sakaiproject.profile2.model.Person;
 import org.sakaiproject.profile2.model.ProfilePreferences;
 import org.sakaiproject.profile2.model.ProfilePrivacy;
-import org.sakaiproject.profile2.tool.components.ProfileImageRenderer;
+import org.sakaiproject.profile2.tool.components.ProfileImage;
 import org.sakaiproject.profile2.tool.components.ProfileStatusRenderer;
 import org.sakaiproject.profile2.tool.dataproviders.RequestedFriendsDataProvider;
 import org.sakaiproject.profile2.tool.models.FriendAction;
@@ -78,7 +78,7 @@ public class RequestedFriends extends Panel {
 		RequestedFriendsDataProvider provider = new RequestedFriendsDataProvider(userUuid);
 		
 		//init number of requests
-		numRequestedFriends = provider.size();
+		numRequestedFriends = (int) provider.size();
 		
 		//model so we can update the number of requests
 		IModel<Integer> numRequestedFriendsModel = new Model<Integer>() {
@@ -128,7 +128,10 @@ public class RequestedFriends extends Panel {
 				};
 				
 				//image
-				friendItem.add(new ProfileImageRenderer("connectionPhoto", personUuid, prefs, privacy, ProfileConstants.PROFILE_IMAGE_THUMBNAIL, true));
+				ProfileImage connectionPhoto = new ProfileImage("connectionPhoto", new Model<String>(personUuid));
+				connectionPhoto.setSize(ProfileConstants.PROFILE_IMAGE_THUMBNAIL);
+				friendItem.add(connectionPhoto);
+				
 				item.add(friendItem);
 		    			    	
 		    	//name and link to profile
@@ -169,25 +172,25 @@ public class RequestedFriends extends Panel {
 				            		numRequestedFriends--;
 				            		
 				            		//remove friend item from display
-				            		target.appendJavascript("$('#" + item.getMarkupId() + "').slideUp();");
+				            		target.appendJavaScript("$('#" + item.getMarkupId() + "').slideUp();");
 				            		
 				            		//update label
-				            		target.addComponent(requestedFriendsHeading);
+				            		target.add(requestedFriendsHeading);
 				            		
 				            		//get parent panel and repaint ConfirmedFriends panel via helper method in MyFriends 
 				            		findParent(MyFriends.class).updateConfirmedFriends(target, userUuid);
 				            		
 				            		//if none left, hide everything
 				            		if(numRequestedFriends==0) {
-				            			target.appendJavascript("$('#" + requestedFriendsHeading.getMarkupId() + "').fadeOut();");
-				            			target.appendJavascript("$('#" + requestedFriendsContainer.getMarkupId() + "').fadeOut();");
+				            			target.appendJavaScript("$('#" + requestedFriendsHeading.getMarkupId() + "').fadeOut();");
+				            			target.appendJavaScript("$('#" + requestedFriendsContainer.getMarkupId() + "').fadeOut();");
 				            		}
 				            	}
 							}
 				        });	
 						
 						connectionWindow.show(target);
-						target.appendJavascript("fixWindowVertical();"); 
+						target.appendJavaScript("fixWindowVertical();"); 
 					}
 				};
 				//ContextImage confirmConnectionIcon = new ContextImage("confirmConnectionIcon",new Model<String>(ProfileConstants.ACCEPT_IMG));
@@ -221,22 +224,22 @@ public class RequestedFriends extends Panel {
 				            		numRequestedFriends--;
 				            		
 				            		//remove friend item from display
-				            		target.appendJavascript("$('#" + item.getMarkupId() + "').slideUp();");
+				            		target.appendJavaScript("$('#" + item.getMarkupId() + "').slideUp();");
 				            		
 				            		//update label
-				            		target.addComponent(requestedFriendsHeading);
+				            		target.add(requestedFriendsHeading);
 				            				            		
 				            		//if none left, hide everything
 				            		if(numRequestedFriends==0) {
-				            			target.appendJavascript("$('#" + requestedFriendsHeading.getMarkupId() + "').fadeOut();");
-				            			target.appendJavascript("$('#" + requestedFriendsContainer.getMarkupId() + "').fadeOut();");
+				            			target.appendJavaScript("$('#" + requestedFriendsHeading.getMarkupId() + "').fadeOut();");
+				            			target.appendJavaScript("$('#" + requestedFriendsContainer.getMarkupId() + "').fadeOut();");
 				            		}
 				            	}
 							}
 				        });	
 						
 						connectionWindow.show(target);
-						target.appendJavascript("fixWindowVertical();"); 
+						target.appendJavaScript("fixWindowVertical();"); 
 					}
 				};
 				//ContextImage ignoreConnectionIcon = new ContextImage("ignoreConnectionIcon",new Model<String>(ProfileConstants.CANCEL_IMG));

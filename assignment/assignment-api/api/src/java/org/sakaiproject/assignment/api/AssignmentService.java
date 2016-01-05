@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
- * $Id: AssignmentService.java 315364 2014-11-12 15:42:20Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.6/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentService.java $
+ * $Id: AssignmentService.java 321260 2015-09-18 21:15:01Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -862,9 +862,14 @@ public interface AssignmentService extends EntityProducer
 	public boolean getAllowGroupAssignmentsInGradebook();
 	
 	/**
+	 * Whether a specific user can submit
+	 */
+	public boolean canSubmit(String context, Assignment a, String userId);
+	/**
 	 * Whether the current user can submit
 	 */
 	public boolean canSubmit(String context, Assignment a);
+
 	
 	public Collection<Group> getSubmitterGroupList(String searchFilterOnly, String allOrOneGroup, String searchString, String aRef, String contextString);
 	/**
@@ -882,6 +887,17 @@ public interface AssignmentService extends EntityProducer
 	 * @return
 	 */
 	public List<String> getSubmitterIdList(String searchFilterOnly, String allOrOneGroup, String search, String aRef, String contextString);	
+
+	/**
+	 * Alternative to getSubmittedIdList which returns full user and submissions, since submitterIdList retrieves them anyway
+	 * @param searchFilterOnly If true, return only those ids that matches the group filter and search criteria
+	 * @param allOrOneGroup "all" or specific group reference
+	 * @param aRef Assignment Reference
+	 * @param search The search string
+	 * @param contextString Site id
+	 * @return
+	 */
+	public Map<User, AssignmentSubmission> getSubmitterMap(String searchFilterOnly, String allOrOneGroup, String search, String aRef, String contextString);
 
 	public String escapeInvalidCharsEntry(String accentedString);
 	

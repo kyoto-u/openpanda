@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.5/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/common/tags/sakai-10.6/archive-impl/impl/src/java/org/sakaiproject/archive/impl/ImportMetadataImpl.java $
  * $Id: ImportMetadataImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

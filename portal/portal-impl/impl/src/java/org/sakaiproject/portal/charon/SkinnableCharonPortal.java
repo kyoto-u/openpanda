@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
- * $Id: SkinnableCharonPortal.java 317086 2015-02-04 21:34:38Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.6/portal-impl/impl/src/java/org/sakaiproject/portal/charon/SkinnableCharonPortal.java $
+ * $Id: SkinnableCharonPortal.java 321794 2015-11-12 15:37:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -137,7 +137,7 @@ import au.com.flyingkite.mobiledetect.UAgentInfo;
  * </p>
  * 
  * @since Sakai 2.4
- * @version $Rev: 317086 $
+ * @version $Rev: 321794 $
  * 
  */
 @SuppressWarnings("deprecation")
@@ -1159,14 +1159,19 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		String includeExtraHead = ServerConfigurationService.getString("portal.include.extrahead", "");
 		rcontext.put("includeExtraHead",includeExtraHead);
 
-        String analyticsId =  ServerConfigurationService.getString("portal.google.analytics_id", null);
+		String universalAnalyticsId =  ServerConfigurationService.getString("portal.google.universal_analytics_id", null);
+		if ( universalAnalyticsId != null ) {
+			rcontext.put("googleUniversalAnalyticsId", universalAnalyticsId);
+		}
+
+		String analyticsId =  ServerConfigurationService.getString("portal.google.analytics_id", null);
 		if ( analyticsId != null ) {
-            rcontext.put("googleAnalyticsId", analyticsId);
-		    rcontext.put("googleAnalyticsDomain", 
-		        ServerConfigurationService.getString("portal.google.analytics_domain"));
-		    rcontext.put("googleAnalyticsDetail", 
-		        ServerConfigurationService.getBoolean("portal.google.analytics_detail", false));
-        }
+			rcontext.put("googleAnalyticsId", analyticsId);
+			rcontext.put("googleAnalyticsDomain", 
+				ServerConfigurationService.getString("portal.google.analytics_domain"));
+			rcontext.put("googleAnalyticsDetail", 
+				ServerConfigurationService.getBoolean("portal.google.analytics_detail", false));
+		}
 
 		Session s = SessionManager.getCurrentSession();
 		rcontext.put("loggedIn", Boolean.valueOf(s.getUserId() != null));
@@ -1589,7 +1594,23 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			// Fall back to default of using the page Id.
 			page = p.getPageId();
 		}
-		return "/site/" + p.getSiteId() + "/page/" + page;
+		
+		Session session = SessionManager.getCurrentSession();
+		boolean isMobileDevice = (Boolean)session.getAttribute("is_mobile_device");
+		
+		StringBuilder portalPageUrl = new StringBuilder();
+		
+		//SAK-26625 direct tool links need to be prefixed with pda instead of site to remain inside the pda portal
+		if(isMobileDevice) {
+			portalPageUrl.append("/pda/");
+		} else {
+			portalPageUrl.append("/site/");
+		}
+		portalPageUrl.append(p.getSiteId());
+		portalPageUrl.append("/page/");
+		portalPageUrl.append(page);
+
+		return portalPageUrl.toString();
 	}
 
 	/**
@@ -1839,7 +1860,9 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			// of a login link, but ignore it if container.login is set
 			boolean topLogin = ServerConfigurationService.getBoolean("top.login", true);
 			boolean containerLogin = ServerConfigurationService.getBoolean("container.login", false);
-			if (containerLogin) topLogin = false;
+			Boolean PDAHandler = (Boolean)session.getAttribute("PDAHandler");
+
+			if (containerLogin || Boolean.TRUE.equals(PDAHandler)) topLogin = false;
 
 			// if not logged in they get login
 			if (session.getUserId() == null)

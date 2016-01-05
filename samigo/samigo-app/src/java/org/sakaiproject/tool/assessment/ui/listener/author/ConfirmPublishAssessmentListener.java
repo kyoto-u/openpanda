@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ConfirmPublishAssessmentListener.java $
  * $Id: ConfirmPublishAssessmentListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
  ***********************************************************************************
  *

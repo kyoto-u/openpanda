@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.5/allhands/src/java/org/sakaiproject/provider/authzGroup/AllHandsGroupProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.6/allhands/src/java/org/sakaiproject/provider/authzGroup/AllHandsGroupProvider.java $
  * $Id: AllHandsGroupProvider.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

@@ -1,5 +1,5 @@
 /******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.5/user-tool/tool/src/java/org/sakaiproject/user/tool/PasswordPolicyHelper.java $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.6/user-tool/tool/src/java/org/sakaiproject/user/tool/PasswordPolicyHelper.java $
  * $Id: PasswordPolicyHelper.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ******************************************************************************
  *

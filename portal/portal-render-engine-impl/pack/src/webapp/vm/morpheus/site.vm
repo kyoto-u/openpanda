@@ -76,6 +76,7 @@
             #parse("/vm/morpheus/includePageWithNav.vm")
             
         </div> <!-- end div.container.portal.outer -->
+        #parse("/vm/morpheus/includeAnalytics.vm")
         <!-- END VM site.vm -->
     </body>
 </html>

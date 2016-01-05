@@ -8,7 +8,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
-* $Id: authorSettings.jsp 311095 2014-07-24 00:17:13Z enietzel@anisakai.com $
+* $Id: authorSettings.jsp 322031 2015-12-07 15:35:55Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -63,6 +63,7 @@
           lockdownGradebook(releaseToVal);
           showHideReleaseGroups();
           checkUncheckTimeBox();
+          checkLastHandling();
         });
       </script>
 
@@ -241,7 +242,7 @@
     <h:outputText value="#{assessmentSettingsMessages.late_accept}" />
     <h:panelGrid columns="3" border="0" columnClasses="alignBottom">
       <f:verbatim>&nbsp;&nbsp;</f:verbatim>
-      <h:selectOneRadio id="lateHandling" value="#{assessmentSettings.lateHandling}"  layout="pageDirection">
+      <h:selectOneRadio id="lateHandling" value="#{assessmentSettings.lateHandling}" onclick="checkLastHandling();" layout="pageDirection">
         <f:selectItem itemValue="2" itemLabel="#{assessmentSettingsMessages.no_late}"/>
         <f:selectItem itemValue="1" itemLabel="#{assessmentSettingsMessages.yes_late}"/>
       </h:selectOneRadio>

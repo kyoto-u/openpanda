@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemDataIfc.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-api/src/java/org/sakaiproject/tool/assessment/data/ifc/assessment/ItemDataIfc.java $
  * $Id: ItemDataIfc.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
  ***********************************************************************************
  *

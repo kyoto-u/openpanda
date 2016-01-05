@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/questionpool/QuestionPoolItemData.java $
  * $Id: QuestionPoolItemData.java 319771 2015-06-04 21:09:24Z matthew@longsight.com $
  ***********************************************************************************
  *

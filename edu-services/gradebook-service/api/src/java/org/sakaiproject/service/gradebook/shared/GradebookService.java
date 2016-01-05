@@ -1,6 +1,6 @@
 /**********************************************************************************
  *
- * $Id: GradebookService.java 317967 2015-03-12 19:41:11Z ottenhoff@longsight.com $
+ * $Id: GradebookService.java 320993 2015-08-27 02:35:48Z enietzel@anisakai.com $
  *
  ***********************************************************************************
  *
@@ -548,6 +548,7 @@ public interface GradebookService {
 
 	public Map getImportCourseGrade(String gradebookUid);
 	public Map getImportCourseGrade(String gradebookUid, boolean useDefault);
+	public Map getImportCourseGrade(String gradebookUid, boolean useDefault, boolean mapTheGrades);
 
 
 	/**return Object to avoid circular dependency with sakai-gradebook-tool */

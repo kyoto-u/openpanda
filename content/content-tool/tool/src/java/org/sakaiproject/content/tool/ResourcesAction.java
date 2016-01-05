@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.5/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
- * $Id: ResourcesAction.java 318802 2015-05-12 21:40:11Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.6/content-tool/tool/src/java/org/sakaiproject/content/tool/ResourcesAction.java $
+ * $Id: ResourcesAction.java 321821 2015-11-12 19:25:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -23,11 +23,9 @@ package org.sakaiproject.content.tool;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -118,7 +116,6 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.cover.SiteService;
@@ -141,19 +138,14 @@ import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.FileItem;
 import org.w3c.dom.Element;
 
-import java.io.PrintWriter;
-import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.sakaiproject.util.RequestFilter;
-import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 
 /**
 * <p>ResourceAction is a ContentHosting application</p>
 *
 * @author University of Michigan, CHEF Software Development Team
-* @version $Revision: 318802 $
+* @version $Revision: 321821 $
 */
 public class ResourcesAction 
 	extends PagedResourceHelperAction // VelocityPortletPaneledAction
@@ -8083,7 +8075,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 
 		if (state.getAttribute(STATE_FILE_UPLOAD_MAX_SIZE) == null)
 		{
-			String uploadMax = ServerConfigurationService.getString("content.upload.max");
+			String uploadMax = ServerConfigurationService.getString(ResourcesConstants.SAK_PROP_MAX_UPLOAD_FILE_SIZE);
 			String uploadCeiling = ServerConfigurationService.getString("content.upload.ceiling");
 			
 			if(uploadMax == null && uploadCeiling == null)

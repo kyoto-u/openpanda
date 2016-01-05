@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.5/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
- * $Id: BaseAnnouncementService.java 316193 2014-12-19 21:48:42Z matthew@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/announcement/tags/sakai-10.6/announcement-impl/impl/src/java/org/sakaiproject/announcement/impl/BaseAnnouncementService.java $
+ * $Id: BaseAnnouncementService.java 320150 2015-07-14 20:24:18Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -119,6 +119,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 	/** private constants definitions */
 	private final static String SAKAI_ANNOUNCEMENT_TOOL_ID = "sakai.announcements";
 	private static final String PORTLET_CONFIG_PARM_MERGED_CHANNELS = "mergedAnnouncementChannels";
+	static final int NOTI_IGNORE = -1;
 
 	
 	/** Messages, for the http access. */
@@ -1368,7 +1369,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 						p.addAll(oProperties);
 
 						// complete the edit
-						nChannel.commitMessage(nMessage, NotificationService.NOTI_NONE);
+						nChannel.commitMessage(nMessage, NOTI_IGNORE);
 						
 //						transversalMap.put(oMessage.getReference(), nMessage.getReference());
 					}
@@ -1430,7 +1431,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 							if(updated){
 								AnnouncementMessageEdit editMsg = aChannel.editAnnouncementMessage(msg.getId());
 								editMsg.setBody(msgBody);
-								aChannel.commitMessage(editMsg, NotificationService.NOTI_NONE);
+								aChannel.commitMessage(editMsg, NOTI_IGNORE);
 							}
 						}
 					}
@@ -1668,7 +1669,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 						try {
 							AnnouncementMessageEdit em = editAnnouncementMessage(me.getId());
 							em.getHeaderEdit().setMessage_order(++currentMax);
-							super.commitMessage(em, NotificationService.NOTI_NONE, "");
+							super.commitMessage(em, NOTI_IGNORE, "");
 						} catch (InUseException e) {
 							if (M_log.isDebugEnabled()) {
 								M_log.debug("Exception moving an unreleased item.",e);

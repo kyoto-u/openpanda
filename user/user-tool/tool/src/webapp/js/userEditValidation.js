@@ -1,5 +1,5 @@
 /******************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.5/user-tool/tool/src/webapp/js/userEditValidation.js $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.6/user-tool/tool/src/webapp/js/userEditValidation.js $
  * $Id: userEditValidation.js 310200 2014-06-12 17:42:33Z enietzel@anisakai.com $
  ******************************************************************************
  *

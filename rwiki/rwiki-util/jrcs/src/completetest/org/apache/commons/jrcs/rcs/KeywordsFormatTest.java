@@ -75,7 +75,7 @@ public class KeywordsFormatTest extends TestCase
             "$Source: /home/projects/jrcs/scm/jrcs/src/test/org/apache/commons/jrcs/rcs/KeywordsFormatTest.java,v $\n" +
             "$RCSfile: KeywordsFormatTest.java,v $\n" +
             "$Revision: 2967 $\n" +
-            "$Date: 2005-10-26 19:52:33 +0900 (Wed, 26 Oct 2005) $\n" +
+            "$Date: 2005-10-26 19:52:33 +0900 (水, 26 10 2005) $\n" +
             "$Author: ian@caret.cam.ac.uk $\n" +
             "$State: Exp $\n" +
             "$Locker:  $\n";

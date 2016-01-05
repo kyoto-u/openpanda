@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
- * $Id: PublishedItemData.java 305964 2014-02-14 01:05:35Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/PublishedItemData.java $
+ * $Id: PublishedItemData.java 320395 2015-08-05 13:25:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Category;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
@@ -603,6 +604,12 @@ public class PublishedItemData
 					if (!this.getTypeId().equals(TypeD.MATCHING)) {
 						if (this.getTypeId().equals(TypeD.TRUE_FALSE)) {
 							answerKey = a.getText();
+						} else if (TypeD.CALCULATED_QUESTION.equals(this.getTypeId())) {
+							if (StringUtils.isEmpty(answerKey)) {
+								answerKey = a.getLabel() +" = "+ a.getText().substring(0, a.getText().indexOf("|")) ;
+							} else {
+								answerKey += "," + a.getLabel() +" = "+ a.getText().substring(0, a.getText().indexOf("|")) ;
+							}
 						} else {
 							if (("").equals(answerKey)) {
 								answerKey = a.getLabel();

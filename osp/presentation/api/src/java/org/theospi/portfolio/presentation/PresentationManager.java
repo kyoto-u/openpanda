@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.5/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java $
+* $URL: https://source.sakaiproject.org/svn/osp/tags/sakai-10.6/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java $
 * $Id: PresentationManager.java 308891 2014-04-28 15:49:48Z enietzel@anisakai.com $
 ***********************************************************************************
 *
@@ -48,7 +48,7 @@ import org.theospi.portfolio.shared.model.Node;
  * @author John Bush (jbush@rsmart.com)
  * $Header: /opt/CVS/osp2.x/presentation/api/src/java/org/theospi/portfolio/presentation/PresentationManager.java,v 1.5 2005/10/26 23:53:01 jellis Exp $
  * $Revision: 8645 $
- * $Date: 2014-04-29 00:49:48 +0900 (Tue, 29 Apr 2014) $
+ * $Date: 2014-04-29 00:49:48 +0900 (火, 29  4 2014) $
  */
 
 public interface PresentationManager extends CleanupableService {

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AuthorBean.java $
  * $Id: AuthorBean.java 319085 2015-05-20 22:49:23Z enietzel@anisakai.com $
  ***********************************************************************************
  *

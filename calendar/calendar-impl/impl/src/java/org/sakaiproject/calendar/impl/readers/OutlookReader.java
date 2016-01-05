@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.5/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/OutlookReader.java $
+ * $URL: https://source.sakaiproject.org/svn/calendar/tags/sakai-10.6/calendar-impl/impl/src/java/org/sakaiproject/calendar/impl/readers/OutlookReader.java $
  * $Id: OutlookReader.java 318801 2015-05-12 21:38:31Z enietzel@anisakai.com $
  ***********************************************************************************
  *

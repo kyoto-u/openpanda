@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.5/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
- * $Id: FilePickerAction.java 315758 2014-11-29 14:29:45Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/content/tags/sakai-10.6/content-tool/tool/src/java/org/sakaiproject/content/tool/FilePickerAction.java $
+ * $Id: FilePickerAction.java 321821 2015-11-12 19:25:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -113,7 +113,6 @@ import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
-import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.util.Validator;
 
 /**
@@ -1053,7 +1052,8 @@ public class FilePickerAction extends PagedResourceHelperAction
 
 		if (toolSession.getAttribute(STATE_FILE_UPLOAD_MAX_SIZE) == null)
 		{
-			toolSession.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, ServerConfigurationService.getString("content.upload.max", "1"));
+			toolSession.setAttribute(STATE_FILE_UPLOAD_MAX_SIZE, ServerConfigurationService.getString(ResourcesConstants.SAK_PROP_MAX_UPLOAD_FILE_SIZE, 
+																									  ResourcesConstants.DEFAULT_MAX_FILE_SIZE_STRING));
 		}
 		
 		return MODE_HELPER;

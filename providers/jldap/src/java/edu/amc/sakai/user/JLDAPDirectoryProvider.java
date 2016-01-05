@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.5/jldap/src/java/edu/amc/sakai/user/JLDAPDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.6/jldap/src/java/edu/amc/sakai/user/JLDAPDirectoryProvider.java $
  * $Id: JLDAPDirectoryProvider.java 318645 2015-05-05 13:37:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

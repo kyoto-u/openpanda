@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/PortalSiteHelperImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.6/portal-impl/impl/src/java/org/sakaiproject/portal/charon/site/PortalSiteHelperImpl.java $
  * $Id: PortalSiteHelperImpl.java 313737 2014-09-19 00:20:46Z enietzel@anisakai.com $
  ***********************************************************************************
  *

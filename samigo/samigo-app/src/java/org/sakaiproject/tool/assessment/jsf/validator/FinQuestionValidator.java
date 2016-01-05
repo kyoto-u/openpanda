@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/validator/FinQuestionValidator.java $
- * $Id: FinQuestionValidator.java 112201 2012-09-07 08:51:04Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/jsf/validator/FinQuestionValidator.java $
+ * $Id: FinQuestionValidator.java 320402 2015-08-05 13:33:14Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -49,12 +49,12 @@ public class FinQuestionValidator implements Validator {
 			throws ValidatorException {
 	
 		String text = (String) value;
-		text = text.trim().replace(',','.');  // in Spain, comma is used as a decimal point 	 
+		text = text.replaceAll("\\s+", "").replace(',','.');  // in Spain, comma is used as a decimal point 	 
 		
 		int i = text.indexOf("{", 0);
 		int j = text.indexOf("}", 0);
 		
-		while (i != -1) {
+		while (i != -1 && j > i) {
 			String number = text.substring(i+1, j);
 			
 			StringTokenizer st = new StringTokenizer(number, "|");

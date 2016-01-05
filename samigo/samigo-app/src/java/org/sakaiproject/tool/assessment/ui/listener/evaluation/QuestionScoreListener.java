@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
- * $Id: QuestionScoreListener.java 318753 2015-05-08 20:19:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/evaluation/QuestionScoreListener.java $
+ * $Id: QuestionScoreListener.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -423,7 +423,7 @@ public class QuestionScoreListener implements ActionListener,
 			}
 			try {
 				bean.setMaxScore(publishedAssessment.getEvaluationModel()
-						.getFixedTotalScore().toString());
+						.getFixedTotalScore());
 			} catch (RuntimeException e) {
 				double score = (double) 0.0;
 				Iterator iter2 = publishedAssessment.getSectionArraySorted()
@@ -438,7 +438,7 @@ public class QuestionScoreListener implements ActionListener,
 							score = idata.getScore().doubleValue();
 					}
 				}
-				bean.setMaxScore(Double.toString(score));
+				bean.setMaxScore(score);
 			}
 			
 			// need to get id from somewhere else, not from data. data only
@@ -687,6 +687,7 @@ public class QuestionScoreListener implements ActionListener,
 						String crossmarkGif = "<img src='/samigo-app/images/crossmark.gif'>";
 						
 						if (bean.getTypeId().equals("8") || bean.getTypeId().equals("11")) {
+							answerText = FormattedText.escapeHtml(answerText, true);
 							if (gdata.getIsCorrect() == null) {
 								boolean result = false;
 								if (bean.getTypeId().equals("8")) {
@@ -712,6 +713,7 @@ public class QuestionScoreListener implements ActionListener,
 							}
 						}
 						else if (bean.getTypeId().equals("15")) {  // CALCULATED_QUESTION
+							answerText = FormattedText.escapeHtml(answerText, true);
 							//need to do something here for fill in the blanks
 							if(gdataAnswer.getScore() > 0){
 								//if score is 0, there is no way to tell if user got the correct answer

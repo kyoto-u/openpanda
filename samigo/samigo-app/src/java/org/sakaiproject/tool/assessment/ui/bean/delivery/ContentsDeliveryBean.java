@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ContentsDeliveryBean.java $
- * $Id: ContentsDeliveryBean.java 121258 2013-03-15 15:03:36Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ContentsDeliveryBean.java $
+ * $Id: ContentsDeliveryBean.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -24,6 +24,7 @@
 package org.sakaiproject.tool.assessment.ui.bean.delivery;
 
 import java.io.Serializable;
+import org.apache.commons.math.util.MathUtils;
 
 /**
  * <p> Table of Contents and Contents Data</p>
@@ -128,7 +129,7 @@ private java.util.ArrayList partsContents;
 	  String pointsDisplayString = "";
 	  if (showStudentScore)
 	  {
-		  pointsDisplayString = "" + currentScore;
+		  pointsDisplayString = "" + MathUtils.round(currentScore, 2);
 	  }
 	  return pointsDisplayString;
   }

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
- * $Id: ItemContentsBean.java 315353 2014-11-12 08:39:19Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/ItemContentsBean.java $
+ * $Id: ItemContentsBean.java 322125 2015-12-15 20:06:16Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -32,8 +32,10 @@ import java.util.Set;
 import java.util.Map;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
@@ -248,7 +250,7 @@ public class ItemContentsBean implements Serializable {
 	 * @return String representation of the points.
 	 */
 	public double getPoints() {
-		return SectionContentsBean.roundTo2Decimals(points);
+		return MathUtils.round(points, 2);
 	}
 
 	/**
@@ -304,7 +306,7 @@ public class ItemContentsBean implements Serializable {
      * @return String representation of the discount.
      */
     public double getDiscount() {
-    	 return SectionContentsBean.roundTo2Decimals(discount);
+    	 return MathUtils.round(discount, 2);
     }
 
     /**
@@ -471,7 +473,7 @@ public class ItemContentsBean implements Serializable {
 	 * @return String representation of the max points.
 	 */
 	public double getRoundedMaxPoints() {
-		return SectionContentsBean.roundTo2Decimals(maxPoints);
+		return MathUtils.round(maxPoints, 2);
 	}
 
 	/**
@@ -1236,8 +1238,7 @@ public class ItemContentsBean implements Serializable {
 	public String getPointsDisplayString() {
 		String pointsDisplayString = "";
 		if (showStudentQuestionScore) {
-			pointsDisplayString = SectionContentsBean.roundTo2Decimals(points)
-					+ "/";
+			pointsDisplayString = MathUtils.round(points, 2) + "/";
 		}
 		return pointsDisplayString;
 	}
@@ -1283,7 +1284,7 @@ public class ItemContentsBean implements Serializable {
   }
 
   public Double getUpdatedScore () {
-	  return itemData.getScore();
+	  return MathUtils.round(itemData.getScore(), 2);
   }
 	 
   public void setUpdatedScore(Double score) {
@@ -1387,6 +1388,26 @@ public class ItemContentsBean implements Serializable {
 	return answerKey;
   }
 
+  public String getAnswerKeyCalcQuestion() {
+	String answerKey = "";
+	if(itemData!=null){
+		String answerKeyToSplit = itemData.getAnswerKey();
+		if(answerKeyToSplit==null){
+			return answerKey;
+		}
+		String keys[] = answerKeyToSplit.split(",");
+		GradingService gradingService = new GradingService();
+		for(String key: keys){
+			if(!gradingService.extractVariables(key).isEmpty()){
+				if(StringUtils.isNotEmpty(answerKey)){
+					answerKey += ", ";
+				}
+				answerKey += key;
+			}
+		}
+	}
+	return answerKey;
+  }
   
   public void setAttachment(Long itemGradingId){
 	  List itemGradingAttachmentList = new ArrayList();

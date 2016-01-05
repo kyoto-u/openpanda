@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
- * $Id: BaseAssignmentService.java 318809 2015-05-12 22:27:09Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.6/assignment-impl/impl/src/java/org/sakaiproject/assignment/impl/BaseAssignmentService.java $
+ * $Id: BaseAssignmentService.java 321802 2015-11-12 16:16:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -154,6 +154,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         
 	// SAK-17606 - Property for whether an assignment uses anonymous grading (user settable)
 	protected static final String NEW_ASSIGNMENT_CHECK_ANONYMOUS_GRADING = "new_assignment_check_anonymous_grading";
+
+	// SAK-29314
+	private static final String SUBMISSION_ATTR_IS_USER_SUB = "isUserSubmission";
 
 //	spring service injection
 	
@@ -2961,9 +2964,19 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		buffer.append(rb.getString("noti.site.title") + " " + siteTitle + newline);
 		buffer.append(rb.getString("noti.site.id") + " " + siteId +newline + newline);
 		// notification text
-		buffer.append(rb.getFormattedMessage("noti.releaseresubmission.text", new String[]{a.getTitle(), siteTitle}));
+		//Get the actual person that submitted, for a group submission just get the first person from that group (This is why the array is used)
+		String userId = null;
+		if (s.getSubmitterIds() != null && s.getSubmitterIds().size() > 0) {
+		    userId = (String) s.getSubmitterIds().get(0);
+		}
+		if (canSubmit(context,a,userId)) {
+		    buffer.append(rb.getFormattedMessage("noti.releaseresubmission.text", new String[]{a.getTitle(), siteTitle}));
+		}
+		else {
+		    buffer.append(rb.getFormattedMessage("noti.releaseresubmission.noresubmit.text", new String[]{a.getTitle(), siteTitle}));
+		}
 	 		
-	 		return buffer.toString();
+	 	return buffer.toString();
 	}
 	/**
 	 * Cancel the changes made to a AssignmentSubmissionEdit object, and release the lock.
@@ -4645,7 +4658,20 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	public List<String> getSubmitterIdList(String searchFilterOnly, String allOrOneGroup, String searchString, String aRef, String contextString) {
 		
 		List<String> rv = new ArrayList<String>();
-		List<User> rvUsers = new ArrayList<User>();
+		Map<User, AssignmentSubmission> submitterMap = getSubmitterMap(searchFilterOnly, allOrOneGroup, searchString, aRef, contextString);
+		for (User u : submitterMap.keySet())
+		{
+			rv.add(u.getId());
+		}
+		
+		return rv;
+	}
+
+	// alternative to getSubmittedIdList which returns full user and submissions, since submitterIdList retrieves them anyway
+	public Map<User, AssignmentSubmission> getSubmitterMap(String searchFilterOnly, String allOrOneGroup, String searchString, String aRef, String contextString)
+	{
+		Map<User, AssignmentSubmission> rv = new HashMap<User, AssignmentSubmission>();
+		List<User> rvUsers;
 		allOrOneGroup = StringUtils.trimToNull(allOrOneGroup);
 		searchString = StringUtils.trimToNull(searchString);
 		
@@ -4653,6 +4679,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		try
 		{
 			Assignment a = getAssignment(aRef);
+			if (a == null)
+			{
+				return rv;
+			}
 			
 			// SAK-27824
 			if (assignmentUsesAnonymousGrading(a)) {
@@ -4660,8 +4690,6 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				searchString = "";
 			}
 			
-			if (a != null)
-			{	
 				if (bSearchFilterOnly)
 				{
 					if (allOrOneGroup == null && searchString == null)
@@ -4723,7 +4751,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 											
 						if (uSubmission != null)
 						{
-							rv.add(u.getId());
+						rv.put(u, uSubmission);
 						}
 						// add those users who haven't made any submissions and with submission rights
 						else
@@ -4761,7 +4789,15 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 						            AssignmentSubmissionEdit s = addSubmission(contextString, a.getId(), u.getId());
 									if (s != null)
 									{
-										s.setSubmitted(false);
+										// Note: If we had s.setSubmitted(false);, this would put it in 'draft mode'
+										s.setSubmitted(true);
+										/*
+										 * SAK-29314 - Since setSubmitted represents whether the submission is in draft mode state, we need another property. So we created isUserSubmission.
+										 * This represents whether the submission was geenrated by a user.
+										 * We set it to false because these submissions are generated so that the instructor has something to grade;
+										 * the user did not in fact submit anything.
+										 */
+										s.setIsUserSubmission(false);
 										s.setAssignment(a);
 										
 										// set the resubmission properties
@@ -4778,7 +4814,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 										}
 										
 										commitEdit(s);
-										rv.add(u.getId());
+									rv.put(u, s);
 									}
 						        }
 						        finally
@@ -4791,7 +4827,6 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					}
 				}
 			}
-		}
 		catch (IdUnusedException aIdException)
 		{
 			M_log.warn(":getSubmitterIdList: Assignme id not used: " + aRef + " " + aIdException.getMessage());
@@ -4804,8 +4839,6 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		
 		return rv;
 	}
-
-
 
 	private List<User> getSelectedGroupUsers(String allOrOneGroup, String contextString, Assignment a, List allowAddSubmissionUsers) {
 		Collection groups = new ArrayList();
@@ -4955,6 +4988,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		boolean withFeedbackAttachment = false;
 		
 		boolean withoutFolders = false;
+		boolean includeNotSubmitted = false;
 
 		String viewString = "";
 		String contextString = "";
@@ -5013,6 +5047,12 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					// feedback attachment
 					withoutFolders = true;
 				}
+				else if (token.contains("includeNotSubmitted"))
+				{
+					// include empty submissions
+					includeNotSubmitted = true;
+				}
+
 				else if (token.contains("contextString"))
 				{
 					// context
@@ -5064,8 +5104,8 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					if (allowGradeSubmission(aRef))
 					{
 					    zipGroupSubmissions(aRef, a.getTitle(), a.getContent().getTypeOfGradeString(a.getContent().getTypeOfGrade()), a.getContent().getTypeOfSubmission(),
-					            new SortedIterator(submissions.iterator(), new AssignmentComparator("submitterName", "true")), out, exceptionMessage, withStudentSubmissionText, withStudentSubmissionAttachment, withGradeFile, withFeedbackText, withFeedbackComment, withFeedbackAttachment,gradeFileFormat);
-
+					            new SortedIterator(submissions.iterator(), new AssignmentComparator("submitterName", "true")), out, exceptionMessage, withStudentSubmissionText, withStudentSubmissionAttachment, withGradeFile, withFeedbackText, withFeedbackComment, withFeedbackAttachment,gradeFileFormat,includeNotSubmitted);
+                                
 					    if (exceptionMessage.length() > 0)
 					    {
 					        // log any error messages
@@ -5078,34 +5118,21 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			else
 			{
 
-			List<String> submitterIds = getSubmitterIdList(searchFilterOnly, viewString.length() == 0 ? AssignmentConstants.ALL:viewString, searchString, aRef, contextString == null? a.getContext():contextString);
+			//List<String> submitterIds = getSubmitterIdList(searchFilterOnly, viewString.length() == 0 ? AssignmentConstants.ALL:viewString, searchString, aRef, contextString == null? a.getContext():contextString);
+			Map<User, AssignmentSubmission> submitters = getSubmitterMap(searchFilterOnly, viewString.length() == 0 ? AssignmentConstants.ALL:viewString, searchString, aRef, contextString == null? a.getContext():contextString); 	
 	
-			if (submitterIds != null && !submitterIds.isEmpty())
+			if (!submitters.isEmpty())
 			{
-				List<AssignmentSubmission> submissions = new ArrayList<AssignmentSubmission>();
-				for (Iterator<String> iSubmitterIdsIterator = submitterIds.iterator(); iSubmitterIdsIterator.hasNext();)
-				{
-					String uId = iSubmitterIdsIterator.next();
-					try
-					{
-						User u = UserDirectoryService.getUser(uId);
-	
-						AssignmentSubmission sub = getSubmission(aRef, u);
-						if (sub != null)
-							submissions.add(sub);
-					}
-					catch (UserNotDefinedException e)
-					{
-						M_log.warn(":getSubmissionsZip cannot find user id=" + uId + e.getMessage() + "");
-					}
-				}
+				List<AssignmentSubmission> submissions = new ArrayList<AssignmentSubmission>(submitters.values());
 	
 				StringBuilder exceptionMessage = new StringBuilder();
 	
 				if (allowGradeSubmission(aRef))
 				{
-					zipSubmissions(aRef, a.getTitle(), a.getContent().getTypeOfGradeString(a.getContent().getTypeOfGrade()), a.getContent().getTypeOfSubmission(), 
-							new SortedIterator(submissions.iterator(), new AssignmentComparator("submitterName", "true")), out, exceptionMessage, withStudentSubmissionText, withStudentSubmissionAttachment, withGradeFile, withFeedbackText, withFeedbackComment, withFeedbackAttachment, withoutFolders,gradeFileFormat);
+					AssignmentContent content = a.getContent();
+					zipSubmissions(aRef, a.getTitle(), content.getTypeOfGradeString(content.getTypeOfGrade()), content.getTypeOfSubmission(), 
+							new SortedIterator(submissions.iterator(), new AssignmentComparator("submitterName", "true")), out, exceptionMessage, withStudentSubmissionText, withStudentSubmissionAttachment, withGradeFile, withFeedbackText, withFeedbackComment, withFeedbackAttachment, withoutFolders,gradeFileFormat, includeNotSubmitted);
+
 	
 					if (exceptionMessage.length() > 0)
 					{
@@ -5139,42 +5166,33 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		return cleanString;
 	}
 	
-	protected void zipGroupSubmissions(String assignmentReference, String assignmentTitle, String gradeTypeString, int typeOfSubmission, Iterator submissions, OutputStream outputStream, StringBuilder exceptionMessage, boolean withStudentSubmissionText, boolean withStudentSubmissionAttachment, boolean withGradeFile, boolean withFeedbackText, boolean withFeedbackComment, boolean withFeedbackAttachment,String gradeFileFormat)
+	protected void zipGroupSubmissions(String assignmentReference, String assignmentTitle, String gradeTypeString, int typeOfSubmission, Iterator submissions, OutputStream outputStream, StringBuilder exceptionMessage, boolean withStudentSubmissionText, boolean withStudentSubmissionAttachment, boolean withGradeFile, boolean withFeedbackText, boolean withFeedbackComment, boolean withFeedbackAttachment,String gradeFileFormat, boolean includeNotSubmitted)
 	{
 	    ZipOutputStream out = null;
-		//Excel generation
-		HSSFWorkbook gradesWorkbook = null;
-		HSSFSheet dataSheet = null;	    
 	    try {
 	        out = new ZipOutputStream(outputStream);
 
 	        // create the folder structure - named after the assignment's title
 	        String root = escapeInvalidCharsEntry(Validator.escapeZipEntry(assignmentTitle)) + Entity.SEPARATOR;
 
-			//Create excel datasheet	
-			if ("excel".equals(gradeFileFormat)) {	
-			   String sheetTitle = escapeInvalidCharsEntry(Validator.escapeZipEntry(assignmentTitle));
-			   gradesWorkbook=createGradesWorkbook(sheetTitle,true);
-			   dataSheet=gradesWorkbook.getSheet(sheetTitle);
-			}
-			
+			SpreadsheetExporter.Type type = SpreadsheetExporter.Type.valueOf(gradeFileFormat.toUpperCase());
+			SpreadsheetExporter sheet = SpreadsheetExporter.getInstance(type, assignmentTitle, gradeTypeString);
+
 	        String submittedText = "";
 	        if (!submissions.hasNext())
 	        {
 	            exceptionMessage.append("There is no submission yet. ");
 	        }
 
-	        // the buffer used to store grade information
-	        StringBuilder gradesBuffer = new StringBuilder(assignmentTitle + "," + gradeTypeString + "\n\n");
-	        gradesBuffer.append("Group" + "," + rb.getString("grades.eid") + "," + rb.getString("grades.members") + "," + rb.getString("grades.grade") + "\n");
+	        // Write the header
+			sheet.addHeader("Group", rb.getString("grades.eid"), rb.getString("grades.members"),
+					rb.getString("grades.grade"));
 
 	        // allow add assignment members
 	        List allowAddSubmissionUsers = allowAddSubmissionUsers(assignmentReference);
 
 	        // Create the ZIP file
 	        String submittersName = "";
-	        int count = 1;
-			int xlsRowCount = 1;
 	        String caughtException = null;
 	        while (submissions.hasNext())
 	        {
@@ -5184,11 +5202,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 
 	            M_log.debug( this + " ZIPGROUP " + ( s == null ? "null": s.getId() ));
 
-	            if (s.getSubmitted())
+				//SAK-29314 added a new value where it's by default submitted but is marked when the user submits
+	            if ((s.getSubmitted() && s.isUserSubmission())|| includeNotSubmitted)
 	            {
 	                try
 	                {
-	                    count = 1;
 	                    submittersName = root;
 
 	                    User[] submitters = s.getSubmitters();
@@ -5215,16 +5233,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	                        submittersString = submittersString + "(" + submitters[i].getEid() + ")";
 	                    }
 
-						//Adding the row to the csv file
-						if ("csv".equals(gradeFileFormat)) {
-						gradesBuffer.append( gs.getGroup().getTitle() + "," + gs.getGroup().getId() + "," + submitters2String + "," + s.getGradeDisplay() + "\n");
-						}
-
-						//Adding the row to the excel file
-						if ("excel".equals(gradeFileFormat)) {
-							addExcelRowInfo(dataSheet,xlsRowCount,true,gs.getGroup().getTitle(),gs.getGroup().getId(),submitters2String,null,s.getGradeDisplay());
-							xlsRowCount++;
-						}
+						//Adding the row
+						sheet.addRow(gs.getGroup().getTitle(), gs.getGroup().getId(), submitters2String,
+								s.getGradeDisplay());
 
 	                    if (StringUtil.trimToNull(submitterString) != null)
 	                    {
@@ -5333,25 +5344,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	        if (caughtException == null)
 	        {
 	            // continue
-	            if (withGradeFile)
-	            {
-		          if ("csv".equals(gradeFileFormat)) {	            	
-	                // create a grades.csv file into zip
-	                ZipEntry gradesCSVEntry = new ZipEntry(root + "grades.csv");
-	                out.putNextEntry(gradesCSVEntry);
-	                byte[] grades = gradesBuffer.toString().getBytes();
-	                out.write(grades);
-	                gradesCSVEntry.setSize(grades.length);
-	                out.closeEntry();
-	            }
-		          if ("excel".equals(gradeFileFormat)) {
-			        // create a grades.xls file into zip
-			        ZipEntry gradesEXCELEntry = new ZipEntry(root + "grades.xls");
-			        out.putNextEntry(gradesEXCELEntry);
-			        gradesWorkbook.write(out);
-			        out.closeEntry();
-	        }
-	            }	            
+				if (withGradeFile)
+				{
+					ZipEntry gradesCSVEntry = new ZipEntry(root + "grades."+ sheet.getFileExtension());
+					out.putNextEntry(gradesCSVEntry);
+					sheet.write(out);
+					out.closeEntry();
+				}
 	        }
 	        else
 	        {
@@ -5380,100 +5379,18 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	    }
 	}
 
-	private HSSFCellStyle setHeaderStyle(HSSFWorkbook sampleWorkBook){
-		//TO-DO read style information from sakai.properties
-		HSSFFont font = sampleWorkBook.createFont();
-		font.setFontName(HSSFFont.FONT_ARIAL);
-		font.setColor(IndexedColors.PLUM.getIndex());
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		HSSFCellStyle cellStyle = sampleWorkBook.createCellStyle();
-		cellStyle.setFont(font);
-		return cellStyle;
-	}
-	
-	private HSSFWorkbook createGradesWorkbook(String assignmentTitle,boolean isGroupSubmissions) {
-		HSSFWorkbook gradesWorkbook = new HSSFWorkbook();
-		HSSFSheet dataSheet = gradesWorkbook.createSheet(Validator.escapeZipEntry(assignmentTitle));
-		HSSFCellStyle cellStyle = setHeaderStyle(gradesWorkbook);	
-
-		//Excel file header row
-		HSSFRow headerRow = dataSheet.createRow(0);			
-		HSSFCell firstHeaderCell = headerRow.createCell(0);
-		firstHeaderCell.setCellStyle(cellStyle);
-		firstHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.id")));
-		HSSFCell secondHeaderCell = headerRow.createCell(1);
-		secondHeaderCell.setCellStyle(cellStyle);
-		secondHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.eid")));
-		if (!isGroupSubmissions) {
-			HSSFCell thirdHeaderCell = headerRow.createCell(2);
-			thirdHeaderCell.setCellStyle(cellStyle);
-			thirdHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.lastname")));			
-			HSSFCell fourthHeaderCell = headerRow.createCell(3);
-			fourthHeaderCell.setCellStyle(cellStyle);
-			fourthHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.firstname")));			
-			HSSFCell fifthHeaderCell = headerRow.createCell(4);
-			fifthHeaderCell.setCellStyle(cellStyle);
-			fifthHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.grade")));
-		} else {
-			HSSFCell thirdHeaderCell = headerRow.createCell(2);
-			thirdHeaderCell.setCellStyle(cellStyle);
-			thirdHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.members")));			
-			HSSFCell fifthHeaderCell = headerRow.createCell(3);
-			fifthHeaderCell.setCellStyle(cellStyle);
-			fifthHeaderCell.setCellValue(new HSSFRichTextString(rb.getString("grades.grade")));
-		}
-		return gradesWorkbook;
-	}
-	private void addExcelRowInfo(HSSFSheet dataSheet,int xlsRowCount,boolean isGroupSubmission,String submittersDisplayId, String submittersId,String submittersLastName,String submittersName,String grades) {
-		HSSFRow dataRow = dataSheet.createRow(xlsRowCount);
-	    //grades.id
-	    HSSFCell gradesidCell = dataRow.createCell(0);
-	    gradesidCell.setCellType(Cell.CELL_TYPE_STRING);
-	    gradesidCell.setCellValue(submittersDisplayId);
-	    //grades.eid
-	    HSSFCell gradeseidCell = dataRow.createCell(1);
-	    gradeseidCell.setCellType(Cell.CELL_TYPE_STRING);
-	    gradeseidCell.setCellValue(submittersId);
-	    //grades.lastname
-	    HSSFCell lastnameCell = dataRow.createCell(2);
-	    lastnameCell.setCellType(Cell.CELL_TYPE_STRING);
-	    lastnameCell.setCellValue(submittersLastName);
-	    if (!isGroupSubmission) {
-		    //grades.firstname
-		    HSSFCell firstnameCell = dataRow.createCell(3);
-		    firstnameCell.setCellType(Cell.CELL_TYPE_STRING);
-		    firstnameCell.setCellValue(submittersName);
-		    //grades.grade
-		    HSSFCell gradenameCell = dataRow.createCell(4);
-		    gradenameCell.setCellType(Cell.CELL_TYPE_STRING);
-		    gradenameCell.setCellValue(grades);
-	    } else {
-		    //grades.grade
-		    HSSFCell gradenameCell = dataRow.createCell(3);
-		    gradenameCell.setCellType(Cell.CELL_TYPE_STRING);
-		    gradenameCell.setCellValue(grades);	    	
-	    }
-   }
-	
-	protected void zipSubmissions(String assignmentReference, String assignmentTitle, String gradeTypeString, int typeOfSubmission, Iterator submissions, OutputStream outputStream, StringBuilder exceptionMessage, boolean withStudentSubmissionText, boolean withStudentSubmissionAttachment, boolean withGradeFile, boolean withFeedbackText, boolean withFeedbackComment, boolean withFeedbackAttachment, boolean withoutFolders,String gradeFileFormat)
+	protected void zipSubmissions(String assignmentReference, String assignmentTitle, String gradeTypeString, int typeOfSubmission, Iterator submissions, OutputStream outputStream, StringBuilder exceptionMessage, boolean withStudentSubmissionText, boolean withStudentSubmissionAttachment, boolean withGradeFile, boolean withFeedbackText, boolean withFeedbackComment, boolean withFeedbackAttachment, boolean withoutFolders,String gradeFileFormat,boolean includeNotSubmitted)
 	{
 	    ZipOutputStream out = null;
-		
-		//Excel generation
-		HSSFWorkbook gradesWorkbook = null;
-		HSSFSheet dataSheet = null;
+
 		try {
 			out = new ZipOutputStream(outputStream);
 
 			// create the folder structure - named after the assignment's title
 			String root = escapeInvalidCharsEntry(Validator.escapeZipEntry(assignmentTitle)) + Entity.SEPARATOR;
 
-			// create excel datasheet	
-			if ("excel".equals(gradeFileFormat)) {		
-			   String sheetTitle =escapeInvalidCharsEntry(Validator.escapeZipEntry(assignmentTitle));
-			   gradesWorkbook=createGradesWorkbook(sheetTitle,false);
-			   dataSheet=gradesWorkbook.getSheet(sheetTitle);
-			}
+			SpreadsheetExporter.Type type = SpreadsheetExporter.Type.valueOf(gradeFileFormat.toUpperCase());
+			SpreadsheetExporter sheet = SpreadsheetExporter.getInstance(type, assignmentTitle, gradeTypeString);
 
 			String submittedText = "";
 			if (!submissions.hasNext())
@@ -5481,31 +5398,22 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				exceptionMessage.append("There is no submission yet. ");
 			}
 			
-			// the buffer used to store grade information
-			ByteArrayOutputStream gradesBAOS = new ByteArrayOutputStream();
-			CSVWriter gradesBuffer = new CSVWriter(new OutputStreamWriter(gradesBAOS));
 
-			String [] values = {assignmentTitle,gradeTypeString};
-			gradesBuffer.writeNext(values);
-			//Blank line was in original gradefile
-			values = new String[] {""};
-			gradesBuffer.writeNext(values);
-			values = new String[] {rb.getString("grades.id"),rb.getString("grades.eid"),rb.getString("grades.lastname"),rb.getString("grades.firstname"),rb.getString("grades.grade")};
-			gradesBuffer.writeNext(values);
+			sheet.addHeader(rb.getString("grades.id"),rb.getString("grades.eid"),rb.getString("grades.lastname"),
+					rb.getString("grades.firstname"),rb.getString("grades.grade"));
 
 			// allow add assignment members
 			List allowAddSubmissionUsers = allowAddSubmissionUsers(assignmentReference);
 			
 			// Create the ZIP file
 			String submittersName = "";
-			int count = 1;
-			int xlsRowCount = 1;
 			String caughtException = null;
 			while (submissions.hasNext())
 			{
 				AssignmentSubmission s = (AssignmentSubmission) submissions.next();
 				boolean isAnon = assignmentUsesAnonymousGrading( s );
-				if (s.getSubmitted())
+				//SAK-29314 added a new value where it's by default submitted but is marked when the user submits
+				if ((s.getSubmitted() && s.isUserSubmission()) || includeNotSubmitted)
 				{
 					// get the submission user id and see if the user is still in site
 					String userId = s.getSubmitterId();
@@ -5514,7 +5422,6 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 						User u = UserDirectoryService.getUser(userId);
 						if (allowAddSubmissionUsers.contains(u))
 						{
-							count = 1;
 							submittersName = root;
 							
 							User[] submitters = s.getSubmitters();
@@ -5546,34 +5453,16 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 								String fullAnonId = s.getAnonymousSubmissionId();
 								String anonTitle = rb.getString("grading.anonymous.title");
 
-								// in grades file, Eid is used
-								if ("csv".equals(gradeFileFormat)) {
-								
-									// SAK-17606
-									if (!isAnon) 
-									{
-										values = new String [] {submitters[i].getDisplayId(), submitters[i].getEid(), submitters[i].getLastName(), submitters[i].getFirstName(), s.getGradeDisplay()};
-										gradesBuffer.writeNext(values);
-									}
-									else 
-									{
-										// anonymous grading is true so we need to print different stuff in the csv
-										values = new String[] {fullAnonId, fullAnonId, anonTitle, anonTitle, s.getGradeDisplay()};
-										gradesBuffer.writeNext(values);
-									}
+								// SAK-17606
+								if (!isAnon)
+								{
+									sheet.addRow(submitters[i].getDisplayId(), submitters[i].getEid(),
+											submitters[i].getLastName(), submitters[i].getFirstName(),
+											s.getGradeDisplay());
 								}
-
-								//Adding the row to the excel file
-								if ("excel".equals(gradeFileFormat)) {
-									if( !isAnon )
-									{
-										addExcelRowInfo(dataSheet,xlsRowCount,false,submitters[i].getDisplayId(),submitters[i].getEid(),submitters[i].getLastName(),submitters[i].getFirstName(),s.getGradeDisplay());
-									}
-									else
-									{
-										addExcelRowInfo( dataSheet, xlsRowCount, false, fullAnonId, fullAnonId, anonTitle, anonTitle, s.getGradeDisplay() );
-									}
-									xlsRowCount++;
+								else
+								{
+									sheet.addRow(fullAnonId, fullAnonId, anonTitle, anonTitle, s.getGradeDisplay());
 								}
 							}
 							
@@ -5721,24 +5610,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				// continue
 				if (withGradeFile)
 				{
-				  if ("csv".equals(gradeFileFormat)) {
-					// create a grades.csv file into zip
-					ZipEntry gradesCSVEntry = new ZipEntry(root + "grades.csv");
+					ZipEntry gradesCSVEntry = new ZipEntry(root + "grades."+ sheet.getFileExtension());
 					out.putNextEntry(gradesCSVEntry);
-
-					gradesBuffer.close();
-					out.write(gradesBAOS.toByteArray());
-					gradesCSVEntry.setSize(gradesBAOS.size());
-
+					sheet.write(out);
 					out.closeEntry();
-				}
-		          if ("excel".equals(gradeFileFormat)) {
-		            // create a grades.xls file into zip
-		            ZipEntry gradesEXCELEntry = new ZipEntry(root + "grades.xls");
-		            out.putNextEntry(gradesEXCELEntry);
-		            gradesWorkbook.write(out);
-		            out.closeEntry();
-			}
 				}
 			}
 			else
@@ -7122,12 +6997,22 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean canSubmit(String context, Assignment a)
+	public boolean canSubmit(String context, Assignment a) {
+	    return canSubmit (context,a,null);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean canSubmit(String context, Assignment a, String userId)
 	{
 		// return false if not allowed to submit at all
 		if (!allowAddSubmissionCheckGroups(context, a) && !allowAddAssignment(context) /*SAK-25555 return true if user is allowed to add assignment*/) return false;
 		
-		String userId = SessionManager.getCurrentSessionUserId();
+		//If userId is not defined look it up
+		if (userId == null) {
+		    userId = SessionManager.getCurrentSessionUserId();
+		}
 
 		// if user can submit to this assignment
 		List visibleAssignments = assignments(context, userId);
@@ -10173,7 +10058,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		protected String m_reviewIconUrl;
 
         protected String m_reviewError;
-		
+
+		// SAK-29314
+		protected boolean m_isUserSubmission;
+
 		protected Assignment m_asn;
 		
 		// return the variables
@@ -10423,6 +10311,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			m_timeLastModified = TimeService.newTime();
                         m_submitterId = submitterId;
 
+			// SAK-29314
+			m_isUserSubmission = true;
+
 			if (submitterId == null)
 			{
 				String currentUser = SessionManager.getCurrentSessionUserId();
@@ -10510,6 +10401,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
                         
 			// SAK-17606
 			m_anonymousSubmissionId = el.getAttribute("anonymousSubmissionId");
+
+			// SAK-29314
+			m_isUserSubmission = getBool(el.getAttribute(SUBMISSION_ATTR_IS_USER_SUB));
 
 			m_submitterId = el.getAttribute("submitterid");
 			m_submissionLog = new ArrayList();
@@ -10785,6 +10679,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
                                                         // SAK-17606
                                                         m_anonymousSubmissionId = m_id.substring(27)+" (" + rb.getString("grading.anonymous.title")  + ")";
 
+
+							// SAK-29314
+							m_isUserSubmission = getBool(attributes.getValue(SUBMISSION_ATTR_IS_USER_SUB));
+
 							m_submitterId = attributes.getValue("submitterid");
 
 							m_submissionLog = new ArrayList();
@@ -10953,6 +10851,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
                         // SAK-17606
                         submission.setAttribute("anonymousSubmissionId", m_anonymousSubmissionId);
 
+			// SAK-29314
+			submission.setAttribute(SUBMISSION_ATTR_IS_USER_SUB, getBoolString(m_isUserSubmission));
+
 			if (M_log.isDebugEnabled()) M_log.debug(this + " BaseAssignmentSubmission: SAVED REGULAR PROPERTIES");
 
 			submission.setAttribute("submitterid", m_submitterId == null ? "": m_submitterId);
@@ -11085,6 +10986,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
                         
                         // SAK-17606
                         m_anonymousSubmissionId = submission.getAnonymousSubmissionId();
+
+			// SAK-29314
+			m_isUserSubmission = submission.isUserSubmission();
 		}
 
 		/**
@@ -11267,16 +11171,19 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		{
 		    Assignment a = getAssignment();
 		    if (a.isGroup()) {
-		    	try {
-		    		Site site = SiteService.getSite(a.getContext());
+		        try {
+		            Site site = SiteService.getSite(a.getContext());
 		            Group _g = site.getGroup(m_submitterId);
-		            return getSubmitterIdList("false", _g.getId(), null, a.getReference(), a.getContext());
+		            if (_g !=null) {
+		                return getSubmitterIdList("false", _g.getId(), null, a.getReference(), a.getContext());
+		            }
 		    	} catch (IdUnusedException _iue) {
 		            return null;
 		        }
 		    } else { 
 		        return m_submitters;
 		    }
+		    return new ArrayList();
 		}
 
 		/**
@@ -11879,7 +11786,15 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				String anonTitle = rb.getString("grading.anonymous.title") ;
 				return this.getId().substring(27) + " (" + anonTitle + ")";
 		}
-		
+
+		/**
+		 * SAK-29314 - Determines whether this submission was submitted by a user or by the system
+		 */
+		public boolean isUserSubmission()
+		{
+			return m_isUserSubmission;
+		}
+
 	} // AssignmentSubmission
 	
 	/***************************************************************************
@@ -12397,6 +12312,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
             this.m_reviewError = error;
         }
 
+		// SAK-29314
+		public void setIsUserSubmission(boolean isUserSubmission)
+		{
+			this.m_isUserSubmission = isUserSubmission;
+		}
 
 	} // BaseAssignmentSubmissionEdit
 

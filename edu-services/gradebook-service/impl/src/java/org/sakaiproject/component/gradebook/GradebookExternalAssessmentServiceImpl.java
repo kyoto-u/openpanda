@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentServiceImpl.java 315395 2014-11-13 15:44:45Z enietzel@anisakai.com $
+* $Id: GradebookExternalAssessmentServiceImpl.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
 *
 ***********************************************************************************
 *
@@ -958,6 +958,18 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 
 	private NumberFormat getNumberFormat() {
 	    return NumberFormat.getInstance(new ResourceLoader().getLocale());
+	}
+	
+	public Long getExternalAssessmentCategoryId(String gradebookUId, String externalId) {
+		Long categoryId = null;
+		final Assignment assignment = getExternalAssignment(gradebookUId, externalId);
+		if (assignment == null) {
+			throw new AssessmentNotFoundException("There is no assessment id=" + externalId + " in gradebook uid=" + gradebookUId);
+		}
+		if (assignment.getCategory() != null) {
+			categoryId = assignment.getCategory().getId();
+		}
+		return categoryId;
 	}
 
 }

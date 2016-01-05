@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.5/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
+ * $URL: https://source.sakaiproject.org/svn/portal/tags/sakai-10.6/portal-impl/impl/src/java/org/sakaiproject/portal/charon/handlers/StaticHandler.java $
  * $Id: StaticHandler.java 319001 2015-05-18 14:38:30Z enietzel@anisakai.com $
  ***********************************************************************************
  *

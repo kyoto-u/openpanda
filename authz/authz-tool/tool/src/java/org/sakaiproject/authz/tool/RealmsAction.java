@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.5/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
+ * $URL: https://source.sakaiproject.org/svn/authz/tags/sakai-10.6/authz-tool/tool/src/java/org/sakaiproject/authz/tool/RealmsAction.java $
  * $Id: RealmsAction.java 318767 2015-05-12 14:51:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
- * $Id: BaseSiteService.java 308876 2014-04-28 14:06:04Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/kernel-impl/src/main/java/org/sakaiproject/site/impl/BaseSiteService.java $
+ * $Id: BaseSiteService.java 321520 2015-10-15 22:16:17Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 Sakai Foundation
@@ -958,7 +958,13 @@ public abstract class BaseSiteService implements SiteService, Observer
 
 		// Give the site advisors, if any, a chance to make last minute changes to the site
 		for(Iterator<SiteAdvisor> iter = siteAdvisors.iterator(); iter.hasNext();) {
-			iter.next().update(site);
+			try {
+				iter.next().update(site);
+			}
+			catch (Exception e)
+			{
+				M_log.error("Advisor error in doSave()", e);
+			}
 		}
 
 		site.setFullyLoaded(true);

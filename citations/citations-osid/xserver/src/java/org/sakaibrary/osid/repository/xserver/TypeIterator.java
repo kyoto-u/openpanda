@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.5/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/TypeIterator.java $
+ * $URL: https://source.sakaiproject.org/svn/citations/tags/sakai-10.6/citations-osid/xserver/src/java/org/sakaibrary/osid/repository/xserver/TypeIterator.java $
  * $Id: TypeIterator.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

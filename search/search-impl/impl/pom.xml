@@ -4,7 +4,7 @@
   <parent>
     <artifactId>search</artifactId>
     <groupId>org.sakaiproject.search</groupId>
-    <version>10.5</version><!-- ProjectVersion -->
+    <version>10.6</version><!-- ProjectVersion -->
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>search-impl</name>
@@ -195,12 +195,12 @@
     <dependency>
 	<groupId>org.apache.tika</groupId>
 	<artifactId>tika-core</artifactId>
-	<version>1.5</version>
+	<version>${sakai.tika.version}</version>
 	</dependency>
     <dependency>
 	<groupId>org.apache.tika</groupId>
 	<artifactId>tika-parsers</artifactId>
-	<version>1.5</version>
+	<version>${sakai.tika.version}</version>
 	</dependency>
     <dependency>
       <groupId>commons-codec</groupId>

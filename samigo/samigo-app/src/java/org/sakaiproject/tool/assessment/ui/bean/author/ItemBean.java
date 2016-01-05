@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemBean.java $
- * $Id: ItemBean.java 315740 2014-11-28 13:20:59Z jjmerono@um.es $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/ItemBean.java $
+ * $Id: ItemBean.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -33,27 +33,27 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.sakaiproject.util.ResourceLoader;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import org.apache.commons.math.util.MathUtils;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService; 
-
 import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoices;
 import org.sakaiproject.tool.assessment.data.dao.assessment.FavoriteColChoicesItem;
+import org.sakaiproject.util.ResourceLoader;
+
 
 /**
  * UI bean for authoring an Item
- * $Id: ItemBean.java 315740 2014-11-28 13:20:59Z jjmerono@um.es $
+ * $Id: ItemBean.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  */
 public class ItemBean
   implements Serializable
@@ -72,8 +72,8 @@ public class ItemBean
   private String itemText;
   private String itemId;
   private String itemType;
-  private String itemScore= "0";
-  private String itemDiscount = "0";
+  private double itemScore= 0.0d;
+  private double itemDiscount = 0.0d;
   private String partialCreditFlag = "Defualt";
   private String[] answers;
   private String[] answerLabels;  //  such as A, B, C
@@ -239,16 +239,16 @@ public class ItemBean
    * value of question
    * @return score it is worth
    */
-  public String getItemScore()
+  public double getItemScore()
   {
-    return itemScore;
+    return MathUtils.round(itemScore, 2);
   }
 
   /**
    * value of question
    * @param score
    */
-  public void setItemScore(String score)
+  public void setItemScore(double score)
   {
     this.itemScore= score;
   }
@@ -257,23 +257,18 @@ public class ItemBean
    * value of question discount
    * @return discountit is worth
    */
-  public String getItemDiscount()
+  public double getItemDiscount()
   {
-    return itemDiscount;
+    return MathUtils.round(itemDiscount, 2);
   }
 
   /**
    * value of question discount
    * @param discount
    */
-  public void setItemDiscount(String discount)
+  public void setItemDiscount(double discount)
   {
-	if (discount.startsWith("-"))
-    	{
- 	  this.itemDiscount= discount.substring(1);
-    	}else{
-     	  this.itemDiscount= discount;
-        }
+    this.itemDiscount = Math.abs(discount);
   }
   
   /**

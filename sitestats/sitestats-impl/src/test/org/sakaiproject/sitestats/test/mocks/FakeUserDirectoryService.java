@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.5/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/sitestats/tags/sakai-10.6/sitestats-impl/src/test/org/sakaiproject/sitestats/test/mocks/FakeUserDirectoryService.java $
  * $Id: FakeUserDirectoryService.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  *
  * Copyright (c) 2006-2009 The Sakai Foundation

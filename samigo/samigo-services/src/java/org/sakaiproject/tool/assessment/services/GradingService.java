@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
- * $Id: GradingService.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/services/GradingService.java $
+ * $Id: GradingService.java 320399 2015-08-05 13:30:57Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1664,7 +1664,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 
 		  String studentAnswerText = null;
 		  if (data.getAnswerText() != null) {
-			  studentAnswerText = data.getAnswerText().trim().replace(',','.');    // in Spain, comma is used as a decimal point
+			  studentAnswerText = data.getAnswerText().replaceAll("\\s+", "").replace(',','.');    // in Spain, comma is used as a decimal point
 		  }
 
 		  if (range) {
@@ -1696,7 +1696,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 			  String answer = st.nextToken().trim();
 
 			  if (answer != null){ 	 
-		             answer = answer.trim().replace(',','.');  // in Spain, comma is used as a decimal point 	 
+		             answer = answer.replaceAll("\\s+", "").replace(',','.');  // in Spain, comma is used as a decimal point 	 
 			  }	 
 		 
 			  try {
@@ -1911,7 +1911,51 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  return totalScore;
 	  
   }
-  
+
+  public boolean getCalcQResult(ItemGradingData data,  ItemDataIfc itemdata, Map<Integer, String> calculatedAnswersMap, int calcQuestionAnswerSequence)
+  {
+	  boolean result = false;
+
+	  if (data.getAnswerText() == null) return result;
+
+	  if (!calculatedAnswersMap.containsKey(calcQuestionAnswerSequence)) {
+		  return result;
+	  }
+	  // this variable should look something like this "42.1|2,2"
+	  String allAnswerText = calculatedAnswersMap.get(calcQuestionAnswerSequence).toString();
+
+	  // NOTE: this correctAnswer will already have been trimmed to the appropriate number of decimals
+	  BigDecimal correctAnswer = new BigDecimal(getAnswerExpression(allAnswerText));
+
+	  // Determine if the acceptable variance is a constant or a % of the answer
+	  String varianceString = allAnswerText.substring(allAnswerText.indexOf("|")+1, allAnswerText.indexOf(","));
+	  BigDecimal acceptableVariance = BigDecimal.ZERO;
+	  if (varianceString.contains("%")){
+		  double percentage = Double.valueOf(varianceString.substring(0, varianceString.indexOf("%")));
+		  acceptableVariance = correctAnswer.multiply( new BigDecimal(percentage / 100) );
+	  }
+	  else {
+		  acceptableVariance = new BigDecimal(varianceString);
+	  }
+
+	  String userAnswerString = data.getAnswerText().replaceAll(",", "").trim();
+	  BigDecimal userAnswer;
+	  try {
+		  userAnswer = new BigDecimal(userAnswerString);
+	  } catch(NumberFormatException nfe) {
+		  return result;
+	  }
+
+	  // this compares the correctAnswer against the userAnsewr
+	  BigDecimal answerDiff = (correctAnswer.subtract(userAnswer));
+	  boolean closeEnough = (answerDiff.abs().compareTo(acceptableVariance.abs()) <= 0);
+	  if (closeEnough){
+		  result = true;
+	  }
+	  return result;
+
+  }
+
   public double getTotalCorrectScore(ItemGradingData data, Map publishedAnswerHash)
   {
     AnswerIfc answer = (AnswerIfc) publishedAnswerHash.get(data.getPublishedAnswerId());

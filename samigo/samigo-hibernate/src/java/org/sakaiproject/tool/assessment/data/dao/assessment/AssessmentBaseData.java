@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/AssessmentBaseData.java $
- * $Id: AssessmentBaseData.java 106463 2012-04-02 12:20:09Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-hibernate/src/java/org/sakaiproject/tool/assessment/data/dao/assessment/AssessmentBaseData.java $
+ * $Id: AssessmentBaseData.java 321817 2015-11-12 16:49:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -43,6 +43,7 @@ public class AssessmentBaseData
   static Category errorLogger = Category.getInstance("errorLogger");
 
   private static final long serialVersionUID = 7526471155622776147L;
+  public static final int TITLE_LENGTH = 255;
   private Long assessmentBaseId;
   private Boolean isTemplate;
   private Long parentId;

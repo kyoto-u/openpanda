@@ -6,7 +6,7 @@
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!-- $Id: movePool.jsp 319103 2015-05-21 13:52:58Z enietzel@anisakai.com $
+<!-- $Id: movePool.jsp 322086 2015-12-10 22:00:15Z ottenhoff@longsight.com $
 <%--
 ***********************************************************************************
 *
@@ -31,7 +31,7 @@
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
-      <title><h:outputText value="#{questionPoolMessages.mv_p"/></title>
+      <title><h:outputText value="#{questionPoolMessages.mv_p}"/></title>
                         <!-- stylesheet and script widgets -->
 <script type="text/JavaScript">
 <%@ include file="/js/samigotree.js" %>

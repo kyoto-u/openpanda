@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.5/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusTableComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/syllabus/tags/sakai-10.6/syllabus-app/src/java/org/sakaiproject/jsf/syllabus/SyllabusTableComponent.java $
  * $Id: SyllabusTableComponent.java 105080 2012-02-24 23:10:31Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

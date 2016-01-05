@@ -1,4 +1,4 @@
-<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 315363 2014-11-12 15:39:46Z enietzel@anisakai.com $ -->
+<!-- $Id: chef_assignments_instructor_preview_grading_submission.vm 320133 2015-07-13 17:52:50Z matthew@longsight.com $ -->
 <!-- start:  chef_assignments_instructor_preview_grading_submission.vm -->
 ##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/assignment/chef_assignments_instructor_preview_grading_submission.vm,v 1.5 2005/05/16 02:26:05 zqian.umich.edu Exp $ -->
 <div class="portletBody">
@@ -247,10 +247,12 @@
 				</p>
 			#end
 			<p class="act">
-				<input accesskey="d" name="eventSubmit_doSave_preview_grade_submission" type="submit" value="$tlang.getString("gen.savdragra")" title="$tlang.getString("gen.savdratit")" class="active" />
-				<input accesskey="s" name="eventSubmit_doReturn_preview_grade_submission" type="submit" value="$tlang.getString("gen.retustud")" title="$tlang.getString("gen.retustudtit")" />
-				<input accesskey="r" name="eventSubmit_doCancel_preview_grade_submission" type="submit" value="$tlang.getString("gen.revi")" />
-				<input accesskey="x" name="eventSubmit_doCancel_preview_to_list_submission" type="submit" value="$tlang.getString("gen.can")" />
+				## SAK-29314
+				<input accesskey="d" onclick="ASN.doGradingPreviewAction();" name="eventSubmit_doSave_preview_grade_submission" type="submit" value="$tlang.getString("gen.savdragra")" title="$tlang.getString("gen.savdratit")" class="active" />
+				<input accesskey="s" onclick="ASN.doGradingPreviewAction();" name="eventSubmit_doReturn_preview_grade_submission" type="submit" value="$tlang.getString("gen.retustud")" title="$tlang.getString("gen.retustudtit")" />
+				<input accesskey="r" onclick="ASN.doGradingPreviewAction();" name="eventSubmit_doCancel_preview_grade_submission" type="submit" value="$tlang.getString("gen.revi")" />
+				<input accesskey="x" onclick="ASN.doGradingPreviewAction();" name="eventSubmit_doCancel_preview_to_list_submission" type="submit" value="$tlang.getString("gen.can")" />
+				<img id="gradeFormPreviewSpinner" class="spinner" src="/library/image/indicator.gif" />
 			</p>											
 			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
 		</form>

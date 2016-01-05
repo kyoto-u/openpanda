@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/services/ItemService.java $
- * $Id: ItemService.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/services/ItemService.java $
+ * $Id: ItemService.java 321440 2015-10-06 13:51:38Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008 The Sakai Foundation
@@ -38,8 +38,10 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
+import org.sakaiproject.tool.assessment.data.dao.assessment.ItemTextAttachment;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 
@@ -257,6 +259,7 @@ public class ItemService
     cloned.setItemMetaDataSet(newItemMetaDataSet);
     cloned.setItemFeedbackSet(newItemFeedbackSet);
     cloned.setItemAttachmentSet(newItemAttachmentSet);
+    cloned.setAnswerOptionsSimpleOrRich(item.getAnswerOptionsSimpleOrRich());
 
     return cloned;
   }
@@ -267,6 +270,7 @@ public class ItemService
     while (k.hasNext()) {
       ItemText itemText = (ItemText) k.next();
       ItemText newItemText = new ItemText(cloned, itemText.getSequence(), itemText.getText(), null);
+      newItemText.setItemTextAttachmentSet(copyItemAttachmentSetItemText(newItemText, itemText.getItemTextAttachmentSet()));
       Set newAnswerSet = copyAnswerSet(newItemText, itemText.getAnswerSet());
       newItemText.setAnswerSet(newAnswerSet);
       h.add(newItemText);
@@ -347,6 +351,26 @@ public class ItemService
       h.add(newItemAttachment);
     }
     return h;
+  }
+  
+  private Set copyItemAttachmentSetItemText(ItemText itemText, Set itemAttachmentSet) {
+	AssessmentService service = new AssessmentService();
+	HashSet h = new HashSet();
+	Iterator n = itemAttachmentSet.iterator();
+	while (n.hasNext()) {
+	  ItemTextAttachmentIfc ItemTextAttachment = (ItemTextAttachmentIfc) n.next();
+	  ContentResource cr_copy = service.createCopyOfContentResource(
+	    		  			ItemTextAttachment.getResourceId(), ItemTextAttachment.getFilename());
+	  ItemTextAttachmentIfc newItemTextAttachment = new ItemTextAttachment(
+	    null, cr_copy.getId(), ItemTextAttachment.getFilename(),
+	    ItemTextAttachment.getMimeType(), ItemTextAttachment.getFileSize(), ItemTextAttachment.getDescription(),
+	    cr_copy.getUrl(), ItemTextAttachment.getIsLink(), ItemTextAttachment.getStatus(),
+	    ItemTextAttachment.getCreatedBy(), ItemTextAttachment.getCreatedDate(), ItemTextAttachment.getLastModifiedBy(),
+	    ItemTextAttachment.getLastModifiedDate());
+	   newItemTextAttachment.setItemText(itemText);
+	   h.add(newItemTextAttachment);
+	}
+	return h;
   }
 
   public void deleteSet(Set s)

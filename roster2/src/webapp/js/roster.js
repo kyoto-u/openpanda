@@ -493,7 +493,9 @@
 
                     var enrollmentSortParams = roster.getEnrollmentStatusTableSort();
                     
-                    $('#roster_form_rosterTable').tablesorter(enrollmentSortParams);
+                    if ($('#roster_form_rosterTable').find('tbody > tr').length > 0) {
+                        $('#roster_form_rosterTable').tablesorter(enrollmentSortParams);
+                    }
                     
                     $('#roster_form_rosterTable').bind("sortEnd",function () {
                         roster.currentSortColumn = this.config.sortList[0][0];
@@ -605,7 +607,11 @@
 
     roster.getRosterEnrollment = function (callback) {
         
-        var url = "/direct/roster-membership/" + roster.siteId + "/get-enrollment.json?enrollmentSetId=" + roster.enrollmentSetToView;
+        var url = "/direct/roster-membership/" + roster.siteId + "/get-enrollment.json";
+
+        if (roster.enrollmentSetToView) {
+            url += "?enrollmentSetId=" + roster.enrollmentSetToView;
+        }
         
         $.ajax({
             url: url,
@@ -906,7 +912,7 @@
                 
         if (numberOfEnrollmentSets > 0) {
             
-            $('#roster_form_enrollment_set_filter').val(roster.enrollmentSetToViewText);
+            $('#roster_form_enrollment_set_filter').val(roster.enrollmentSetToView);
             $('#roster_form_enrollment_set_filter').change(function (e) {
                 roster.enrollmentSetToView = this.options[this.selectedIndex].value;
                 roster.enrollmentSetToViewText = this.options[this.selectedIndex].text;

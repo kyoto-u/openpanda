@@ -1,6 +1,6 @@
 /**
  * $Id: EntityBrokerManagerImpl.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
- * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.5/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerManagerImpl.java $
+ * $URL: https://source.sakaiproject.org/svn/entitybroker/tags/sakai-10.6/impl/src/java/org/sakaiproject/entitybroker/impl/EntityBrokerManagerImpl.java $
  * EntityBrokerManager.java - entity-broker - Jul 22, 2008 11:33:39 AM - azeckoski
  **************************************************************************
  * Copyright (c) 2008, 2009 The Sakai Foundation
@@ -79,7 +79,7 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
  */
 public class EntityBrokerManagerImpl implements EntityBrokerManager {
     public static String SVN_REVISION = "$Revision: 105077 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (Sat, 25 Feb 2012) $";
+    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (土, 25  2 2012) $";
 
     public String getVersionInfo() {
         return "MANAGER:: SVN: " + SVN_REVISION + " : " + SVN_LAST_UPDATE;

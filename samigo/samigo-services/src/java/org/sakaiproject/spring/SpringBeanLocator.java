@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/spring/SpringBeanLocator.java $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/spring/SpringBeanLocator.java $
+* $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/spring/SpringBeanLocator.java $URL: https://source.sakaiproject.org/svn/sam/trunk/component/src/java/org/sakaiproject/spring/SpringBeanLocator.java $
 * $Id: SpringBeanLocator.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
 ***********************************************************************************
 *

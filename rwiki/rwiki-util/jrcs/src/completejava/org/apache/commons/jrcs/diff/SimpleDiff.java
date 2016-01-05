@@ -62,7 +62,7 @@ import java.util.*;
 /**
  * Implements a simple differencing algortithm.<p>
  *
- * @date $Date: 2010-11-03 22:15:52 +0900 (Wed, 03 Nov 2010) $
+ * @date $Date: 2010-11-03 22:15:52 +0900 (水, 03 11 2010) $
  * @version $Revision: 84222 $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  *

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/api/src/main/java/org/sakaiproject/user/api/UserDirectoryService.java $
  * $Id: UserDirectoryService.java 318808 2015-05-12 22:21:37Z enietzel@anisakai.com $
  ***********************************************************************************
  *

@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
- * $Id: AssignmentSubmission.java 315363 2014-11-12 15:39:46Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.6/assignment-api/api/src/java/org/sakaiproject/assignment/api/AssignmentSubmission.java $
+ * $Id: AssignmentSubmission.java 320133 2015-07-13 17:52:50Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -285,4 +285,14 @@ public interface AssignmentSubmission extends Entity
         * @return
         */
         public String getAnonymousSubmissionId();
+
+/**
+	 * SAK-29314 - Represents whether the submission was submitted by a user.
+	 * For instance, if the instructor clicks on 'view submission' for an assignment,
+	 * every student who hasn't yet submitted will then have an AssignmentSubmission object generated with this property set to false.
+	 * This gives the instructor an AssignmentSubmission object to grade, while this property makes it known that it is not a user submission.
+	 * 
+	 * @return 
+	 */
+	public boolean isUserSubmission();
 }

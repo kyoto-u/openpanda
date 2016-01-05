@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
- * $Id: SectionContentsBean.java 133376 2014-01-17 15:49:38Z holladay@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/SectionContentsBean.java $
+ * $Id: SectionContentsBean.java 321816 2015-11-12 16:48:19Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2008, 2009 The Sakai Foundation
@@ -39,6 +39,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.math.util.MathUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -180,7 +181,7 @@ public class SectionContentsBean
   {
     // only show 2 decimal places 
     
-    return roundTo2Decimals(maxPoints);
+    return MathUtils.round(maxPoints, 2);
   }
 
   /**
@@ -641,17 +642,9 @@ public class SectionContentsBean
     String pointsDisplayString = "";
     if (showStudentQuestionScore)
     {
-      pointsDisplayString = roundTo2Decimals(points) + "/";
+      pointsDisplayString = MathUtils.round(points, 2) + "/";
     }
     return pointsDisplayString;
-  }
-
-  public static double roundTo2Decimals(double points)
-  {
-    Double dTmp = points * 100.0d;
-    int tmp = dTmp.intValue();
-    points = (double) tmp / 100.0d;
-    return points;
   }
 
   public List getAttachmentList() {

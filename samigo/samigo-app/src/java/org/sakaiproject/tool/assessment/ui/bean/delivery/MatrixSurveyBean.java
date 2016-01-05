@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/MatrixSurveyBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/MatrixSurveyBean.java $
  * $Id: MatrixSurveyBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

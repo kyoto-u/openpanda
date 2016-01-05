@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/api/src/main/java/org/sakaiproject/site/api/SiteService.java $
  * $Id: SiteService.java 319098 2015-05-21 01:10:05Z matthew@longsight.com $
  ***********************************************************************************
  *

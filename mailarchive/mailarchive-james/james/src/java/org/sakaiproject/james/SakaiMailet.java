@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.5/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
- * $Id: SakaiMailet.java 105079 2012-02-24 23:08:11Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/mailarchive/tags/sakai-10.6/mailarchive-james/james/src/java/org/sakaiproject/james/SakaiMailet.java $
+ * $Id: SakaiMailet.java 321223 2015-09-17 13:59:39Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -504,8 +504,10 @@ public class SakaiMailet extends GenericMailet
 					    //e.printStackTrace();
 						M_log.warn("IOException: service(): msg.getContent() threw: " + e, e);
 					}
-					
-					mailHeaders.add("List-Id: <"+ channel.getId()+ ".localhost>");
+
+					mailHeaders.add("List-Id: <"+ channel.getId()+ "."+ channel.getContext()
+							+ "."+ serverConfigurationService.getServerName()+ ">");
+
 					// post the message to the group's channel
 					String body[] = new String[2];
 					body[0] = bodyBuf[0].toString(); // plain/text

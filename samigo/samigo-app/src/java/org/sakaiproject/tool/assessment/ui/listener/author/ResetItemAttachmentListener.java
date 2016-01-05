@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ResetItemAttachmentListener.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/ResetItemAttachmentListener.java $
  * $Id: ResetItemAttachmentListener.java 316665 2015-01-09 17:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

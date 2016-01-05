@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueries.java $
- * $Id: AssessmentFacadeQueries.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentFacadeQueries.java $
+ * $Id: AssessmentFacadeQueries.java 321817 2015-11-12 16:49:20Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -1927,6 +1927,13 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements
     	StringBuffer sb = new StringBuffer(assessmentData.getTitle());
     	sb.append(" ");
     	sb.append(apepndCopyTitle);
+    	if(sb.length() >= assessmentData.TITLE_LENGTH){ //title max size
+    		String appendCopyText = "... "+apepndCopyTitle;
+    		String titleCut = sb.substring(0, assessmentData.TITLE_LENGTH-appendCopyText.length()-1); //cut until size needed to add ellipsis and copyTitle without exceed DB field size
+    		log.debug("titleCut = "+titleCut);
+    		sb = new StringBuffer(titleCut);
+    		sb.append(appendCopyText);
+    	}
     	String newTitle = getNewAssessmentTitleForCopy(sb.toString());
     	assessmentData.setTitle(newTitle);
 	  }

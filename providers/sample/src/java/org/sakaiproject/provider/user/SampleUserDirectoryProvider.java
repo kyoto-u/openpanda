@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.5/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
+ * $URL: https://source.sakaiproject.org/svn/providers/tags/sakai-10.6/sample/src/java/org/sakaiproject/provider/user/SampleUserDirectoryProvider.java $
  * $Id: SampleUserDirectoryProvider.java 319812 2015-06-11 18:12:47Z enietzel@anisakai.com $
  ***********************************************************************************
  *

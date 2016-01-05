@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/kernel-impl/src/main/java/org/sakaiproject/tool/impl/SessionComponent.java $
  * $Id: SessionComponent.java 308853 2014-04-25 23:40:21Z enietzel@anisakai.com $
  ***********************************************************************************
  *

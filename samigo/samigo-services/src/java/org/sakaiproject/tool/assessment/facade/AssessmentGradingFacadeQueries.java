@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
- * $Id: AssessmentGradingFacadeQueries.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/facade/AssessmentGradingFacadeQueries.java $
+ * $Id: AssessmentGradingFacadeQueries.java 320401 2015-08-05 13:32:29Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -2348,11 +2348,17 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						  Long sequence = null;
 						  if (answerid != null) {
 							  AnswerIfc answer  = (AnswerIfc)publishedAnswerHash.get(answerid);
-							  temptext = answer.getText();
-							  if (temptext == null) {
+							  if(answer != null) {
+								temptext = answer.getText();
+							  	if (temptext == null) {
 								  temptext = "No Answer";
+							  	}
+							  	sequence = answer.getItemText().getSequence();
+							  }	else if(answerid == -1) {
+								  temptext = "None of the Above";
+								  ItemTextIfc itemTextIfc = (ItemTextIfc) publishedItemTextHash.get(grade.getPublishedItemTextId());
+								  sequence = itemTextIfc.getSequence();
 							  }
-							  sequence = answer.getItemText().getSequence();
 						  }
 						  else {
 							  ItemTextIfc itemTextIfc = (ItemTextIfc) publishedItemTextHash.get(grade.getPublishedItemTextId());

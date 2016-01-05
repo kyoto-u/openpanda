@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/api/src/main/java/org/sakaiproject/time/api/TimeRange.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/api/src/main/java/org/sakaiproject/time/api/TimeRange.java $
  * $Id: TimeRange.java 105077 2012-02-24 22:54:29Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

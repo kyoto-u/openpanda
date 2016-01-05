@@ -1,5 +1,5 @@
 /**
- * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.5/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
+ * $URL: https://source.sakaiproject.org/svn/basiclti/tags/sakai-10.6/basiclti-portlet/src/java/org/sakaiproject/blti/ProviderServlet.java $
  * $Id: ProviderServlet.java 318805 2015-05-12 22:09:20Z enietzel@anisakai.com $
  *
  * Copyright (c) 2009 The Sakai Foundation

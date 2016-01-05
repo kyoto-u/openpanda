@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
- * $Id: DeliveryBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/delivery/DeliveryBean.java $
+ * $Id: DeliveryBean.java 321483 2015-10-13 21:38:33Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -104,7 +104,7 @@ import uk.org.ponder.rsf.state.support.TMLFixer;
  *
  * @author casong
  * @author esmiley@stanford.edu added agentState
- * $Id: DeliveryBean.java 318220 2015-03-31 18:54:23Z ottenhoff@longsight.com $
+ * $Id: DeliveryBean.java 321483 2015-10-13 21:38:33Z enietzel@anisakai.com $
  *
  * Used to be org.navigoproject.ui.web.asi.delivery.XmlDeliveryForm.java
  */
@@ -3184,6 +3184,9 @@ public class DeliveryBean
       return "error";
     }
 
+    boolean acceptLateSubmission = AssessmentAccessControlIfc.
+            ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling());
+
     if (this.actionMode == PREVIEW_ASSESSMENT) {
 		  return "safeToProceed";
     }
@@ -3207,7 +3210,7 @@ public class DeliveryBean
     
     log.debug("check 2");
     // check 2: is it still available?
-    if (!isFromTimer && isRetracted(isSubmitForGrade)){
+    if (!isFromTimer && isRetracted(isSubmitForGrade) && acceptLateSubmission){
      return "isRetracted";
     }
     
@@ -3251,43 +3254,59 @@ public class DeliveryBean
     }
 
     log.debug("check 8");
-    // check 8: accept late submission?
-    boolean acceptLateSubmission = AssessmentAccessControlIfc.
-        ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling());
-
-    // check 7: has dueDate arrived? if so, does it allow late submission?
+    // check 8: has dueDate arrived? if so, does it allow late submission?
     // If it is a timed assessment and "No Late Submission" and not during a Retake, always go through. Because in this case the
    	// assessment will be auto-submitted anyway - when time is up or when current date reaches due date (if the time limited is
    	// longer than due date,) for either case, we want to redirect to the normal "submision successful page" after submitting.
     if (pastDueDate()){
     	// If Accept Late and there is no submission yet, go through
-    	if (acceptLateSubmission && totalSubmissions == 0) {
-    		log.debug("Accept Late Submission && totalSubmissions == 0");
-    	}
-    	else {
-    		log.debug("take from bean: actualNumberRetake =" + actualNumberRetake);
-    		// Not during a Retake
-    		if (actualNumberRetake == numberRetake) {
-    			// When taking the assessment via URL (from LoginServlet), if pass due date, throw an error 
-    			if (isViaUrlLogin) {
+    	if (acceptLateSubmission){
+    		if(totalSubmissions == 0) {
+    			log.debug("Accept Late Submission && totalSubmissions == 0");
+    		}
+    		else {
+    			log.debug("take from bean: actualNumberRetake =" + actualNumberRetake);
+    			// Not during a Retake
+    			if (actualNumberRetake == numberRetake) {
     				return "noLateSubmission";
     			}
-    	    	// If No Late, this is a timed assessment, and not during a Retake, go through (see above reason)
-    			else if (!acceptLateSubmission && this.isTimedAssessment()) {
-    				log.debug("No Late Submission && timedAssessment"); 
+    			// During a Retake
+    			else if (actualNumberRetake == numberRetake - 1) {
+    				log.debug("actualNumberRetake == numberRetake - 1: through Retake");
     			}
+    			// Should not come to here
     			else {
-    				log.debug("noLateSubmission");
-        			return "noLateSubmission";
+    				log.error("Should NOT come to here - wrong actualNumberRetake or numberRetake");
     			}
     		}
-    		// During a Retake
-    		else if (actualNumberRetake == numberRetake - 1) {
-    			log.debug("actualNumberRetake == numberRetake - 1: through Retake");
-    		}
-    		// Should not come to here
-    		else {
-    			log.error("Should NOT come to here - wrong actualNumberRetake or numberRetake");
+    	} else {
+    		if(!isRetracted(isSubmitForGrade)){
+    			log.debug("take from bean: actualNumberRetake =" + actualNumberRetake);
+    			// Not during a Retake
+    			if (actualNumberRetake == numberRetake) {
+    				// When taking the assessment via URL (from LoginServlet), if pass due date, throw an error 
+    				if (isViaUrlLogin) {
+    					return "noLateSubmission";
+    				}
+    				// If No Late, this is a timed assessment, and not during a Retake, go through (see above reason)
+    				else if (this.isTimedAssessment()) {
+    					log.debug("No Late Submission && timedAssessment"); 
+    				}
+    				else {
+    					log.debug("noLateSubmission");
+    					return "noLateSubmission";
+    				}
+    			}
+    			// During a Retake
+    			else if (actualNumberRetake == numberRetake - 1) {
+    				log.debug("actualNumberRetake == numberRetake - 1: through Retake");
+    			}
+    			// Should not come to here
+    			else {
+    				log.error("Should NOT come to here - wrong actualNumberRetake or numberRetake");
+    			}    			
+    		} else {
+    		     return "isRetracted";
     		}
     	}
     }

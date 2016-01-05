@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.5/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
- * $Id: AssignmentService.java 117546 2012-12-11 12:10:24Z a.fish@lancaster.ac.uk $
+ * $URL: https://source.sakaiproject.org/svn/assignment/tags/sakai-10.6/assignment-api/api/src/java/org/sakaiproject/assignment/cover/AssignmentService.java $
+ * $Id: AssignmentService.java 321260 2015-09-18 21:15:01Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -26,9 +26,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.assignment.api.Assignment;
+import org.sakaiproject.assignment.api.AssignmentSubmission;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.user.api.User;
 
 /**
  * <p>
@@ -825,6 +828,27 @@ public class AssignmentService {
 
 		return service.getSubmitterIdList(param0, param1, param2, param3, param4);
 	}	
+	
+	/**
+	 * Alternative to getSubmittedIdList which returns full user and submissions, since submitterIdList retrieves them anyway
+	 * @param searchFilterOnly If true, return only those ids that matches the group filter and search criteria
+	 * @param allOrOneGroup "all" or specific group reference
+	 * @param aRef Assignment Reference
+	 * @param search The search string
+	 * @param contextString Site id
+	 * @return
+	 */
+	public static Map<User, AssignmentSubmission> getSubmitterMap(String searchFilterOnly, String allOrOneGroup, String search, String aRef, String contextString)
+	{
+		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
+		if (service == null)
+		{
+			return null;
+		}
+		
+		return service.getSubmitterMap(searchFilterOnly, allOrOneGroup, search, aRef, contextString);
+	}
+	
 	public static String escapeInvalidCharsEntry(java.lang.String param0) {
 		org.sakaiproject.assignment.api.AssignmentService service = getInstance();
 		if (service == null)

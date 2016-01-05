@@ -595,4 +595,17 @@ function lockdownGradebook(value) {
 	}
 }
 
-
+function checkLastHandling(){
+	var isDisabled=$('input[name*="lateHandling"]:checked').val();
+	var retractDate = $('input[name*="retractDate"]:visible');
+	//$('input[id*="retractDate"]:visible').prop( "disabled", isDisabled);
+	//$('input[id*="retractDate"]:visible').next().show;
+	
+	if(isDisabled==2){
+		$(retractDate).prop( "disabled", true );
+		$(retractDate).next().hide();
+	}else{
+		$(retractDate).prop( "disabled", false );
+		$(retractDate).next().show();
+	}
+}

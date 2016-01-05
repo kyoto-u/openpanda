@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
- * $Id: SavePublishedSettingsListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/author/SavePublishedSettingsListener.java $
+ * $Id: SavePublishedSettingsListener.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -84,7 +84,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificat
  * <p>Title: Samigo</p>2
  * <p>Description: Sakai Assessment Manager</p>
  * @author Ed Smiley
- * @version $Id: SavePublishedSettingsListener.java 318814 2015-05-12 23:16:53Z enietzel@anisakai.com $
+ * @version $Id: SavePublishedSettingsListener.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
  */
 
 public class SavePublishedSettingsListener
@@ -669,10 +669,12 @@ implements ActionListener
 			Integer scoringType = evaluation.getScoringType();
 			if (evaluation.getToGradeBook()!=null && 
 					evaluation.getToGradeBook().equals(EvaluationModelIfc.TO_DEFAULT_GRADEBOOK.toString())){
+				Long categoryId = null;
 				if (isTitleChanged || isScoringTypeChanged) {
 					// Because GB use title instead of id, we remove and re-add to GB if title changes.
 					try {
 						log.debug("before gbsHelper.removeGradebook()");
+						categoryId = gbsHelper.getExternalAssessmentCategoryId(GradebookFacade.getGradebookUId(), assessment.getPublishedAssessmentId().toString(), g);
 						gbsHelper.removeExternalAssessment(GradebookFacade.getGradebookUId(), assessment.getPublishedAssessmentId().toString(), g);
 					} catch (Exception e1) {
 						// Should be the external assessment doesn't exist in GB. So we quiet swallow the exception. Please check the log for the actual error.
@@ -690,7 +692,7 @@ implements ActionListener
 				else{
 					try{
 						log.debug("before gbsHelper.addToGradebook()");
-						gbsHelper.addToGradebook((PublishedAssessmentData)assessment.getData(), g);
+						gbsHelper.addToGradebook((PublishedAssessmentData)assessment.getData(), categoryId, g);
 
 						// any score to copy over? get all the assessmentGradingData and copy over
 						GradingService gradingService = new GradingService();

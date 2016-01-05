@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
- * $Id: GradebookServiceHelperImpl.java 319083 2015-05-20 22:24:13Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/integrated/GradebookServiceHelperImpl.java $
+ * $Id: GradebookServiceHelperImpl.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -160,7 +160,7 @@ public void removeExternalAssessment(String gradebookUId,
    * @return false: cannot add to gradebook
    * @throws java.lang.Exception
    */
-  public boolean addToGradebook(PublishedAssessmentData publishedAssessment,
+  public boolean addToGradebook(PublishedAssessmentData publishedAssessment, Long categoryId, 
 		  GradebookExternalAssessmentService g) throws
     Exception
   {
@@ -206,7 +206,9 @@ public void removeExternalAssessment(String gradebookUId,
                               publishedAssessment.getTotalScore().doubleValue(),
                               publishedAssessment.getAssessmentAccessControl().
                               getDueDate(),
-                              appName); // Use the app name from sakai
+                              appName,	// Use the app name from sakai
+                              false,
+                              categoryId); 
         added = true;
       }
     }
@@ -292,5 +294,15 @@ public void removeExternalAssessment(String gradebookUId,
 		  throw new Exception("Encountered an error in update ExternalAssessmentScore.");
 	  }
   }
+
+	public Long getExternalAssessmentCategoryId(String gradebookUId,
+			String publishedAssessmentId, GradebookExternalAssessmentService g) {
+		Long categoryId = null;
+		if (g.isGradebookDefined(gradebookUId)) 
+		{
+			categoryId = g.getExternalAssessmentCategoryId(gradebookUId, publishedAssessmentId);
+		}
+		return categoryId;
+	}
 
 }

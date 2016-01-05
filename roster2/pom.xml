@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.sakaiproject</groupId>
         <artifactId>master</artifactId>
-        <version>10.5</version>
+        <version>10.6</version>
         <relativePath>../master/pom.xml</relativePath>
     </parent>
 
     <name>ROSTER2 TOOL</name>
     <groupId>org.sakaiproject.roster2</groupId>
     <artifactId>sakai-roster2-tool</artifactId>
-    <version>10.5</version>
+    <version>10.6</version>
     <organization>
         <name>Sakai Project</name>
         <url>http://sakaiproject.org/</url>

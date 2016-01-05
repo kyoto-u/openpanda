@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.5/kernel-impl/src/main/java/org/sakaiproject/site/impl/DbSiteService.java $
+ * $URL: https://source.sakaiproject.org/svn/kernel/tags/sakai-10.6/kernel-impl/src/main/java/org/sakaiproject/site/impl/DbSiteService.java $
  * $Id: DbSiteService.java 319099 2015-05-21 01:10:37Z matthew@longsight.com $
  ***********************************************************************************
  *

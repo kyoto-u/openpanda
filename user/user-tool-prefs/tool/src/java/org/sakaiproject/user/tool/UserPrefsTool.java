@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.5/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
- * $Id: UserPrefsTool.java 313737 2014-09-19 00:20:46Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/user/tags/sakai-10.6/user-tool-prefs/tool/src/java/org/sakaiproject/user/tool/UserPrefsTool.java $
+ * $Id: UserPrefsTool.java 320351 2015-08-04 14:16:57Z ottenhoff@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -2441,6 +2441,7 @@ public class UserPrefsTool
 		if ("course".equals(type))
 		{
 			term = siteProperties.getProperty("term");
+			if (term==null) term = msgs.getString("moresite_no_term","");
 		}
 		else if ("project".equals(type))
 		{

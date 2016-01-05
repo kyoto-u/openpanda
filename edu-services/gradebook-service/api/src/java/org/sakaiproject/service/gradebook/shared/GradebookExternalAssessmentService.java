@@ -1,6 +1,6 @@
 /**********************************************************************************
 *
-* $Id: GradebookExternalAssessmentService.java 130070 2013-09-30 23:54:12Z matthew@longsight.com $
+* $Id: GradebookExternalAssessmentService.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
 *
 ***********************************************************************************
 *
@@ -333,4 +333,12 @@ public interface GradebookExternalAssessmentService {
 	 */
 	public void setExternalAssessmentToGradebookAssignment(String gradebookUid, String externalId);
 
+	/**
+	 * Get the category of a gradebook with the externalId given
+	 * 
+	 * @param gradebookUId
+	 * @param externalId
+	 * @return
+	 */
+	public Long getExternalAssessmentCategoryId(String gradebookUId, String externalId);
 }

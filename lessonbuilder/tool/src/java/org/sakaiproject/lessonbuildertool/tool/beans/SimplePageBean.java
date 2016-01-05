@@ -1540,6 +1540,11 @@ public class SimplePageBean {
 			return "failure";
 		}
 
+		return deleteItem(i);
+	}
+
+	public String deleteItem(SimplePageItem i) {
+
 		int seq = i.getSequence();
 
 		boolean b = false;
@@ -2430,7 +2435,7 @@ public class SimplePageBean {
 	    // this adds everything you can find from top level pages to entries
 	    for (SimplePageItem sitePageItem : sitePages) {
 		// System.out.println("findallpages " + sitePageItem.getName() + " " + true);
-		pagePickerProducer().findAllPages(sitePageItem, entries, pageMap, topLevelPages, sharedPages, 0, true);
+		pagePickerProducer().findAllPages(sitePageItem, entries, pageMap, topLevelPages, sharedPages, 0, true, true);
 	    }
 		    
 	    // everything we didn't find should be deleted. It's items remaining in pagemap
@@ -4266,7 +4271,7 @@ public class SimplePageBean {
 		// now kill all items on the page we didn't see in the new order
 		for (int i = 0; i < items.size(); i++) {
 		    if (!keep.contains((Integer)i))
-			simplePageToolDao.deleteItem(items.get(i));
+			deleteItem(items.get(i));
 		}
 
 		itemsCache.remove(getCurrentPage().getPageId());
@@ -5103,9 +5108,11 @@ public class SimplePageBean {
 	public String getYoutubeKey(SimplePageItem i) {
 		String sakaiId = i.getSakaiId();
 
+		// this is called only from contexts where we know it's OK to get the data.
+		// indeed if I were doing it over I'd put it in the item, not resources
 		SecurityAdvisor advisor = null;
 		try {
-			if(getCurrentPage().getOwner() != null) {
+			// if(getCurrentPage().getOwner() != null) {
 				// Need to allow access into owner's home directory
 				advisor = new SecurityAdvisor() {
 					public SecurityAdvice isAllowed(String userId, String function, String reference) {
@@ -5117,7 +5124,7 @@ public class SimplePageBean {
 					}
 				};
 				securityService.pushAdvisor(advisor);
-			}
+			// }
 			// find the resource
 			ContentResource resource = null;
 			try {
@@ -7103,10 +7110,6 @@ public class SimplePageBean {
 					throw new Exception();
 				}
 			}catch(Exception ex) {
-				if(canEditPage()) {
-					setErrMessage(messageLocator.getMessage("simplepage.broken-css"));
-				}
-				
 				resourceCache.put(collectionId, new ArrayList<ContentResource>());
 			}
 		}

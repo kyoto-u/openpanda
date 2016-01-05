@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.5/web-portlet/src/java/org/sakaiproject/portlets/PortletIFrame.java $
- * $Id: PortletIFrame.java 307879 2014-04-07 15:53:26Z enietzel@anisakai.com $
+ * $URL: https://source.sakaiproject.org/svn/web/tags/sakai-10.6/web-portlet/src/java/org/sakaiproject/portlets/PortletIFrame.java $
+ * $Id: PortletIFrame.java 320872 2015-08-21 16:51:48Z matthew@longsight.com $
  ***********************************************************************************
  *
  * Copyright (c) 2005-2013 The Sakai Foundation.
@@ -902,6 +902,8 @@ public class PortletIFrame extends GenericPortlet {
                     infoUrl = "http://" + infoUrl;
                 }
                 String description = StringUtils.trimToNull(request.getParameter("description"));
+                //Need to save this processed
+                description = FormattedText.processFormattedText(description,new StringBuilder());
     
                 // update the site info
                 try

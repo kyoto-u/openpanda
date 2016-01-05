@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/LinearAccessDeliveryActionListener.java $
- * $Id: LinearAccessDeliveryActionListener.java 133598 2014-01-23 22:43:31Z ktsao@stanford.edu $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/listener/delivery/LinearAccessDeliveryActionListener.java $
+ * $Id: LinearAccessDeliveryActionListener.java 321391 2015-09-29 16:20:06Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008, 2009 The Sakai Foundation
@@ -87,6 +87,7 @@ public class LinearAccessDeliveryActionListener extends DeliveryActionListener
       // get assessment from deliveryBean if id matches. otherwise, this is the 1st time
       // that DeliveryActionListener is called, so pull it from DB
       PublishedAssessmentFacade publishedAssessment = getPublishedAssessment(delivery, id);
+      PublishedAssessmentService pubService = new PublishedAssessmentService();
       // set show student score
       setShowStudentScore(delivery, publishedAssessment);
       setShowStudentQuestionScore(delivery, publishedAssessment);
@@ -122,13 +123,14 @@ public class LinearAccessDeliveryActionListener extends DeliveryActionListener
               }    	  
           }
       }
-      
+
+      super.populateSubmissionsRemaining(pubService, publishedAssessment, delivery);
+
       // itemGradingHash will end up with 
       // (Long publishedItemId, ArrayList itemGradingDatas) and
       // (String "sequence"+itemId, Integer sequence) and
       // (String "items", Long itemscount)
       GradingService service = new GradingService();
-      PublishedAssessmentService pubService = new PublishedAssessmentService();
       AssessmentGradingData ag = null;
       
       // this returns a HashMap with (publishedItemId, itemGrading)

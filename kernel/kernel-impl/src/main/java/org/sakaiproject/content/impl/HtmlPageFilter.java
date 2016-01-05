@@ -32,6 +32,8 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.util.Validator;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Simple filter that adds header and footer fragments to HTML pages, it can detect
  * to add HTML or be forced to/not.
@@ -131,6 +133,14 @@ public class HtmlPageFilter implements ContentFilter {
 				siteSkin = site.getSkin();
 			}
 		}
+
+		String neoPrefix = serverConfigurationService.getString("portal.neoprefix", "neo-");
+		String portalTemplate = serverConfigurationService.getString("portal.templates", "neoskin");
+
+		if (StringUtils.equals("neoskin", portalTemplate) && StringUtils.isNotBlank(neoPrefix) && !StringUtils.startsWith(siteSkin, neoPrefix)) {
+			siteSkin = neoPrefix + siteSkin;
+		}
+
 		return siteSkin;
 	}
 

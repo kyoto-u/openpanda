@@ -1,6 +1,6 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/GradebookServiceHelper.java $
- * $Id: GradebookServiceHelper.java 107319 2012-04-17 13:39:00Z david.horwitz@uct.ac.za $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-services/src/java/org/sakaiproject/tool/assessment/integration/helper/ifc/GradebookServiceHelper.java $
+ * $Id: GradebookServiceHelper.java 320405 2015-08-05 13:46:11Z enietzel@anisakai.com $
  ***********************************************************************************
  *
  * Copyright (c) 2004, 2005, 2006, 2007, 2008 The Sakai Foundation
@@ -48,7 +48,7 @@ public interface GradebookServiceHelper extends Serializable
   public void removeExternalAssessment(String gradebookUId,
      String publishedAssessmentId, GradebookExternalAssessmentService g) throws Exception;
 
-  public boolean addToGradebook(PublishedAssessmentData publishedAssessment,
+  public boolean addToGradebook(PublishedAssessmentData publishedAssessment, Long categoryId,
 		  GradebookExternalAssessmentService g) throws Exception;
 
   public boolean updateGradebook(PublishedAssessmentIfc publishedAssessment,
@@ -62,4 +62,7 @@ public interface GradebookServiceHelper extends Serializable
   
   public void updateExternalAssessmentScores(Long publishedAssessmentId, final Map<String, Double> studentUidsToScores,
 		  GradebookExternalAssessmentService g) throws Exception;
+  
+  public Long getExternalAssessmentCategoryId(String gradebookUId,
+		  String publishedAssessmentId, GradebookExternalAssessmentService g);
 }

@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.5/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
+ * $URL: https://source.sakaiproject.org/svn/sam/tags/sakai-10.6/samigo-app/src/java/org/sakaiproject/tool/assessment/ui/bean/author/AnswerBean.java $
  * $Id: AnswerBean.java 316665 2015-01-09 17:03:36Z ottenhoff@longsight.com $
  ***********************************************************************************
  *

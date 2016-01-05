@@ -1,5 +1,5 @@
 /**********************************************************************************
- * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.5/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
+ * $URL: https://source.sakaiproject.org/svn/sakai-mock/tags/sakai-10.6/src/main/java/org/sakaiproject/mock/service/UserDirectoryService.java $
  * $Id: UserDirectoryService.java 318823 2015-05-13 16:49:49Z enietzel@anisakai.com $
  ***********************************************************************************
  *

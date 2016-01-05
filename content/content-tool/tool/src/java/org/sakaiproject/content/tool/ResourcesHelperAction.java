@@ -1934,6 +1934,9 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		String action = request.getParameter("sakai_action");
 		logger.debug("Received action: "+action+" for file: "+fullPath);
 		
+		// set up rundata, in case we're called from RSF
+		checkRunData(request);
+
 		if(fullPath != null)
 		{
 			String uploadMax = ServerConfigurationService.getString("content.upload.max");
@@ -1954,11 +1957,14 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 		{
 			if (action!=null)
 			{
+			    JetspeedRunData rundata = (JetspeedRunData) request.getAttribute(ATTR_RUNDATA);
+			    if (checkCSRFToken(request,rundata,action)) {
 				if (action.equals("doFinishUpload"))
 				{
 					notifyDragAndDropCompleted(request);
 				}
 				super.doPost(request, response);
+			    }
 			}
 			else
 			{
@@ -2237,6 +2243,7 @@ public class ResourcesHelperAction extends VelocityPortletPaneledAction
 				sendnd.notify(ne,eventTrackingService.newEvent(eventResource, ContentHostingService.REFERENCE_ROOT+item.getId(), true, notificationPriority));			
 			}
 			state.setAttribute(DRAGNDROP_FILENAME_REFERENCE_LIST, null);
+			sendnd.setFileList(null);
 		} catch (IdUnusedException e) {
 			logger.warn("Somehow we couldn't find the site.", e);
 		}

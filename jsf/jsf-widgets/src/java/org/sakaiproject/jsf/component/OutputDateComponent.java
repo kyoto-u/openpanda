@@ -1,5 +1,5 @@
 /**********************************************************************************
-* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.5/jsf-widgets/src/java/org/sakaiproject/jsf/component/OutputDateComponent.java $
+* $URL: https://source.sakaiproject.org/svn/jsf/tags/sakai-10.6/jsf-widgets/src/java/org/sakaiproject/jsf/component/OutputDateComponent.java $
 * $Id: OutputDateComponent.java 128959 2013-08-23 00:01:46Z ottenhoff@longsight.com $
 ***********************************************************************************
 *

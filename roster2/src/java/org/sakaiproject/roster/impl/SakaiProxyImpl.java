@@ -627,6 +627,23 @@ public class SakaiProxyImpl implements SakaiProxy {
 		}
 		return enrolledMembers;
 	}
+
+	public List<RosterMember> getAllEnrollmentMemberships(String siteId) {
+		List<RosterMember> enrolledMembers = new ArrayList<RosterMember>();
+
+		if (groupProvider == null) {
+			log.warn("no group provider installed");
+			return enrolledMembers;
+		}
+
+		List<RosterEnrollment> enrollmentSets = getEnrollmentSets(siteId, groupProvider);
+
+		for (RosterEnrollment enrollmentSet : enrollmentSets) {
+			enrolledMembers.addAll(getEnrollmentMembership(siteId, enrollmentSet.getId()));	
+		}
+
+		return enrolledMembers;
+	}
 	
 	/**
 	 * {@inheritDoc}

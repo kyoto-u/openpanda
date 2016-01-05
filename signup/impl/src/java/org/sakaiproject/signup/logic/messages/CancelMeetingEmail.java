@@ -66,7 +66,7 @@ public class CancelMeetingEmail extends SignupEmailBase {
 		rv.add("Content-Type: text/html; charset=UTF-8");
 		rv.add("Subject: " + getSubject());
 		rv.add("From: " + getFromAddress());
-		rv.add("To: " + rb.getString("noReply@") + getSakaiFacade().getServerConfigurationService().getServerName());
+		rv.add("To: " + getSakaiFacade().getServerConfigurationService().getString("setup.request","no-reply@" + getSakaiFacade().getServerConfigurationService().getServerName()));
 
 		return rv;
 	}
