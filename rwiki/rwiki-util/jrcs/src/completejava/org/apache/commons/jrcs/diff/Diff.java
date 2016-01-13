@@ -80,7 +80,7 @@ import org.apache.commons.jrcs.util.ToString;
  * algorithms may be used.  If no algorithm is specififed, a default
  * algorithm is used.</p>
  *
- * @version $Revision: 84222 $ $Date: 2010-11-03 22:15:52 +0900 (水, 03 11 2010) $
+ * @version $Revision: 84222 $ $Date: 2010-11-03 22:15:52 +0900 (Wed, 03 Nov 2010) $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  * @see     Delta
  * @see     DiffAlgorithm

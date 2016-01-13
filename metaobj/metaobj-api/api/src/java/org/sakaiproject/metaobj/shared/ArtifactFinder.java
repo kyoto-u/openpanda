@@ -32,7 +32,7 @@ import org.sakaiproject.metaobj.shared.model.MimeType;
  *
  * $Header: /opt/CVS/osp2.x/homesComponent/src/java/org/theospi/metaobj/repository/ArtifactFinder.java,v 1.1 2005/06/29 18:36:41 chmaurer Exp $
  * $Revision: 105079 $
- * $Date: 2012-02-25 08:08:11 +0900 (土, 25  2 2012) $
+ * $Date: 2012-02-25 08:08:11 +0900 (Sat, 25 Feb 2012) $
  */
 
 public interface ArtifactFinder {

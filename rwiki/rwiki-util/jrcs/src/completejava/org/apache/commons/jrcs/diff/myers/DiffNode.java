@@ -21,7 +21,7 @@ package org.apache.commons.jrcs.diff.myers;
  * node and each contiguous series of insertions and deletions is represented
  * by a single {@link DiffNode DiffNodes}.
  *
- * @version $Revision: 2891 $ $Date: 2005-10-26 02:30:31 +0900 (水, 26 10 2005) $
+ * @version $Revision: 2891 $ $Date: 2005-10-26 02:30:31 +0900 (Wed, 26 Oct 2005) $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  *
  */

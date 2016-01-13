@@ -60,7 +60,7 @@ package org.apache.commons.jrcs.diff;
 /**
  * A simple interface for implementations of differencing algorithms.
  *
- * @version $Revision: 2891 $ $Date: 2005-10-26 02:30:31 +0900 (水, 26 10 2005) $
+ * @version $Revision: 2891 $ $Date: 2005-10-26 02:30:31 +0900 (Wed, 26 Oct 2005) $
  *
  * @author <a href="mailto:bwm@hplb.hpl.hp.com">Brian McBride</a>
  */

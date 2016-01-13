@@ -34,6 +34,6 @@ public class VersionConstants {
     public static String APP_VERSION = "1.3.5";
 
     public static String SVN_REVISION = "$Revision: 105077 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (土, 25  2 2012) $";
+    public static String SVN_LAST_UPDATE = "$Date: 2012-02-25 07:54:29 +0900 (Sat, 25 Feb 2012) $";
 
 }

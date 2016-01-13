@@ -24,7 +24,7 @@ package org.sakaiproject.metaobj.worksite.intf;
 /*
  * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.6/metaobj-api/api/src/java/org/sakaiproject/metaobj/worksite/intf/WorksiteAware.java $
  * $Revision: 105079 $
- * $Date: 2012-02-25 08:08:11 +0900 (土, 25  2 2012) $
+ * $Date: 2012-02-25 08:08:11 +0900 (Sat, 25 Feb 2012) $
  */
 
 public interface WorksiteAware {

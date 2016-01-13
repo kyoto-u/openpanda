@@ -11,7 +11,7 @@ import java.io.InputStream;
  * This class is NOT thread safe.
  * 
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
- * @version $Revision: 2967 $ $Date: 2005-10-26 19:52:33 +0900 (水, 26 10 2005) $
+ * @version $Revision: 2967 $ $Date: 2005-10-26 19:52:33 +0900 (Wed, 26 Oct 2005) $
  * @see Archive
  */
 class ArchiveParser implements ArchiveParserConstants {

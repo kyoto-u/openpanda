@@ -26,7 +26,7 @@ import java.util.Map;
 /*
  * $URL: https://source.sakaiproject.org/svn/metaobj/tags/sakai-10.6/metaobj-util/tool-lib/src/java/org/sakaiproject/metaobj/utils/mvc/intf/CustomCommandController.java $
  * $Revision: 105079 $
- * $Date: 2012-02-25 08:08:11 +0900 (土, 25  2 2012) $
+ * $Date: 2012-02-25 08:08:11 +0900 (Sat, 25 Feb 2012) $
  */
 
 /**

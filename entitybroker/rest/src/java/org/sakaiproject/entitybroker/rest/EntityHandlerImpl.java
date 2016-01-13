@@ -93,7 +93,7 @@ import org.sakaiproject.entitybroker.util.request.RequestUtils;
 public class EntityHandlerImpl implements EntityRequestHandler {
     public static String APP_VERSION = "1.0.1";
     public static String SVN_REVISION = "$Revision: 315799 $";
-    public static String SVN_LAST_UPDATE = "$Date: 2014-12-02 02:34:05 +0900 (火, 02 12 2014) $";
+    public static String SVN_LAST_UPDATE = "$Date: 2014-12-02 02:34:05 +0900 (Tue, 02 Dec 2014) $";
 
     /**
      * Empty constructor

@@ -60,7 +60,7 @@ package org.apache.commons.jrcs.util;
 /**
  * This class delegates handling of the to a StringBuffer based version.
  *
- * @version $Revision: 15101 $ $Date: 2006-09-21 19:16:23 +0900 (木, 21  9 2006) $
+ * @version $Revision: 15101 $ $Date: 2006-09-21 19:16:23 +0900 (Thu, 21 Sep 2006) $
  * @author <a href="mailto:juanco@suigeneris.org">Juanco Anez</a>
  */
 public class ToString
