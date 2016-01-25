@@ -247,7 +247,7 @@ msgctxt ""
 "site-manage/site-manage-participant-"
 "helper/src/bundle/org/sakaiproject/site/tool/participant/bundle/sitesetupgeneric.properties:add.official"
 msgid "Students Registered for Course:"
-msgstr "登録された学生　対象コース:"
+msgstr "登録された受講者　対象コース:"
 
 #. add.official1
 #: site-manage/site-manage-participant-helper/src/bundle/org/sakaiproject/site/tool/participant/bundle/sitesetupgeneric.properties:29
@@ -257,7 +257,7 @@ msgctxt ""
 msgid ""
 "Officially enrolled students automatically become participants when you add "
 "your course roster to the site."
-msgstr "公式に登録された学生は，コースの受講者名簿をサイトに追加すると，自動的に参加者になります．"
+msgstr "公式に登録された受講者は，コースの受講者名簿をサイトに追加すると，自動的に参加者になります．"
 
 #. add.official.instruction
 #: site-manage/site-manage-participant-helper/src/bundle/org/sakaiproject/site/tool/participant/bundle/sitesetupgeneric.properties:30
@@ -1788,7 +1788,7 @@ msgctxt ""
 "site-manage/site-manage-"
 "tool/tool/src/bundle/sitesetupgeneric.properties:java.validAuthor"
 msgid "Please enter a valid {0} for the instructor of record."
-msgstr "教員レコードの有効な {0} を入力してください．"
+msgstr "担当者レコードの有効な {0} を入力してください．"
 
 #. java.miss
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:35
@@ -1917,7 +1917,7 @@ msgctxt ""
 "site-manage/site-manage-"
 "tool/tool/src/bundle/sitesetupgeneric.properties:java.record"
 msgid "is not the instructor of record."
-msgstr "は教員レコードではありません．"
+msgstr "は担当者レコードではありません．"
 
 #. java.canyou
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:51
@@ -4218,7 +4218,7 @@ msgid ""
 "department head, previous semester instructor).  An email requesting "
 "authorization will be sent to this person. If there are multiple instructors"
 " for the course, please separate the usernames with comma signs. "
-msgstr "この時点ではあなたが教員であることを確認できません．このサイトを作成できるかどうかを確認することができる方のユーザ名を入力してください（例: 学科長，前期の教員）．権限を要求するメールがその方に送付されます．"
+msgstr "この時点ではあなたが担当者であることを確認できません．このサイトを作成できるかどうかを確認することができる方のユーザ名を入力してください（例: 学科長，前期の担当者）．権限を要求するメールがその方に送付されます．"
 
 #. man.notverifyfuture1
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:331
@@ -4237,7 +4237,7 @@ msgid ""
 "weeks prior to the start of the term. At that point, you may give students "
 "access to the site by going into the Site Info tool, selecting \"Edit Class "
 "Roster(s)\" and following the setup wizard."
-msgstr "週前に利用できるようになります．この時点では，「サイト情報」ツールへ行き，「クラス名簿を編集」を選択し，セットアップウィザードに従うことによりサイトへのアクセスを学生に与えることができます．"
+msgstr "週前に利用できるようになります．この時点では，「サイト情報」ツールへ行き，「クラス名簿を編集」を選択し，セットアップウィザードに従うことによりサイトへのアクセスを受講者に与えることができます．"
 
 #. man.authoriz
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:333
@@ -5113,7 +5113,7 @@ msgid ""
 "websites.  NOTE: Students, if you do not see a tab for your course, contact "
 "your instructor for information about  when your official course website "
 "will be available."
-msgstr "作成したいサイト種別を選択します．教員だけが正規のコースウェブサイトを作成することができます．教員・学生のどちらもプロジェクトウェブサイトを作成することができます．注意: 学生諸君へ．クラスのタブが表示されない場合は，いつ正規のコースウェブサイトが利用可能になるかは，担当の教員に連絡してください．"
+msgstr "作成したいサイト種別を選択します．担当者だけが正規のコースウェブサイトを作成することができます．担当者・受講者のどちらもプロジェクトウェブサイトを作成することができます．注意: 受講者諸君へ．クラスのタブが表示されない場合は，いつ正規のコースウェブサイトが利用可能になるかは，担当の担当者に連絡してください．"
 
 #. sitetype.course.template.info
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:439
@@ -6732,7 +6732,7 @@ msgid ""
 "Duplicating a course site will create a new course site with content that "
 "instructors/administrators created, but for privacy reasons will not copy "
 "items added to the site by general users/students."
-msgstr "コースサイトを複製すると，教員あるいは管理者が作成したコンテンツがある新しいコースサイトが作成されます．しかし，プライバシー上の理由から一般ユーザあるいは学生により追加されたサイトのアイテムはコピーされません．"
+msgstr "コースサイトを複製すると，担当者あるいは管理者が作成したコンテンツがある新しいコースサイトが作成されます．しかし，プライバシー上の理由から一般ユーザあるいは受講者により追加されたサイトのアイテムはコピーされません．"
 
 #. sitdup.dupaclanoncourse
 #: site-manage/site-manage-tool/tool/src/bundle/sitesetupgeneric.properties:637

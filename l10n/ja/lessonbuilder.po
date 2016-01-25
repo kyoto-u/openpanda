@@ -42,7 +42,7 @@ msgctxt ""
 msgid ""
 "This page has not yet been created by the course instructor or you do not "
 "have the necessary permissions to read it"
-msgstr "このページは、まだコース教員によって作成されていないか、あなたはこれを読むために必要な権限を持っていません"
+msgstr "このページは、まだコース担当者によって作成されていないか、あなたはこれを読むために必要な権限を持っていません"
 
 #. simplepage.impossible1
 #: lessonbuilder/tool/src/resources/messages.properties:5
@@ -292,7 +292,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.remove-"
 "student-page-explanation"
 msgid "Remove the current student page. This page will be deleted."
-msgstr "現在の学生ページを削除します．このページは削除されます．"
+msgstr "現在の受講者ページを削除します．このページは削除されます．"
 
 #. simplepage.remove
 #: lessonbuilder/tool/src/resources/messages.properties:36
@@ -620,7 +620,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.edit-"
 "title.student"
 msgid "Edit Student Content Item"
-msgstr "学生のコンテンツアイテムを編集"
+msgstr "受講者のコンテンツアイテムを編集"
 
 #. simplepage.edit-title.question
 #: lessonbuilder/tool/src/resources/messages.properties:80
@@ -2198,28 +2198,28 @@ msgstr "ページに追加するファイルまたはウェブページ (URL) �
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assessment"
 msgid "Require that the student submit this assessment."
-msgstr "学生がこの評価を提出することが必要です．"
+msgstr "受講者がこの評価を提出することが必要です．"
 
 #. simplepage.require_submit_assignment
 #: lessonbuilder/tool/src/resources/messages.properties:290
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_assignment"
 msgid "Require that the student submit this assignment."
-msgstr "学生がこの課題を提出することが必要です．"
+msgstr "受講者がこの課題を提出することが必要です．"
 
 #. simplepage.require_submit_forum
 #: lessonbuilder/tool/src/resources/messages.properties:291
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_forum"
 msgid "Require that the student submit a posting to this topic."
-msgstr "学生がこのトピックに投稿することが必要です．"
+msgstr "受講者がこのトピックに投稿することが必要です．"
 
 #. simplepage.require_receive
 #: lessonbuilder/tool/src/resources/messages.properties:292
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_receive"
 msgid "Require that the student receive "
-msgstr "学生が以下を受け取ることが必要です: "
+msgstr "受講者が以下を受け取ることが必要です: "
 
 #. simplepage.require_points_assessment
 #: lessonbuilder/tool/src/resources/messages.properties:293
@@ -2240,21 +2240,21 @@ msgstr "この課題への点数．"
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_pass_assignment"
 msgid "Require that the student <b>Pass</b> this assignment"
-msgstr "学生がこの課題に<b>パス</b>することが必要です。"
+msgstr "受講者がこの課題に<b>パス</b>することが必要です。"
 
 #. simplepage.require_atleast
 #: lessonbuilder/tool/src/resources/messages.properties:296
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_atleast"
 msgid "Require that the student receive at least a"
-msgstr "学生の受け取る点数がこの点数以上であることが必要です:"
+msgstr "受講者の受け取る点数がこの点数以上であることが必要です:"
 
 #. simplepage.require_checkmark
 #: lessonbuilder/tool/src/resources/messages.properties:297
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_checkmark"
 msgid "Require that the student receive a Checkmark"
-msgstr "学生がチェックマークを受け取ることが必要です:"
+msgstr "受講者がチェックマークを受け取ることが必要です:"
 
 #. simplepage.title_notblank
 #: lessonbuilder/tool/src/resources/messages.properties:298
@@ -2415,7 +2415,7 @@ msgid ""
 " We suggest giving lessonbuilder.read to all roles, and lessonbuilder.upd to"
 " any role that you want to be able to edit content. Typically this is "
 "maintain, Instructor, and maybe some of the TA roles."
-msgstr "このツールを使用するために必要な権限がありません．あなたのロールでは権限があるはずなので，サイトで権限が適切に設定されていない可能性があります． 次のリンクを使用して権限ツールを実行してください．すべてのロールに lessonbuilder.read を，コンテンツを編集できるようにするすべてのロールに lessonbuilder.upd を与えることをお勧めします．通常，これは管理，教員，および場合によっては一部の TA ロールです．"
+msgstr "このツールを使用するために必要な権限がありません．あなたのロールでは権限があるはずなので，サイトで権限が適切に設定されていない可能性があります． 次のリンクを使用して権限ツールを実行してください．すべてのロールに lessonbuilder.read を，コンテンツを編集できるようにするすべてのロールに lessonbuilder.upd を与えることをお勧めします．通常，これは管理，担当者，および場合によっては一部の TA ロールです．"
 
 #. simplepage.wrong-cc-version
 #: lessonbuilder/tool/src/resources/messages.properties:318
@@ -2458,7 +2458,7 @@ msgid ""
 "This cartridge has at least one resource restricted to Mentor or Instructor."
 " We have created groups with those names, but not placed any users into the "
 "groups."
-msgstr "このカートリッジには，講師または教員に制限されたリソースが少なくとも 1 つ含まれています．このようなリソースはレッスンページに追加されず，リソースにロードされていても学生には非表示となります．{}"
+msgstr "このカートリッジには，講師または担当者に制限されたリソースが少なくとも 1 つ含まれています．このようなリソースはレッスンページに追加されず，リソースにロードされていても受講者には非表示となります．{}"
 
 #. simplepage.cc-uses-curriculum
 #: lessonbuilder/tool/src/resources/messages.properties:323
@@ -2556,7 +2556,7 @@ msgctxt ""
 msgid ""
 "If you were a student, you wouldn't be able to see comments, because you "
 "haven't completed all required items above."
-msgstr "学生の場合は，上記のすべての必須アイテムを完成させていないため，コメントを見ることはできません．"
+msgstr "受講者の場合は，上記のすべての必須アイテムを完成させていないため，コメントを見ることはできません．"
 
 #. simplepage.edit-comment
 #: lessonbuilder/tool/src/resources/messages.properties:335
@@ -2859,7 +2859,7 @@ msgstr "このアイテムが含まれるフォルダに，グループアクセ
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.edit_studentlink"
 msgid "Edit Student Content Section"
-msgstr "学生のコンテンツセクションを編集"
+msgstr "受講者のコンテンツセクションを編集"
 
 #. simplepage.student-content
 #: lessonbuilder/tool/src/resources/messages.properties:374
@@ -2867,7 +2867,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
 "content"
 msgid "Student Content Section"
-msgstr "学生のコンテンツセクション"
+msgstr "受講者のコンテンツセクション"
 
 #. simplepage.add-student-content
 #: lessonbuilder/tool/src/resources/messages.properties:375
@@ -2882,7 +2882,7 @@ msgstr "受講者コンテンツを追加"
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student"
 msgid "Student Pages"
-msgstr "学生ページ"
+msgstr "受講者ページ"
 
 #. simplepage.add-page
 #: lessonbuilder/tool/src/resources/messages.properties:377
@@ -2960,7 +2960,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
 "content-page"
 msgid "Student Content Page"
-msgstr "学生のコンテンツページ"
+msgstr "受講者のコンテンツページ"
 
 #. simplepage.student-anonymous
 #: lessonbuilder/tool/src/resources/messages.properties:387
@@ -2968,7 +2968,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
 "anonymous"
 msgid "Make these student pages anonymous"
-msgstr "これらの学生ページを匿名にする"
+msgstr "これらの受講者ページを匿名にする"
 
 #. simplepage.student-comments
 #: lessonbuilder/tool/src/resources/messages.properties:388
@@ -3001,7 +3001,7 @@ msgctxt ""
 msgid ""
 "There is an area for student content, but you must complete all required "
 "items above before you can see it."
-msgstr "学生のコンテンツ用のエリアがありますが，上記の必須アイテムをすべて完成させるまで表示されません．"
+msgstr "受講者のコンテンツ用のエリアがありますが，上記の必須アイテムをすべて完成させるまで表示されません．"
 
 #. simplepage.student-fake-missing-prereqs
 #: lessonbuilder/tool/src/resources/messages.properties:392
@@ -3011,7 +3011,7 @@ msgctxt ""
 msgid ""
 "If you were a student, you wouldn't be able to see student content, because "
 "you haven't completed all required items above."
-msgstr "学生の場合は，上記のすべての必須アイテムを完成させていないため，学生のコンテンツを見ることはできません．"
+msgstr "受講者の場合は，上記のすべての必須アイテムを完成させていないため，受講者のコンテンツを見ることはできません．"
 
 #. simplepage.website
 #: lessonbuilder/tool/src/resources/messages.properties:393
@@ -3084,7 +3084,7 @@ msgstr "外部ツールを変更"
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.require_submit_blti"
 msgid "Require that the student use this item"
-msgstr "学生がこのアイテムを使用することが必要です．"
+msgstr "受講者がこのアイテムを使用することが必要です．"
 
 #. simplepage.edit_blti
 #: lessonbuilder/tool/src/resources/messages.properties:402
@@ -3236,7 +3236,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
 "descrip"
 msgid "Add a section where students may create their own pages."
-msgstr "学生が独自のページを作成できるセクションを追加します．"
+msgstr "受講者が独自のページを作成できるセクションを追加します．"
 
 #. simplepage.title-student-descrip
 #: lessonbuilder/tool/src/resources/messages.properties:421
@@ -3472,7 +3472,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.show-"
 "grading-pane-content"
 msgid "Show Grading Pane for Comments on Student Content"
-msgstr "採点枠に学生のコンテンツに関するコメントを表示"
+msgstr "採点枠に受講者のコンテンツに関するコメントを表示"
 
 #. simplepage.grading-student
 #: lessonbuilder/tool/src/resources/messages.properties:451
@@ -3480,7 +3480,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.grading-"
 "student"
 msgid "Student Name"
-msgstr "学生名"
+msgstr "受講者名"
 
 #. simplepage.grading-unique
 #: lessonbuilder/tool/src/resources/messages.properties:452
@@ -3560,7 +3560,7 @@ msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.student-"
 "comments-grading"
 msgid "Comments on Student Content on \"{}\""
-msgstr "「{}」に関する学生のコンテンツに対するコメント"
+msgstr "「{}」に関する受講者のコンテンツに対するコメント"
 
 #. simplepage.comments-grading
 #: lessonbuilder/tool/src/resources/messages.properties:462
@@ -3936,7 +3936,7 @@ msgstr "公開制限に関わらずアイテムを確認する"
 msgctxt ""
 "lessonbuilder/tool/src/resources/messages.properties:simplepage.owner-groups"
 msgid "Student pages will be associated with groups rather than individuals."
-msgstr "学生のページは個人ではなくグループに関連づけられます．"
+msgstr "受講者のページは個人ではなくグループに関連づけられます．"
 
 #. simplepage.owner-groups-explanation
 #: lessonbuilder/tool/src/resources/messages.properties:510
@@ -3946,7 +3946,7 @@ msgctxt ""
 msgid ""
 "Select the groups that can be associated with pages. Each student should be "
 "part of only one group. If you don't select any, all groups will be used."
-msgstr "ページに関連付けるグループを選択してください．各学生はひとつのグループにのみ関連づけられます．もしグループを選択しなければ全てのグループが関連づけられます．"
+msgstr "ページに関連付けるグループを選択してください．各受講者はひとつのグループにのみ関連づけられます．もしグループを選択しなければ全てのグループが関連づけられます．"
 
 #. simplepage.owner-groups-nogroup
 #: lessonbuilder/tool/src/resources/messages.properties:511

@@ -522,7 +522,7 @@ msgstr "ドロップボックス"
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/content/content.properties:access.dropbox1"
 msgid "Visible to instructor and student"
-msgstr "教員と学生に表示"
+msgstr "担当者と受講者に表示"
 
 #. access.title1
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/content/content.properties:34
@@ -3161,7 +3161,7 @@ msgstr "課題提出箱"
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:access.dropbox1"
 msgid "Visible to instructor and student"
-msgstr "教員と学生に表示"
+msgstr "担当者と受講者に表示"
 
 #. access.group
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:15
@@ -4399,14 +4399,14 @@ msgstr "9月"
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:notify.instructor"
 msgid "Send an email notification to the instructor(s)."
-msgstr "メール通知を教員に送付します．"
+msgstr "メール通知を担当者に送付します．"
 
 #. notify.student
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:186
 msgctxt ""
 "config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:notify.student"
 msgid "Send an email notification to the student."
-msgstr "メール通知を学生に送付します．"
+msgstr "メール通知を受講者に送付します．"
 
 #. paste.error
 #: config/localization/bundles/src/bundle/org/sakaiproject/localization/bundle/type/types.properties:187

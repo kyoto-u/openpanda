@@ -649,7 +649,7 @@ msgstr "クリア"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:search_default_student_search_string"
 msgid "Student Name"
-msgstr "学生の名前"
+msgstr "受講者の名前"
 
 #. search_sections_filter
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:23
@@ -698,7 +698,7 @@ msgstr "すべてのカテゴリ"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:paging_status_students"
 msgid "Viewing {0} to {1} of {2} students"
-msgstr "{2}人中{0}番から{1}番の学生を表示"
+msgstr "{2}人中{0}番から{1}番の受講者を表示"
 
 #. score_null_placeholder
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:30
@@ -847,7 +847,7 @@ msgctxt ""
 msgid ""
 "Currently, students can see their gradebook item scores, but not their "
 "course grade."
-msgstr "現在，成績簿アイテムの得点を学生は表示することができますが，コース成績は表示できません．"
+msgstr "現在，成績簿アイテムの得点を受講者は表示することができますが，コース成績は表示できません．"
 
 #. overview_grade_option_course_grade_viewable
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:51
@@ -856,7 +856,7 @@ msgctxt ""
 msgid ""
 "Currently, students can see their course grade (as {0}), but not their "
 "gradebook item scores."
-msgstr "現在，コース成績({0} のように)を学生は表示することができますが，成績簿アイテムの得点は表示できません．"
+msgstr "現在，コース成績({0} のように)を受講者は表示することができますが，成績簿アイテムの得点は表示できません．"
 
 #. overview_grade_option_all_viewable
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:52
@@ -865,7 +865,7 @@ msgctxt ""
 msgid ""
 "Currently, students can see their course grade (as {0}) and their gradebook "
 "item scores."
-msgstr "現在，学生はコース成績({0} のように)および成績簿アイテムの得点を表示することができます．"
+msgstr "現在，受講者はコース成績({0} のように)および成績簿アイテムの得点を表示することができます．"
 
 #. overview_grade_option_none_viewable
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:53
@@ -873,7 +873,7 @@ msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:overview_grade_option_none_viewable"
 msgid ""
 "Currently, students cannot see their gradebook item scores or course grade."
-msgstr "現在，学生は成績簿アイテムの得点やコース成績を表示することはできません．"
+msgstr "現在，受講者は成績簿アイテムの得点やコース成績を表示することはできません．"
 
 #. overview_grade_option_change
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:54
@@ -887,7 +887,7 @@ msgstr "コース成績オプションを変更"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:overview_released"
 msgid "Released to Students"
-msgstr "学生に公開"
+msgstr "受講者に公開"
 
 #. overview_released_false
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:56
@@ -1027,7 +1027,7 @@ msgstr "***"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:overview_footnote_legend1"
 msgid "Titles shown in grey are not released to students. "
-msgstr "グレーで表示されているタイトルは学生に公開されません．"
+msgstr "グレーで表示されているタイトルは受講者に公開されません．"
 
 #. overview_footnote_legend2
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:76
@@ -1078,7 +1078,7 @@ msgid ""
 "Instructors may have a range of differing approaches for tabulating scores "
 "across letter grades.  If these assumptions do not match your intent, please"
 " contact your "
-msgstr "教員によっては，得点と文字成績の対応関係を異なるやり方で対応づける場合もあります．もしあなたの想定とは異なる場合，必要であれば"
+msgstr "担当者によっては，得点と文字成績の対応関係を異なるやり方で対応づける場合もあります．もしあなたの想定とは異なる場合，必要であれば"
 
 #. overview_lettergrade4
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:82
@@ -1204,21 +1204,21 @@ msgstr "採点表"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:assignment_details_student_name"
 msgid "Student Name"
-msgstr "学生の名前"
+msgstr "受講者の名前"
 
 #. assignment_details_student_id
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:100
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:assignment_details_student_id"
 msgid "Student ID"
-msgstr "学生 ID"
+msgstr "受講者 ID"
 
 #. assignment_details_no_enrollments
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:101
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:assignment_details_no_enrollments"
 msgid "No students to display"
-msgstr "表示する学生がいません"
+msgstr "表示する受講者がいません"
 
 #. assignment_details_submit
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:102
@@ -1474,7 +1474,7 @@ msgstr "作業中に他のユーザがこれらのコース成績に変更を加
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:course_grade_details_no_enrollments"
 msgid "No students to display"
-msgstr "表示する学生がいません"
+msgstr "表示する受講者がいません"
 
 #. course_grade_details_export_excel
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:137
@@ -1578,7 +1578,7 @@ msgid ""
 "calculation, you must enter a grade of zero or higher.  If you want to enter"
 " zeroes for any gradebook item that has not been graded and then re-"
 "calculate the course grade, click Set Ungraded Items to Zero. "
-msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい学生が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．採点していないすべての成績簿アイテムに 0 を入力し，コース成績を再計算したい場合は，「コース成績を計算」をクリックします．"
+msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい受講者が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．採点していないすべての成績簿アイテムに 0 を入力し，コース成績を再計算したい場合は，「コース成績を計算」をクリックします．"
 
 #. course_grade_details_null_msg_ta_view
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:151
@@ -1589,7 +1589,7 @@ msgid ""
 " graded in the course grade calculation. This could result in a higher "
 "course grade for a student. To include a gradebook item in the course grade "
 "calculation, you must enter a grade of zero or higher."
-msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい学生が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．"
+msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい受講者が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．"
 
 #. course_grade_details_grade_display
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:152
@@ -1617,7 +1617,7 @@ msgstr "データオプション"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:course_grade_details_export_course_grades_options_userid"
 msgid "Student ID"
-msgstr "学生番号"
+msgstr "受講者番号"
 
 #. course_grade_details_export_course_grades_options_username
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:156
@@ -1682,7 +1682,7 @@ msgctxt ""
 msgid ""
 "WARNING: Clicking continue will assign a grade of zero to all ungraded items"
 " in this gradebook."
-msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい学生が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．"
+msgstr "現在，コース成績計算で採点されていない成績簿アイテムは成績簿には含まれていません．このため，コース成績がさらによい受講者が生じる場合があります．コース成績計算に成績簿アイテムを含める場合は，0 以上の成績を入力する必要があります．"
 
 #. calculate_course_grade_action
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:165
@@ -1756,21 +1756,21 @@ msgstr "すべての成績簿アイテム"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:roster_no_enrollments"
 msgid "No students to display"
-msgstr "表示する学生がいません"
+msgstr "表示する受講者がいません"
 
 #. roster_student_name
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:175
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:roster_student_name"
 msgid "Student Name"
-msgstr "学生の名前"
+msgstr "受講者の名前"
 
 #. roster_student_id
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:176
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:roster_student_id"
 msgid "Student ID"
-msgstr "学生 ID"
+msgstr "受講者 ID"
 
 #. roster_average_category
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:177
@@ -1849,7 +1849,7 @@ msgstr "括弧内の成績は，カテゴリ平均やコース成績計算には
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:roster_footnote_legend2"
 msgid "Items with a grey background are not released to students."
-msgstr "背景がグレーのアイテムは学生には公開されません．"
+msgstr "背景がグレーのアイテムは受講者には公開されません．"
 
 #. roster_footnote_legend3
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:188
@@ -1891,14 +1891,14 @@ msgstr "course_grade"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:export_student_name"
 msgid "Student Name"
-msgstr "学生の名前"
+msgstr "受講者の名前"
 
 #. export_student_id
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:194
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:export_student_id"
 msgid "Student ID"
-msgstr "学生 ID"
+msgstr "受講者 ID"
 
 #. export_points_possible
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:195
@@ -2024,14 +2024,14 @@ msgstr "コース成績計算にこのアイテムを含める"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:add_assignment_counted_detail"
 msgid "Grade will be visible to students."
-msgstr "成績は学生に見えるようになります．"
+msgstr "成績は受講者に見えるようになります．"
 
 #. add_assignment_released
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:213
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:add_assignment_released"
 msgid "Release this item to Students"
-msgstr "このアイテムを学生に公開"
+msgstr "このアイテムを受講者に公開"
 
 #. add_assignment_released_conditional
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:214
@@ -2040,7 +2040,7 @@ msgctxt ""
 msgid ""
 "This item will not be visible to students until you have chosen to 'Display "
 "released gradebook items to students' in Gradebook Setup. "
-msgstr "このアイテムは，成績簿設定で「公開された成績簿アイテムを学生に表示する」を選ぶまでは，学生には見えるようになりません．"
+msgstr "このアイテムは，成績簿設定で「公開された成績簿アイテムを受講者に表示する」を選ぶまでは，受講者には見えるようになりません．"
 
 #. add_assignment_category
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:215
@@ -2302,7 +2302,7 @@ msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:feedback_options_instruction"
 msgid ""
 "Student privacy is built in &#8212; students cannot see each other's grades."
-msgstr "学生プライバシーが組み込まれています &#8212; 学生はそれぞれ他の学生の成績を表示することはできません．"
+msgstr "受講者プライバシーが組み込まれています &#8212; 受講者はそれぞれ他の受講者の成績を表示することはできません．"
 
 #. feedback_options_grade_display
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:250
@@ -2319,14 +2319,14 @@ msgid ""
 "Display any released gradebook items and entered scores to students. "
 "Gradebook items that have been individually set to \"released\" will not "
 "display to students until this is checked."
-msgstr "公開された成績簿アイテムおよび得点を学生に表示します．「公開済み」に個々にセットされている成績簿アイテムはこれがチェックされるまで学生に表示されません．"
+msgstr "公開された成績簿アイテムおよび得点を受講者に表示します．「公開済み」に個々にセットされている成績簿アイテムはこれがチェックされるまで受講者に表示されません．"
 
 #. feedback_options_grade_display_course_grades
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:252
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:feedback_options_grade_display_course_grades"
 msgid "Display course grade to students now"
-msgstr "コース成績を学生に今すぐ表示"
+msgstr "コース成績を受講者に今すぐ表示"
 
 #. feedback_options_grade_display_course_grades_tip
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:253
@@ -2594,7 +2594,7 @@ msgstr "{0}%"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:student_view_return_to_inst_view"
 msgid "Return to Instructor''s View of Grades for {0}"
-msgstr "{0} の成績の教員表示に戻る"
+msgstr "{0} の成績の担当者表示に戻る"
 
 #. student_view_legend_title
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:290
@@ -2647,7 +2647,7 @@ msgstr "{0}の成績"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:inst_view_student_summary"
 msgid "Student Summary"
-msgstr "学生サマリ"
+msgstr "受講者サマリ"
 
 #. inst_view_name
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:297
@@ -2731,14 +2731,14 @@ msgstr "変更をクリア"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:inst_view_prev"
 msgid "< Save and View Previous Student"
-msgstr "< 保存して前の学生を表示"
+msgstr "< 保存して前の受講者を表示"
 
 #. inst_view_next
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:309
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:inst_view_next"
 msgid "Save and View Next Student >"
-msgstr "保存して次の学生を表示 >"
+msgstr "保存して次の受講者を表示 >"
 
 #. inst_view_log
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:310
@@ -2836,7 +2836,7 @@ msgstr "**"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:inst_view_footnote_legend1"
 msgid "Titles shown in grey are not released to students. "
-msgstr "グレーで表示されているタイトルは学生に公開されません．"
+msgstr "グレーで表示されているタイトルは受講者に公開されません．"
 
 #. inst_view_footnote_legend2
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:324
@@ -3139,7 +3139,7 @@ msgid ""
 "number of students in this site ({1}). You may only upload grade information"
 " for the students in your site. Please verify that you are uploading the "
 "correct spreadsheet for this site."
-msgstr "アップロードされたスプレッドシートの行数({0})は，このサイトの学生数({1})より多くなっています．このサイトの学生用の成績情報のみアップロードすることができます．このサイト用のスプレッドシートをアップロードしていることを確認してください．"
+msgstr "アップロードされたスプレッドシートの行数({0})は，このサイトの受講者数({1})より多くなっています．このサイトの受講者用の成績情報のみアップロードすることができます．このサイト用のスプレッドシートをアップロードしていることを確認してください．"
 
 #. upload_view_filesize_error
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:364
@@ -3274,7 +3274,7 @@ msgstr "<li>スプレッドシートファイルには{0}個の成績簿アイ�
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:upload_preview_row_count"
 msgid "<li>Spreadsheet file contains {0} students </li>"
-msgstr "<li>スプレッドシートファイルには{0}人の学生がいます</li>"
+msgstr "<li>スプレッドシートファイルには{0}人の受講者がいます</li>"
 
 #. upload_preview_additional_text
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:382
@@ -3319,14 +3319,14 @@ msgstr "同じ名前のスプレッドシートがすでに存在します．"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:upload_preview_student_id"
 msgid "Student ID"
-msgstr "学生 ID"
+msgstr "受講者 ID"
 
 #. upload_preview_student_name
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:388
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:upload_preview_student_name"
 msgid "Student Name"
-msgstr "学生の名前"
+msgstr "受講者の名前"
 
 #. import_preview_page_title
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:389
@@ -3388,14 +3388,14 @@ msgctxt ""
 msgid ""
 "Student IDs in the highlighted rows do not match the Student IDs on record "
 "and will not be imported."
-msgstr "ハイライトされた行の学生 ID は成績簿の学生 ID と一致しないのでインポートされません．"
+msgstr "ハイライトされた行の受講者 ID は成績簿の受講者 ID と一致しないのでインポートされません．"
 
 #. import_preview_unknown_name
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:397
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:import_preview_unknown_name"
 msgid "Unknown Student"
-msgstr "未知の学生"
+msgstr "未知の受講者"
 
 #. import_assignment_page_title
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:398
@@ -3563,7 +3563,7 @@ msgctxt ""
 msgid ""
 "Your spreadsheet contains more than one row for the student with id \"{0}\"."
 " Please ensure each student only appears once in your spreadsheet."
-msgstr "ID が「{0}」の学生に対する行がスプレッドシートに複数あります．スプレッド中に各学生が一度しか出てこないことを確認してください．"
+msgstr "ID が「{0}」の受講者に対する行がスプレッドシートに複数あります．スプレッド中に各受講者が一度しか出てこないことを確認してください．"
 
 #. import_entire_main_title
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:419
@@ -3673,7 +3673,7 @@ msgctxt ""
 msgid ""
 "Alert: The following Student IDs are not associated with participants in "
 "this site:"
-msgstr "警告: 次の学生IDはこのサイトの参加者に関連づけられていません:"
+msgstr "警告: 次の受講者IDはこのサイトの参加者に関連づけられていません:"
 
 #. import_entire_single_bad_ids_alert_end
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:433
@@ -3833,7 +3833,7 @@ msgstr "<li>{0}個の成績簿アイテム</li>"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:import_verify_row_count"
 msgid "<li>{0} students </li>"
-msgstr "<li>{0}人の学生 </li>"
+msgstr "<li>{0}人の受講者 </li>"
 
 #. import_verify_assignments
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:452
@@ -3847,7 +3847,7 @@ msgstr "課題"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:import_verify_students"
 msgid "students"
-msgstr "学生"
+msgstr "受講者"
 
 #. import_verify_inst2
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:454
@@ -4034,7 +4034,7 @@ msgstr "成績入力方法を選択してください．"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:display_released_items"
 msgid "Display released Gradebook Items to students"
-msgstr "公開された成績簿アイテムを学生に表示する"
+msgstr "公開された成績簿アイテムを受講者に表示する"
 
 #. display_released_items_info
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:479
@@ -4043,7 +4043,7 @@ msgctxt ""
 msgid ""
 "You can release a gradebook item when creating or editing the gradebook "
 "item. "
-msgstr "成績簿アイテムを作成したり編集したりすると成績簿アイテムを学生に公開することができます．"
+msgstr "成績簿アイテムを作成したり編集したりすると成績簿アイテムを受講者に公開することができます．"
 
 #. gb_setup_save
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:480
@@ -4724,7 +4724,7 @@ msgstr "列を表示・非表示"
 msgctxt ""
 "gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:userid"
 msgid "Student ID"
-msgstr "学生番号"
+msgstr "受講者番号"
 
 #. usereid
 #: gradebook/app/ui/src/bundle/org/sakaiproject/tool/gradebook/bundle/Messages.properties:573

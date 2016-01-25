@@ -1253,7 +1253,7 @@ msgstr "課題提出箱"
 #: content/content-bundles/resources/types.properties:23
 msgctxt "content/content-bundles/resources/types.properties:access.dropbox1"
 msgid "Visible to instructor and student"
-msgstr "教員と学生に表示"
+msgstr "担当者と受講者に表示"
 
 #. access.group
 #: content/content-bundles/resources/types.properties:24
@@ -2386,13 +2386,13 @@ msgstr "条件を表示する場合は少なくとも一つのアイテムを成
 #: content/content-bundles/resources/types.properties:201
 msgctxt "content/content-bundles/resources/types.properties:notify.instructor"
 msgid "Send an email notification to the instructor(s)."
-msgstr "メール通知を教員に送信します．"
+msgstr "メール通知を担当者に送信します．"
 
 #. notify.student
 #: content/content-bundles/resources/types.properties:202
 msgctxt "content/content-bundles/resources/types.properties:notify.student"
 msgid "Send an email notification to the student."
-msgstr "メール通知を学生に送信します．"
+msgstr "メール通知を受講者に送信します．"
 
 #. notify.maintain
 #: content/content-bundles/resources/types.properties:203
@@ -3062,7 +3062,7 @@ msgid ""
 "will not be able to view items marked as hidden unless they created the "
 "items themselves. NOTE: If you hide a folder, all items within it will be "
 "hidden as well."
-msgstr "選択したサイト参加者から次のアイテムを非表示にしてもよろしいですか？学生あるいは非表示のリソースを読む権限を持たない参加者は，たとえ自身でアイテムを作成したとしても非表示とマークされたアイテムを見ることができません．注意：フォルダーを非表示にすると，そのなかのすべてのアイテムは同様に非表示になります．"
+msgstr "選択したサイト参加者から次のアイテムを非表示にしてもよろしいですか？受講者あるいは非表示のリソースを読む権限を持たない参加者は，たとえ自身でアイテムを作成したとしても非表示とマークされたアイテムを見ることができません．注意：フォルダーを非表示にすると，そのなかのすべてのアイテムは同様に非表示になります．"
 
 #. hide.sure_project
 #: content/content-bundles/resources/types.properties:307
@@ -4703,7 +4703,7 @@ msgstr "ドロップボックス"
 #: content/content-bundles/resources/content.properties:41
 msgctxt "content/content-bundles/resources/content.properties:access.dropbox1"
 msgid "Visible to instructor and student"
-msgstr "教員と学生に表示"
+msgstr "担当者と受講者に表示"
 
 #. access.title1
 #: content/content-bundles/resources/content.properties:42
