@@ -230,7 +230,7 @@ msgstr "参加者"
 msgctxt ""
 "roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:enrollment_status_filter"
 msgid "View students in"
-msgstr "学生を表示: "
+msgstr "受講者を表示: "
 
 #. enrollment_status_filter_label
 #: roster2/src/i18n/org/sakaiproject/roster/i18n/ui.properties:32

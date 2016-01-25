@@ -155,7 +155,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:edit_student_page_header"
 msgid "Assign Students"
-msgstr "学生を割当"
+msgstr "受講者を割当"
 
 #. section_add_failure_title_too_long
 #: sections/sections-app-util/src/bundle/sections.properties:19
@@ -248,7 +248,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:options_self_switch_label"
 msgid "Students can switch sections"
-msgstr "学生はセクションを変更可能"
+msgstr "受講者はセクションを変更可能"
 
 #. student_view_already_member_in_category
 #: sections/sections-app-util/src/bundle/sections.properties:31
@@ -264,7 +264,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:edit_student_successful"
 msgid "Students in {0} were updated successfully!"
-msgstr "人の学生({0}人中)が更新されました．"
+msgstr "人の受講者({0}人中)が更新されました．"
 
 #. section_max_size
 #: sections/sections-app-util/src/bundle/sections.properties:33
@@ -286,7 +286,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:edit_student_unassigned"
 msgid "Unassigned Students"
-msgstr "学生を割当解除"
+msgstr "受講者を割当解除"
 
 #. update
 #: sections/sections-app-util/src/bundle/sections.properties:36
@@ -337,7 +337,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:overview_link_students"
 msgid "Assign Students"
-msgstr "学生を割当"
+msgstr "受講者を割当"
 
 #. add_sections
 #: sections/sections-app-util/src/bundle/sections.properties:43
@@ -397,7 +397,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:roster_instructions"
 msgid "Click on a student's name to edit their section memberships"
-msgstr "セクションのメンバシップを編集する場合は，学生の名前をクリックします"
+msgstr "セクションのメンバシップを編集する場合は，受講者の名前をクリックします"
 
 #. student_view_no_sections_to_display
 #: sections/sections-app-util/src/bundle/sections.properties:51
@@ -468,7 +468,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:student_view_instructions_no_join_or_switch"
 msgid "You must contact your instructor to join or switch sections."
-msgstr "参加するためには担当教員に連絡を取るかセクションを変更する必要があります．"
+msgstr "参加するためには担当担当者に連絡を取るかセクションを変更する必要があります．"
 
 #. edit_manager_selected_label
 #: sections/sections-app-util/src/bundle/sections.properties:60
@@ -816,7 +816,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:roster_pager_status"
 msgid "Viewing {0} to {1} of {2} students"
-msgstr "{2}人のうち{0}番から{1}番の学生を表示"
+msgstr "{2}人のうち{0}番から{1}番の受講者を表示"
 
 #. options_self_register_label
 #: sections/sections-app-util/src/bundle/sections.properties:102
@@ -824,7 +824,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:options_self_register_label"
 msgid "Students can sign up for sections"
-msgstr "学生はセクションを申請可能"
+msgstr "受講者はセクションを申請可能"
 
 #. overview_delete_section_confirmation_post
 #: sections/sections-app-util/src/bundle/sections.properties:103
@@ -835,7 +835,7 @@ msgid ""
 "Students in these section(s) will be 'unassigned' (not in any section of "
 "this type).  Please use the 'Assign Students' link under another section to "
 "assign them to a new section."
-msgstr "これらのセクション中の学生は「未割り当て」になります (このタイプのどのセクションにも割り当てられません)．新しいセクションに学生を割り当てる場合は，「学生を割当」リンクを使用してください．"
+msgstr "これらのセクション中の受講者は「未割り当て」になります (このタイプのどのセクションにも割り当てられません)．新しいセクションに受講者を割り当てる場合は，「受講者を割当」リンクを使用してください．"
 
 #. add_section_successful_plural
 #: sections/sections-app-util/src/bundle/sections.properties:104
@@ -865,7 +865,7 @@ msgstr "場所: "
 msgctxt ""
 "sections/sections-app-util/src/bundle/sections.properties:roster_page_header"
 msgid "Student Memberships"
-msgstr "学生メンバシップ"
+msgstr "受講者メンバシップ"
 
 #. edit_student_over_max_warning_try
 #: sections/sections-app-util/src/bundle/sections.properties:108
@@ -912,7 +912,7 @@ msgid ""
 "all other information is available for viewing only. Only instructors may "
 "connect different rosters to this site, or set sections to be manually "
 "managed."
-msgstr "あなたのセクションは，サイト(「クラス名簿を編集」下の「サイト情報」ツールで定義されています)に接続されたクラス名簿に基づいて自動的に管理されます．ティーチングアシスタントをセクションに割り当てる場合は，下の「TA を割当」をクリックします．すべての他の情報は表示のみ可能です．このサイトに異なるクラス名簿を接続すること，または，手動で管理するようにセクションをセットすることができるのは教員だけである場合があります．"
+msgstr "あなたのセクションは，サイト(「クラス名簿を編集」下の「サイト情報」ツールで定義されています)に接続されたクラス名簿に基づいて自動的に管理されます．ティーチングアシスタントをセクションに割り当てる場合は，下の「TA を割当」をクリックします．すべての他の情報は表示のみ可能です．このサイトに異なるクラス名簿を接続すること，または，手動で管理するようにセクションをセットすることができるのは担当者だけである場合があります．"
 
 #. transfer_membership_move_all
 #: sections/sections-app-util/src/bundle/sections.properties:113
@@ -936,7 +936,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:edit_student_over_max_warning"
 msgid "{0} now includes {1} students, {2} over the Max size limit!"
-msgstr "{0} は現在 {1} 人の学生がいて，許容最大数を {2} 人超過しています．"
+msgstr "{0} は現在 {1} 人の受講者がいて，許容最大数を {2} 人超過しています．"
 
 #. student_view_instructions_join
 #: sections/sections-app-util/src/bundle/sections.properties:116
@@ -961,7 +961,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:roster_view_students"
 msgid "View Students in"
-msgstr "学生を表示: "
+msgstr "受講者を表示: "
 
 #. nav_download
 #: sections/sections-app-util/src/bundle/sections.properties:119
@@ -1039,7 +1039,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:edit_student_update"
 msgid "Assign students"
-msgstr "学生を割当"
+msgstr "受講者を割当"
 
 #. roster_table_header_id
 #: sections/sections-app-util/src/bundle/sections.properties:129
@@ -1047,7 +1047,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:roster_table_header_id"
 msgid "Student ID"
-msgstr "学生番号"
+msgstr "受講者番号"
 
 #. roster_table_header_ta
 #: sections/sections-app-util/src/bundle/sections.properties:130
@@ -1126,7 +1126,7 @@ msgctxt ""
 "sections/sections-app-"
 "util/src/bundle/sections.properties:roster_table_header_name"
 msgid "Student Name"
-msgstr "学生名"
+msgstr "受講者名"
 
 #. overview_table_header_time
 #: sections/sections-app-util/src/bundle/sections.properties:140
@@ -1180,7 +1180,7 @@ msgstr "/"
 msgctxt ""
 "sections/sections-app-util/src/bundle/sections.properties:roster_search_text"
 msgid "Student name or ID"
-msgstr "学生名また学生番号"
+msgstr "受講者名また受講者番号"
 
 #. section_start_time
 #: sections/sections-app-util/src/bundle/sections.properties:147
@@ -1216,7 +1216,7 @@ msgctxt ""
 msgid ""
 "{0} {1} been successfully created!  You may now assign TAs and students to "
 "the {2} by choosing the links under the section."
-msgstr "{0} {1} が作成されました．セクション下のリンクを選択することにより，TA や学生を {2} に割り当てることができます．"
+msgstr "{0} {1} が作成されました．セクション下のリンクを選択することにより，TA や受講者を {2} に割り当てることができます．"
 
 #. edit_student_sections_instructions
 #: sections/sections-app-util/src/bundle/sections.properties:151
@@ -1228,7 +1228,7 @@ msgid ""
 "student to one section within each category. If the student is already a "
 "member of a section in a category, they wil be removed from that section if "
 "you assign them to a new section."
-msgstr "セクションにこの学生を割り当てる場合は，「割り当て」をクリックします．各カテゴリ内では一つのセクションには学生を一回だけしか割り当てができない場合があります．カテゴリ内のセクションのメンバになっている場合は，新しいセクションに割り当てるとその学生は元のセクションから削除されます．"
+msgstr "セクションにこの受講者を割り当てる場合は，「割り当て」をクリックします．各カテゴリ内では一つのセクションには受講者を一回だけしか割り当てができない場合があります．カテゴリ内のセクションのメンバになっている場合は，新しいセクションに割り当てるとその受講者は元のセクションから削除されます．"
 
 #. section_close_title
 #: sections/sections-app-util/src/bundle/sections.properties:152

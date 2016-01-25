@@ -412,14 +412,14 @@ msgstr "宣誓を追加"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.addinst"
 msgid "Additional instructor's comments about your submission"
-msgstr "提出物に関する追加の教員のコメント"
+msgstr "提出物に関する追加の担当者のコメント"
 
 #. gen.addinst2
 #: assignment/assignment-bundles/resources/assignment.properties:46
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.addinst2"
 msgid "Instructor's comments about your submission"
-msgstr "提出物に関する教員のコメント"
+msgstr "提出物に関する担当者のコメント"
 
 #. gen.addinstatts
 #: assignment/assignment-bundles/resources/assignment.properties:47
@@ -427,7 +427,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gen.addinstatts"
 msgid "Instructor's attachments to this submission"
-msgstr "この提出物への教員の添付"
+msgstr "この提出物への担当者の添付"
 
 #. gen.addres2
 #: assignment/assignment-bundles/resources/assignment.properties:48
@@ -898,7 +898,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gen.viewassliststudentsummary"
 msgid "List of students that have turned in assignments."
-msgstr "課題を閲覧した学生の一覧"
+msgstr "課題を閲覧した受講者の一覧"
 
 #. gen.viewasslistreportsummary
 #: assignment/assignment-bundles/resources/assignment.properties:111
@@ -906,7 +906,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gen.viewasslistreportsummary"
 msgid "List of graded student assignments."
-msgstr "採点済み学生課題の一覧"
+msgstr "採点済み受講者課題の一覧"
 
 #. gen.in
 #: assignment/assignment-bundles/resources/assignment.properties:112
@@ -934,7 +934,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gen.instrcomment"
 msgid "Instructor Summary Comments"
-msgstr "教員のサマリーコメント"
+msgstr "担当者のサマリーコメント"
 
 #. gen.to
 #: assignment/assignment-bundles/resources/assignment.properties:116
@@ -975,7 +975,7 @@ msgstr "修正日時"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.modbyins"
 msgid "Modified by instructor"
-msgstr "教員による修正日時"
+msgstr "担当者による修正日時"
 
 #. gen.new
 #: assignment/assignment-bundles/resources/assignment.properties:122
@@ -1067,14 +1067,14 @@ msgctxt ""
 msgid ""
 "Original submission text with the instructor's comments inserted if "
 "applicable"
-msgstr "必要に応じて教員のコメントが挿入されているオリジナルの提出されたテキスト"
+msgstr "必要に応じて担当者のコメントが挿入されているオリジナルの提出されたテキスト"
 
 #. gen.orisub3
 #: assignment/assignment-bundles/resources/assignment.properties:135
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.orisub3"
 msgid "Last submission text with instructor comments inserted if applicable"
-msgstr "必要に応じて教員のコメントが挿入されている最後の提出されたテキスト"
+msgstr "必要に応じて担当者のコメントが挿入されている最後の提出されたテキスト"
 
 #. gen.outof
 #: assignment/assignment-bundles/resources/assignment.properties:136
@@ -1205,7 +1205,7 @@ msgstr "「デフォルト課題一覧ビュー」の順序変更"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.retustud"
 msgid "Save and Release to Student"
-msgstr "学生に返却"
+msgstr "受講者に返却"
 
 #. gen.retustudtit
 #: assignment/assignment-bundles/resources/assignment.properties:154
@@ -1213,7 +1213,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gen.retustudtit"
 msgid "Save and return comments and grade to student"
-msgstr "コメントおよび成績を保存し学生に返却"
+msgstr "コメントおよび成績を保存し受講者に返却"
 
 #. gen.returned
 #: assignment/assignment-bundles/resources/assignment.properties:155
@@ -1255,7 +1255,7 @@ msgstr "保存"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.savdratit"
 msgid "Save comments and grade, but do not return to student yet"
-msgstr "コメントと成績を保存しますが，学生にはまだ返却しません"
+msgstr "コメントと成績を保存しますが，受講者にはまだ返却しません"
 
 #. gen.sca
 #: assignment/assignment-bundles/resources/assignment.properties:161
@@ -1387,42 +1387,42 @@ msgstr "提出された添付"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.student"
 msgid "Student"
-msgstr "学生"
+msgstr "受講者"
 
 #. gen.students
 #: assignment/assignment-bundles/resources/assignment.properties:179
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.students"
 msgid "Students"
-msgstr "学生"
+msgstr "受講者"
 
 #. gen.stunam
 #: assignment/assignment-bundles/resources/assignment.properties:180
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.stunam"
 msgid "Student Name"
-msgstr "学生名"
+msgstr "受講者名"
 
 #. gen.stusub
 #: assignment/assignment-bundles/resources/assignment.properties:181
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.stusub"
 msgid "Student Submissions"
-msgstr "学生の提出物"
+msgstr "受講者の提出物"
 
 #. gen.stuvie
 #: assignment/assignment-bundles/resources/assignment.properties:182
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.stuvie"
 msgid "Student View"
-msgstr "学生表示"
+msgstr "受講者表示"
 
 #. gen.stuvieof
 #: assignment/assignment-bundles/resources/assignment.properties:183
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:gen.stuvieof"
 msgid "Student view of the assignment"
-msgstr "課題の学生表示"
+msgstr "課題の受講者表示"
 
 #. gen.stucantdo
 #: assignment/assignment-bundles/resources/assignment.properties:184
@@ -1676,7 +1676,7 @@ msgid ""
 "text by clicking in the box, then type your comments. Comments surrounded by"
 " double curly braces, {{<span class=\"highlight\">like this</span>}}, will "
 "appear red to the student."
-msgstr "以下は学生からの提出物です．ボックスの中をクリックし，コメントを入力することによりこのテキストにコメントを挿入することができます．{{<span class=\"highlight\">このように</span>}} 二重の中括弧で囲まれたコメントは学生には赤字で表示されます．"
+msgstr "以下は受講者からの提出物です．ボックスの中をクリックし，コメントを入力することによりこのテキストにコメントを挿入することができます．{{<span class=\"highlight\">このように</span>}} 二重の中括弧で囲まれたコメントは受講者には赤字で表示されます．"
 
 #. gradingsub.nosubmittedtext
 #: assignment/assignment-bundles/resources/assignment.properties:218
@@ -1684,7 +1684,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gradingsub.nosubmittedtext"
 msgid "There is no student submitted text."
-msgstr "学生が提出したテキストがありません．"
+msgstr "受講者が提出したテキストがありません．"
 
 #. gradingsub.opecliass
 #: assignment/assignment-bundles/resources/assignment.properties:219
@@ -1708,7 +1708,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gradingsub.prefee2"
 msgid "Instructor comments to previous submissions"
-msgstr "以前の提出物への教員のコメント"
+msgstr "以前の提出物への担当者のコメント"
 
 #. gradingsub.prefeetex
 #: assignment/assignment-bundles/resources/assignment.properties:222
@@ -1725,7 +1725,7 @@ msgctxt ""
 "bundles/resources/assignment.properties:gradingsub.prefeetex2"
 msgid ""
 "Other previous submissions with instructor comments inserted if applicable"
-msgstr "必要に応じて，教員のコメントがある他の以前の提出物が挿入されました"
+msgstr "必要に応じて，担当者のコメントがある他の以前の提出物が挿入されました"
 
 #. gradingsub.prefeetex3
 #: assignment/assignment-bundles/resources/assignment.properties:224
@@ -1733,7 +1733,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:gradingsub.prefeetex3"
 msgid "Previous submissions with instructor comments inserted if applicable"
-msgstr "必要に応じて，教員のコメントがある以前の提出物が挿入されました"
+msgstr "必要に応じて，担当者のコメントがある以前の提出物が挿入されました"
 
 #. gradingsub.prefeedbackAttachments
 #: assignment/assignment-bundles/resources/assignment.properties:225
@@ -1791,7 +1791,7 @@ msgctxt ""
 msgid ""
 "Some students have started working on the assignment but have not submitted "
 "yet."
-msgstr "何人かの学生が課題をすでに開始していますが，まだ提出していません．"
+msgstr "何人かの受講者が課題をすでに開始していますが，まだ提出していません．"
 
 #. inlin
 #: assignment/assignment-bundles/resources/assignment.properties:232
@@ -1944,7 +1944,7 @@ msgstr "課題一覧"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:lisofass2"
 msgid "Assignment List by Student"
-msgstr "学生ごとの課題一覧"
+msgstr "受講者ごとの課題一覧"
 
 #. listassig.sorbynum1
 #: assignment/assignment-bundles/resources/assignment.properties:255
@@ -2193,7 +2193,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:prevassig.hidstuvie"
 msgid "Hide student view"
-msgstr "学生ビューを非表示"
+msgstr "受講者ビューを非表示"
 
 #. prevassig.preass
 #: assignment/assignment-bundles/resources/assignment.properties:289
@@ -2217,7 +2217,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:prevassig.shostuvie"
 msgid "Show student view"
-msgstr "学生ビューを表示"
+msgstr "受講者ビューを表示"
 
 #. releas
 #: assignment/assignment-bundles/resources/assignment.properties:292
@@ -2347,7 +2347,7 @@ msgid ""
 "The list of assignments below appears exactly as a student will see it. By "
 "clicking 'Submit as Student', you can work through the assignment exactly as"
 " a student will, including submitting the assignment."
-msgstr "下の課題一覧には，学生が見るものと全く同じものが表示されています．「学生として提出」をクリックすることにより，課題を提出することを含めて，学生と全く同じように課題に取り組むことができます．"
+msgstr "下の課題一覧には，受講者が見るものと全く同じものが表示されています．「受講者として提出」をクリックすることにより，課題を提出することを含めて，受講者と全く同じように課題に取り組むことができます．"
 
 #. stulistassig.selanass
 #: assignment/assignment-bundles/resources/assignment.properties:309
@@ -2375,7 +2375,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:stulistsunbm.hidstuass"
 msgid "Hide student's assignments/submissions"
-msgstr "学生の課題・提出物を非表示"
+msgstr "受講者の課題・提出物を非表示"
 
 #. stulistsunbm.listhestu
 #: assignment/assignment-bundles/resources/assignment.properties:312
@@ -2386,7 +2386,7 @@ msgid ""
 "List the student submission for every assignment. Column 1: student name - "
 "click to expand. When expanded, columns 2-5 display assignment title, "
 "submission, status and grade. "
-msgstr "課題ごとの学生の提出物一覧"
+msgstr "課題ごとの受講者の提出物一覧"
 
 #. stulistsunbm.shostuass
 #: assignment/assignment-bundles/resources/assignment.properties:313
@@ -2394,7 +2394,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:stulistsunbm.shostuass"
 msgid "Show student's assignments/submissions"
-msgstr "学生の課題・提出物を表示"
+msgstr "受講者の課題・提出物を表示"
 
 #. stupresub.max
 #: assignment/assignment-bundles/resources/assignment.properties:314
@@ -2639,7 +2639,7 @@ msgstr "そのような課題はありません．"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:theisnostudent"
 msgid "There is no student."
-msgstr "学生がいません．"
+msgstr "受講者がいません．"
 
 #. thiasshas
 #: assignment/assignment-bundles/resources/assignment.properties:345
@@ -2934,7 +2934,7 @@ msgstr "選択対象を削除しました"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:subasstudent"
 msgid "Submit as Student"
-msgstr "学生として提出"
+msgstr "受講者として提出"
 
 #. alert.globalNavi
 #: assignment/assignment-bundles/resources/assignment.properties:383
@@ -3359,7 +3359,7 @@ msgstr "グループアクセスが可能な課題を「成績簿」に追加す
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:nostudent"
 msgid "There is no student in the site."
-msgstr "サイトに学生が登録されていません．"
+msgstr "サイトに受講者が登録されていません．"
 
 #. grading
 #: assignment/assignment-bundles/resources/assignment.properties:438
@@ -3428,7 +3428,7 @@ msgctxt ""
 msgid ""
 "The Accept Until Date has not yet passed, and this assignment may still be "
 "worked on by the student. Are you sure you want to grade?"
-msgstr "「最終受理日時」をまだ過ぎていませんので，学生はこの課題をまだ取り組むことができます．本当に採点しますか?"
+msgstr "「最終受理日時」をまだ過ぎていませんので，受講者はこの課題をまだ取り組むことができます．本当に採点しますか?"
 
 #. grading.unassigned
 #: assignment/assignment-bundles/resources/assignment.properties:447
@@ -3474,7 +3474,7 @@ msgid ""
 "browser-windows or tabs while you are grading. We recommend that you close "
 "and restart your browser, and then log back into the system, before "
 "continuing with your grading."
-msgstr "成績，コメント，フィードバックは保存されていません．再度，入力する必要があります．学生の提出物は一度に一つだけ開くことができます．保存する前に別の学生の提出物を開くと，それまで開いていた学生の提出物を採点することは，すべての提出物を閉じ再度開くまでできません．この問題を避けるためには，採点中には複数ブラウザウィンドウまたはタブを開かないでください．採点を続ける前に，ブラウザを閉じ再起動してから，システムにログインし直すことをお勧めします．"
+msgstr "成績，コメント，フィードバックは保存されていません．再度，入力する必要があります．受講者の提出物は一度に一つだけ開くことができます．保存する前に別の受講者の提出物を開くと，それまで開いていた受講者の提出物を採点することは，すべての提出物を閉じ再度開くまでできません．この問題を避けるためには，採点中には複数ブラウザウィンドウまたはタブを開かないでください．採点を続ける前に，ブラウザを閉じ再起動してから，システムにログインし直すことをお勧めします．"
 
 #. grading.reminder
 #: assignment/assignment-bundles/resources/assignment.properties:452
@@ -3617,7 +3617,7 @@ msgctxt ""
 msgid ""
 "This assignment does not accept online submissions. Contact your instructor "
 "for additional instructions."
-msgstr "この課題はオンライン提出では受け付けられません．詳しい手順については担当教員に連絡を取ってください．"
+msgstr "この課題はオンライン提出では受け付けられません．詳しい手順については担当担当者に連絡を取ってください．"
 
 #. nonelec_instruction2
 #: assignment/assignment-bundles/resources/assignment.properties:469
@@ -3625,7 +3625,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:nonelec_instruction2"
 msgid "This non-electronic assignment does not accept student submissions."
-msgstr "この課題は手渡しによる提出が必要なため，学生からの提出物を受け付けません．"
+msgstr "この課題は手渡しによる提出が必要なため，受講者からの提出物を受け付けません．"
 
 #. confirm.savesubmission.title
 #: assignment/assignment-bundles/resources/assignment.properties:470
@@ -3780,7 +3780,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:receive.confirm.submission.email.each"
 msgid "Send a notification email for each student submission"
-msgstr "各学生の提出物についてメールによる通知を送る"
+msgstr "各受講者の提出物についてメールによる通知を送る"
 
 #. receive.confirm.submission.email.digest
 #: assignment/assignment-bundles/resources/assignment.properties:489
@@ -3789,7 +3789,7 @@ msgctxt ""
 "bundles/resources/assignment.properties:receive.confirm.submission.email.digest"
 msgid ""
 "Send one email per day summarizing notifications for student submissions"
-msgstr "学生の提出物について一日ごとにまとめた通知をメールで送る"
+msgstr "受講者の提出物について一日ごとにまとめた通知をメールで送る"
 
 #. receive.confirm.submission.email.none
 #: assignment/assignment-bundles/resources/assignment.properties:490
@@ -3797,7 +3797,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:receive.confirm.submission.email.none"
 msgid "Do not send notification emails for any student submissions"
-msgstr "どの学生の提出物についてもメールによる通知を送らない"
+msgstr "どの受講者の提出物についてもメールによる通知を送らない"
 
 #. uploadall.title
 #: assignment/assignment-bundles/resources/assignment.properties:491
@@ -3823,7 +3823,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:uploadall.instruction2"
 msgid "The archive file should contain a folder for each student. "
-msgstr "アーカイブファイルには各学生のフォルダが含まれていなければなりません．各フォルダには comments.txt ファイル，あなたが追加した教員のコメントつきの学生の提出物，学生の提出物とともに返却したい他のファイルを含めることができます．"
+msgstr "アーカイブファイルには各受講者のフォルダが含まれていなければなりません．各フォルダには comments.txt ファイル，あなたが追加した担当者のコメントつきの受講者の提出物，受講者の提出物とともに返却したい他のファイルを含めることができます．"
 
 #. uploadall.instruction3
 #: assignment/assignment-bundles/resources/assignment.properties:494
@@ -3845,7 +3845,7 @@ msgid ""
 "file size and the connection speed. If you only need to upload a subset of "
 "the zip file, please limit your zip file size first by choosing options "
 "accordingly in the Download All process. "
-msgstr "各フォルダには，comments.txt ファイルや教員のコメント付きの学生の提出物，学生の提出物に対して返却したい他のファイル，を含めることができます．"
+msgstr "各フォルダには，comments.txt ファイルや担当者のコメント付きの受講者の提出物，受講者の提出物に対して返却したい他のファイル，を含めることができます．"
 
 #. downloadall.instruction
 #: assignment/assignment-bundles/resources/assignment.properties:496
@@ -3879,7 +3879,7 @@ msgctxt ""
 msgid ""
 "Student submission text (original student submitted text, possibly "
 "containing instructor added comments)"
-msgstr "学生の提出物 (学生が提出したオリジナルの提出物で，教員が追加したコメントがついている場合があります)"
+msgstr "受講者の提出物 (受講者が提出したオリジナルの提出物で，担当者が追加したコメントがついている場合があります)"
 
 #. uploadall.choose.file.studentSubmissionAttachment
 #: assignment/assignment-bundles/resources/assignment.properties:500
@@ -3887,7 +3887,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:uploadall.choose.file.studentSubmissionAttachment"
 msgid "Student submission attachment(s)"
-msgstr "学生の提出物の添付ファイル"
+msgstr "受講者の提出物の添付ファイル"
 
 #. uploadall.choose.file.gradeFile
 #: assignment/assignment-bundles/resources/assignment.properties:501
@@ -3919,7 +3919,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:uploadall.choose.file.feedbackTexts"
 msgid "Feedback text (the inline comments with student submission)"
-msgstr "フィードバックテキスト (学生の提出物に付けるインラインコメント)"
+msgstr "フィードバックテキスト (受講者の提出物に付けるインラインコメント)"
 
 #. uploadall.choose.file.feedbackComments
 #: assignment/assignment-bundles/resources/assignment.properties:505
@@ -3930,7 +3930,7 @@ msgid ""
 "Feedback comments (comments.txt file if available in student's folder. "
 "Comments are put into the Instructor Comments field for each student's "
 "submission)"
-msgstr "フィードバックコメント (学生のフォルダに comments.txt ファイルがある場合はそのファイル．コメントは，学生の提出物ごとに「教員コメント」フィールドに入力されます)"
+msgstr "フィードバックコメント (受講者のフォルダに comments.txt ファイルがある場合はそのファイル．コメントは，受講者の提出物ごとに「担当者コメント」フィールドに入力されます)"
 
 #. uploadall.choose.file.confirm
 #: assignment/assignment-bundles/resources/assignment.properties:506
@@ -3941,7 +3941,7 @@ msgid ""
 "You have selected the archive file for uploading. Files contained in the "
 "archive will be uploaded to the corresponding student submission for the "
 "assignment."
-msgstr "アップロード用のアーカイブが選択されています．アーカイブに含まれるファイルは，その課題に該当する学生提出物にアップロードされます．"
+msgstr "アップロード用のアーカイブが選択されています．アーカイブに含まれるファイルは，その課題に該当する受講者提出物にアップロードされます．"
 
 #. uploadall.releaseOption
 #: assignment/assignment-bundles/resources/assignment.properties:507
@@ -3957,7 +3957,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:uploadall.releaseOption.yes"
 msgid "Release uploaded information to students"
-msgstr "アップロードされた情報を学生に公開"
+msgstr "アップロードされた情報を受講者に公開"
 
 #. uploadall.releaseOption.no
 #: assignment/assignment-bundles/resources/assignment.properties:509
@@ -4075,7 +4075,7 @@ msgstr "{0}を使用"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:review.allow"
 msgid "Allow students to view report"
-msgstr "レポートの表示を学生に許可"
+msgstr "レポートの表示を受講者に許可"
 
 #. review.report
 #: assignment/assignment-bundles/resources/assignment.properties:523
@@ -4347,7 +4347,7 @@ msgstr "課題の締切日時:"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:noti.student"
 msgid "Student:"
-msgstr "学生:"
+msgstr "受講者:"
 
 #. noti.submit.time
 #: assignment/assignment-bundles/resources/assignment.properties:557
@@ -4468,7 +4468,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:modelAnswer.show_to_student.prompt"
 msgid "Show to students"
-msgstr "学生に表示"
+msgstr "受講者に表示"
 
 #. modelAnswer.show_to_student.tooltip
 #: assignment/assignment-bundles/resources/assignment.properties:573
@@ -4492,7 +4492,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:modelAnswer.show_to_student.1"
 msgid "Before student starts assignment"
-msgstr "学生が課題を開始する前"
+msgstr "受講者が課題を開始する前"
 
 #. modelAnswer.show_to_student.2
 #: assignment/assignment-bundles/resources/assignment.properties:576
@@ -4500,7 +4500,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:modelAnswer.show_to_student.2"
 msgid "After student submits"
-msgstr "学生が課題を提出した後"
+msgstr "受講者が課題を提出した後"
 
 #. modelAnswer.show_to_student.3
 #: assignment/assignment-bundles/resources/assignment.properties:577
@@ -4532,7 +4532,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:modelAnswer.alert.showto"
 msgid "Please choose proper time for showing model answer to students."
-msgstr "模範回答を学生に表示する適切な時刻を選んでください．"
+msgstr "模範回答を受講者に表示する適切な時刻を選んでください．"
 
 #. note
 #: assignment/assignment-bundles/resources/assignment.properties:581
@@ -4591,14 +4591,14 @@ msgstr "プライベートのまま"
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:note.to.2"
 msgid "Allow other instructors to read"
-msgstr "読込を他の教員に許可"
+msgstr "読込を他の担当者に許可"
 
 #. note.to.3
 #: assignment/assignment-bundles/resources/assignment.properties:589
 msgctxt ""
 "assignment/assignment-bundles/resources/assignment.properties:note.to.3"
 msgid "Allow other instructors to read and edit"
-msgstr "読込・書込を他の教員に許可"
+msgstr "読込・書込を他の担当者に許可"
 
 #. note.alert.text
 #: assignment/assignment-bundles/resources/assignment.properties:590
@@ -4936,7 +4936,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:send.submission.releasegrade.email.none"
 msgid "Do not send notification email to student when the grade is released"
-msgstr "成績が公開されたら通知メールを学生に送信しない"
+msgstr "成績が公開されたら通知メールを受講者に送信しない"
 
 #. send.submission.releasegrade.email
 #: assignment/assignment-bundles/resources/assignment.properties:634
@@ -4944,7 +4944,7 @@ msgctxt ""
 "assignment/assignment-"
 "bundles/resources/assignment.properties:send.submission.releasegrade.email"
 msgid "Send notification email to student when the grade is released"
-msgstr "成績が公開されたら通知メールを学生に送信する"
+msgstr "成績が公開されたら通知メールを受講者に送信する"
 
 #. noti.releasegrade.subject.content
 #: assignment/assignment-bundles/resources/assignment.properties:635

@@ -647,7 +647,7 @@ msgstr "ステータス更新を誰が閲覧できるかを選びます．"
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:accessibility.privacy.student"
 msgid "Choose who can see your student information"
-msgstr "だれが学生情報を見ることができるか選択しなさい"
+msgstr "だれが受講者情報を見ることができるか選択しなさい"
 
 #. accessibility.privacy.wall
 #: profile2/bundle/src/resources/ProfileApplication.properties:52
@@ -1649,7 +1649,7 @@ msgstr "教職員用:"
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:heading.section.academic.students"
 msgid "For students:"
-msgstr "学生用:"
+msgstr "受講者用:"
 
 #. heading.section.email
 #: profile2/bundle/src/resources/ProfileApplication.properties:194
@@ -1712,14 +1712,14 @@ msgstr "スタッフ情報"
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:heading.student"
 msgid "Student Information"
-msgstr "学生情報"
+msgstr "受講者情報"
 
 #. heading.student.edit
 #: profile2/bundle/src/resources/ProfileApplication.properties:203
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:heading.student.edit"
 msgid "Student Information"
-msgstr "学生情報"
+msgstr "受講者情報"
 
 #. heading.widget.my.friends
 #: profile2/bundle/src/resources/ProfileApplication.properties:204
@@ -2571,7 +2571,7 @@ msgstr "スタッフ情報"
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:privacy.studentinfo"
 msgid "Student Info"
-msgstr "学生情報"
+msgstr "受講者情報"
 
 #. profile.academicprofileurl
 #: profile2/bundle/src/resources/ProfileApplication.properties:325
@@ -3275,7 +3275,7 @@ msgstr "だれがスタッフ情報を見ることができるか選択しなさ
 msgctxt ""
 "profile2/bundle/src/resources/ProfileApplication.properties:text.privacy.student.tooltip"
 msgid "Choose who can see your student information"
-msgstr "だれが学生情報を見ることができるか選択しなさい"
+msgstr "だれが受講者情報を見ることができるか選択しなさい"
 
 #. text.profile.birthyear.tooltip
 #: profile2/bundle/src/resources/ProfileApplication.properties:423

@@ -245,7 +245,7 @@ msgctxt ""
 "postem/postem-"
 "app/src/bundle/org/sakaiproject/tool/postem/bundle/Messages.properties:has_students"
 msgid "This feedback is for {0} student(s)."
-msgstr "このフィードバックは {0} 人の学生用です．"
+msgstr "このフィードバックは {0} 人の受講者用です．"
 
 #. with_header
 #: postem/postem-app/src/bundle/org/sakaiproject/tool/postem/bundle/Messages.properties:29

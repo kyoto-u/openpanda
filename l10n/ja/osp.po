@@ -3208,7 +3208,7 @@ msgid ""
 "for peer-to-peer or instructor-student type interaction. Tools on portfolio "
 "sites are limited to those that support the processes of collection, "
 "reflection, and portfolio design and publication."
-msgstr "ポートフォリオサイトは，電子ポートフォリオの構築および使用を促進するように設計されています．ポートフォリオサイトは，ロールをピア・ツー・ピアかインストラクター学生タイプ相互作用を考慮に入れ十分に柔軟なものになっています．ポートフォリオサイト上のツールは，収集，リフレクションおよびポートフォリオ設計のプロセスおよび公開を支援するものに制限されています．"
+msgstr "ポートフォリオサイトは，電子ポートフォリオの構築および使用を促進するように設計されています．ポートフォリオサイトは，ロールをピア・ツー・ピアかインストラクター受講者タイプ相互作用を考慮に入れ十分に柔軟なものになっています．ポートフォリオサイト上のツールは，収集，リフレクションおよびポートフォリオ設計のプロセスおよび公開を支援するものに制限されています．"
 
 #. siteType_page_title_project
 #: osp/portal/tool/src/bundle/org/theospi/portfolio/portal/messages.properties:17
@@ -3234,7 +3234,7 @@ msgid ""
 "specifically to support instructor-student interaction. In general, "
 "membership in course sites is limited to those officially enrolled for a "
 "course or those teaching and supporting a course."
-msgstr "コースサイトは，学術的なクラスまたはセクションとして機関に指定された公式サイトです．コースサイトは学究的背景における指導と学習の為に適切なロールを持っており，特にインストラクター学生の相互作用を支援するように設計されたツールから成っています．一般にコースサイトのメンバー資格は，コースのために公式に登録された人あるいはコースを教えて支援する人に制限されています．"
+msgstr "コースサイトは，学術的なクラスまたはセクションとして機関に指定された公式サイトです．コースサイトは学究的背景における指導と学習の為に適切なロールを持っており，特にインストラクター受講者の相互作用を支援するように設計されたツールから成っています．一般にコースサイトのメンバー資格は，コースのために公式に登録された人あるいはコースを教えて支援する人に制限されています．"
 
 #. instructions_requiredFields
 #: osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:1
@@ -4052,7 +4052,7 @@ msgstr "img/freeform.gif"
 msgctxt ""
 "osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:manual_progression_label"
 msgid "Determined by Instructor."
-msgstr "教員により特定"
+msgstr "担当者により特定"
 
 #. manual_progression_desc
 #: osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:116
@@ -6294,7 +6294,7 @@ msgctxt ""
 msgid ""
 "Original submission text with the instructor's comments inserted if "
 "applicable"
-msgstr "必要に応じて教員のコメントが挿入されたオリジナルの提出テキスト"
+msgstr "必要に応じて担当者のコメントが挿入されたオリジナルの提出テキスト"
 
 #. assign.submit.attach
 #: osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:427
@@ -6308,14 +6308,14 @@ msgstr "提出された添付ファイル"
 msgctxt ""
 "osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:assign.comments"
 msgid "Additional instructor's comments about your submission"
-msgstr "提出に関する追加の教員コメント"
+msgstr "提出に関する追加の担当者コメント"
 
 #. assign.feedback.attach
 #: osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:429
 msgctxt ""
 "osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:assign.feedback.attach"
 msgid "Instructor's attachments to this submission"
-msgstr "この提出物への教員の添付ファイル"
+msgstr "この提出物への担当者の添付ファイル"
 
 #. add_first_assignment_message
 #: osp/matrix/tool/src/bundle/org/theospi/portfolio/matrix/bundle/Messages.properties:430

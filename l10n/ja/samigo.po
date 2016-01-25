@@ -280,7 +280,7 @@ msgctxt ""
 msgid ""
 "Answer: Provide a model answer to show students and to assist graders along "
 "with any feedback."
-msgstr "回答: 模範回答を学生に示すとともに採点者を支援する"
+msgstr "回答: 模範回答を受講者に示すとともに採点者を支援する"
 
 #. answer_text_predefi
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:33
@@ -1555,7 +1555,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:feedback_will_be_dis"
 msgid "Feedback will be displayed to the student at a specified date"
-msgstr "指定された日にフィードバックが学生に表示されます"
+msgstr "指定された日にフィードバックが受講者に表示されます"
 
 #. file_upload
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:185
@@ -2091,7 +2091,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:no_feedback_will_be"
 msgid "NO Feedback will be displayed to the student."
-msgstr "フィードバックは学生に表示されません．"
+msgstr "フィードバックは受講者に表示されません．"
 
 #. no_toc
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:251
@@ -2363,7 +2363,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:number_of_attempts_indic"
 msgid "Indicate number of times students are allowed to re-record answer"
-msgstr "学生が回答を再記録できるアイテム数を示します"
+msgstr "受講者が回答を再記録できるアイテム数を示します"
 
 #. number_of_qs
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:281
@@ -2404,7 +2404,7 @@ msgctxt ""
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:randomized_per_submission"
 msgid ""
 "A student's questions are randomized each time an assessment is submitted"
-msgstr "学生の問題はテストが生成される度にランダム化されます"
+msgstr "受講者の問題はテストが生成される度にランダム化されます"
 
 #. randomized_per_student
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:286
@@ -2412,7 +2412,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:randomized_per_student"
 msgid "A student's questions are randomized once for all submissions"
-msgstr "すべてのテスト生成について学生の問題はランダム化されます"
+msgstr "すべてのテスト生成について受講者の問題はランダム化されます"
 
 #. number_of_submission
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:287
@@ -2992,7 +2992,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:select_the_feedback"
 msgid "Select the Feedback Components to be displayed to the student"
-msgstr "学生に表示するフィードバックコメントを選択します．"
+msgstr "受講者に表示するフィードバックコメントを選択します．"
 
 #. selected
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:359
@@ -3048,7 +3048,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:student_rsquo_s_scor"
 msgid "Student's Score"
-msgstr "学生の得点"
+msgstr "受講者の得点"
 
 #. submission_message
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:366
@@ -3120,7 +3120,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:time_allowed_seconds_indic"
 msgid "Indicate how long student has to record answer"
-msgstr "どのくらいの時間で学生が回答を記録する必要があるかを示しています"
+msgstr "どのくらいの時間で受講者が回答を記録する必要があるかを示しています"
 
 #. timed_assessment
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:375
@@ -4015,7 +4015,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:edit_published_assessment_warn_1"
 msgid "This assessment has been retracted from student view.  "
-msgstr "このテストは，学生ビューから回収されています．"
+msgstr "このテストは，受講者ビューから回収されています．"
 
 #. edit_published_assessment_warn_21
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:481
@@ -4025,7 +4025,7 @@ msgctxt ""
 msgid ""
 "Click \"Republish\" or \"Regrade and Republish\" to make it available to "
 "students."
-msgstr "「再公開」または「再採点および再公開」をクリックし，学生に利用可能にします．"
+msgstr "「再公開」または「再採点および再公開」をクリックし，受講者に利用可能にします．"
 
 #. edit_published_assessment_warn_22
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:482
@@ -4033,7 +4033,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:edit_published_assessment_warn_22"
 msgid "Click \"Republish\" to make it available to students."
-msgstr "「再公開」をクリックし，学生に利用可能にします．"
+msgstr "「再公開」をクリックし，受講者に利用可能にします．"
 
 #. edit_published_assessment_warn_edit_pool_questions
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:483
@@ -4063,7 +4063,7 @@ msgctxt ""
 msgid ""
 "At least one student has begun taking this assessment, and it is no longer "
 "available for editing.  Click Return to return to the Assessments screen."
-msgstr "少なくとも一人の学生がこのテストを受験し始めていますので，もはや編集可能ではなりません．「戻る」をクリックし，テスト画面に戻ります．"
+msgstr "少なくとも一人の受講者がこのテストを受験し始めていますので，もはや編集可能ではなりません．「戻る」をクリックし，テスト画面に戻ります．"
 
 #. regrade_republish
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:486
@@ -4281,7 +4281,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:edit_published_assessment_heading_conf_info_2"
 msgid "It will be retracted (unavailable to students) until you republish it."
-msgstr "よって，再公開するまで回収されます (学生は利用できません)．"
+msgstr "よって，再公開するまで回収されます (受講者は利用できません)．"
 
 #. edit_published_assessment_heading_conf_info_3
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:511
@@ -5452,7 +5452,7 @@ msgctxt ""
 msgid ""
 "Assessment Preview - This is an example student view of this assessment"
 "                                                            "
-msgstr "テストプレビュー - このテストの学生への表示の例です"
+msgstr "テストプレビュー - このテストの受講者への表示の例です"
 
 #. all_user_input_saved
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:11
@@ -5525,7 +5525,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:answer_provide_a_mo"
 msgid "Answer: Provide a model answer to show students and to assist graders."
-msgstr "回答: 模範回答を学生に示すとともに採点者を支援する"
+msgstr "回答: 模範回答を受講者に示すとともに採点者を支援する"
 
 #. answer_text_predefi
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:20
@@ -6249,7 +6249,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:feedback_will_be_dis"
 msgid "Feedback will be displayed to the student at a specified date:"
-msgstr "指定された日にフィードバックが学生に表示されます"
+msgstr "指定された日にフィードバックが受講者に表示されます"
 
 #. feedback_avail_on
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:110
@@ -6497,7 +6497,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:instructor"
 msgid "Instructor"
-msgstr "教員"
+msgstr "担当者"
 
 #. item
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:141
@@ -6759,7 +6759,7 @@ msgctxt ""
 msgid ""
 "There is no feedback available for this assessment. Please contact your "
 "instructor if you have any questions."
-msgstr "このテストには利用可能なフィードバックがありません． 質問がある場合は教員に連絡してください．"
+msgstr "このテストには利用可能なフィードバックがありません． 質問がある場合は担当者に連絡してください．"
 
 #. no_feedback_will_be
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:173
@@ -6767,7 +6767,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:no_feedback_will_be"
 msgid "NO Feedback will be displayed to the student."
-msgstr "フィードバックは学生に表示されません．"
+msgstr "フィードバックは受講者に表示されません．"
 
 #. no_toc
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:174
@@ -6833,7 +6833,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:number_of_attempts_indic"
 msgid "Indicate number of times students are allowed to re-record answer"
-msgstr "学生が回答を再記録できるアイテム数を示します"
+msgstr "受講者が回答を再記録できるアイテム数を示します"
 
 #. number_of_qs
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:182
@@ -7289,7 +7289,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:select_the_feedback"
 msgid "Select the Feedback Components to be displayed to the student:"
-msgstr "学生に表示するフィードバックコメントを選択します．:"
+msgstr "受講者に表示するフィードバックコメントを選択します．:"
 
 #. selected
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:239
@@ -7436,7 +7436,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:student_rsquo_s_scor"
 msgid "Student's Score"
-msgstr "学生の得点"
+msgstr "受講者の得点"
 
 #. submission
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:257
@@ -7572,7 +7572,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:time_allowed_seconds_indic"
 msgid "Indicate how long student has to record answer"
-msgstr "どのくらいの時間で学生が回答を記録する必要があるかを示しています"
+msgstr "どのくらいの時間で受講者が回答を記録する必要があるかを示しています"
 
 #. timed_assessment
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:274
@@ -7782,7 +7782,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:mess_inst"
 msgid "Message from the Instructor"
-msgstr "教員からのメッセージ"
+msgstr "担当者からのメッセージ"
 
 #. course
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:300
@@ -7798,7 +7798,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:inst"
 msgid "Instructor"
-msgstr "教員"
+msgstr "担当者"
 
 #. no_time_limit
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:302
@@ -7984,7 +7984,7 @@ msgctxt ""
 msgid ""
 "The username or password you have entered is incorrect.  Please contact your"
 " instructor if you have any questions."
-msgstr "入力されたユーザ名またはパスワードが間違っています．質問がある場合は教員に連絡してください．"
+msgstr "入力されたユーザ名またはパスワードが間違っています．質問がある場合は担当者に連絡してください．"
 
 #. ip_denied
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:325
@@ -7994,7 +7994,7 @@ msgctxt ""
 msgid ""
 "The IP address of your computer is not authorized to access this assessment."
 " Please contact your instructor if you have any questions."
-msgstr "あなたが使用しているコンピュータの IP アドレスには，テストへのアクセス権が設定されていません．質問がある場合は教員に連絡してください．"
+msgstr "あなたが使用しているコンピュータの IP アドレスには，テストへのアクセス権が設定されていません．質問がある場合は担当者に連絡してください．"
 
 #. timeout_save
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:326
@@ -8043,7 +8043,7 @@ msgctxt ""
 msgid ""
 "Instructor provided comments go here. In assessment settings, this area is "
 "populated by the \"Submission Message\" field."
-msgstr "教員によるコメントがここに来ます．テスト設定の「提出メッセージ」フィールドがこのエリアに表示されます．"
+msgstr "担当者によるコメントがここに来ます．テスト設定の「提出メッセージ」フィールドがこのエリアに表示されます．"
 
 #. submission_confirmation_message_3
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:331
@@ -8126,7 +8126,7 @@ msgctxt ""
 msgid ""
 "The URL to which you have navigated is not a valid location for an "
 "assessment. Please check with your instructor for the correct URL."
-msgstr "ナビゲートした URL はこのテストの有効な場所ではありません．正しい URL を教員に確認してください．"
+msgstr "ナビゲートした URL はこのテストの有効な場所ではありません．正しい URL を担当者に確認してください．"
 
 #. anonymous_quit_warning_message
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:341
@@ -8169,7 +8169,7 @@ msgid ""
 "The assessment you have requested is currently not available. Please contact"
 " your instructor if you have any questions. Click \"Continue\" to go to the "
 "system login page."
-msgstr "要求されたテストは現在利用可能ではありません．質問がある場合は教員に連絡してください．システムのログインページに行く場合は「続ける」をクリックします．"
+msgstr "要求されたテストは現在利用可能ではありません．質問がある場合は担当者に連絡してください．システムのログインページに行く場合は「続ける」をクリックします．"
 
 #. assessment_not_available_message_viaURL
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:345
@@ -8190,7 +8190,7 @@ msgid ""
 "The assessment you have requested is no longer available. Please contact "
 "your instructor if you have any questions. Click \"Continue\" to go to the "
 "system login page."
-msgstr "要求されたテストはすでに利用可能ではありません．質問がある場合は教員に連絡してください．システムのログインページに行く場合は「続ける」をクリックします．"
+msgstr "要求されたテストはすでに利用可能ではありません．質問がある場合は担当者に連絡してください．システムのログインページに行く場合は「続ける」をクリックします．"
 
 #. assessment_no_longer_available_message_viaURL
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:347
@@ -8368,7 +8368,7 @@ msgctxt ""
 msgid ""
 "To make your assessment available to your instructor for grading, click "
 "<b>Return to Assessment</b> and then <b>Submit for Grading</b>."
-msgstr "採点のためにテストを教員に利用できるようにするためには，"
+msgstr "採点のためにテストを担当者に利用できるようにするためには，"
 
 #. review_error_1
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:367
@@ -8376,7 +8376,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:review_error_1"
 msgid "This assessment has been updated by the instructor."
-msgstr "このテストは教員により更新されています．"
+msgstr "このテストは担当者により更新されています．"
 
 #. review_error_2
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:368
@@ -8404,7 +8404,7 @@ msgctxt ""
 msgid ""
 "Click <b>Submit for Grading</b> to make this assessment available to the "
 "instructor."
-msgstr "このテストを教員に提出する場合は"
+msgstr "このテストを担当者に提出する場合は"
 
 #. linear_no_contents_warning_3
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:371
@@ -8739,7 +8739,7 @@ msgid ""
 "This assessment has already submitted and additional submissions are not "
 "allowed. Please contact your instructor if you have any questions. Click "
 "\"Return\" to return to the Assessments page."
-msgstr "このテストはすでに提出され，さらなる提出は認められません．質問がある場合は担当教員に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
+msgstr "このテストはすでに提出され，さらなる提出は認められません．質問がある場合は担当担当者に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
 
 #. no_submission_left_url
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:412
@@ -8768,7 +8768,7 @@ msgid ""
 "The due date for this assessment has passed and late submissions are not "
 "allowed. Please contact your instructor if you have any questions. Click "
 "\"Return\" to return to the Assessments page."
-msgstr "このテストの締切日時が過ぎているとともに，遅延提出は認められていません．質問がある場合は担当教員に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
+msgstr "このテストの締切日時が過ぎているとともに，遅延提出は認められていません．質問がある場合は担当担当者に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
 
 #. no_late_submission_url
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:415
@@ -8797,7 +8797,7 @@ msgid ""
 "This assessment has already submitted and no further amendments are allowed."
 " Please contact your instructor if you have any questions. Click \"Return\" "
 "to return to the Assessments page."
-msgstr "テストはすでに提出されましたので，さらなる修正は認められません．質問がある場合は担当教員に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
+msgstr "テストはすでに提出されましたので，さらなる修正は認められません．質問がある場合は担当担当者に連絡してください．「戻る」をクリックすると「テスト」ページに戻ります．"
 
 #. assessment_has_been_submitted_url
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:418
@@ -8917,7 +8917,7 @@ msgid ""
 "Submitting this assessment is no longer allowed.  Please contact your "
 "instructor if you have any questions. Click \"Return\" to return to the "
 "Assessments page."
-msgstr "このテストの提出はもうできません．質問がある場合は担当教員に連絡してください．「戻る」をクリックすると，テストページに戻ります．"
+msgstr "このテストの提出はもうできません．質問がある場合は担当担当者に連絡してください．「戻る」をクリックすると，テストページに戻ります．"
 
 #. is_retracted_url
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:431
@@ -8937,7 +8937,7 @@ msgctxt ""
 msgid ""
 "You cannot take this assessment since it has been retracted by the "
 "instructor. Click \"Return\" to return to the Assessments page. "
-msgstr "教員によりテストは回収されたため，受験することはできません．「戻る」をクリックし「テスト」ページに戻ります．"
+msgstr "担当者によりテストは回収されたため，受験することはできません．「戻る」をクリックし「テスト」ページに戻ります．"
 
 #. is_retracted_for_edit_url
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:433
@@ -9593,7 +9593,7 @@ msgid ""
 "displays \"n/a\" (not applicable), feedback will be available at the time "
 "shown. If feedback is available for particular submissions, it will be seen "
 "under \"View All Submissions/Scores\"."
-msgstr "次の提出されたテストを確認することができます． テスト問題を確認する場合はテストのタイトルをクリックします  (利用可能であれば，回答や教員のフィードバックも表示されます)．"
+msgstr "次の提出されたテストを確認することができます． テスト問題を確認する場合はテストのタイトルをクリックします  (利用可能であれば，回答や担当者のフィードバックも表示されます)．"
 
 #. take_assessment_notAvailable
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/SelectIndexMessages.properties:9
@@ -10023,7 +10023,7 @@ msgctxt ""
 msgid ""
 "This assessment has been modified since you submitted it. Please consult "
 "your instructor if you find any discrepancies."
-msgstr "このテストは，あなたが提出後，修正されました．矛盾がある場合は，教員に相談してください．"
+msgstr "このテストは，あなたが提出後，修正されました．矛盾がある場合は，担当者に相談してください．"
 
 #. currently_being_edited
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/SelectIndexMessages.properties:62
@@ -10623,7 +10623,7 @@ msgctxt ""
 msgid ""
 "You are not authorized to export this assessment. Please contact your "
 "instructor if you have any questions."
-msgstr "このテストをエクスポートすることが許可されていません．質問がある場合は，教員に連絡を取ってください．"
+msgstr "このテストをエクスポートすることが許可されていません．質問がある場合は，担当者に連絡を取ってください．"
 
 #. button_continue
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorImportExport.properties:37
@@ -10842,7 +10842,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorFrontDoorMessages.properties:assessment_inactive"
 msgid "Inactive (no student access)"
-msgstr "非アクティブ (学生のアクセスは不可)"
+msgstr "非アクティブ (受講者のアクセスは不可)"
 
 #. assessment_view
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorFrontDoorMessages.properties:23
@@ -11213,7 +11213,7 @@ msgid ""
 "To make a retracted assessment available to students, click \"Edit\" under "
 "Select Action, click \"Edit\" again, then select the appropriate republish "
 "option."
-msgstr "このテストは編集のため，回収されています．学生に利用可能にする場合は，「アクションを選択」の下にある「編集」をクリックし，もう一度「編集」をクリックした後，適切な再公開オプションを選択します．"
+msgstr "このテストは編集のため，回収されています．受講者に利用可能にする場合は，「アクションを選択」の下にある「編集」をクリックし，もう一度「編集」をクリックした後，適切な再公開オプションを選択します．"
 
 #. samlite_title
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/SamLite.properties:1
@@ -12101,7 +12101,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/CommonMessages.properties:student_response"
 msgid "Student Response"
-msgstr "学生の回答"
+msgstr "受講者の回答"
 
 #. correct_response
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/CommonMessages.properties:12
@@ -15183,7 +15183,7 @@ msgctxt ""
 msgid ""
 "This option forces the submission of saved assessments for students who have"
 " NO previous submissions."
-msgstr "このオプションは，以前に提出がない学生に対して保存されたテストの提出を強制します．"
+msgstr "このオプションは，以前に提出がない受講者に対して保存されたテストの提出を強制します．"
 
 #. retract_conf
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:95
@@ -15346,7 +15346,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:feedback_by_date"
 msgid "Feedback will be displayed to the student at a specific date"
-msgstr "特定の日時にフィードバックが学生に表示されます"
+msgstr "特定の日時にフィードバックが受講者に表示されます"
 
 #. no_feedback
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:115
@@ -15354,7 +15354,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:no_feedback"
 msgid "No Feedback will be displayed to the student"
-msgstr "学生にはフィードバックは表示されません"
+msgstr "受講者にはフィードバックは表示されません"
 
 #. receive_immediate
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:116
@@ -15434,7 +15434,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:student_identity"
 msgid "Students' Identities"
-msgstr "学生の識別情報"
+msgstr "受講者の識別情報"
 
 #. not_anonymous
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:126
@@ -15442,7 +15442,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:not_anonymous"
 msgid "Students' identities can be seen by graders"
-msgstr "学生の識別情報を採点者は見ることができます"
+msgstr "受講者の識別情報を採点者は見ることができます"
 
 #. anonymous
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:127
@@ -15764,7 +15764,7 @@ msgctxt ""
 msgid ""
 "Review your settings below, adjust level of notification, and click "
 "<b>Republish</b> to make assessment visible to students now."
-msgstr "このテストを再出版すると学生に利用可能になります．"
+msgstr "このテストを再出版すると受講者に利用可能になります．"
 
 #. started_or_submitted
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:165
@@ -15801,7 +15801,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:update_most_current_submission_checkbox"
 msgid "Allow students to update their latest submission."
-msgstr "直近の提出を更新することを学生に許可する．"
+msgstr "直近の提出を更新することを受講者に許可する．"
 
 #. update_most_current_submission_checkbox_warn
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:169
@@ -16788,7 +16788,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:displayed_to_inst"
 msgid "Displayed to Instructor?"
-msgstr "教員に表示?"
+msgstr "担当者に表示?"
 
 #. due_date
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:37
@@ -16820,7 +16820,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:feedback__disp_spec_date"
 msgid "Feedback will be displayed to the student at a specified date"
-msgstr "特定の日時にフィードバックを学生に表示"
+msgstr "特定の日時にフィードバックを受講者に表示"
 
 #. feedback_components_sub
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:41
@@ -16828,7 +16828,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:feedback_components_sub"
 msgid "Feedback Components Students Can See"
-msgstr "フィードバックコメントを学生は閲覧可能"
+msgstr "フィードバックコメントを受講者は閲覧可能"
 
 #. feedback_delivery_sub
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:42
@@ -16892,7 +16892,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:grades_ident"
 msgid "Students' identities can be seen by graders"
-msgstr "学生の識別情報を採点者は閲覧可能"
+msgstr "受講者の識別情報を採点者は閲覧可能"
 
 #. grades_to_default
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:50
@@ -16988,7 +16988,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:instructor_can_edit"
 msgid "Instructor Can Edit?"
-msgstr "教員は編集可能?"
+msgstr "担当者は編集可能?"
 
 #. instructor_can_edit_or_view
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:62
@@ -16996,7 +16996,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:instructor_can_edit_or_view"
 msgid "Instructor Can Edit or View?"
-msgstr "教員は編集または表示可能?"
+msgstr "担当者は編集または表示可能?"
 
 #. instructor_can_select
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:63
@@ -17004,7 +17004,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:instructor_can_select"
 msgid "Instructor Can Select?"
-msgstr "教員は選択可能?"
+msgstr "担当者は選択可能?"
 
 #. introduction
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:64
@@ -17138,7 +17138,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:no_feedback"
 msgid "No feedback will be displayed to the student"
-msgstr "フィードバックは学生に表示されません"
+msgstr "フィードバックは受講者に表示されません"
 
 #. number_of_sub_allowed
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:80
@@ -17380,7 +17380,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:select_feedback_comp"
 msgid "Feedback Components Students Can See:"
-msgstr "学生が閲覧可能なフィードバックコメント:"
+msgstr "受講者が閲覧可能なフィードバックコメント:"
 
 #. selected_groups
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:110
@@ -17511,7 +17511,7 @@ msgid ""
 "Use the checkboxes below to select those features which can be viewed/edited"
 " by the instructor in Assessment Settings.<br /> Some of these features also"
 " have default values which can be set."
-msgstr "チェックボックスを使用して，「テスト設定」において教員が表示・編集できる機能を選択します．デフォルト値をセットできる機能もあります．"
+msgstr "チェックボックスを使用して，「テスト設定」において担当者が表示・編集できる機能を選択します．デフォルト値をセットできる機能もあります．"
 
 #. template_title
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:126
@@ -17527,7 +17527,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:testeeIdentity"
 msgid "Students' Identities"
-msgstr "学生の識別情報"
+msgstr "受講者の識別情報"
 
 #. timed_assmt
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:128
@@ -17763,7 +17763,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:feedback_components_totalscore_only"
 msgid "Only Release Student's Assessment Scores (questions not shown)"
-msgstr "学生のテスト点数のみを公開 (問題は表示されません)"
+msgstr "受講者のテスト点数のみを公開 (問題は表示されません)"
 
 #. locked_browser
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/TemplateMessages.properties:157
@@ -18269,7 +18269,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:num_students"
 msgid "Number of Students"
-msgstr "学生数"
+msgstr "受講者数"
 
 #. par_anon
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:6
@@ -18645,7 +18645,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:pct_correc"
 msgid "% Students Correct"
-msgstr "正解学生の割合"
+msgstr "正解受講者の割合"
 
 #. pct_max
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:53
@@ -18653,7 +18653,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:pct_max"
 msgid "% Students with Max Score"
-msgstr "% 最高得点の学生"
+msgstr "% 最高得点の受講者"
 
 #. pt_earn_fld
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:54
@@ -19037,7 +19037,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:stud_remain"
 msgid "students responding,"
-msgstr "学生が回答しています"
+msgstr "受講者が回答しています"
 
 #. view
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:102
@@ -19189,7 +19189,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:search_default_student_search_string"
 msgid "Student name or ID"
-msgstr "学生の名前または ID"
+msgstr "受講者の名前または ID"
 
 #. na
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:121
@@ -19213,7 +19213,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:grade_by_student"
 msgid "Please grade this part by student."
-msgstr "学生によるこのパートを採点してください．"
+msgstr "受講者によるこのパートを採点してください．"
 
 #. no_questions
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:124
@@ -19744,7 +19744,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:click_shortAnswer"
 msgid "Click to see student response"
-msgstr "学生の回答を見る場合はクリックします"
+msgstr "受講者の回答を見る場合はクリックします"
 
 #. click_rationale
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:189
@@ -19944,7 +19944,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:t_studentScores"
 msgid "Student Scores"
-msgstr "学生の得点"
+msgstr "受講者の得点"
 
 #. t_student
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:213
@@ -19952,7 +19952,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:t_student"
 msgid "View Student Answer"
-msgstr "学生の回答を表示"
+msgstr "受講者の回答を表示"
 
 #. t_sortLastName
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:214
@@ -20008,7 +20008,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:t_sortResponse"
 msgid "Sort by Student Response"
-msgstr "学生の回答でソート"
+msgstr "受講者の回答でソート"
 
 #. t_sortComments
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:221
@@ -20064,7 +20064,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:t_rationale"
 msgid "View Student Rationale"
-msgstr "学生の論拠を表示"
+msgstr "受講者の論拠を表示"
 
 #. t_playAudio
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:228
@@ -20296,7 +20296,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:alt_sortResponseAscending"
 msgid "Sort by Student Response in Ascending"
-msgstr "学生の回答で昇順にソート"
+msgstr "受講者の回答で昇順にソート"
 
 #. alt_sortResponseDescending
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:257
@@ -20304,7 +20304,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:alt_sortResponseDescending"
 msgid "Sort by Student Response in Descending"
-msgstr "学生の回答で降順にソート"
+msgstr "受講者の回答で降順にソート"
 
 #. alt_matrixChoicesSurvey
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:258
@@ -20344,7 +20344,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:requires_student_submission"
 msgid "Requires student submission"
-msgstr "学生の提出を求める"
+msgstr "受講者の提出を求める"
 
 #. comment_for_student
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:263
@@ -20352,7 +20352,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:comment_for_student"
 msgid "Comments for Student"
-msgstr "学生のためのコメント"
+msgstr "受講者のためのコメント"
 
 #. t_sortCommentsForStudent
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:264
@@ -20360,7 +20360,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:t_sortCommentsForStudent"
 msgid "Sort by Comment for Student "
-msgstr "学生のためのコメントでソート"
+msgstr "受講者のためのコメントでソート"
 
 #. whats_this_link
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:265
@@ -20387,7 +20387,7 @@ msgid ""
 "Comments are intended to be part of the feedback given to students for an "
 "assessment submission. Students have to submit the assessment online in "
 "order to view any feedback. "
-msgstr "コメントは，テストの提出に対して学生に与えるフィードバックの一部になるように意図されています．学生はいずれのフィードバックを表示するためにもテストをオンラインで提出する必要があります．"
+msgstr "コメントは，テストの提出に対して受講者に与えるフィードバックの一部になるように意図されています．受講者はいずれのフィードバックを表示するためにもテストをオンラインで提出する必要があります．"
 
 #. what_content_2
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:268
@@ -20399,7 +20399,7 @@ msgid ""
 "files in the Questions page or a student's individual submission page (click"
 " on student's name to access this page). Students will then be able to "
 "download the attached files."
-msgstr "コメントテキストボックスに書き込んでフィードバックを与えることに加えて，「問題」ページ，または，学生のここの提出ページ (学生の名前をクリックするとアクセスできます) でファイルを添付することができます．そうすると，学生は添付されたファイルをダウンロードできるようになります．"
+msgstr "コメントテキストボックスに書き込んでフィードバックを与えることに加えて，「問題」ページ，または，受講者のここの提出ページ (受講者の名前をクリックするとアクセスできます) でファイルを添付することができます．そうすると，受講者は添付されたファイルをダウンロードできるようになります．"
 
 #. what_content_3
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:269
@@ -20410,7 +20410,7 @@ msgid ""
 "Please note that comments are tied to a particular submission. If a student "
 "submits an assessment multiple times, the comments you entered will not "
 "display with all submissions."
-msgstr "コメントはある特定の提出に対するものであることにご注意ください．学生が複数回テストを提出すると，入力されたコメントがすべての提出に対して提出される訳ではありません．"
+msgstr "コメントはある特定の提出に対するものであることにご注意ください．受講者が複数回テストを提出すると，入力されたコメントがすべての提出に対して提出される訳ではありません．"
 
 #. where
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:270
@@ -20430,7 +20430,7 @@ msgid ""
 " assessment title in their Submitted Assessment list and view comments, "
 "along with their responses and any other feedback component you have "
 "selected."
-msgstr "テストに対するフィードバックが公開されると，学生は，自分の「提出済みテスト一覧」中でテストタイトルをクリックできるようになり，あなたが選択した他のフィードバックコンポーネントと学生の回答が表示されます．"
+msgstr "テストに対するフィードバックが公開されると，受講者は，自分の「提出済みテスト一覧」中でテストタイトルをクリックできるようになり，あなたが選択した他のフィードバックコンポーネントと受講者の回答が表示されます．"
 
 #. where_content_2
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:272
@@ -20459,7 +20459,7 @@ msgid ""
 "To make comments available to students, select when to release feedback and "
 "select the \"Grader Comments\" feedback component under the assessment's "
 "Settings. "
-msgstr "学生にコメントを利用可能にするためには，フィードバックを公開する日時を選択し，テスト設定の下にある「採点者コメント」フィードバックコンポーネントを選択します．"
+msgstr "受講者にコメントを利用可能にするためには，フィードバックを公開する日時を選択し，テスト設定の下にある「採点者コメント」フィードバックコンポーネントを選択します．"
 
 #. how_content_2
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:275

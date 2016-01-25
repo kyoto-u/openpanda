@@ -2495,7 +2495,7 @@ msgctxt ""
 msgid ""
 "The Forum Topic you attempted to view is currently not available. Please "
 "contact your instructor if you have any questions."
-msgstr "表示を試みたフォーラムトピックは、現在利用できません。 質問がある場合は、教員に連絡してください。"
+msgstr "表示を試みたフォーラムトピックは、現在利用できません。 質問がある場合は、担当者に連絡してください。"
 
 #. cdfm_insufficient_privileges_view_forum
 #: msgcntr/messageforums-api/src/bundle/org/sakaiproject/api/app/messagecenter/bundle/Messages.properties:297
@@ -2505,7 +2505,7 @@ msgctxt ""
 msgid ""
 "The Forum you attempted to view is currently not available. Please contact "
 "your instructor if you have any questions."
-msgstr "表示を試みたフォーラムは現在利用できません。 質問がある場合は、教員に連絡してください。"
+msgstr "表示を試みたフォーラムは現在利用できません。 質問がある場合は、担当者に連絡してください。"
 
 #. cdfm_att
 #: msgcntr/messageforums-api/src/bundle/org/sakaiproject/api/app/messagecenter/bundle/Messages.properties:298
@@ -2870,7 +2870,7 @@ msgctxt ""
 msgid ""
 "You do not have permission to view or grade the selected gradebook item for "
 "this student."
-msgstr "この学生に対し、選択した成績簿アイテムを表示したり採点したりする権限がありません。"
+msgstr "この受講者に対し、選択した成績簿アイテムを表示したり採点したりする権限がありません。"
 
 #. perm_level
 #: msgcntr/messageforums-api/src/bundle/org/sakaiproject/api/app/messagecenter/bundle/Messages.properties:343
