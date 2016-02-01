@@ -1,4 +1,4 @@
-# 
+#
 # Translators:
 # Yuji Tokiwa <tokiwa@yujitokiwa.jp>, 2015
 msgid ""
@@ -85,7 +85,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:add_matches"
 msgid "Add Matches:"
-msgstr "整合対を追加:"
+msgstr "一致を追加:"
 
 #. add_more_answer_sect
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:9
@@ -133,7 +133,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:admin"
 msgid "Admin"
-msgstr "アドミン"
+msgstr "管理者"
 
 #. all
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:15
@@ -214,7 +214,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:answer_options_rich"
 msgid "Enter option text and/or Add Attachments below"
-msgstr "オプションテキストを入力または下に添付を追加"
+msgstr "オプションテキストを入力または下に添付ファイルを追加"
 
 #. answer_options
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:25
@@ -246,7 +246,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:answer_options_count"
 msgid "Number of options in this question (e.g. A to G = 7)"
-msgstr "この問題のオプション数 ( 例えば A to G = 7 )"
+msgstr "この問題のオプション数 ( 例えば A から G = 7 )"
 
 #. required_options_count
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:29
@@ -280,7 +280,7 @@ msgctxt ""
 msgid ""
 "Answer: Provide a model answer to show students and to assist graders along "
 "with any feedback."
-msgstr "回答: 模範回答を受講者に示すとともに採点者を支援する"
+msgstr "回答: 受講者に見せる模範回答を提供し、採点者のフィードバックを助ける"
 
 #. answer_text_predefi
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:33
@@ -304,7 +304,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:answers_select_answ"
 msgid "Answers: Select answer below."
-msgstr "回答: 下の回答を選択します．"
+msgstr "回答: 以下の回答を選択してください．"
 
 #. as_listed_on_assessm
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:36
@@ -504,7 +504,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:button_save_pair"
 msgid "Save Pairing"
-msgstr "対を保存"
+msgstr "組み合わせを保存"
 
 #. button_close
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:61
@@ -640,7 +640,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:calc_question_formula_col"
 msgid "Formula"
-msgstr "公式"
+msgstr "数式"
 
 #. calc_question_min
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:78
@@ -648,7 +648,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:calc_question_min"
 msgid "Min"
-msgstr "分"
+msgstr "最小値"
 
 #. calc_question_max
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:79
@@ -656,7 +656,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:calc_question_max"
 msgid "Max"
-msgstr "最高"
+msgstr "最大値"
 
 #. calc_question_dec
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:80
@@ -691,7 +691,7 @@ msgid ""
 "A calculated question calculates new answers for every test, based on "
 "variables whose value changes each time.  The answer is based on a formula, "
 "using those variables."
-msgstr "毎回値が変わる変数をもとにして計算された問題はすべてのテストの新たな回答を計算します．回答はそれらの変数を使う公式が基本になります．"
+msgstr "計算問題は毎回値の変わる変数を元にして，テストごとに新しい回答を計算します．回答はそれらの変数を使った数式に基づいて計算されます．"
 
 #. calc_question_general_instructions2
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:84
@@ -701,7 +701,7 @@ msgctxt ""
 msgid ""
 "A variable definition has a name, a minimum and maximum value, and a number "
 "of decimal places."
-msgstr "変数定義は名前，最小値と最大値，および小数点以下の桁数を含みます．"
+msgstr "変数を定義するときは，変数名と最小値，最大値，そして少数位の桁数を決めなくてはなりません．"
 
 #. calc_question_general_instructions3
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:85
@@ -712,7 +712,7 @@ msgid ""
 "A formula definition has a name, an mathematical expression that uses the "
 "variables, and a tolerance, so that answers within that tolerance of the "
 "answer are also considered correct."
-msgstr "解答の誤差範囲内の解答も正解とみなすため，公式の定義は名前，変数と誤差を使う数学的表記を含みます．"
+msgstr "誤差範囲内の解答も正解とみなすため，数式を定義するときは名前と，変数と誤差を用いた数学的表記を含める必要があります．"
 
 #. calc_question_walkthrough_label
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:86
@@ -750,7 +750,7 @@ msgctxt ""
 msgid ""
 "Change the Min, Max, and Decimal Places for all of the variables to define "
 "their ranges of valid values."
-msgstr "有効値の範囲を定義するすべての変数のMin, Max, 小数位を変更します．"
+msgstr "全ての変数の最小値, 最大値, 小数位を変更して有効値の範囲を定義します．"
 
 #. calc_question_walkthrough4
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:90
@@ -779,7 +779,7 @@ msgid ""
 "Any errors will be displayed at the top of the page.  They must be fixed "
 "before saving.  Fields with errors will be highlighted to show you where you"
 " have problems."
-msgstr "エラーはページの上部に表示されます．それらを保存する前に修正してください．エラーのあるフィールドは問題のある場所を提示するためにハイライトされます．"
+msgstr "エラーはページの上部に表示されます．保存する前にそれらを修正してください．エラーのあるフィールドは，どこが問題なのかハイライトされます．"
 
 #. calc_question_extract_button
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:93
@@ -798,7 +798,7 @@ msgid ""
 "Define variables to use in this question below. Reference them in the "
 "question text by putting them in single curly braces eg. {x}.  Variable "
 "names are alpha-numeric but must begin with an alpha character"
-msgstr "下の質問を使って変数を定義して下さい．それらを例えば{x}のように1重の波括弧で囲み質問文でそれらを参照して下さい．変数名は英数字で英字で始めて下さい．"
+msgstr "以下の問題の中で変数を定義してください．問題文中で変数を参照するには，{x}のように1重の中括弧で囲みます．変数名には英数字を用いることができますが，アルファベットで始める必要があります．"
 
 #. calc_question_answer_expression
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:95
@@ -809,7 +809,7 @@ msgid ""
 "Place double curly braces (e.g. {{y}} around a formula name, to define where"
 " the student's input box will display.  Formula names are alpha-numeric but "
 "must begin with an alpha character."
-msgstr "受講生の入力ボックスが表示される場所を定義するために，( 例えば{{y}}のように) 2重の波括弧で式名を囲んで下さい．式名は英数字で英字で始めて下さい．"
+msgstr "受講者側に入力用の空欄が表示される場所を定義するには，数式名を{{y}}のように2重の中括弧で囲んでください．数式名には英数字を用いることができますが，アルファベットで始める必要があります．"
 
 #. calc_question_answer_variance
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:96
@@ -836,7 +836,7 @@ msgctxt ""
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:calc_question_example1"
 msgid ""
 "Kevin has {x} apples. Jane eats {y}. How many does Kevin have now? {{z}}"
-msgstr "ケビンは {x} 個リンゴを持っている. ジェーンは {y} 個食べる. ケビンは今何個持っているでしょうか? {{z}}"
+msgstr "ケビンは {x} 個のリンゴを持っています. ジェーンは それを{y} 個食べました. ケビンは今何個持っているでしょうか? {{z}}"
 
 #. calc_question_functions
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:99
@@ -884,7 +884,7 @@ msgctxt ""
 msgid ""
 "You are strongly encouraged to use the Preview Assessment feature to check "
 "for mistakes.  Extract and Save buttons both validate formulas."
-msgstr "誤りをチェックするために，テストプレビュー機能を使うことを特に推奨します．展開および保存ボタンは共に式を検証します．"
+msgstr "誤りをチェックするために，テストプレビュー機能を使うことを特に推奨します．展開および保存ボタンはどちらも式を検証します．"
 
 #. calc_question_hideshow
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:104
@@ -911,7 +911,7 @@ msgid ""
 "Your answer's acceptable variance and expected decimal places must be "
 "formatted in this fashion: {x+y|1%,2} or {x+y|1,2}. The expected decimal "
 "places can be omitted e.g. {x+y|1%}. 6 is the limit on decimal places."
-msgstr "解答の許容差および予想される小数位はこの方法でフォーマットされる必要があります: {x+y|1%,2} or {x+y|1,2}. 予想される小数位は例えば {x+y|1%}のように省略できます．6は小数位の限界です．"
+msgstr "解答の許容差および期待される小数位はこのようなフォーマットで記述される必要があります: {x+y|1%,2} or {x+y|1,2}. 期待される小数位は例えば {x+y|1%}のように省略できます．6は小数位の限界です．"
 
 #. calc_question_error_expression
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:107
@@ -939,7 +939,7 @@ msgctxt ""
 msgid ""
 "After you save, be sure to use Preview Assessment to ensure this questions "
 "functions as you expect!"
-msgstr "保存後，この質問機能が期待通りであることを確認するため，テストプレビューを必ず使って下さい!"
+msgstr "保存後に，この問題が意図した通りに動作することをプレビューで確認してください！"
 
 #. calc_question_no_calculations
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:110
@@ -987,7 +987,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:no_formulas_defined"
 msgid "No formulas have been defined"
-msgstr "定義されている公式はありません"
+msgstr "定義されている数式はありません"
 
 #. max_less_than_min
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:116
@@ -995,7 +995,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:max_less_than_min"
 msgid "A variable has a max less than its min"
-msgstr "変数は最小値未満の最大値を持ちます"
+msgstr "変数の最大値が最小値を下回っています"
 
 #. invalid_tolerance
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:117
@@ -1003,7 +1003,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:invalid_tolerance"
 msgid "Tolerance must be a valid double or percentage (5.0 or 5.0%)"
-msgstr "誤差は有効な2桁かパーセント(5.0 または 5.0%)である必要があります"
+msgstr "誤差は有効な小数あるいはパーセント(5.0 や 5.0%)である必要があります"
 
 #. tolerance_negative
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:118
@@ -1013,7 +1013,7 @@ msgctxt ""
 msgid ""
 "Tolerance must be positive; it defines the range around the answer that will"
 " be considered correct"
-msgstr "許容誤差は正でなければなりません; 正解とみなされる解答の範囲を定義します"
+msgstr "許容誤差は正でなければなりません．許容誤差は，正解とみなされる解答の範囲です．"
 
 #. invalid_min
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:119
@@ -1048,7 +1048,7 @@ msgid ""
 "Variable name cannot be empty.  Variables must begin with an alpha character"
 " and can only contain alpha, numeric, and underscore characters and are "
 "wrapped in single curly braces (i.e. {x} )"
-msgstr "変数名は空白にできません．変数は英字で始まり，英数字およびアンダースコアのみを含み，1重の波括弧で囲まれます．(例 {x}  )"
+msgstr "変数名は空白にできません．変数は英字で始まり，英数字およびアンダースコアのみを含み，1重の中括弧で囲まれます．(例 {x}  )"
 
 #. variable_name_invalid
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:123
@@ -1059,7 +1059,7 @@ msgid ""
 "Variable name is invalid.  Variables must begin with an alpha character and "
 "can only contain alpha, numeric, and underscore characters and are wrapped "
 "in single curly braces (i.e. {x} )"
-msgstr "変数名が無効です．変数は英字で始まり，英数字およびアンダースコアのみを含み，1重の波括弧で囲まれます．(例 {x}  )"
+msgstr "変数名が無効です．変数は英字で始まり，英数字およびアンダースコアのみを含み，1重の中括弧で囲まれます．(例 {x}  )"
 
 #. formula_name_empty
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:124
@@ -1070,7 +1070,7 @@ msgid ""
 "Formula name cannot be empty.  Formula names must begin with an alpha "
 "character and can only contain alpha, numeric, and underscore characters and"
 " are wrapped in double curly braces (i.e. {{y}} )"
-msgstr "式名は空白にできません．式名は英字で始まり，英数字およびアンダースコアのみを含み，2重の波括弧で囲まれます．(例 {{y}} )"
+msgstr "式名は空白にできません．式名は英字で始まり，英数字およびアンダースコアのみを含み，2重の中括弧で囲まれます．(例 {{y}} )"
 
 #. formula_name_invalid
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:125
@@ -1081,7 +1081,7 @@ msgid ""
 "Formula name is invalid.  Formula names must begin with an alpha character "
 "and can only contain alpha, numeric, and underscore characters and are "
 "wrapped in double curly braces (i.e. {{y}} )"
-msgstr "式名が無効です．式名は英字で始まり，英数字およびアンダースコアのみを含み，2重の波括弧で囲まれます．(例 {{y}} )"
+msgstr "式名が無効です．式名は英字で始まり，英数字およびアンダースコアのみを含み，2重の中括弧で囲まれます．(例 {{y}} )"
 
 #. formulas_not_validated
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:126
@@ -1153,7 +1153,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:samigo_formula_error_8"
 msgid "8: Formula can have negative square root"
-msgstr "8: 公式は負の平方根を持てる"
+msgstr "8: 数式に負の平方根が含まれています"
 
 #. samigo_formula_error_9
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:135
@@ -1209,7 +1209,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:samigo_formula_error_300"
 msgid "300: Defining variable failed"
-msgstr "300: 変数の定義が失敗"
+msgstr "300: 変数の定義に失敗"
 
 #. samigo_formula_error_400
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:142
@@ -1249,7 +1249,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:cert_rem_assmt"
 msgid "Are you sure you want to remove this assessment titled {0}?"
-msgstr "次のタイトルのテストを削除してもよろしいですか："
+msgstr "次のタイトルのテストを削除してもよろしいですか?："
 
 #. button_edit_questions
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:147
@@ -1265,7 +1265,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:button_return_to_main"
 msgid "Return to Main Questions Screen"
-msgstr "メイン問題スクリーンに戻る"
+msgstr "メイン問題の画面に戻る"
 
 #. cert_rem_q
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:149
@@ -1315,7 +1315,7 @@ msgctxt ""
 msgid ""
 "Choose which of the following bet matches this relationship: China is to "
 "Asia? as _ is to _."
-msgstr "次のうち，この関係に一致するものを選びます: 中国はアジアですか?  _ が _ であるように．"
+msgstr "次のうち，この関係に一致するものを選びます: China is to Asia? as _ is to _."
 
 #. collect_metadata_for_p
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:155
@@ -1387,7 +1387,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:correct_match_feedback_opt"
 msgid "Correct Match Feedback(optional)"
-msgstr "正解整合対のフィードバック (オプション)"
+msgstr "正解のフィードバック (オプション)"
 
 #. incorrect_match_feedback_opt
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:164
@@ -1395,7 +1395,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:incorrect_match_feedback_opt"
 msgid "Incorrect Match Feedback(optional)"
-msgstr "不正解整合対のフィードバック (オプション)"
+msgstr "不正解の組み合わせのフィードバック (オプション)"
 
 #. correct_option_labels
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:165
@@ -1435,7 +1435,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:create_pairing"
 msgid "Add/Edit Pairing and Optional Feedback"
-msgstr "整合対およびオプションのフィードバックを追加または編集"
+msgstr "組み合わせとフィードバック（任意）の追加と編集"
 
 #. no_matching_pair
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:170
@@ -1443,7 +1443,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:no_matching_pair"
 msgid "No pairs have been created"
-msgstr "整合対が作成されませんで下．"
+msgstr "組み合わせがまだ作成されていません"
 
 #. creator
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:171
@@ -1515,7 +1515,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:example_emi_question"
 msgid "The parts of an Extended Matching Items question"
-msgstr "拡張された整合アイテムの質問の一部"
+msgstr "拡張組み合わせ問題のパート"
 
 #. existing_qs
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:180
@@ -1539,7 +1539,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:extended_matching_items"
 msgid "Extended Matching Items"
-msgstr "拡張された整合アイテム"
+msgstr "拡張組み合わせ問題"
 
 #. false_msg
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:183
@@ -1699,7 +1699,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:if_multiple_submissi"
 msgid "If Multiple Submissions per User"
-msgstr "複数回の提出の場合"
+msgstr "一人の受講者が複数回提出した場合"
 
 #. image
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:203
@@ -1931,7 +1931,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:matching"
 msgid "Matching"
-msgstr "整合問題"
+msgstr "組み合わせ問題"
 
 #. matching_choice_col
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:231
@@ -1939,7 +1939,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:matching_choice_col"
 msgid "Choice"
-msgstr "選択"
+msgstr "選ぶ対象"
 
 #. matching_match_col
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:232
@@ -1947,7 +1947,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:matching_match_col"
 msgid "Match"
-msgstr "整合"
+msgstr "一致するもの"
 
 #. matching_currently_editing
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:233
@@ -1963,7 +1963,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:matching_q_cont"
 msgid "Matching Question - Continued"
-msgstr "整合問題 - 続き"
+msgstr "組み合わせ問題 - 続き"
 
 #. metadata
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:235
@@ -3972,7 +3972,7 @@ msgid ""
 "Before saving this question, you must have at least one matching pair. "
 "Please enter a matching pair and click \"Save Pairing\".  You may then save "
 "the question by clicking \"Save\" at the bottom of the page."
-msgstr "この問題を保存する前に，少なくとも一つの整合対を入力する必要があります．整合対を入力し「対を保存」をクリックします．ページの一番下の「保存」をクリックすることにより問題を保存することもできます．"
+msgstr "この問題を保存する前に，少なくとも一つの一致する組み合わせを入力する必要があります．組み合わせを入力してから「組み合わせを保存」をクリックしてください．ページの一番下の「保存」をクリックすることにより問題を保存することもできます．"
 
 #. submissions_allowed_error
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:476
@@ -4173,7 +4173,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:what_is_regrade_republish_9"
 msgid "-Matching"
-msgstr "-整合"
+msgstr "-一致"
 
 #. what_is_regrade_republish_10
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorMessages.properties:499
@@ -5394,7 +5394,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:add_matches"
 msgid "Add Matches:"
-msgstr "整合対を追加:"
+msgstr "組み合わせを追加:"
 
 #. add_more_answer_sect
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:4
@@ -6573,7 +6573,7 @@ msgid ""
 "Linear Access to questions with NO return to previous pages. <br/> &nbsp; "
 "&nbsp; &nbsp; There are only NEXT buttons only to go forward. <br/> &nbsp; "
 "&nbsp; &nbsp; There is NO Table of Contents page. <br/>"
-msgstr "「前のページに戻る」がない問題へのリニアアクセスです．<br/> &nbsp; &nbsp; &nbsp; 前に進むための「次」ボタンだけがあります．<br/> &nbsp; &nbsp; &nbsp; 目次ページはありません．<br/>mark=確認のためにマーク"
+msgstr "「前のページに戻る」ボタンがない，問題へのリニアアクセスです．<br/> &nbsp; &nbsp; &nbsp; 前に進むための「次」ボタンだけがあります．<br/> &nbsp; &nbsp; &nbsp; 目次ページはありません．<br/>mark=確認のためにマーク"
 
 #. mark
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:150
@@ -6597,7 +6597,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:matching"
 msgid "Matching"
-msgstr "整合問題"
+msgstr "組み合わせ問題"
 
 #. matching_q_cont
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:153
@@ -6605,7 +6605,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:matching_q_cont"
 msgid "Matching Question - Continued"
-msgstr "整合問題 - 続き"
+msgstr "組み合わせ問題 - 続き"
 
 #. metadata
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/DeliveryMessages.properties:154
@@ -10587,7 +10587,7 @@ msgid ""
 "To display in this system, items and choices in matching questions must be "
 "paired one to one. Please edit this assessment to add pairs to each "
 "question, or delete the question altogether."
-msgstr "このシステム中で表示するためには，整合問題のアイテムと選択は一対一の対である必要があります．このテストを編集して各問題に対を追加するか，問題全体を削除して下さい．"
+msgstr "このシステム中で表示するためには，組み合わせ問題のアイテムと選択肢は一対一の対応である必要があります．このテストを編集して各問題に組み合わせを追加するか，問題全体を削除して下さい．"
 
 #. import_size_too_big
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AuthorImportExport.properties:33
@@ -12277,7 +12277,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/CommonMessages.properties:action_save_pair"
 msgid "Save Pairing"
-msgstr "対を保存"
+msgstr "組み合わせを保存"
 
 #. add
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/QuestionPoolMessages.properties:1
@@ -13235,7 +13235,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/QuestionPoolMessages.properties:q_match"
 msgid "Matching"
-msgstr "整合"
+msgstr "一致"
 
 #. q_short_ess
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/QuestionPoolMessages.properties:119
@@ -15165,7 +15165,7 @@ msgid ""
 "Since students are not supposed to see the same questions more than once, "
 "selecting linear access will automatically make 1 submission the default "
 "setting for number of submissions allowed."
-msgstr "受講者が同じ問題を一度しか見ないと思われるので，リニアアクセスを選択し，許容する提出回数のデフォルト設定を自動的に 1 回にします．"
+msgstr "リニアアクセスを選択した場合は受講者が同じ問題を一度しか見ないと思われるので，自動的に許容する提出回数のデフォルト設定を 1 回に変更します．"
 
 #. automatic_submission
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/AssessmentSettingsMessages.properties:93
@@ -19680,7 +19680,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:q_match"
 msgid "Matching"
-msgstr "整合"
+msgstr "一致"
 
 #. q_emi
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:181
@@ -19688,7 +19688,7 @@ msgctxt ""
 "samigo/samigo-"
 "app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:q_emi"
 msgid "Extended Matching Items"
-msgstr "拡張された整合アイテム"
+msgstr "拡張組み合わせ問題"
 
 #. q_short_ess
 #: samigo/samigo-app/src/java/org/sakaiproject/tool/assessment/bundle/EvaluationMessages.properties:182
