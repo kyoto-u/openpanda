@@ -61,10 +61,17 @@
 				#set($otherCustomType = ( (!$courseSiteTypeStrings.contains($type)) && (!$projectSiteTypeStrings.contains($type)) && (!$portfolioSiteTypeStrings.contains($type))))
 				#if (($courseTypeWithPerm) || ($portfolioTypeWithPerm) || ($projectTypeWithPerm) || ($otherCustomType))
                     <p class="checkbox indnt1">
+			#if ($type != "course")
                         <input type="radio" name="itemType" id="$type" value="$type" #if ($type == $typeSelected) checked="checked" #end/>
                         <label for = "$type">
                             $tlang.getFormattedMessage("sitetype.websit", $type)
                         </label>    
+			#else
+                            <input type="radio" name="itemType" id="$type" value="$type" #if ($type == $typeSelected) checked="checked" #end disabled="disabled"/>
+                            <label for = "$type">
+                              $tlang.getString("sitetype.setupcourse_disabled_message")
+                            </label>
+			#end ## end of #if ($type != "course")
                     </p>        
                     #if ($courseTypeWithPerm)
                         <div class="indnt3" id="termList" style="display:none;">
