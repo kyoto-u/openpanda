@@ -1683,6 +1683,12 @@ public class DeliveryBean
 	 	      eventLogData.setEclipseTime(null);
 	 	      eventLogData.setErrorMsg(eventLogMessages.getString("error_take"));
 	 	  }
+
+		  String thisIp = ((javax.servlet.http.HttpServletRequest) FacesContext.
+		    getCurrentInstance().getExternalContext().getRequest()).
+		    getRemoteAddr();
+		  eventLogData.setIpAddress(thisIp);
+
 	 	  eventLogFacade.setData(eventLogData);
 	 	  eventService.saveOrUpdateEventLog(eventLogFacade);
 	  }
