@@ -3932,6 +3932,15 @@ msgid ""
 "submission)"
 msgstr "フィードバックコメント (受講者のフォルダに comments.txt ファイルがある場合はそのファイル．コメントは，受講者の提出物ごとに「担当者コメント」フィールドに入力されます)"
 
+#. uploadall.choose.file.includeNotSubmitted
+#: assignment/assignment-bundles/resources/assignment.properties:506
+msgctxt ""
+"assignment/assignment-"
+"bundles/resources/assignment.properties:uploadall.choose.file.includeNotSubmitted"
+msgid ""
+"Include students who have not yet submitted"
+msgstr "未提出の学生を含める"
+
 #. uploadall.choose.file.confirm
 #: assignment/assignment-bundles/resources/assignment.properties:506
 msgctxt ""
