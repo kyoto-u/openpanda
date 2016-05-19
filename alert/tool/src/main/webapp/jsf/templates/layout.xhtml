@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:sakai="http://sakaiproject.org/jsf/sakai">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Sakai Alert Tool</title>
+        <link media="all" href="/library/skin/tool_base.css" rel="stylesheet" type="text/css" />
+        <link media="all" href="/library/skin/neo-default/tool.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" media="all" href="css/alert.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="lib/blue/style.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="lib/css/ui-lightness/jquery-ui-1.10.2.custom.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="lib/css/jquery.dataTables.css" />
+        <script src="/library/js/headscripts.js" language="JavaScript" type="text/javascript"></script>
+    </h:head>
+
+
+    <h:body onload="#{request.getAttribute('sakai.html.body.onload')}">
+        <c:set var="viewName" value="#{request.getParameter('viewName')}" />
+        <div class="portletBody">
+            <div id="navigation">
+                <ul class="navIntraTool actionToolBar" role="menu">
+
+                    <li role="menuitem" aria-disabled="true">
+                        <h:link outcome="manageEmergencyInfo" value="安否情報"
+                                rendered="#{viewName ne 'manageEmergencyInfo' and manageEmergencyInfoBean.myWorkspace eq true}">
+                            <f:param name="viewName" value="manageEmergencyInfo"/>
+                        </h:link>
+                        <h:outputText value="安否確認" styleClass="current" rendered="#{viewName eq 'manageEmergencyInfo' and manageEmergencyInfoBean.myWorkspace eq true}"/>
+                    </li>
+                    <li role="menuitem" aria-disabled="true">
+                        <h:link outcome="updateEmergencyInfo" value="安否情報更新"
+                                rendered="#{viewName ne 'updateEmergencyInfo' and permissionBean.updateEmergencyInfo eq true}">
+                            <f:param name="viewName" value="updateEmergencyInfo"/>
+                        </h:link>
+                        <h:outputText value="安否確認更新" styleClass="current" rendered="#{viewName eq 'updateEmergencyInfo'}"/>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="content">
+                <ui:insert name="content"/>
+            </div>
+
+        </div>
+        <ui:debug/>
+    </h:body>
+</html>
