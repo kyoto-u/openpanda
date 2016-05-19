@@ -1,0 +1,62 @@
+/* Tables displaying sections have thin internal borders */
+table.sectionTable{border:none; border-collapse:collapse;}
+table.sectionTable tr td {border-color:gray !important; border-top:solid; border-width:1px; border-collapse:collapse;}
+label.topLabel {font-weight:bold;}
+
+tr.paddedSectionRow td {
+    padding-bottom: 1em !important;
+    padding-top: 0 !important;
+    vertical-align: top !important;
+}
+
+tr.unavailableRegister {
+  background-color: #808080;
+}
+
+table.tablesorter tbody td {
+    /*background-color: #FFFFFF;*/
+    color: #3D3D3D;
+    padding: 4px;
+    vertical-align: top;
+}
+
+.strongRed {
+	color: #ff0000;
+	font-weight: normalt;
+}
+
+label.topLabel.editStatus {
+    width: 120px;
+    display: inline-block;
+}
+#statusEditForm .buttons {
+    padding: 10px;
+}
+#statusEditForm textarea {
+    vertical-align: top;
+}
+#statusEditForm #datepicker {
+    width: 80px;
+}
+#statusEditForm #timepicker {
+    width: 60px;
+}
+
+#sectionJobTitleList .sectionNameCol {
+    width: 100px;
+    white-space: nowrap;
+}
+#sectionJobTitleList .jobTitlePatternCol {
+    width: 1%;
+}
+#sectionJobTitleList .jobTitleAllCheckCol {
+    width: 65px;
+}
+
+span.notification-confirm-inquery {
+	background-color: #F0F0F0;
+	float: left;
+	width: 80%;
+	padding: 12px;
+	height: 180px;
+}

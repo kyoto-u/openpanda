@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f5="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:sakai="http://sakaiproject.org/jsf/sakai">
+
+    <ui:composition template="templates/layout.xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+        <ui:param name="viewName" value="viewAlertList" />
+
+        <ui:define name="content">
+
+            <h3>安否確認(登録済み)</h3>
+
+            <div class="instruction">
+                現在登録されている安否情報は以下の通りです．
+            </div>
+
+            <h3>緊急連絡先(登録済み)</h3>
+
+            <div class="instruction">
+                現在登録されている緊急連絡先は以下の通りです．
+            </div>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

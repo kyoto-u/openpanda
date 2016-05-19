@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- put your value object in the class name, the table name is optional
+		but it is a good idea to specify it -->
+	<class name="org.sakaiproject.alert.model.EmergencyInfo"
+		table="ALERT_EMERGENCYINFO">
+
+		<!-- create the primary key id, using native is typically the best way
+			to do this -->
+		<id name="id" type="long" column="ID">
+	    	<generator class="native">
+                <param name="sequence">ALERT_EMERGENCYINFO_ID_SEQ</param>
+	    	</generator>
+		</id>
+		<!-- The remaining properties should just match the properties
+			of your value object.
+			The name should be the actual variable name in your object.
+			We used Hibernate native property types here but
+			you could also use java classes like java.lang.String.
+			Column names are optional but people often specify them. -->
+		<property name="userId" type="string" length="99" not-null="false">
+            <column name="USER_ID"/>
+        </property>
+   		<property name="touchedDate" type="timestamp" not-null="false">
+            <column name="TOUCHED_DATE"/>
+        </property>
+		<property name="injuryStatus" type="string" length="255" not-null="true">
+			<column name="INJURY_STATUS"/>
+		</property>
+		<property name="status" type="string" length="255" not-null="true">
+			<column name="STATUS"/>
+		</property>
+		<property name="emailAddress" type="string" length="255" not-null="true">
+			<column name="EMAIL_ADDRESS"/>
+		</property>
+		<property name="telephoneNumber" type="string" length="64" not-null="true">
+			<column name="TELEPHONE_NUMBER"/>
+		</property>
+		<property name="remark" type="string" length="255" not-null="true">
+			<column name="REMARK"/>
+		</property>
+		<property name="ipAddress" type="string" length="32" not-null="true">
+			<column name="IP_ADDRESS"/>
+		</property>
+		<property name="userAgent" type="string" length="255" not-null="true">
+			<column name="USER_AGENT"/>
+		</property>
+		<property name="delegatedUserId" type="string" length="99" not-null="true">
+			<column name="DELEGATED_USER_ID"/>
+		</property>
+	</class>
+	<query name="getEmergencyInfoByUserId">
+		<![CDATA[from org.sakaiproject.alert.model.EmergencyInfo emergencyInfo
+                where emergencyInfo.userId = :userId order by emergencyInfo.touchedDate desc]]>
+	</query>
+	<query name="getEmergencyInfoByUserIdSince">
+		<![CDATA[from org.sakaiproject.alert.model.EmergencyInfo emergencyInfo
+                where emergencyInfo.userId = :userId and emergencyInfo.touchedDate > :sinceDate order by emergencyInfo.touchedDate desc]]>
+	</query>
+
+</hibernate-mapping>
