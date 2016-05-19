@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>alert</artifactId>
+		<groupId>org.sakaiproject.alert</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.sakaiproject.alert</groupId>
+	<artifactId>alert-api</artifactId>
+
+	<properties>
+		<deploy.target>shared</deploy.target>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<!-- Sakai dependencies -->
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-api</artifactId>
+		</dependency>
+      <dependency>
+        <groupId>org.sakaiproject.message</groupId>
+        <artifactId>sakai-message-api</artifactId>
+      </dependency>
+
+
+	</dependencies>
+	<build>
+		<!-- configure the build to use the standard maven structure -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+                  <resource>
+                    <directory>${basedir}/src/main/java</directory>
+                    <includes>
+                      <include>**/*.xml</include>
+                    </includes>
+                    <filtering>false</filtering>
+                  </resource>
+		</resources>
+	</build>
+</project>
