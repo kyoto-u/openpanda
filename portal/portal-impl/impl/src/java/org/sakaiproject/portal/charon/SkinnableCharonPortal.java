@@ -1308,7 +1308,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
                         if (toolId != null && ArrayUtils.contains(mathJaxTools, toolId))
                         {
                             // this call to MathJax.Hub.Config seems to be needed for MathJax to work in IE
-                            headJs.append("<script type=\"text/x-mathjax-config\">\nMathJax.Hub.Config({\ntex2jax: { inlineMath: [['\\\\(','\\\\)']] }\n});\n</script>\n");
+                            headJs.append("<script type=\"text/x-mathjax-config\">\nMathJax.Hub.Config({\ntex2jax: { inlineMath: [['\\\\(','\\\\)'], ['$', '$']] }\n});\n</script>\n");
                             headJs.append("<script src=\"").append(MATHJAX_SRC_PATH).append("\"  language=\"JavaScript\" type=\"text/javascript\"></script>\n");
                         }                     
                     }
