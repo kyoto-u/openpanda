@@ -2703,6 +2703,7 @@ public class SiteAction extends PagedResourceActionII {
 			String overridePageOrderSiteTypes = site.getProperties().getProperty(SiteConstants.SITE_PROPERTY_OVERRIDE_HIDE_PAGEORDER_SITE_TYPES);
 			// put tool selection into context
 			toolSelectionIntoContext(context, state, site_type, site.getId(), overridePageOrderSiteTypes);
+
 			MathJaxEnabler.addMathJaxSettingsToEditToolsConfirmationContext(context, site, state, STATE_TOOL_REGISTRATION_TITLE_LIST);  // SAK-22384            
 
 			return (String) getContext(data).get("template") + TEMPLATE[15];
@@ -7832,6 +7833,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		Site site = getStateSite(state);
 		
 		saveFeatures(params, state, site);
+        
+        // SAK-22384
+        if (MathJaxEnabler.prepareMathJaxToolSettingsForSave(site, state))
+        {
+            commitSite(site);
+        }
 		
 		if (state.getAttribute(STATE_MESSAGE) == null) {
 			// clean state variables
@@ -12480,6 +12487,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		state.removeAttribute(STATE_TOOL_REGISTRATION_TITLE_LIST);
 		state.removeAttribute(STATE_TOOL_REGISTRATION_SELECTED_LIST);
 		MathJaxEnabler.removeMathJaxToolsAttributeFromState(state);  // SAK-22384
+
 	}
 
 	private List orderToolIds(SessionState state, String type, List<String> toolIdList, boolean synoptic) {
@@ -12687,7 +12695,6 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		} else if (option.equalsIgnoreCase("continue")) {
 			// continue
 			MathJaxEnabler.applyToolSettingsToState(state, site, params);  // SAK-22384
-
 			doContinue(data);
 		} else if (option.equalsIgnoreCase("back")) {
 			// back

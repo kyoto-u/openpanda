@@ -75,7 +75,7 @@ public class ToolPortal extends HttpServlet
     private static final boolean ENABLED_SAKAI_PROP_DEFAULT = true;
     private static final String MATHJAX_SRC_PATH = ServerConfigurationService.getString(MATHJAX_SRC_PATH_SAKAI_PROP, SRC_PATH_SAKAI_PROP_DEFAULT);
     private static final boolean MATHJAX_ENABLED_AT_SYSTEM_LEVEL = ServerConfigurationService.getBoolean(MATHJAX_ENABLED_SAKAI_PROP, ENABLED_SAKAI_PROP_DEFAULT) && !MATHJAX_SRC_PATH.trim().isEmpty();
-    
+
 	/**
 	 * Access the Servlet's information display.
 	 * 

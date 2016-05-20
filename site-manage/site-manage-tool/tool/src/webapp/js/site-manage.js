@@ -986,7 +986,6 @@ var setupCategTools = function(){
         noTools();
     });
 	
-	
  
     $('.moreInfoTool').click(function(e){
         e.preventDefault();
@@ -1014,6 +1013,7 @@ var setupCategTools = function(){
 var setupRecentSite = function(){
 
     var target = $('#newSiteAlertPublish').attr('class');
+
     $('#newSiteAlertPublish').click(function(e){
         e.preventDefault();
         var reqUrl = '/direct/site/' + target + '/edit';
