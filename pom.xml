@@ -118,6 +118,7 @@
                 <module>warehouse</module>
                 <module>web</module>
                 <module>webservices</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
         <profile>
@@ -202,6 +203,7 @@
                 <module>web</module>
                 <module>webservices</module>
                 <module>yaft</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
         
