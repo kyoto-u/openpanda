@@ -118,7 +118,7 @@
     float: none;
     text-align: right;
     margin-right: 1em;
-    width: 9em;
+    width: 12em;
 }
 
 #userViewForm .act, #user-create_edit .act, #useredit .act
@@ -133,8 +133,8 @@
 
 #userViewForm fieldset
 {
-    border: 2px solid rgb(200, 200, 200);
-    width: 25em;
+    border: 1px solid rgb(200, 200, 200);
+    width: 40em;
     padding: 1em;
 }
 

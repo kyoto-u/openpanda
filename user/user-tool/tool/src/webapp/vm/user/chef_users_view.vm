@@ -26,12 +26,12 @@
                     $validator.escapeHtml($user.Eid)
                 </div>
                 <div class="shorttext">
-                    <label>$tlang.getString("usecre.firnam")</label>
-                    $validator.escapeHtml($user.FirstName)
-                </div>
-                <div class="shorttext">
                     <label>$tlang.getString("usecre.lasnam")</label>
                     $validator.escapeHtml($user.LastName)
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usecre.firnam")</label>
+                    $validator.escapeHtml($user.FirstName)
                 </div>
                 <div class="shorttext">
                     <label>$tlang.getString("usevie.ema")</label>
@@ -41,7 +41,35 @@
                     <label>$tlang.getString("usecre.typ")</label>
                     $validator.escapeHtml($user.Type)
                 </div>
-			
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.displayName")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("displayName"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.displayName_phonetic")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("displayName;lang-ja;phonetic"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.displayName_en")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("displayName;lang-en"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.title")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("title"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.employeeNumber")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("employeeNumber"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.affiliation")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("affiliation"))
+                </div>
+                <div class="shorttext">
+                    <label>$tlang.getString("usevie.department")</label>
+                    $validator.escapeHtml($user.Properties.getProperty("department"))
+                </div>
+
 #if($enableEdit)
                	<div class="shorttext">
                     <label>$tlang.getString("disabled")</label>

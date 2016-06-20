@@ -392,4 +392,27 @@ public class SuTool
 		}
 		return Boolean.FALSE;	
 	}
+
+	public String getDisplayName()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName") : null;}
+
+	public String getDisplayNameEn()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName;lang-en") : null;}
+
+	public String getDisplayNameJaPhonetic()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName;lang-ja;phonetic") : null;}
+
+    public String getEmployeeNumber()  { return userinfo != null ? userinfo.getProperties().getProperty("employeeNumber") : null;}
+
+    public String getAffiliation()  { return userinfo != null ? userinfo.getProperties().getProperty("affiliation") : null;}
+
+    public String getDepartment()  { return userinfo != null ? userinfo.getProperties().getProperty("department") : null;}
+
+    public String getTitle()  { return userinfo != null ? userinfo.getProperties().getProperty("title") : null;}
+
+    public String getTitle1()  { return userinfo != null ? userinfo.getProperties().getProperty("title1") : null;}
+
+    public String getTitle2()  { return userinfo != null ? userinfo.getProperties().getProperty("title2") : null;}
+
+    public String getTitle3()  { return userinfo != null ? userinfo.getProperties().getProperty("title3") : null;}
+
+    public String getEnrollment()  { return userinfo != null ? userinfo.getProperties().getProperty("enrollment") : null;}
+
 }
