@@ -103,7 +103,11 @@ public class MainViewProducer implements ViewComponentProducer, DefaultView {
 			}
 			
 			//keys are equal compare the locale
-			return locale1.compareTo(locale2);
+			if (locale1 != null && locale2 != null)  {
+				return locale1.compareTo(locale2);
+			}
+
+			return keyDiff;
 
 		}
 		
