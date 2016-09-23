@@ -55,10 +55,15 @@ public class ToolUtils
 	 */
 	public static boolean isInlineRequest(HttpServletRequest req)
 	{
-		String option = URLUtils.getSafePathInfo(req);
-		String[] parts = option.split("/");
-		if ((parts.length >= 5) ) {
-			return parts[3].equals("tool");
+		// Note that with wrapped requests, URLUtils.getSafePathInfo may return null
+		// so we use the request URI
+		String uri = req.getRequestURI();
+		if ( uri != null ) {
+			String[] parts = uri.split("/");
+			if ((parts.length >= 6) ) {
+				return parts[4].equals("tool");
+			}
+			return false;
 		}
 		return false;
 	}
