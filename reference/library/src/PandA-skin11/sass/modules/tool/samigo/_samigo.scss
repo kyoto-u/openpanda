@@ -1,0 +1,151 @@
+.#{$namespace}sakai-samigo{
+	.navIntraTool{
+		li {
+		    display: inline-block;
+		    margin: 0 0 0 0;
+		    span{
+		    	display: inline-block;
+		    	a{
+		    		display: block;
+		    		padding: 0.5em 0.5em 0.6em 0.2em;
+		    		margin: 0 0 0 0;
+		    	}
+		    }
+		}
+	}
+
+	.samigo-inline-form {
+		td {
+			label{
+				display: inline;
+				margin: 0 0 0 0.3em;
+			}
+		}
+	}
+
+	#samigo-create-new-box, #samigo-create-import-box {
+		@extend .bs-callout-primary;
+		border-left-width: 1px;
+		margin-top: 0;
+	}
+
+	.samigo-question-callout {
+			@include bs-callout($toolBorderColor, $background-color);
+			input[type="checkbox"], input[type="radio"] {
+				margin-right: 0.25em;
+			}
+	}
+
+	.listNav {
+		.inlineForm {
+			@extend .panel;
+			@extend .panel-default;
+			.pager-instruction {
+				@extend .panel-heading;
+				@extend .small;
+				text-align: center;
+			}
+			display: inline-block;
+			fieldset {
+				display: inline-block;
+			}
+			legend {
+				display: none;
+			}
+		}
+	}
+
+	.samigo-inline-radio {
+		label {
+			margin-right: 1em;
+		}
+	}
+	
+	.samigo-checkbox {
+		label {
+			margin: 0 0 0 0.5em;
+		}
+	}
+
+	.samigo-radio {
+		label {
+			margin: 0 0 0 0.5em;
+		}
+	}
+
+	.disabledField{
+		color: darken( $errorcolor, 30% );
+		text-decoration: line-through;
+	}
+
+	#assessmentSettingsAction,#itemForm,.mcscFixUp{
+		ul{
+			list-style: none;
+			padding: 0 0 0 0;
+		}
+	}
+
+	#itemForm\:partialCredit_toggle.tier3,
+	#itemForm\:mcms_credit_toggle.tier3,
+	#itemForm\:discountDiv.tier3{
+		margin-left: 3em  !important;
+	}
+
+	.divContainer {
+		clear: right;
+	}
+
+	.divLeft {
+		margin-top: 0.5em;
+	}
+
+	.divRight{
+		text-align: right;
+		@media #{$phone}{
+			text-align: left;
+		}
+	}
+	
+	#itemForm\:discountDiv #itemForm\:answerdsc{
+		margin-left: 10px;
+		width: 45px;
+		@media #{$phone}{
+			margin-left: 0px;
+		}
+	}
+	
+	.indent1{
+		margin-left: 2em;
+	}
+	
+	//This is for jsf labels and checkboxes	
+	#itemForm\:chooseAnswerTypeForMC input[type="radio"]{
+		@media #{$phone}{
+			float:left;
+			& + label {
+				overflow:auto;
+				display:block;
+			}
+		}
+	}
+	
+	#assessmentSettingsAction .layout-navigation input[type="radio"],
+	#assessmentSettingsAction\:toDefaultGradebook{
+		@media #{$nonPhone}{
+			float:left;
+			& + label {
+				overflow:auto;
+				display:block;
+				margin-left: 1.5em;
+			}
+		}
+	}
+
+	table{
+	   	td{
+	   		input[type="checkbox"],input[type="radio"]{
+	   			margin-right: 5px;
+	   		}
+	   	}
+	}
+}
