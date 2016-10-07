@@ -1,8 +1,0 @@
-bin
-target
-*.iml
-m2-target
-.classpath
-.idea
-.project
-.settings

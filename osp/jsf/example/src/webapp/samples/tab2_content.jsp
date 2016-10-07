@@ -1,1 +1,0 @@
-<h:outputText value="Here's some content for the second tab."/>

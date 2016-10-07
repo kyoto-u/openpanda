@@ -1,4 +1,0 @@
-#set ( $previewRenderBean = ${requestScope.previewRenderBean} )
-#set ( $rlb = ${requestScope.resourceLoaderBean} )		
-${previewRenderBean.previewPage}
-
