@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emailTemplates>
+    <emailTemplate>
+        <subject>Notification for timed assessment submission: ${siteName} - ${assessmentTitle}</subject>
+        <message>The timer has expired and the following timed assessment has been automatically submitted:
+
+    Site Title          : ${siteName}
+    Assessment          : ${assessmentTitle}
+
+    Student             : ${userName} (${userDisplayID})
+    Submission ID       : ${assessmentGradingID}
+    Submitted on        : ${submissionDate}
+    Confirmation Number : ${confirmationNumber}
+
+    Assessment Due Date : ${assessmentDueDate}
+    Site ID             : ${siteID}
+
+---
+This automatic notification message was sent by ${localSakaiName} (${localSakaiUrl})
+${changeSettingInstructions}
+        </message>
+        <messagehtml>&lt;pre&gt;
+The timer has expired and the following timed assessment has been automatically submitted:
+
+    Site Title          : ${siteName}
+    Assessment          : ${assessmentTitle}
+
+    Student             : ${userName} (${userDisplayID})
+    Submission ID       : ${assessmentGradingID}
+    Submitted Date      : ${submissionDate}
+    Confirmation Number : ${confirmationNumber}
+
+    Assessment Due Date : ${assessmentDueDate}
+    Site ID             : ${siteID}
+
+---
+This automatic notification message was sent by ${localSakaiName} (${localSakaiUrl})
+${changeSettingInstructions}
+&lt;/pre&gt;
+        </messagehtml>
+        <version>1</version>
+        <owner>admin</owner>
+        <key>sam.assessmentTimedSubmitted</key>
+        <locale></locale>
+        <localeLangTag></localeLangTag>
+    </emailTemplate>
+</emailTemplates>

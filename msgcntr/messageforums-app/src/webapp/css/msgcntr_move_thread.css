@@ -1,0 +1,20 @@
+/*
+Author:  Lydia Li,  lydial@Stanford.edu
+Modified based on CSS for the UC Berkeley's implementation of the Sakai Messages Tool
+
+Copyright 2009 University of California, Berkeley
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+*/
+
+/* Overrides for jQuery UI Dialog styles */
+
+.ui-dialog {
+    position: fixed !important;
+    top: 10% !important;
+    left: 10% !important;
+    width: 80% !important;
+    height: 80% !important;
+}

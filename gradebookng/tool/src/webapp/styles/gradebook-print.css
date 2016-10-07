@@ -1,0 +1,10 @@
+/* **************************************************************** *
+ *                      Gradebook Print styles                      *
+ * **************************************************************** */
+ 
+ .gb-summary-expand-all,
+ .gb-summary-collapse-all,
+ .gb-summary-category-toggle,
+ #toggleCategories {
+  display: none;
+ }

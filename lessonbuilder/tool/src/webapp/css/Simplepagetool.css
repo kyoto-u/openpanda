@@ -1,0 +1,1765 @@
+/* portal.css currently sets label to display:block. reverse it but only for our content. have to
+   do iframe and inline separately, and for some reason popups  */
+#content label,.ui-dialog label,body[onload] label{
+  display: inline;
+}
+
+/* override for jquery ui */
+.ui-state-highlight{
+   border: 1px solid #2e83ff;
+   background: #f8fcff;
+   color: #184993;
+}
+.ui-front {
+	z-index: 100001;
+}
+
+/* override portal.css, which sets no background for icon- */
+
+.ui-wrapper .ui-icon-gripsmall-diagonal-se {
+   background-image: url("simplepage-theme/images/ui-icons_222222_256x240.png") !important;
+}
+
+.ui-dialog label {
+   padding-left: 0.5em;
+   font-weight: normal;
+}
+
+/* end override */
+
+/* override weird setting in tool.css */
+
+/* was -20 left, position absolute */
+.lessonsDialog .checkbox  input[type="checkbox"],
+.lessonsDialog .radio  input[type="radio"] {
+   position:static;
+   margin-left:0px;
+}
+
+/* was 20 px left margin for label */
+.lessonsDialog .radio label,
+.lessonsDialog .checkbox label {
+  padding-left: 4px;
+}
+
+/* end override */
+
+/* wrap unbreakable words */
+#content {
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+/* without this, these divs expand beyond the width of the column if there's an unbreakable word */
+.right-col, .contentCol, .checklistDiv, .checklistDescription, .playerwidth, .playerwidth iframe, .playerwidth object, .playerwidth embed {
+  max-width:100%;
+}
+
+.gradingPane {
+  padding-top: 20px;
+  padding-left: 10px;
+}
+
+.title-tools h2{
+	padding-top: 0px;
+}
+.firstColumn {
+	width: 5%;
+	text-align: center;
+}
+.secondColumn {
+	width: 65%;
+	text-align: left;
+}
+.thirdColumn {
+	width: 10%;
+	text-align: center;
+}
+.fourthColumn {
+	width: 20%;
+	text-align: left;
+}
+.firstHeader {
+	text-align: center;
+	font-size: 20px;
+}
+.secondtHeader {
+	text-align: left
+}
+.thirdHeader {
+	text-align: center
+}
+.fourthHeader {
+	text-align: left
+}
+.bold {
+	font-weight: bold
+}
+.error {
+	font-weight: bold;
+	font-size: 16px;
+	border-style: dotted;
+	border-width: 2px;
+	background-color: #fdd;
+	margin-left: auto;
+	margin-right: auto;
+	width: 200px;
+	text-align: center;
+}
+.expert {
+	margin-top: 10px;
+	background-color: #eee;
+	padding: 5px;
+}
+.nextprev {
+	font-size: 95% !important
+}
+.Mrphs-siteHierarchy {
+	display:flex
+}
+span.nextprev {
+	flex: none;
+}
+.hierarchyWrap {
+	flex: auto;
+}
+div.action span .nextbutton, .Mrphs-siteHierarchy span .nextbutton{
+        border: solid 1px !important; 
+        padding:2px 5px !important
+}
+.neoPortletTitleWrap {
+	padding-bottom: 4px;
+}
+.breadcrumbs a[title="Reset"] {
+
+}
+.breadcrumbs span {
+	display: inline-block;
+}
+.breadcrumbs span > span {
+    margin-left: 5px;
+    margin-right:5px    
+}
+.breadcrumbs span > span.bold {
+    margin-left:0;
+}
+.breadcrumbs + .singlePageTitle {
+    display:none
+}
+.italic {
+	font-style: italic
+}
+.lessons-messages{
+	white-space: pre-line;
+}
+.hidden {
+	visibility: hidden
+}
+.rightJustify {
+	position: absolute;
+	right: 0;
+}
+.fullwidth {
+	position: relative;
+	text-align: left;
+	width: 100%;
+}
+.border {
+	border-style: solid;
+	border-width: 2px;
+}
+.border2 {
+	border-style: solid;
+	border-width: 2px;
+}
+.instructionPanel,.controlsPanel {
+    border:1px solid #ccc;
+    font-size:12px;
+    background: #eee;
+    padding:5px;
+    margin:5px 0
+}
+.controlsPanel {
+    padding:0;
+    background:none;
+    border: 1px solid transparent;
+}
+.controlsPanel .shorttext, .controlsPanel .longtext, .controlsPanel .filepicker{
+    margin:.4em 0
+}
+.controlsPanel .act {
+    margin:1em 0;
+}
+.controlsPanel .act .deleteButton, .act .deleteButton {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #c00 !important;    
+    text-shadow:none !important;
+
+}
+.act .deleteButton {
+    float: none
+}
+.controlsPanel .act .deleteButton:hover, .act .deleteButton:hover {
+    background: none !important;
+    cursor: pointer;
+}
+.inset-text {
+	margin-top: 1em;
+	border-style: solid;
+	padding-left: .5em;
+	border-width: 2px;
+	width: 97%;
+}
+.fake-disabled {
+	color: #999 !important;
+	text-decoration: underline;
+}
+.disabled:link {
+	color: #cccccc
+}
+.disabled-multimedia-item {
+	color: #cccccc;
+    margin-top:4px;
+    display: inline-block;
+    /*padding-left: 8px !important;*/
+}
+.disabled-text-item {
+	color: #cccccc;
+    margin-top:4px;
+}
+.disabled:visited {
+	color: #cccccc
+}
+.disabled:active {
+	color: #cccccc
+}
+.disabled:hover {
+	color: #cccccc
+}
+.portletBody a.ui-button:link, .portletBody a.ui-button:visited {
+	color: black;
+	text-decoration: none !important;
+}
+.gradingTable a.ui-button .ui-button-text{
+    font-size:10px;
+    font-weight:normal;
+}
+.ui-buttonset .ui-button {
+    margin-right: 3px !important;
+}
+body .below-link-help, #error.below-link-help {
+   margin-top:55px;
+}
+body .error-spacingabove {
+   margin-top: 30px;
+   clear:both;
+}
+body .error-nospacebelow {
+   margin-bottom: 0px;
+}
+/* if two errors in a row, we don't need the spacing between them */
+body .error-spacingabove + .error-spacingabove{
+   margin-top: 15px;
+}
+/* ff2, buttons don't work */
+a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merge-link:visited, a.column-merge-link:link, a.column-merge-link:visited, a.itemLink:link, a.itemLink:visited, a.multimedia-edit:link, a.multimedia-edit:visited, a.edit-youtube:link, a.edit-youtube:visited, a.edit-movie:link, a.edit-movie:visited {
+	text-decoration: none !important;
+	background-color: #eee;
+}
+#edit-title {
+	margin-left: 1em
+}
+.ui-button-text {
+	padding: 0.25em 0.8em !important
+}
+.itemclass {
+	margin-top: 2.0em;
+	margin-bottom: 1.0em;
+}
+.rowdescription {
+	margin: 2px  0px  0px 30px;
+}
+.description {
+    margin-top: 0.5em;
+	margin-bottom: 1em;
+}
+.youtubeWidth {
+	width: 100%
+}
+.shorttext textarea {
+	width: 95%
+}
+#cc-dialog-label {
+	width: 95%;
+	margin-bottom: 0.5em;
+}
+
+#cc-dialog-label-url {
+	width: 95%;
+	margin-bottom: 0.5em;
+}
+
+.newItem {
+   border-left: 5px solid black !important;
+   margin-left: -5px;
+}
+.listHierFlex {
+  display:inline-block;
+}
+.hierFlexList {
+   display:flex;
+}
+.hierFlex1 {
+   display:flex;
+   width:calc(100% - 12em);
+   margin-right:2px;
+}
+.hierFlex2 {
+   display:flex;
+   width:14em;
+}
+.listHier .forumTopic {
+   margin-left: 1em;
+}
+.mainList {
+    list-style:none;
+}
+
+/* padding-top 35 for one col, 25 for multiple, 20 in narrow screen */
+.column {
+    margin: 7px 15px;
+    padding: 15px 7px;
+    padding-top: 25px;
+    list-style:none;
+    background-color: white;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    border: 1px solid #222;
+    display:inline-block;
+    vertical-align: top;
+}
+
+/* only up to 4 cols has been tuned */
+.cols9 {
+    width: calc(100$ / 9  - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols9"][class~="double"] {
+    width: calc(200% / 9 - 17px) !important;
+}
+.cols8 {
+    width: calc(100% / 8 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols8"][class~="double"] {
+    width: calc(200% / 8 - 17px) !important;
+}
+.cols7 {
+    width: calc(100% / 7 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols7"][class~="double"] {
+    width: calc(200% / 7 - 17px) !important;
+}
+.cols6 {
+    width: calc(100% / 6 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols6"][class~="double"] {
+    width: calc(200% / 6 - 17px) !important;
+}
+.cols5 {
+    width: calc(100% / 5 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols5"][class~="double"] {
+    width: calc(200% / 5 - 17px) !important;
+}
+.cols4 {
+    width: calc(100% / 4 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols4"][class~="double"] {
+    width: calc(200% / 4 - 17px) !important;
+}
+.cols3 {
+    width: calc(100% / 3 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols3"][class~="double"] {
+    width: calc(200% / 3 - 17px) !important;
+}
+.cols2 {
+    width: calc(100% / 2 - 17px) !important;
+    margin-right: 2px !important;
+}
+[class~="cols2"][class~="double"] {
+    width: calc(200% / 2 - 17px) !important;
+}
+.cols1 {
+    padding-top:35px;
+    width: calc(100% - 17px) !important;
+}
+/* this is to prevent the last column from going to a new
+   line if the calculation is a bit off. */
+.lastcol {
+    margin-right:-10px !important;
+}
+
+/* with multiple columns don't want as wide spacing */
+.cols2 .right-col {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.cols3 .right-col,.cols4 .right-col,.cols5 .right-col,.cols6 .right-col,.cols7 .right-col,.cols8 .right-col,.cols9 .right-col {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.split ul {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+}
+.split .edit-col {
+    right:0px;
+}
+
+
+.coltrans {
+   border-color: transparent;
+}
+/* 
+   Any changes shoud be checked to make sure they have enough
+   contrast for accessiblity. These colors have been checked
+   against the WebAIM Color Contrast Checker. I've tried to
+   make them subjectively the same darkness.
+*/
+/* default */
+.column .commentDiv, .column .studentContentTable, .column .questionDiv .contentCol, .column .checklistDiv {
+  background-color: #b3ecff;
+}
+.column a[href]{
+  color: #004860;
+}
+.colgray {
+   background-color: #f0f0f0;
+   border-color: #222;
+}
+.colgray .commentDiv, .colgray .studentContentTable, .colgray .questionDiv .contentCol, .colgray .checklistDiv {
+  background-color: #b8b8b8;
+}
+.colgray a[href]{
+  color:black;
+}
+.colred {
+   background-color: #fff0f0;
+   border-color: #600;
+   color: #4660000;
+}
+.colred .commentDiv, .colred .studentContentTable, .colred .questionDiv .contentCol, .colred .checklistDiv {
+  background-color: #ffb3b3;
+}
+.colred a[href], .colred h3.author {
+  color: black;
+}
+.colblue {
+   background-color: #f4f4ff;
+   background-color: #e6f9ff;
+   border-color: #004;
+   color: #004;
+}
+.colblue .commentDiv, .colblue .studentContentTable, .colblue .questionDiv .contentCol, .colblue .checklistDiv {
+  background-color: #b3d9ff;
+  background-color: #99e7ff;
+}
+.colblue a[href] {
+  color: black;
+}
+.colgreen {
+   background-color: #f6fff6;
+   border-color: #030;
+   color: #030;
+}
+.colgreen .commentDiv, .colgreen .studentContentTable, .colgreen .questionDiv .contentCol, .colgreen .checklistDiv {
+  background-color: #9fc;
+}
+.colgreen a[href] {
+  color: black;
+}
+.colyellow {
+   background-color: #ffffe8;
+   border-color: #840;
+   color: #4b2600;
+}
+.colyellow .commentDiv, .colyellow .studentContentTable, .colyellow .questionDiv .contentCol, .colyellow .checklistDiv {
+  background-color:  #ffd480
+}
+.colyellow a[href],.colyellow h3.author {
+  color: black;
+}
+
+
+
+.columnopen, .addbottom {
+  text-decoration: none;
+}
+.mainList li {
+    position: relative;
+}
+.mainList li.canEdit > div.edit-col {
+    vertical-align:top;
+    padding-top: 0.35em;
+    padding-left: 0;
+    z-index:4
+}
+.mainList li.canEdit > div.edit-col {
+    display: inline-block;
+}
+.mainList li.question, .mainList li.studentContentType  {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.mainList li.commentsType {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+.mainList li.textType, .mainList li.multimediaType {
+    margin-top: 10px;
+    margin-bottom: 10px;
+} 
+.mainList li.question .multipleChoiceAnswer {
+}
+.mainList li.question .multipleChoiceForm input.bold {
+}
+.multipleChoiceAnswer label {
+  margin-left: 5px;
+}
+.shortanswerDiv .bold {
+  display: block;
+}
+.questionPollGraph {
+  max-width: 100%;
+}
+.questionStatusText {
+}
+.mainList li .textbox {
+
+}
+/*maybe a universal selector, instead of a p*/
+.mainList li .textbox p:first-child{
+    margin-top:0;
+}
+/*maybe a universal selector, instead of a p*/
+.mainList li .textbox p:last-child{
+    margin-bottom:0;
+}
+
+.statusCol {
+    vertical-align: top
+}
+
+.statusCol, .contentCol {
+ display: inline-block;
+}
+.link-div h3.link-div-head {
+    display:inline;
+    font-size:100%;
+    margin-left:3px;
+}
+.listType .link-div h3.link-div-head {
+    display:inline-block;
+    margin-top:0px;
+    width: calc(100% - 30px);
+    vertical-align: text-top;
+}
+.listType .link-div .fa-item-text {
+    display:inline-block;
+    vertical-align: text-top;
+}
+
+
+.ui-button-text {
+	font-weight: bold !important;
+	padding: 0px 4px !important;
+}
+.edit-col .ui-button-text, #submit-grading .ui-button-text, .portalmenu .ui-button-text {
+	font-size: 60%;
+}
+.edit-col {
+  font-size: 20px;
+  line-height: 24px;
+}
+.buttonItem {
+	padding-left: 20px
+}
+.offscreen {
+	/* from drupal */
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+}
+.columnSetup2 {
+    padding:5px;
+    float:none;height:100%;overflow:hidden;margin:1em 0
+}
+
+.layoutReorderer-module-content {
+    padding: 6px;
+    width: 95%;
+    overflow: auto;
+}
+
+.flc-reorderer-module {
+    border: 1px solid #ccc;
+    margin:5px 0;
+    position:relative;
+    padding: 0px 0px 0px 0px;
+}
+.flc-reorderer-module:focus {
+    outline:1px dashed #000
+} 
+.flc-reorderer-module:hover {
+    border:1px solid #000;
+}
+.reordSeqContainer {
+    position: absolute;
+    width:50px;
+    top:2px;
+    left:5px;
+    padding:0px;
+    
+}
+
+.reordItemContainer {
+     padding: 0px 20px 0px 30px;
+}
+.reordItemContainerDesc {
+    margin-top:5px;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;    
+}
+.highlightEl {
+    background:#ffa
+}
+
+.col2 .reordItemContainer {
+     padding: 5px;
+}
+.col2 .reordSeqContainer, .col2 .reordDeleteContainer {
+    display: none
+}
+
+.reordDeleteContainer {
+    position: absolute;
+    width:17px;
+    top:1px;
+    right:5px;
+
+}
+/**
+ * Interaction styling.
+ */
+
+.layoutReorderer-movable-selected {
+    border: 1px solid #fff;
+}
+
+.layoutReorderer-avatar {
+    background-color:#ccc;
+    outline: 2px solid #000;
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* ie opacity fix */
+}
+.layoutReorderer-avatar .layoutReorderer-module-dragbar, 
+.layoutReorderer-avatar .layoutReorderer-module-content {
+    /* hide contents of the module's avatar, while dragging. */
+    visibility: hidden;
+}
+
+.layoutReorderer-movable-dragging {
+    margin: 6px 2px 6px 12px;
+}
+
+.layoutReorderer-movable-mousedrag {
+    /* hide the original module while being dragged. */
+    display:none;
+}
+
+.layoutReorderer-dropMarker {
+    background: #9f9 url("/library/image/silk/arrow_right.png")  1% 50% no-repeat;
+    height: 20px;
+    padding: 0 0 0 0;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.col1 {
+    min-width:60%;
+    width:60%;
+    min-height:50px;
+}
+.col2 {
+    border: 1px solid #CCCCCC;
+    margin-left: 16px;
+    margin-top: 4px;
+    min-height: 50px;
+    min-width: 30%;
+    padding: 5px 5px 5px;
+    width: 30%;
+}
+.col1, .col2{
+    float:left;
+    background:#fff;
+}
+.deleteListMessage {
+    padding:5px;
+    padding-left: 25px;
+    background: #fff url(/library/image/silk/bin.png) 5px 5px no-repeat;
+}
+.deleteListMessageEmpty {
+    padding:5px;
+    padding-left: 25px;
+    background: #fff url(/library/image/silk/bin_empty.png) 5px 5px no-repeat;
+    
+}
+.afterheader {
+	margin-top: 1em
+}
+/* also uses nextprev. this is specific for ShowItem */
+.returnheader a:link, .returnheader a:visited {
+	background-color: #fee !important;
+	color:black !important;
+}
+.returnheader a:hover, returnheader  a:active {
+	background-color: #edd !important;
+	color:black !important;
+}
+.showItemNoMorpheus .returnheader {
+    display:block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+.showItemMorpheus .returnheader a:link, .showItemMorpheus .returnheader a:visited,
+.showItemMorpheus .returnheader a:hover,.showItemMorpheus .returnheader a:active {
+	background-color: inherit !important;
+	border: none;
+	text-decoration:underline !important;
+}
+
+/* Comments */
+h3.author {
+	margin-right: 10px;
+	font-weight: bold;
+	color: #039;
+	display: inline;
+}
+.replaceWithComments {
+  margin:5px 5px 5px 20px; 
+}
+.commentPageTitle {
+	margin: 0 10px;
+	color: #906;
+}
+.commentDiv {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #e4edff;
+	padding: 5px 10px;
+}
+.gradingTable .commentDiv {
+    padding:5px;
+    margin-top:5px;
+    outline:1px solid #ccc;
+}
+.commentBody {
+	margin-top: 3px
+}
+.commentsCell {
+	margin-bottom: 0px;
+}
+.specialCommenter {
+	background-color: white;
+	padding: 0 3px 1px 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	margin-right: 12px !important;
+}
+/* Commenter looking at their own comment */
+.personalComment {
+	background-color: white !important
+}
+/* Site Owner Comment */
+.ownerComment {
+	background-color: #CCCEED !important;
+	color: black !important;
+}
+.item-group-titles {
+	font-style: italic;
+	color: #930;
+	padding-left: 1em;
+}
+.page-picker-note {
+	font-style: italic;
+	color: #930;
+	padding-left: 0.5em;
+	padding-right: 0.25em;
+}
+.returnwarning {
+	font-size: 110%
+}
+.nextprev .usebutton span {
+	font-size: inherit
+}
+.commentDiv .editLink, .commentDiv .deleteLink,  .commentDiv .replyLink {
+    padding:5px;
+}
+.commentGradePanel {
+    float:right;
+    vertical-align:top;
+}
+.commentDiv .editLink:hover, .commentDiv .deleteLink:hover,  .commentDiv .replyLink:hover {
+    cursor:pointer;
+}
+.link-div .usebutton {
+	  background-color: rgb(246,246,246)
+}
+.link-div {
+	display:inline;
+}
+.add-comment-button {
+	margin: 7px 0px 2px 0px
+}
+.add-peereval-button {
+	margin: 0px 0px 2px 0px
+}
+.add-comment-button span, .add-peereval-button span {
+	padding: 4px 8px;
+}
+a.peer-eval-stats {
+        font-size:75% !important
+}
+.peer-eval-title-student {
+        font-size:110%;			 
+}
+.noDisplay {
+	display: none
+}
+.imgCell {
+}
+.studentCell {
+	padding-left: 7px
+}
+.studentTitle {
+	color: black;
+	margin-top: 0px;
+}
+.studentContentTitle, .mainList li.question .questionText, h3.author {
+    font-size:110%;
+}
+.studentContentTitle {
+    display:block;
+    margin-bottom: 0.25em;
+    margin-left: 2em;
+    font-size: 110%;
+}
+.studentContentTable {
+        margin-top:10px;
+	border: none;
+	background-color: #e4edff; 
+	padding: 14px 8px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.studentContentTable .studentRow{
+    padding:1px 8px;
+}
+.studentContentTable .studentLink{
+    padding-left:8px;
+}
+
+
+.duecol {
+	padding-left: 2em !important
+}
+
+/* negative bottom margin because we set a top margin for the section below for the case where there's no toolbar */
+#toolbar {
+  padding:2px;
+  margin:0px;
+  margin-bottom:-10px;
+  display:inline-block !important;
+}
+
+/* Dropdown Menu */
+ul#toolbar li {
+	display: inline;
+	position: relative;
+}
+ul#toolbar li.dropdown a {
+    text-decoration:none
+}
+ul#toolbar li em {
+    font-style:normal;
+}
+.dropDownDiv {
+	position: absolute;
+	width: 350px;
+	margin-top: 0;
+	margin-left: 0.5em;
+	background-color: #EEE;
+	padding: 5px !important;
+	background: #eeeeee !important;
+	background: -moz-linear-gradient(top, #eeeeee 0%, #e4e4e4 100%) !important;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#e4e4e4)) !important;
+	background: -webkit-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
+	background: -o-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
+	background: -ms-linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
+	background: linear-gradient(top, #eeeeee 0%,#e4e4e4 100%) !important;
+    border: 1px solid #d1d1d1 !important;
+    z-index: 10;
+    -webkit-box-shadow: 1px 1px 3px 2px #eeeeee;
+    box-shadow: 1px 1px 3px 2px #eeeeee;
+}
+.dropDownDiv  ul {
+    margin:0;
+    padding: 0;
+}
+.dropDownDiv li {
+    background: #fff !important;
+    padding: 3px !important;
+    padding-left: 7px !important;
+    display:block;
+}
+.addContentMessage {
+    margin-top:10px;
+    margin-bottom:20px;
+    padding: 10px !important;
+    display:block;
+}
+.dropDownDiv li:first-child {
+    border-top:none !important;
+}
+.dropDownDiv li a {
+    display:block;
+    text-decoration: none;
+}
+.dropDownDiv li div {
+    font-size: .85em !important
+}
+.Mrphs-siteHierarchy span.nextprev {
+
+}
+.lessons-siteHierarchy-title {
+   font-weight: bold;
+   margin-left: 0.5em;
+}
+.itemAction {
+  padding-top: 0px;
+  margin-top: 0px;
+  position:relative;
+  top:-4px;
+}
+span.nextprev {
+}
+.crumb-link {
+  margin-right: 0.5em;
+}
+a.nextprev {
+	margin-left: 5px !important;
+	margin-right: 0px !important;
+}
+img {
+	z-index: 1
+}
+.statusImg {
+	vertical-align: middle;
+	margin-right: 1px;
+}
+.icon-image, .item-image {
+	height:16px;
+	width:16px;
+}
+.comment-image, .student-image, .question-image {
+       display:none;
+}
+.unsubmitted {
+	background-color: #FFC9D7
+}
+.showPollGraph span {
+	font-size: 70%;
+	font-weight: normal;
+}
+.gradingTable {
+	border-collapse: collapse;
+	margin-top: 20px;
+	width:auto !important;
+}
+.gradingTable th {
+       padding-right: 2em;
+}
+.bottomBorder {
+	border-bottom: 1px solid black
+}
+.topBorder td {
+	border-top: 3px solid white
+}
+.first-row {
+}
+.first-row td {
+   padding: 0px;
+}
+.details-row td {
+   padding-left: 2em
+}
+.details-row td:hover {
+    background: #fff
+}
+.gradingarea {
+	margin-left: 1em;
+	padding: 1px 5px;
+	display: inline-block;
+	font-size: 90%;
+	border: solid 1px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+.backgroundHighlight {
+	border: 2px solid black;
+	background-color: #F8F8F8;
+}
+.linkCell {
+	margin-top: 1.5em
+}
+.itemcopylink {
+	display: none;
+	border: 1px solid black;
+	padding: 2px;
+	margin-left: 2px;
+	text-decoration: none !important;
+	background-color: #ffc;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	color: black !important;
+}
+#peer-eval-create-table td, #peer-eval-create-table th {
+	padding:5px;
+	border: 1px solid black !important;
+}
+#peer-eval-create-table thead{
+	background-color: grey;
+	color: white;
+}
+#question-correct-text, #question-incorrect-text {
+	width: 400px;
+	height: 55px;
+}
+.questionText, .questionStatusText {
+	white-space:pre-wrap;
+	margin-bottom: 0.5em;
+	margin-top: 0em;
+}
+
+#question-text-input {
+	width: 400px;
+}
+.question-multiplechoice-answer, .question-shortanswer-answer {
+	width: 250px;
+}
+
+.addStudentContent {
+ -webkit-border-radius: 3px;
+ -moz-border-radius: 3px;
+ border-radius: 3px;
+ border:solid black 1px;
+ text-decoration:none;
+ font-size:85%;
+}
+input[type="submit"].question-submit,.addStudentContent {
+   margin: inherit;
+   margin-top:15px;
+   border:1px solid #999;
+   color: black !important;
+   font-family: inherit;
+   cursor: pointer;
+   padding:6px 20px !important;
+   background:#f0f0f0;
+   font-weight: normal;
+   font-size: inherit;
+   letter-spacing: inherit;   
+   line-height: inherit;
+   border-radius: 3px;
+   position: static;
+}
+
+.questionDiv .contentCol {
+ margin-top:5px;
+ padding: 15px;
+ padding-right: 30px;
+ background-color: #e4edff;
+ -webkit-border-radius: 10px;
+ -moz-border-radius: 10px;
+ border-radius: 10px;
+}
+
+.questionDivControl {
+ margin-top: 5px;
+ margin-bottom: 10px;
+}
+
+div[role="dialog"] {
+    -webkit-box-shadow: 1px 1px 2px 1px #ccc;
+     box-shadow: 1px 1px 2px 1px #ccc;
+}
+.commentsType div[role="dialog"] {
+    -webkit-box-shadow: 0px 0px 0px 0px #ccc;
+     box-shadow: 0px 0px 0px 0px #ccc;
+    
+}
+#multipleChoiceAnswers, #copyableShortanswerDiv {
+    line-height:30px;
+}
+
+.controlsPanel fieldset {
+    margin: 10px 0 
+}
+
+.deleteCandidate td:first-child {
+    background: transparent url('/library/image/silk/delete.png') 2px 3px no-repeat;
+}
+.deleteCandidate td:first-child div {
+    margin-left: 25px;
+}
+/* dialog is open, hide all edit links till it closes */
+.mainList .edit-colHidden {
+    display:none;
+}
+#hide-items {
+    display: none;
+}
+.pageList {
+    padding: 0 10px;
+    list-style:none;
+}
+.pageList li {
+    padding-left:5px;
+}
+.pageList img {
+    vertical-align:middle;   
+}
+.itemListContainer {
+    padding-top: 5px;
+}
+.itemList {
+    padding-left: 0px;
+    margin-left: 20px;
+    display: none;
+    list-style:none;
+    background-color: #F3F3F3;
+    padding-bottom: 1.0em;
+    margin-bottom: 0.5em;
+}
+.text-item-placeholder {
+	font-style: italic;
+}
+.mm-test-text {
+    margin-top:0.5em;
+    margin-bottom:1.0em;
+}
+
+.mm-test-text-p {
+    margin-top:0.5em;
+    margin-bottom:1.0em;
+}
+#mm-test-prototype, #mm-test-link, .oembedall-closehide {
+    display: none !important;
+}
+.neoPortletTitleWrap {
+    border-radius:0
+}
+.portletTitle {
+    width: 100%;
+    height: 100%;
+}
+.action {
+  display:inline-block;
+  float:right !important;
+}
+.action {
+  margin-top:5px;
+}			      
+.Mrphs-siteHierarchy {
+    height: auto !important;
+}
+.portletTitle .action a#jsr-edit {
+    padding: 2px;
+    background: url(../images/page_edit.gif) center right no-repeat;
+}
+.portletTitle .action a#jsr-edit:hover {
+    background: url(../images/page_edit.gif) center right no-repeat
+}
+.portletTitle .action img {
+    margin: 0;
+    vertical-align: text-bottom;
+    width: 18px;
+    border: none;
+    height: 18px;
+}
+.portletTitle .action a.help{
+    background: url(../images/help.gif) center right no-repeat;
+    text-align: left;
+    padding: 0;
+    text-decoration: none !important;
+    width: 1em;
+    height: 1.5em;
+    outline: none;
+}
+.portletTitle .title a:focus, .portletTitle .action a:focus {
+    outline: black dotted thin
+}
+.portletTitle .action a.help:hover, .portletTitle .action a.help:focus img {
+    background: url(../images/help_h.gif) center right no-repeat
+}
+.portletTitle .action a.tool-directurl{
+    text-decoration:none;
+}
+.portletTitle .action a.tool-directurl{
+    padding:2px;
+    background: url(/library/image/silk/link.png) center right no-repeat;
+}
+.portletTitle .action a.tool-directurl:hover{
+    background: url(/library/image/silk/link_go.png) center right no-repeat;
+}
+.direct-url-wrap {
+    font-size: 85%;
+    color: #555;
+}
+.direct-url-wrap textarea {
+    color: #000;
+    overflow:auto;
+    width:250px;
+    display:block;
+}
+.portletTitle .title {
+    float: left;
+}
+.portletTitle .title img {
+    margin: 0;
+    vertical-align: text-bottom;
+    width: 18px;
+    border: none;
+    height: 18px;
+}
+.portletTitle .title h2 {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+.portletTitle .title h2 a {
+    text-decoration: none;    
+}
+.portletTitle .title h2 .siteTitle {
+    color: #333
+}
+.portletTitle .title a.reload {
+    background: url(../images/reload.gif) center left no-repeat;
+    text-decoration: none !important;
+    border: 1px solid #fff;
+    height: 1.5em;
+    outline: none;
+}
+.portletTitle .title a.reload:hover, .portletTitle .title a.reload:focus {
+    background: url(../images/reload_h.gif) center left no-repeat
+}
+
+.right-col {
+ display: inline-block;
+}
+
+.listType .right-col {
+  display:flex
+}
+.listType .statusCol {
+  flex:none; width:20px
+}
+.listType .contentCol {
+  flex:auto
+}
+
+/* types that need to span the full column */
+.multimediaType .right-col, .textType .right-col {
+ width:100%;
+}
+.right-col2 {
+ left:5px;
+}
+.right-col3 {
+ left:10px;
+}
+.returnwarning, .returnheader, .xMrphs-toolTitleNav__addLeft .usebutton span {
+  font-size: .75em;
+}
+#content{
+  padding-top: 1px;
+  padding-bottom: 20px;
+}
+div.navIntraTool {
+  border-top:none;
+}
+
+/* temporary, to avoid changing old stuff for the moment */
+.edit-col {
+  padding-top: 0px !important;
+}
+.mainList > li {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.image-col {
+ display: inline-block;
+}
+
+.edit-col {
+margin-top:5px;
+display:inline-block;
+position:absolute;
+background-color:#eee;
+top:-5px;
+right:-8px;
+z-index: 900;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+border: solid #bbb 1px;
+padding:1px;
+}
+.edit-col span {
+color: #666;
+}
+
+/* position relative with no args does nothing, but editsection's position absolute needs it as a refernce */
+.column {
+   position:relative;
+}
+.editsection {
+   position:absolute;
+   top:-12px;
+}
+.sectionedit {
+   display:inline-block;
+   background-color:#eee;
+   z-index: 900;
+   -webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+   border-radius: 3px;
+   border: solid #bbb 1px;
+   padding: 0px 5px 0px 5px ;
+   font-size: 20px;
+   line-height: 24px;
+}
+.sectionedit a span {
+   color: #666;
+}
+.addbottom {
+   position:absolute;
+   top: auto;
+   bottom:0px;
+   right:0px;
+}
+.addbottom a {
+   text-decoration: none;
+}
+
+/* if ckeditor overflows column, keep it on top, but under chat window */
+.evolved-box {
+  position:relative;
+  z-index:100002;
+}
+
+.right-col a {
+color:inherit;
+}
+.right-col {
+margin-top: 0px !important;
+margin-left: 0px;
+/* for student view, instructor overriden below */
+}
+
+
+/* default content */
+.right-col {
+  padding-top:3px;
+  padding-bottom:3px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+li.listType .contentCol {
+}
+li.question .contentCol
+}
+/* links should be spaced as close as possible to each other, so override padding */
+li.resourceType .right-col {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.edit-col a:link {
+ background:none;
+ border:none;
+}
+.itemclass {
+ margin-top:3.0em !important;
+}
+.add-comment-button span {
+font-size: 90%;
+}
+.add-comment-button a {
+ padding: 3px 7px;
+}
+.questionDivControl a, .commentsDiv a.gradingPaneLink{
+ padding: 5px 10px;
+}
+
+/* in full width mode, if we don't do this, and the
+   first region is split, the right column doesn't fit
+   must be overridden for narrow format */
+.Mrphs-container--toolTitleNav {
+  margin-bottom:-30px !important;
+}
+
+/* for ShowItem */
+.itemHeader {
+}
+.itemHeader-resource {
+  margin-bottom:20px; 
+  border-bottom:none;
+}
+.itemTitle .title-instruction {
+  margin-bottom:0px;
+}
+.itemTitle {
+  line-height:10px;
+  margin-bottom:5px;
+}
+/* fit the actual height, so it doesn't overlap title */
+.Mrphs-toolTitleNav__button_container {
+  height: 30px;
+}
+.portletBody {
+  margin-top:2px;
+}
+.PagePicker {
+  margin-top:12px;
+}
+/* 800 is when the left margin collapses */
+@media only screen and (max-width: 800px) {
+.Mrphs-container--toolTitleNav {
+  margin-bottom: 0px !important;
+}
+.genTitle {
+  display:none;
+}
+
+/* student mode only */
+.genTitle ~ .action {
+  margin-top:-5px;
+}
+.itemclass {
+  margin-top: 0.5em !important;
+}
+.itemTitle {
+  width: calc(100% - 100px);
+  padding-top:0px;
+  margin-top:10px;
+}
+.removeNarrow {
+ display:none !important;
+}
+.column {
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 20px;
+}
+.right-col {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+.split ul {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+}
+/* with narrow screen, don't use multiple columns */
+.cols1, .cols2, .cols3, .cols4, .cols5, .cols6, .cols7, .cols8, .cols9, 
+[class~="cols9"][class~="double"],
+[class~="cols8"][class~="double"],
+[class~="cols7"][class~="double"],
+[class~="cols6"][class~="double"],
+[class~="cols5"][class~="double"],
+[class~="cols4"][class~="double"],
+[class~="cols3"][class~="double"],
+[class~="cols2"][class~="double"],
+[class~="cols1"][class~="double"]
+ {
+    width: calc(100% - 20px) !important;
+}
+/* override special spacing for multiple columsn in default page width */
+.cols2 .right-col,.cols3 .right-col,.cols4 .right-col,.cols5 .right-col,.cols6 .right-col,.cols7 .right-col,.cols8 .right-col,.cols9 .right-col {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+}
+/* 480 is boundary of most phones */
+@media only screen and (max-width: 480px) {
+.col1{
+   width: 100%;
+}
+.col2 {
+   width: calc(100% - 15px);
+}
+.hierFlex1 {
+   width:auto;
+}
+.hierFlex2 {
+   display:none;
+}
+span.nextprev {
+	flex: auto;
+}
+}
+.lessonsToolButton {
+  border-radius:15px !important;
+}
+.addcontent-icontext {
+  line-height:25px; 
+  vertical-align:-3px;
+  font-size:200%
+}
+.bottomButtons {
+  width:100%
+}
+.bottomRight {
+  float:right
+}
+.contentButton span {
+  padding: 0px !important;
+}
+.fa-button-text{
+  font-size:125%;
+}
+.navIntraTool li.contentButton a {
+  padding-top:2px !important;
+  padding-bottom:2px !important;
+}
+.navIntraTool li.contentButton a .fa-button-text, .fa-fw {
+  font-family:FontAwesome;
+}
+.studentRow > .fa-fw {
+  width: 1em !important;
+  display: inline-block;
+}
+.fa-item-text {
+  position:relative; 
+  top:3px; 
+  margin-right:2px;
+  font-family:FontAwesome;
+}
+.fa-edit-icon{
+  font-size:16px;
+  font-weight: normal;
+  color: #aaa;
+  font-family:FontAwesome;
+}
+.fa-group-icon {
+  font-size:16px;
+  font-family:FontAwesome;
+}
+.mainList li:hover.canEdit {
+    background-color: #eee;
+}
+.peer-eval-row .newPeerCell {
+   background-color: rgb(173,216,230) !important;
+}
+.peer-eval-row .selectedPeerCell {
+/* nothing - used to save information */
+}
+
+.Mrphs-siteHierarchy span:last-child {
+  margin-left: 6px;
+}
+.contentButton span a {
+  height: 24px;
+}
+.contentButton {
+  height: 26px;
+  line-height: 21px;
+  margin-top: 3px !important;
+  z-index:900;
+}
+.Mrphs-siteHierarchy .action .lessonsToolButton {
+  background-color: transparent;
+  padding-top: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.startupHelp {
+  margin-top: 45px;
+}
+/* this section is to make things work when lessons is in an iframe */
+.contentButton span a {
+  display:inline-block !important;
+  border:1px solid #e0e0e0;
+}
+body > .portletBody {
+  margin-top:-15px;
+  padding-top:0px;
+  padding-bottom:0px;
+}
+.oldPortal + .navIntroTool {
+}
+.oldPortal .title {
+
+}
+.oldPortal + .navIntraTool {
+  padding-top:0px;
+}
+.title-tools {
+  line-height:30px;
+}
+.oldPortal + .navIntraTool {
+  border: none;
+}
+.oldPortal + .navIntraTool #toolbar{
+ margin-top:5px;
+ margin-bottom:0px;
+}
+/* old portal, but only for students. instructors need more spacing */
+.oldPortal ~ .itemclass {
+  margin-top: 0.0em !important;
+}
+/* put back default value if an instructor */
+.navIntraTool ~ div.itemclass {
+  margin-top: 3.0em !important;
+}
+.title-tools {
+  float:none;
+  position:static;
+  margin-bottom:0px !important;
+}
+.oldPortal .title {
+  display: inline-block;
+  float:none !important;
+  text-align: left;
+}
+.oldPortal .action {
+     margin-top:0px;
+ }
+@media only screen and (min-width: 855px) {
+/* student mode only */
+body > .portletBody > .action {
+  margin-right:150px;
+}
+.oldPortal .action {
+     margin-top:20px;
+   }
+}
+.oldPortal + .navIntraTool {
+   margin-top: -10px;
+}
+/* end lessons in iframe */
+/* narrow screen */
+
+/* print */
+@media print {
+
+.oldPortal .portletTitle {
+  padding-top: 30px !important
+}
+
+.cols9 {
+    width: calc(100$ / 9  - 32px) !important;
+}
+[class~="cols9"][class~="double"] {
+    width: calc(200% / 9 - 32px) !important;
+}
+.cols8 {
+    width: calc(100% / 8 - 32px) !important;
+}
+[class~="cols8"][class~="double"] {
+    width: calc(200% / 8 - 32px) !important;
+}
+.cols7 {
+    width: calc(100% / 7 - 32px) !important;
+}
+[class~="cols7"][class~="double"] {
+    width: calc(200% / 7 - 32px) !important;
+}
+.cols6 {
+    width: calc(100% / 6 - 32px) !important;
+}
+[class~="cols6"][class~="double"] {
+    width: calc(200% / 6 - 32px) !important;
+}
+.cols5 {
+    width: calc(100% / 5 - 32px) !important;
+}
+[class~="cols5"][class~="double"] {
+    width: calc(200% / 5 - 32px) !important;
+}
+.cols4 {
+    width: calc(100% / 4 - 32px) !important;
+}
+[class~="cols4"][class~="double"] {
+    width: calc(200% / 4 - 32px) !important;
+}
+.cols3 {
+    width: calc(100% / 3 - 32px) !important;
+}
+[class~="cols3"][class~="double"] {
+    width: calc(200% / 3 - 32px) !important;
+}
+.cols2 {
+    width: calc(100% / 2 - 32px) !important;
+}
+[class~="cols2"][class~="double"] {
+    width: calc(200% / 2 - 32px) !important;
+}
+.cols1 {
+    width: calc(100% - 32px) !important;
+}
+}
+/* end media print */
+
+/* high z-index for items in morpheus. We use large z-index to make sure we go on top
+   of any video players or other embedded content. That requires larger values for some
+   elements of Morpheus. */
+
+/* directURL popup */
+nav.Mrphs-container--toolTitleNav {
+        z-index: 100001 !important;
+}
+/* menu off user icon, site menu in narrow, site menu in  wide mode */
+.Mrphs-mainHeader, .Mrphs-skipNav__menu, #selectSiteModal {
+        z-index: 100002 !important;
+	position:relative;
+}
+/* chat open button */
+#Mrphs-footerApp__chat {
+        z-index: 100003 !important;
+}
+/* actual portal chat */
+.Mrphs-portalChat {
+        z-index: 100004 !important;
+}

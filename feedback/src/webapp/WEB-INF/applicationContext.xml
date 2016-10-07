@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="org.sakaiproject.feedback.util.SakaiProxy" class="org.sakaiproject.feedback.util.SakaiProxy">
+        <property name="emailService"><ref bean="org.sakaiproject.email.api.EmailService" /></property>
+        <property name="serverConfigurationService"><ref bean="org.sakaiproject.component.api.ServerConfigurationService" /></property>
+        <property name="sessionManager"><ref bean="org.sakaiproject.tool.api.SessionManager" /></property>
+        <property name="toolManager"><ref bean="org.sakaiproject.tool.api.ToolManager" /></property>
+        <property name="privacyManager"><ref bean="org.sakaiproject.api.privacy.PrivacyManager"/></property>
+        <property name="siteService"><ref bean="org.sakaiproject.site.api.SiteService" /></property>
+        <property name="userDirectoryService"><ref bean="org.sakaiproject.user.api.UserDirectoryService" /></property>
+    </bean>
+
+    <!--This bean's init() method requires SiteService.init() to have run first -->
+    <bean id="org.sakaiproject.feedback.db.Database" class="org.sakaiproject.feedback.db.Database" init-method="init" depends-on="org.sakaiproject.site.api.SiteService">
+        <property name="sqlService"><ref bean="org.sakaiproject.db.api.SqlService" /></property>
+    </bean>
+
+	<bean parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider" 
+        class="org.sakaiproject.feedback.tool.entityproviders.FeedbackEntityProvider"
+        init-method="init">
+        <property name="db"><ref bean="org.sakaiproject.feedback.db.Database" /></property>
+        <property name="sakaiProxy"><ref bean="org.sakaiproject.feedback.util.SakaiProxy" /></property>
+	</bean>
+
+</beans>

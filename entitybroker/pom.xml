@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.sakaiproject</groupId>
+    <artifactId>master</artifactId>
+    <version>11.1</version>
+    <relativePath>../master/pom.xml</relativePath>
+  </parent>
+
+  <name>Sakai Entity Broker</name>
+  <groupId>org.sakaiproject</groupId>
+  <artifactId>entitybroker</artifactId>
+  <packaging>pom</packaging>
+  <organization>
+    <name>Sakai Project</name>
+    <url>http://sakaiproject.org/</url>
+  </organization>
+  <inceptionYear>2007</inceptionYear>
+  <url>http://confluence.sakaiproject.org/confluence/x/F7M</url>
+  <description>The Sakai Entity Broker is an entity system for use in Sakai. Ideally we
+        want flexible entities which make development of integrated Sakai tools easier and
+        more flexible. Our goals are to make the entity system easier on developers
+        (easier to use and understand) and more powerful (easier to extend and improve).
+        The Entity Broker integrates seamlessly with the existing Entity system in Sakai
+        (Entity Producers and Entities) and entities created using entity providers are
+        accessible in Sakai as if they were created using the legacy system. Send feedback
+        or comments to Aaron Zeckoski (azeckoski@gmail.com, aaronz@vt.edu).</description>
+  <properties>
+    <easymock.version>2.0</easymock.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- Define the modules that are part of this -->
+  <profiles>
+    <profile>
+      <id>full</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>api</module>
+        <module>impl</module>
+        <module>rest</module>
+        <module>tool</module>
+        <module>pack</module>
+        <module>mocks</module>
+        <module>utils</module>
+        <module>core-providers</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>tool</id>
+      <modules>
+        <module>rest</module>
+        <module>tool</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>rest</id>
+      <modules>
+        <module>rest</module>
+        <module>tool</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>api</id>
+      <modules>
+        <module>api</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>utils</id>
+      <modules>
+        <module>utils</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>providers</id>
+      <modules>
+        <module>core-providers</module>
+      </modules>
+    </profile>
+  </profiles>
+  <developers>
+    <developer>
+      <id>aaronz@vt.edu</id>
+      <name>Aaron Zeckoski</name>
+      <email>aaron@caret.cam.ac.uk</email>
+      <url>http://confluence.sakaiproject.org/confluence/display/~aaronz</url>
+      <organization>CARET</organization>
+      <organizationUrl>http://www.caret.cam.ac.uk/</organizationUrl>
+      <roles>
+        <role>Project Manager</role>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>0</timezone>
+    </developer>
+    <developer>
+      <id>amb26</id>
+      <name>Antranig Basman</name>
+      <email>antranig@caret.cam.ac.uk</email>
+      <url>http://ponder.org.uk</url>
+      <organization>CARET</organization>
+      <organizationUrl>http://www.caret.cam.ac.uk/</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>0</timezone>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <site>
+      <id>sakai-site</id>
+      <name>Sakai release Site</name>
+      <url>scpexe://source.sakaiproject.org/var/www/html/release/entitybroker/${project.version}</url>
+    </site>
+  </distributionManagement>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.sakaiproject.org/jira/browse/SAK</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>Educational Community License, Version 2.0</name>
+      <url>http://www.opensource.org/licenses/ecl2.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <!-- define source code repository location -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-api</artifactId>
+        <version>${project.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-impl</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-restimpl</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-mocks</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.sakaiproject.entitybroker</groupId>
+        <artifactId>entitybroker-utils</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!-- IMPL dependencies -->
+      <dependency>
+        <groupId>org.azeckoski</groupId>
+        <artifactId>reflectutils</artifactId>
+        <version>${reflectutils.version}</version>
+      </dependency>
+      <!-- testing -->
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty</artifactId>
+        <version>6.1.11</version>
+        <type>jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-servlet-tester</artifactId>
+        <version>6.1.11</version>
+        <type>jar</type>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

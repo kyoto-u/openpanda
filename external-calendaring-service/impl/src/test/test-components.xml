@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- ExternalCalendaringService -->
+	<bean id="org.sakaiproject.calendaring.api.ExternalCalendaringService"
+    	class="org.sakaiproject.calendaring.api.ExternalCalendaringServiceImpl"
+    	init-method="init">
+    	
+    	<property name="sakaiProxy" ref="org.sakaiproject.calendaring.logic.SakaiProxy" />
+      
+    </bean>
+    	
+	<!--  Mock of SakaiProxy -->
+ 	<bean id="org.sakaiproject.calendaring.logic.SakaiProxy"
+    	class="org.sakaiproject.calendaring.mocks.MockSakaiProxy" />
+    
+</beans>

@@ -1,0 +1,87 @@
+<!-- resources/sakai_create_folders.vm, use with org.sakaiproject.tool.content.ResourcesHelperAction.java -->
+<div class="portletBody specialLink">
+	<h3>
+		$tlang.getString("create.folder")
+	</h3>
+	#if ($itemAlertMessage)
+		<div class="alertMessage">$tlang.getString("label.alert") $validator.escapeHtml($itemAlertMessage)</div>
+		<div style="display:block;clear:both" ></div>
+	#end
+	<ol class="breadcrumb">
+		<li><span>
+		$tlang.getString("gen.location")
+		</span></li>
+		##<img src = "#imageLink($contentTypeImageService.getContentTypeImage("folder"))" border="0"  alt="$tlang.getString("gen.folder")" />
+		#foreach ($item in $model.collectionPath)
+			<li><span>$validator.escapeHtml($item.name)</span></li>
+		#end
+	</ol>
+		<p class="instruction">
+			$tlang.getString("instr.folders")
+		</p>
+
+	<form name="addFolderForm" id="addFolderForm" method="post" action="#toolForm("ResourcesHelperAction")">
+		<input type="hidden" name="pipe-init-id" id="pipe-init-id" value="$!{pipe-init-id}" />
+		<input type="hidden" name="fileCount" id="fileCount" value="$pipes.size()" />
+		<input type="hidden" name="requestStateId" id="requestStateId" value="$!{requestStateId}" />
+		#set($lastIndex = $pipes.size() - 1)
+		<input type="hidden" name="lastIndex" id="lastIndex" value="$lastIndex" />
+		<div id="fileInputDiv" class="well">
+			#set($i = -1)
+			#foreach($pipe in $pipes)
+				#set($prev = $i)
+				#set($i = $i + 1)
+				#set($next = $i + 1)
+				<div id="contentDiv${DOT}$i" class="container-fluid">
+					<input type="hidden" name="exists${DOT}$i" id="exists${DOT}$i" value="true" />
+					<div class="row">
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							<label for="content${DOT}$i">$tlang.getString("label.folder")</label>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-4 col-xs-12">
+							<input type="text" name="content${DOT}$i" id="content${DOT}$i" />
+						##  onkeypress="return handleEnterKey(this, event)"
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+							<a href="#" id="propsTrigger${DOT}$i">$tlang.getString("edit.show")</a>
+							<a class="remove" style="display:none" href="#" id="removeTrigger${DOT}$i" title="$tlang.getString("edit.remove")">
+								<img src="#imageLink("sakai/cross.png")"  alt="x" />
+							</a>
+						</div>
+						<br><br>
+					</div>
+					<input type="hidden" id="prev${DOT}$i" name="prev${DOT}$i" value="#if($prev >= 0)${prev}#end" />
+					<input type="hidden" id="next${DOT}$i" name="next${DOT}$i" value="#if($next < $pipes.size())${next}#end" />
+				</div>
+				<div id="propertiesDiv${DOT}$i" style="display:none;">
+#parse("/vm/resources/sakai_properties.vm")
+					<hr class="itemSeparator" />
+				</div>
+			#end
+		</div>
+		<p class="act">
+			<a href="#" onclick="addFileInput();return false">$tlang.getString("label.addFolder")</a>
+		</p>
+#*
+		#if ($model.resourceTypeDef.hasNotificationDialog())
+			<p class="shorttext">
+				<label for="notify">
+					$tlang.getString("gen.email1")
+				</label>	
+				<select name="notify" id="notify">
+					<option value="r">$tlang.getString("gen.email2")</option>
+					<option value="o">$tlang.getString("gen.email3")</option>
+					<option value="n" selected="selected">$tlang.getString("gen.email4")</option>
+				</select>
+			</p>	
+		#end
+*#
+		<p class="act">
+			<input type="button" class="active" name="savechanges" id="saveChanges" onclick="showNotif('submitnotif03','saveChanges','addFolderForm');document.getElementById('addFolderForm').action='#toolLink("ResourcesHelperAction" "doCreateFolders")&flow=save';submitform('addFolderForm');" value="$tlang.getString("label.finfldr")" accesskey="s" />
+			<input type="button" name="cancel" onclick="document.getElementById('addFolderForm').action='#toolLink("ResourcesHelperAction" "doCancel")';submitform('addFolderForm');" value="$tlang.getString("label.cancel")" accesskey="x" />
+			<span class="messageProgress"  id="submitnotif03" style="visibility:hidden">$tlang.getString("processmessage.folders")</span>
+		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+	</form>
+</div>
+#parse("/vm/resources/sakai_properties_scripts.vm")
