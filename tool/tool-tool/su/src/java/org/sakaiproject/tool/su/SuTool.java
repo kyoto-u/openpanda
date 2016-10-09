@@ -21,13 +21,6 @@
 
 package org.sakaiproject.tool.su;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Vector;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.api.AuthzGroupService;
@@ -46,6 +39,12 @@ import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.ResourceLoader;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * @author zach.thomas@txstate.edu
@@ -99,6 +98,9 @@ public class SuTool
 	private Method initializeDelegatedAccessSession = null;
 	private Method isUserAllowBecomeUser = null;
 	private boolean allowDelegatedAccessBecomeUser = false;
+
+    // Kyoto User Properties Extention
+    private boolean allowKyotoUserPropertiesExtention = org.sakaiproject.component.cover.ServerConfigurationService.getBoolean("user.allowKyotoUserPropertiesExtention", false);
 	
 	// base constructor
 	public SuTool()
@@ -392,4 +394,31 @@ public class SuTool
 		}
 		return Boolean.FALSE;	
 	}
+
+	public String getDisplayName()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName") : null;}
+
+	public String getDisplayNameEn()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName;lang-en") : null;}
+
+	public String getDisplayNameJaPhonetic()  { return userinfo != null ? userinfo.getProperties().getProperty("displayName;lang-ja;phonetic") : null;}
+
+    public String getEmployeeNumber()  { return userinfo != null ? userinfo.getProperties().getProperty("employeeNumber") : null;}
+
+    public String getAffiliation()  { return userinfo != null ? userinfo.getProperties().getProperty("affiliation") : null;}
+
+    public String getDepartment()  { return userinfo != null ? userinfo.getProperties().getProperty("department") : null;}
+
+	public String getExternalAffiliation()  { return userinfo != null ? userinfo.getProperties().getProperty("ExternalAffiliation") : null;}
+
+    public String getTitle()  { return userinfo != null ? userinfo.getProperties().getProperty("title") : null;}
+
+    public String getTitle1()  { return userinfo != null ? userinfo.getProperties().getProperty("title1") : null;}
+
+    public String getTitle2()  { return userinfo != null ? userinfo.getProperties().getProperty("title2") : null;}
+
+    public String getTitle3()  { return userinfo != null ? userinfo.getProperties().getProperty("title3") : null;}
+
+    public String getEnrollment()  { return userinfo != null ? userinfo.getProperties().getProperty("enrollment") : null;}
+
+    public boolean isAllowKyotoUserPropertiesExtention()  {return allowKyotoUserPropertiesExtention;}
+
 }

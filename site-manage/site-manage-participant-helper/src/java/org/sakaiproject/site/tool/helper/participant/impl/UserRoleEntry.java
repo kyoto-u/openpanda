@@ -18,7 +18,16 @@ public class UserRoleEntry {
 	  
 	  /** The user last name **/
 	  public String lastName;
-	  
+
+	  /** The user affiliation **/
+	  public String userAffiliation;
+
+ 	  /** The user department **/
+	  public String userDepartment;
+
+	  /** The user external affiliation **/
+	  public String userExternalAffiliation;
+
 	  /**
 	   * constructor with no params
 	   */
@@ -57,6 +66,27 @@ public class UserRoleEntry {
 		  firstName = fName;
 		  lastName = lName;
 	  }
-	  
+
+  	/**
+	 * constructor with four params
+	 * @param eid
+	 * @param r
+	 * @param fName
+	 * @param lName
+	 * @param affiliation
+	 * @param department
+	 * @param externalAffiliation
+	 */
+	public UserRoleEntry(String eid, String r, String fName, String lName, String affiliation, String department, String externalAffiliation)
+	{
+		userEId = eid;
+		role = r;
+		firstName = fName;
+		lastName = lName;
+		userAffiliation = affiliation;
+		userDepartment = department;
+		userExternalAffiliation = externalAffiliation;
+	}
+
 }
 

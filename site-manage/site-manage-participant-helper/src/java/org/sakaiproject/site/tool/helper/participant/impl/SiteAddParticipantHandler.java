@@ -1,56 +1,37 @@
 package org.sakaiproject.site.tool.helper.participant.impl;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.commons.lang.StringUtils;
-
 import org.sakaiproject.accountvalidator.logic.ValidationLogic;
-import org.sakaiproject.authz.api.AuthzGroup;
-import org.sakaiproject.authz.api.AuthzGroupService;
-import org.sakaiproject.authz.api.AuthzPermissionException;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
-import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.authz.api.*;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.util.Participant;
-import org.sakaiproject.site.util.SiteTypeUtil;
 import org.sakaiproject.site.util.SiteParticipantHelper;
+import org.sakaiproject.site.util.SiteTypeUtil;
 import org.sakaiproject.sitemanage.api.SiteHelper;
 import org.sakaiproject.sitemanage.api.UserNotificationProvider;
-import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserAlreadyDefinedException;
-import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.user.api.UserEdit;
-import org.sakaiproject.user.api.UserIdInvalidException;
-import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.api.UserPermissionException;
+import org.sakaiproject.user.api.*;
 import org.sakaiproject.userauditservice.api.UserAuditRegistration;
 import org.sakaiproject.userauditservice.api.UserAuditService;
-
+import org.sakaiproject.util.BaseResourceProperties;
 import uk.org.ponder.messageutil.MessageLocator;
 import uk.org.ponder.messageutil.TargettedMessage;
 import uk.org.ponder.messageutil.TargettedMessageList;
+
+import java.util.*;
 /**
  * 
  * @author 
@@ -125,6 +106,11 @@ public class SiteAddParticipantHandler {
 	private UserDirectoryService userDirectoryService;	
 	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
 		this.userDirectoryService = userDirectoryService;
+	}
+
+	private PreferencesService preferencesService;
+	public void setPreferencesService(PreferencesService preferencesService)  {
+		this.preferencesService = preferencesService;
 	}
 
 	public void setCsrfToken(String csrfToken) {
@@ -725,6 +711,17 @@ public class SiteAddParticipantHandler {
 						String pw = generatePassword();
 						uEdit.setPassword(pw);
 
+						// add affiliation properties
+						boolean allowAffiliationRegistration = serverConfigurationService.getBoolean("siteManage.allowAffiliationRegistRation", false);
+
+						if (allowAffiliationRegistration) {
+							ResourceProperties resourceProperties = new BaseResourceProperties();
+							resourceProperties.addProperty("affiliation", entry.userAffiliation);
+							resourceProperties.addProperty("department", entry.userDepartment);
+							resourceProperties.addProperty("externalAffiliation", entry.userExternalAffiliation);
+							uEdit.getPropertiesEdit().addAll(resourceProperties);
+						}
+
 						// and save
 						userDirectoryService.commitEdit(uEdit);
 
@@ -972,11 +969,12 @@ public class SiteAddParticipantHandler {
 				if (nonOfficialAccountAll == null) {
 					continue;
 				}
-				
+
+				boolean allowAffiliationRegistration = serverConfigurationService.getBoolean("siteManage.allowAffiliationRegistRation", false);
 				// the format of per user entry is: email address,first name,last name
 				// comma separated
 				String[] nonOfficialAccountParts  = nonOfficialAccountAll.split(",");
-				if (nonOfficialAccountParts.length > 3)
+				if (nonOfficialAccountParts.length > 3 && allowAffiliationRegistration == false)
 				{
 					// if the input contains more fields than "email address,first name,last name", show an alert
 					targettedMessageList.addMessage(new TargettedMessage("add.multiple.nonofficial.alert.more",
@@ -996,6 +994,15 @@ public class SiteAddParticipantHandler {
 				if (nonOfficialAccountParts.length > 2)
 				{
 					userFirstName = nonOfficialAccountParts[2].trim();
+				}
+				String userAffiliation = "";
+				String userDepartment = "";
+				String userExternalAffiliation = "";
+				if (nonOfficialAccountParts.length > 4 && allowAffiliationRegistration == true)
+				{
+					userAffiliation = nonOfficialAccountParts[3].trim();
+					userDepartment = "学外登録者";
+					userExternalAffiliation = nonOfficialAccountParts[4].trim();
 				}
 				// remove the trailing dots
 				while (userEid != null && userEid.endsWith(".")) {
@@ -1106,9 +1113,13 @@ public class SiteAddParticipantHandler {
 						// update the userRoleTable
 						if (!getUsers().contains(userEid) && !existingUsers.contains(userEid))
 						{
-							userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName));
+							if (allowAffiliationRegistration == true)  {
+								userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName, userAffiliation, userDepartment, userExternalAffiliation));
+							}  else {
+								userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName));
+							}
 							// not existed user, update account
-							updatedNonOfficialAccountParticipant += currentNonOfficialAccount+ "\n";
+							updatedNonOfficialAccountParticipant += currentNonOfficialAccount + "\n";
 						}
 					}
 				} // if

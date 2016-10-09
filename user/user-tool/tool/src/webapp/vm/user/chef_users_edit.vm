@@ -79,16 +79,6 @@ function removeOptionalAttributeBlock(elem) {
 				#end
 			</div>	
 			<div class="shorttext">
-				<label for="first-name">
-					$tlang.getString("usecre.firnam")
-				</label>	
-			#if ($service.allowUpdateUserName($user.Id) || !$user)
-				<input type="text" name="first-name" id="first-name" #if($user)value="$validator.escapeHtml($user.FirstName)"#elseif($valueFirstName)value="$validator.escapeHtml($valueFirstName)"#end />
-			#else
-				#if($user)$validator.escapeHtml($user.FirstName)#elseif($valueFirstName)$validator.escapeHtml($valueFirstName)#end
-			#end
-			</div>
-			<div class="shorttext">
 				<label for="last-name">
 					$tlang.getString("usecre.lasnam")
 				</label>
@@ -98,6 +88,136 @@ function removeOptionalAttributeBlock(elem) {
 				#if($user)$validator.escapeHtml($user.LastName)#elseif($valueLastName)$validator.escapeHtml($valueLastName)#end
 			#end
 			</div>
+            <div class="shorttext">
+                <label for="first-name">
+                    $tlang.getString("usecre.firnam")
+                </label>
+                #if ($service.allowUpdateUserName($user.Id) || !$user)
+                    <input type="text" name="first-name" id="first-name" #if($user)value="$validator.escapeHtml($user.FirstName)"#elseif($valueFirstName)value="$validator.escapeHtml($valueFirstName)"#end />
+                #else
+                    #if($user)$validator.escapeHtml($user.FirstName)#elseif($valueFirstName)$validator.escapeHtml($valueFirstName)#end
+                #end
+            </div>
+            #if ($allowShowDisplayName)
+            <div class="shorttext">
+                <label for="display-name">$tlang.getString("usevie.displayName")</label>
+                #if ($allowUpdateDisplayName == 'true')
+                	<input type="text" name="display-name" id="display-name" #if($currentAttributes.containsKey("displayName"))value="$validator.escapeHtml($currentAttributes.get("displayName"))"#elseif($valueDisplayName)value="$validator.escapeHtml($valueDisplayName)"#end />
+				#else
+                    #if($currentAttributes.containsKey("displayName"))$validator.escapeHtml($currentAttributes.get("displayName"))#elseif($valueDisplayName)$validator.escapeHtml($valueDisplayName)#end
+				#end
+            </div>
+            #end
+			#if ($allowShowDisplayName_phonetic)
+            <div class="shorttext">
+                <label for="display-name-phonetic">$tlang.getString("usevie.displayName_phonetic")</label>
+				#if ($allowUpdateDisplayName_phonetic == 'true')
+                	<input type="text" name="display-name-phonetic" id="display-name-phonetic" #if($currentAttributes.containsKey("displayName;lang-ja;phonetic"))value="$validator.escapeHtml($currentAttributes.get("displayName;lang-ja;phonetic"))"#elseif($valueDisplayName_phonetic)value="$validator.escapeHtml($valueDisplayName_phonetic)"#end />
+                #else
+					#if($currentAttributes.containsKey("displayName;lang-ja;phonetic"))$validator.escapeHtml($currentAttributes.get("displayName;lang-ja;phonetic"))#elseif($valueDisplayName_phonetic)$validator.escapeHtml($valueDisplayName_phonetic)#end
+                #end
+            </div>
+            #end
+			#if ($allowShowDisplayName_en)
+            <div class="shorttext">
+                <label for="display-name-en">$tlang.getString("usevie.displayName_en")</label>
+				#if ($allowUpdateDisplayName_en == 'true')
+                	<input type="text" name="display-name-en" id="display-name-en" #if($currentAttributes.containsKey("displayName;lang-en"))value="$validator.escapeHtml($currentAttributes.get("displayName;lang-en"))"#elseif($valueDisplayName_en)value="$validator.escapeHtml($valueDisplayName_en)"#end />
+                #else
+					#if($currentAttributes.containsKey("displayName;lang-en"))$validator.escapeHtml($currentAttributes.get("displayName;lang-en"))#elseif($valueDisplayName_en)$validator.escapeHtml($valueDisplayName_en)#end
+                #end
+            </div>
+            #end
+			#if ($allowShowEmployeeNumber)
+            <div class="shorttext">
+                <label for="employee-number">$tlang.getString("usevie.employeeNumber")</label>
+				#if ($allowUpdateEmployeeNumber == 'true')
+                	<input type="text" name="employee-number" id="employee-number" #if($currentAttributes.containsKey("employeeNumber"))value="$validator.escapeHtml($currentAttributes.get("employeeNumber"))"#elseif($valueEmployeeNumber)value="$validator.escapeHtml($valueEmployeeNumber)"#end />
+                #else
+					#if($currentAttributes.containsKey("employeeNumber"))$validator.escapeHtml($currentAttributes.get("employeeNumber"))#elseif($valueEmployeeNumber)$validator.escapeHtml($valueEmployeeNumber)#end
+                #end
+            </div>
+			#end
+			#if ($allowShowTitle)
+            <div class="shorttext">
+                <label for="title">$tlang.getString("usevie.title")</label>
+				#if ($allowUpdateTitle == 'true')
+                	<input type="text" name="title" id="title" #if($currentAttributes.containsKey("title"))value="$validator.escapeHtml($currentAttributes.get("title"))"#elseif($valueTitle)value="$validator.escapeHtml($valueTitle)"#end />
+                #else
+					#if($currentAttributes.containsKey("title"))$validator.escapeHtml($currentAttributes.get("title"))#elseif($valueTitle)$validator.escapeHtml($valueTitle)#end
+                #end
+            </div>
+			#end
+			#if ($allowShowTitle1)
+                <div class="shorttext">
+                    <label for="title1">$tlang.getString("usevie.title1")</label>
+					#if ($allowUpdateTitle1 == 'true')
+                        <input type="text" name="title1" id="title1" #if($currentAttributes.containsKey("title1"))value="$validator.escapeHtml($currentAttributes.get("title1"))"#elseif($valueTitle1)value="$validator.escapeHtml($valueTitle1)"#end />
+					#else
+						#if($currentAttributes.containsKey("title1"))$validator.escapeHtml($currentAttributes.get("title1"))#elseif($valueTitle1)$validator.escapeHtml($valueTitle1)#end
+					#end
+                </div>
+			#end
+			#if ($allowShowTitle2)
+                <div class="shorttext">
+                    <label for="title2">$tlang.getString("usevie.title2")</label>
+					#if ($allowUpdateTitle2 == 'true')
+                        <input type="text" name="title2" id="title2" #if($currentAttributes.containsKey("title2"))value="$validator.escapeHtml($currentAttributes.get("title2"))"#elseif($valueTitle2)value="$validator.escapeHtml($valueTitle2)"#end />
+					#else
+						#if($currentAttributes.containsKey("title2"))$validator.escapeHtml($currentAttributes.get("title2"))#elseif($valueTitle2)$validator.escapeHtml($valueTitle2)#end
+					#end
+                </div>
+			#end
+			#if ($allowShowTitle3)
+                <div class="shorttext">
+                    <label for="title3">$tlang.getString("usevie.title3")</label>
+					#if ($allowUpdateTitle3 == 'true')
+                        <input type="text" name="title3" id="title3" #if($currentAttributes.containsKey("title3"))value="$validator.escapeHtml($currentAttributes.get("title3"))"#elseif($valueTitle3)value="$validator.escapeHtml($valueTitle3)"#end />
+					#else
+						#if($currentAttributes.containsKey("title3"))$validator.escapeHtml($currentAttributes.get("title3"))#elseif($valueTitle3)$validator.escapeHtml($valueTitle3)#end
+					#end
+                </div>
+			#end
+			#if ($allowShowAffiliation)
+            <div class="shorttext">
+                <label for="affiliation">$tlang.getString("usevie.affiliation")</label>
+				#if ($allowUpdateAffiliation == 'true')
+                	<input type="text" name="affiliation" id="affiliation" #if($currentAttributes.containsKey("affiliation"))value="$validator.escapeHtml($currentAttributes.get("affiliation"))"#elseif($valueAffiliation)value="$validator.escapeHtml($valueAffiliation)"#end />
+                #else
+					#if($currentAttributes.containsKey("affiliation"))$validator.escapeHtml($currentAttributes.get("affiliation"))#elseif($valueAffiliation)$validator.escapeHtml($valueAffiliation)#end
+                #end
+            </div>
+			#end
+			#if ($allowShowDepartment)
+            <div class="shorttext">
+                <label for="department">$tlang.getString("usevie.department")</label>
+				#if ($allowUpdateDepartment == 'true')
+                	<input type="text" name="department" id="department" #if($currentAttributes.containsKey("department"))value="$validator.escapeHtml($currentAttributes.get("department"))"#elseif($valueDepartment)value="$validator.escapeHtml($valueDepartment)"#end />
+                #else
+					#if($currentAttributes.containsKey("department"))$validator.escapeHtml($currentAttributes.get("department"))#elseif($valueDepartment)$validator.escapeHtml($valueDepartment)#end
+                #end
+            </div>
+			#end
+			#if ($allowShowExternalAffiliation)
+            <div class="shorttext">
+                <label for="external-affiliation">$tlang.getString("usevie.externalAffiliation")</label>
+				#if ($allowUpdateExternalAffiliation == 'true')
+                	<input type="text" name="external-affiliation" id="external-affiliation" #if($currentAttributes.containsKey("externalAffiliation"))value="$validator.escapeHtml($currentAttributes.get("externalAffiliation"))"#elseif($valueExternalAffiliation)value="$validator.escapeHtml($valueExternalAffiliation)"#end />
+                #else
+					#if($currentAttributes.containsKey("externalAffiliation"))$validator.escapeHtml($currentAttributes.get("externalAffiliation"))#elseif($valueExternalAffiliation)$validator.escapeHtml($valueExternalAffiliation)#end
+                #end
+            </div>
+			#end
+			#if ($allowShowEnrollment)
+                <div class="shorttext">
+                    <label for="enrollment">$tlang.getString("usevie.enrollment")</label>
+					#if ($allowUpdateEnrollment == 'true')
+                        <input type="text" name="enrollment" id="enrollment" #if($currentAttributes.containsKey("enrollment"))value="$validator.escapeHtml($currentAttributes.get("enrollment"))"#elseif($valueEnrollment)value="$validator.escapeHtml($valueEnrollment)"#end />
+					#else
+						#if($currentAttributes.containsKey("enrollment"))$validator.escapeHtml($currentAttributes.get("enrollment"))#elseif($valueEnrollment)$validator.escapeHtml($valueEnrollment)#end
+					#end
+                </div>
+			#end
 			<div class="shorttext">
 				<label for="email">
 					$tlang.getString("useconrem.ema")
@@ -205,7 +325,7 @@ function removeOptionalAttributeBlock(elem) {
 #end
 
 		## optional attributes block
-		#if (!$optionalAttributes.isEmpty())
+		#if (!$optionalAttributes.isEmpty() && !$allowKyotoUserPropertiesExtention)
 			#if ($superUser)
 				<p class="shorttext"></p>
 				<div id="optionalAttributes">

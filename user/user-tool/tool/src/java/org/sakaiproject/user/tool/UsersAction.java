@@ -21,31 +21,14 @@
 
 package org.sakaiproject.user.tool;
 
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import au.com.bytecode.opencsv.CSVReader;
 import net.tanesha.recaptcha.ReCaptcha;
 import net.tanesha.recaptcha.ReCaptchaFactory;
 import net.tanesha.recaptcha.ReCaptchaResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.cheftool.Context;
-import org.sakaiproject.cheftool.ControllerState;
-import org.sakaiproject.cheftool.JetspeedRunData;
-import org.sakaiproject.cheftool.PagedResourceActionII;
-import org.sakaiproject.cheftool.PortletConfig;
-import org.sakaiproject.cheftool.RunData;
-import org.sakaiproject.cheftool.VelocityPortlet;
+import org.sakaiproject.cheftool.*;
 import org.sakaiproject.cheftool.api.Menu;
 import org.sakaiproject.cheftool.api.MenuItem;
 import org.sakaiproject.cheftool.menu.MenuEntry;
@@ -64,26 +47,18 @@ import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.Authentication;
-import org.sakaiproject.user.api.AuthenticationException;
-import org.sakaiproject.user.api.Evidence;
-import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserAlreadyDefinedException;
-import org.sakaiproject.user.api.UserEdit;
-import org.sakaiproject.user.api.UserIdInvalidException;
-import org.sakaiproject.user.api.UserLockedException;
-import org.sakaiproject.user.api.UserNotDefinedException;
-import org.sakaiproject.user.api.UserPermissionException;
+import org.sakaiproject.user.api.*;
 import org.sakaiproject.user.api.UserDirectoryService.PasswordRating;
 import org.sakaiproject.user.cover.AuthenticationManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.user.tool.PasswordPolicyHelper.TempUser;
-import org.sakaiproject.util.BaseResourcePropertiesEdit;
+import org.sakaiproject.util.*;
 import org.sakaiproject.util.ExternalTrustedEvidence;
-import org.sakaiproject.util.RequestFilter;
-import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.StringUtil;
 
-import au.com.bytecode.opencsv.CSVReader;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStreamReader;
+import java.util.*;
 
 /**
  * <p>
@@ -104,11 +79,26 @@ public class UsersAction extends PagedResourceActionII
 	private static final String IMPORT_EMAIL="email";
 	private static final String IMPORT_PASSWORD="password";
 	private static final String IMPORT_TYPE="type";
+	private static final String IMPORT_DISPLAY_NAME="display name";
+	private static final String IMPORT_DISPLAY_NAME_PHONETIC="display name phonetic";
+	private static final String IMPORT_DISPLAY_NAME_EN="display name en";
+	private static final String IMPORT_TITLE="title";
+	private static final String IMPORT_TITLE1="title1";
+	private static final String IMPORT_TITLE2="title2";
+	private static final String IMPORT_TITLE3="title3";
+	private static final String IMPORT_EMPLOYEE_NUMBER="employee number";
+	private static final String IMPORT_AFFILIATION="affiliation";
+	private static final String IMPORT_DEPARTMENT="department";
+	private static final String IMPORT_EXTERNAL_AFFILIATION="external affiliation";
+	private static final String IMPORT_ENROLLMENT="enrollment";
 
 	// SAK-23568
 	private static final PasswordPolicyHelper pwHelper = new PasswordPolicyHelper();
 	private static final String MSG_KEY_PASSWORD_WEAK = "pw.weak";
 	private static final String MSG_KEY_PW_STRENGTH_INFO = "pw.strengthInfo";
+
+    // Kyoto User Properties Extention
+	private boolean allowKyotoUserPropertiesExtention = ServerConfigurationService.getBoolean("user.allowKyotoUserPropertiesExtention", false);
 
 	/**
 	 * {@inheritDoc}
@@ -217,7 +207,7 @@ public class UsersAction extends PagedResourceActionII
 		if ((!singleUser) && (!createUser) && (!SecurityService.isSuperUser()))
 		{
 			context.put("tlang",rb);
-			return (String) getContext(rundata).get("template") + "_noaccess";
+			return getContext(rundata).get("template") + "_noaccess";
 		}
 
 		String template = null;
@@ -297,7 +287,7 @@ public class UsersAction extends PagedResourceActionII
 			template = buildListContext(state, context);
 		}
 
-		String prefix = (String) getContext(rundata).get("template");
+		String prefix = getContext(rundata).get("template");
 		return prefix + template;
 
 	} // buildNormalContext
@@ -403,10 +393,77 @@ public class UsersAction extends PagedResourceActionII
 
 		value = (String) state.getAttribute("valueType");
 		if (value != null) context.put("valueType", value);
-		
-		//optional attributes list
-		context.put("optionalAttributes", getOptionalAttributes());
-		
+
+        if (allowKyotoUserPropertiesExtention) {
+			value = (String) state.getAttribute("valueDisplayName");
+			if (value != null) context.put("valueDisplayName", value);
+			context.put("allowUpdateDisplayName", isAllowUpdate("displayName"));
+			context.put("allowShowDisplayName", isAllowShow("displayName"));
+
+			value = (String) state.getAttribute("valueDisplayName_phonetic");
+			if (value != null) context.put("valueDisplayName_phonetic", value);
+			context.put("allowUpdateDisplayName_phonetic", isAllowUpdate("displayName;lang-ja;phonetic"));
+			context.put("allowShowDisplayName_phonetic", isAllowShow("displayName;lang-ja;phonetic"));
+
+			value = (String) state.getAttribute("valueDisplayName_en");
+			if (value != null) context.put("valueDisplayName_en", value);
+			context.put("allowUpdateDisplayName_en", isAllowUpdate("displayName;lang-en"));
+			context.put("allowShowDisplayName_en", isAllowShow("displayName;lang-en"));
+
+			value = (String) state.getAttribute("valueTitle");
+			if (value != null) context.put("valueTitle", value);
+			context.put("allowUpdateTitle", isAllowUpdate("title"));
+			context.put("allowShowTitle", isAllowShow("title"));
+
+			value = (String) state.getAttribute("valueTitle1");
+			if (value != null) context.put("valueTitle1", value);
+			context.put("allowUpdateTitle1", isAllowUpdate("title1"));
+			context.put("allowShowTitle1", isAllowShow("title1"));
+
+			value = (String) state.getAttribute("valueTitle2");
+			if (value != null) context.put("valueTitle2", value);
+			context.put("allowUpdateTitle2", isAllowUpdate("title2"));
+			context.put("allowShowTitle2", isAllowShow("title2"));
+
+			value = (String) state.getAttribute("valueTitle3");
+			if (value != null) context.put("valueTitle3", value);
+			context.put("allowUpdateTitle3", isAllowUpdate("title3"));
+			context.put("allowShowTitle3", isAllowShow("title3"));
+
+			value = (String) state.getAttribute("valueEmployeeNumber");
+			if (value != null) context.put("valueEmployeeNumber", value);
+			context.put("allowUpdateEmployeeNumber", isAllowUpdate("employeeNumber"));
+			context.put("allowShowEmployeeNumber", isAllowShow("employeeNumber"));
+
+			value = (String) state.getAttribute("valueAffiliation");
+			if (value != null) context.put("valueAffiliation", value);
+			context.put("allowUpdateAffiliation", isAllowUpdate("affiliation"));
+			context.put("allowShowAffiliation", isAllowShow("affiliation"));
+
+			value = (String) state.getAttribute("valueDepartment");
+			if (value != null) context.put("valueDepartment", value);
+			context.put("allowUpdateDepartment", isAllowUpdate("department"));
+			context.put("allowShowDepartment", isAllowShow("department"));
+
+			value = (String) state.getAttribute("valueExternalAffiliation");
+			if (value != null) context.put("valueExternalAffiliation", value);
+			context.put("allowUpdateExternalAffiliation", isAllowUpdate("externalAffiliation"));
+			context.put("allowShowExternalAffiliation", isAllowShow("externalAffiliation"));
+
+			value = (String) state.getAttribute("valueEnrollment");
+			if (value != null) context.put("valueEnrollment", value);
+			context.put("allowUpdateEnrollment", isAllowUpdate("enrollment"));
+			context.put("allowShowEnrollment", isAllowShow("enrollment"));
+
+		}  else {
+
+			//optional attributes list
+			context.put("optionalAttributes", getOptionalAttributes());
+
+		}
+
+		context.put("allowKyotoUserPropertiesExtention", allowKyotoUserPropertiesExtention);
+
 		return "_edit";
 
 	} // buildNewContext
@@ -445,6 +502,71 @@ public class UsersAction extends PagedResourceActionII
 	        state.removeAttribute("recaptcha-error");
 	        context.put("recaptchaScript", captchaScript);
 		}
+
+		if (allowKyotoUserPropertiesExtention) {
+			value = (String) state.getAttribute("valueDisplayName");
+			if (value != null) context.put("valueDisplayName", value);
+			context.put("allowUpdateDisplayName", isAllowUpdate("displayName"));
+			context.put("allowShowDisplayName", isAllowShow("displayName"));
+
+			value = (String) state.getAttribute("valueDisplayName_phonetic");
+			if (value != null) context.put("valueDisplayName_phonetic", value);
+			context.put("allowUpdateDisplayName_phonetic", isAllowUpdate("displayName;lang-ja;phonetic"));
+			context.put("allowShowDisplayName_phonetic", isAllowShow("displayName;lang-ja;phonetic"));
+
+			value = (String) state.getAttribute("valueDisplayName_en");
+			if (value != null) context.put("valueDisplayName_en", value);
+			context.put("allowUpdateDisplayName_en", isAllowUpdate("displayName;lang-en"));
+			context.put("allowShowDisplayName_en", isAllowShow("displayName;lang-en"));
+
+			value = (String) state.getAttribute("valueTitle");
+			if (value != null) context.put("valueTitle", value);
+			context.put("allowUpdateTitle", isAllowUpdate("title"));
+			context.put("allowShowTitle", isAllowShow("title"));
+
+			value = (String) state.getAttribute("valueTitle1");
+			if (value != null) context.put("valueTitle1", value);
+			context.put("allowUpdateTitle1", isAllowUpdate("title1"));
+			context.put("allowShowTitle1", isAllowShow("title1"));
+
+			value = (String) state.getAttribute("valueTitle2");
+			if (value != null) context.put("valueTitle2", value);
+			context.put("allowUpdateTitle2", isAllowUpdate("title2"));
+			context.put("allowShowTitle2", isAllowShow("title2"));
+
+			value = (String) state.getAttribute("valueTitle3");
+			if (value != null) context.put("valueTitle3", value);
+			context.put("allowUpdateTitle3", isAllowUpdate("title3"));
+			context.put("allowShowTitle3", isAllowShow("title3"));
+
+			value = (String) state.getAttribute("valueEmployeeNumber");
+			if (value != null) context.put("valueEmployeeNumber", value);
+			context.put("allowUpdateEmployeeNumber", isAllowUpdate("employeeNumber"));
+			context.put("allowShowEmployeeNumber", isAllowShow("employeeNumber"));
+
+			value = (String) state.getAttribute("valueAffiliation");
+			if (value != null) context.put("valueAffiliation", value);
+			context.put("allowUpdateAffiliation", isAllowUpdate("affiliation"));
+			context.put("allowShowAffiliation", isAllowShow("affiliation"));
+
+			value = (String) state.getAttribute("valueDepartment");
+			if (value != null) context.put("valueDepartment", value);
+			context.put("allowUpdateDepartment", isAllowUpdate("department"));
+			context.put("allowShowDepartment", isAllowShow("department"));
+
+			value = (String) state.getAttribute("valueExternalAffiliation");
+			if (value != null) context.put("valueExternalAffiliation", value);
+			context.put("allowUpdateExternalAffiliation", isAllowUpdate("externalAffiliation"));
+			context.put("allowShowExternalAffiliation", isAllowShow("externalAffiliation"));
+
+			value = (String) state.getAttribute("valueEnrollment");
+			if (value != null) context.put("valueEnrollment", value);
+			context.put("allowUpdateEnrollment", isAllowUpdate("enrollment"));
+			context.put("allowShowEnrollment", isAllowShow("enrollment"));
+
+		}
+
+		context.put("allowKyotoUserPropertiesExtention", allowKyotoUserPropertiesExtention);
 
 		return "_create";
 
@@ -505,11 +627,75 @@ public class UsersAction extends PagedResourceActionII
 
 		value = (String) state.getAttribute("valueType");
 		if (value != null) context.put("valueType", value);
-		
+
+		if (allowKyotoUserPropertiesExtention) {
+			value = (String) state.getAttribute("valueDisplayName");
+			if (value != null) context.put("valueDisplayName", value);
+			context.put("allowUpdateDisplayName", isAllowUpdate("displayName"));
+			context.put("allowShowDisplayName", isAllowShow("displayName"));
+
+			value = (String) state.getAttribute("valueDisplayName_phonetic");
+			if (value != null) context.put("valueDisplayName_phonetic", value);
+			context.put("allowUpdateDisplayName_phonetic", isAllowUpdate("displayName;lang-ja;phonetic"));
+			context.put("allowShowDisplayName_phonetic", isAllowShow("displayName;lang-ja;phonetic"));
+
+			value = (String) state.getAttribute("valueDisplayName_en");
+			if (value != null) context.put("valueDisplayName_en", value);
+			context.put("allowUpdateDisplayName_en", isAllowUpdate("displayName;lang-en"));
+			context.put("allowShowDisplayName_en", isAllowShow("displayName;lang-en"));
+
+			value = (String) state.getAttribute("valueTitle");
+			if (value != null) context.put("valueTitle", value);
+			context.put("allowUpdateTitle", isAllowUpdate("title"));
+			context.put("allowShowTitle", isAllowShow("title"));
+
+			value = (String) state.getAttribute("valueTitle1");
+			if (value != null) context.put("valueTitle1", value);
+			context.put("allowUpdateTitle1", isAllowUpdate("title1"));
+			context.put("allowShowTitle1", isAllowShow("title1"));
+
+			value = (String) state.getAttribute("valueTitle2");
+			if (value != null) context.put("valueTitle2", value);
+			context.put("allowUpdateTitle2", isAllowUpdate("title2"));
+			context.put("allowShowTitle2", isAllowShow("title2"));
+
+			value = (String) state.getAttribute("valueTitle3");
+			if (value != null) context.put("valueTitle3", value);
+			context.put("allowUpdateTitle3", isAllowUpdate("title3"));
+			context.put("allowShowTitle3", isAllowShow("title3"));
+
+			value = (String) state.getAttribute("valueEmployeeNumber");
+			if (value != null) context.put("valueEmployeeNumber", value);
+			context.put("allowUpdateEmployeeNumber", isAllowUpdate("employeeNumber"));
+			context.put("allowShowEmployeeNumber", isAllowShow("employeeNumber"));
+
+			value = (String) state.getAttribute("valueAffiliation");
+			if (value != null) context.put("valueAffiliation", value);
+			context.put("allowUpdateAffiliation", isAllowUpdate("affiliation"));
+			context.put("allowShowAffiliation", isAllowShow("affiliation"));
+
+			value = (String) state.getAttribute("valueDepartment");
+			if (value != null) context.put("valueDepartment", value);
+			context.put("allowUpdateDepartment", isAllowUpdate("department"));
+			context.put("allowShowDepartment", isAllowShow("department"));
+
+			value = (String) state.getAttribute("valueExternalAffiliation");
+			if (value != null) context.put("valueExternalAffiliation", value);
+			context.put("allowUpdateExternalAffiliation", isAllowUpdate("externalAffiliation"));
+			context.put("allowShowExternalAffiliation", isAllowShow("externalAffiliation"));
+
+			value = (String) state.getAttribute("valueEnrollment");
+			if (value != null) context.put("valueEnrollment", value);
+			context.put("allowUpdateEnrollment", isAllowUpdate("enrollment"));
+			context.put("allowShowEnrollment", isAllowShow("enrollment"));
+
+		}
+
 		//optional attributes lists
 		context.put("optionalAttributes", getOptionalAttributes());
 		context.put("currentAttributes", getCurrentAttributes((UserEdit) state.getAttribute("user")));
 
+        context.put("allowKyotoUserPropertiesExtention", allowKyotoUserPropertiesExtention);
 
 		return "_edit";
 
@@ -538,6 +724,21 @@ public class UsersAction extends PagedResourceActionII
 			context.put("form-name", "user-form");
 
 			state.setAttribute("mode", "view");
+
+            if (allowKyotoUserPropertiesExtention) {
+				context.put("allowShowDisplayName", isAllowShow("displayName"));
+				context.put("allowShowDisplayName_phonetic", isAllowShow("displayName;lang-ja;phonetic"));
+				context.put("allowShowDisplayName_en", isAllowShow("displayName;lang-en"));
+				context.put("allowShowEmployeeNumber", isAllowShow("employeeNumber"));
+				context.put("allowShowTitle", isAllowShow("title"));
+				context.put("allowShowTitle1", isAllowShow("title1"));
+				context.put("allowShowTitle2", isAllowShow("title2"));
+				context.put("allowShowTitle3", isAllowShow("title3"));
+				context.put("allowShowAffiliation", isAllowShow("affiliation"));
+				context.put("allowShowDepartment", isAllowShow("department"));
+				context.put("allowShowExternalAffiliation", isAllowShow("externalAffiliation"));
+				context.put("allowShowEnrollment", isAllowShow("enrollment"));
+			}
 
 			// make sure we can do an edit
 			try
@@ -571,6 +772,8 @@ public class UsersAction extends PagedResourceActionII
 			enableObserver(state);
 		}
 
+		context.put("allowKyotoUserPropertiesExtention", allowKyotoUserPropertiesExtention);
+
 		return "_view";
 
 	} // buildViewContext
@@ -592,32 +795,32 @@ public class UsersAction extends PagedResourceActionII
 	 * Build the context for the import mode.
 	 */
 	private String buildImportContext(SessionState state, Context context) {
-		
-		//render the template		
+
+		//render the template
 		return "_import";
 
 	} // buildImportContext
-	
+
 	/**
 	 * Build the context for processing the files
 	 */
 	private String buildProcessImportContext(SessionState state, RunData data, Context context) {
-		
+
 		//process the attachments (there will be only one)
 		UsersActionState sstate = (UsersActionState)getState(context, data, UsersActionState.class);
-		
+
 		try {
 			Reference attachment = (Reference)sstate.getAttachments().get(0);
 			processImportedUserFile(state, context, attachment);
 		} catch (IndexOutOfBoundsException e) {
 			//no attachment, carry on, will render correctly
 		}
-				
-		//render the template		
+
+		//render the template
 		return "_import";
 
 	} // buildProcessImportContext
-	
+
 	/**
 	 * doNew called when "eventSubmit_doNew" is in the request parameters to add a new user
 	 */
@@ -641,32 +844,46 @@ public class UsersAction extends PagedResourceActionII
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 		UsersActionState sstate = (UsersActionState)getState(context, data, UsersActionState.class);
-		
+
 		state.setAttribute("mode", "import");
-				
+
 		Log.debug("chef", "doImport");
-			
+
 		List<ImportedUser> users = (List<ImportedUser>)state.getAttribute("importedUsers");
 		if(users !=null && users.size() > 0) {
 			//Check if the email is duplicated
 			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
-			
-			
+
+
 			for(ImportedUser user: users) {
 				try {
-					
+
 					TempUser tempUser = new TempUser(user.getEid(), user.getEmail(), null, null, user.getEid(), user.getPassword(), null);
-					
+
 					if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(tempUser)){
 						addAlert(state, rb.getString("useact.theuseemail1") + ":" + tempUser.getEmail());
-						
+
 						//Try to import the rest
 						continue;
 					}
-					
+
 					User newUser = UserDirectoryService.addUser(null, user.getEid(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getType(), user.getProperties());
-			
-					
+
+					if (allowKyotoUserPropertiesExtention) {
+						newUser.getProperties().addProperty("displayName", user.getProperties().getProperty("displayName"));
+						newUser.getProperties().addProperty("displayName_phonetic", user.getProperties().getProperty("displayName;lang-ja;phonetic"));
+						newUser.getProperties().addProperty("displayName_en", user.getProperties().getProperty("displayName;lang-en"));
+						newUser.getProperties().addProperty("title", user.getProperties().getProperty("title"));
+						newUser.getProperties().addProperty("title1", user.getProperties().getProperty("title1"));
+						newUser.getProperties().addProperty("title2", user.getProperties().getProperty("title2"));
+						newUser.getProperties().addProperty("title3", user.getProperties().getProperty("title3"));
+						newUser.getProperties().addProperty("employeeNumber", user.getProperties().getProperty("employeeNumber"));
+						newUser.getProperties().addProperty("affiliation", user.getProperties().getProperty("affiliation"));
+						newUser.getProperties().addProperty("department", user.getProperties().getProperty("department"));
+						newUser.getProperties().addProperty("externalAffiliation", user.getProperties().getProperty("externalAffiliation"));
+						newUser.getProperties().addProperty("enrollment", user.getProperties().getProperty("enrollment"));
+					}
+
 				}
 				catch (UserAlreadyDefinedException e){
 					//ok, just skip
@@ -683,24 +900,24 @@ public class UsersAction extends PagedResourceActionII
 					Log.error("chef", "Import user error: " + e.getClass() + ":" + e.getMessage());
 					//this is bad so return
 					return;
-				} 
+				}
 			}
-			
+
 			//set a message to show it was successful
 			state.setAttribute("successMessage", rb.getString("import.success"));
-			
+
 			//cleanup
 			state.removeAttribute("importedUsers");
 			state.removeAttribute("mode");
-			
+
 			// make sure auto-updates are enabled
 			enableObserver(state);
 		}
-		
+
 	} // doImport
-	
-	
-	
+
+
+
 	/**
 	 * doEdit called when "eventSubmit_doEdit" is in the request parameters to edit a user
 	 */
@@ -734,7 +951,7 @@ public class UsersAction extends PagedResourceActionII
 		}
 		catch (UserPermissionException e)
 		{
-			addAlert(state, rb.getFormattedMessage("useact.youdonot1", new Object[]{id}));
+			addAlert(state, rb.getFormattedMessage("useact.youdonot1", id));
 			state.removeAttribute("mode");
 
 			// make sure auto-updates are enabled
@@ -742,7 +959,7 @@ public class UsersAction extends PagedResourceActionII
 		}
 		catch (UserLockedException e)
 		{
-			addAlert(state, rb.getFormattedMessage("useact.somels", new Object[]{id}));
+			addAlert(state, rb.getFormattedMessage("useact.somels", id));
 			state.removeAttribute("mode");
 
 			// make sure auto-updates are enabled
@@ -789,7 +1006,7 @@ public class UsersAction extends PagedResourceActionII
 		}
 		catch (UserPermissionException e)
 		{
-			addAlert(state, rb.getFormattedMessage("useact.youdonot1", new Object[]{id}));
+			addAlert(state, rb.getFormattedMessage("useact.youdonot1", id));
 			state.removeAttribute("mode");
 
 			// make sure auto-updates are enabled
@@ -797,7 +1014,7 @@ public class UsersAction extends PagedResourceActionII
 		}
 		catch (UserLockedException e)
 		{
-			addAlert(state, rb.getFormattedMessage("useact.somels", new Object[]{id}));
+			addAlert(state, rb.getFormattedMessage("useact.somels", id));
 			state.removeAttribute("mode");
 
 			// make sure auto-updates are enabled
@@ -812,7 +1029,7 @@ public class UsersAction extends PagedResourceActionII
 	public void doSave(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		if (!"POST".equals(data.getRequest().getMethod())) {
 			return;
 		}
@@ -821,20 +1038,20 @@ public class UsersAction extends PagedResourceActionII
 		if (!readUserForm(data, state)) return;
 
 
-		
+
 		// commit the change
 		UserEdit edit = (UserEdit) state.getAttribute("user");
 		if (edit != null)
 		{
-			
+
 			//Check if the email is duplicated
 			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
-			
+
 			if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(edit)){
 				addAlert(state, rb.getString("useact.theuseemail1"));
 				return;
 			}
-			
+
 			try
 			{
 				UserDirectoryService.commitEdit(edit);
@@ -863,6 +1080,32 @@ public class UsersAction extends PagedResourceActionII
 		state.removeAttribute("valueLastName");
 		state.removeAttribute("valueEmail");
 		state.removeAttribute("valueType");
+		if (allowKyotoUserPropertiesExtention) {
+			state.removeAttribute("valueDisplayName");
+			state.removeAttribute("valueDisplayName_phonetic");
+			state.removeAttribute("valueDisplayName_en");
+			state.removeAttribute("valueTitle");
+			state.removeAttribute("valueEmployeeNumber");
+			state.removeAttribute("valueAffiliation");
+			state.removeAttribute("valueDepartment");
+			state.removeAttribute("valueExternalAffiliation");
+			state.removeAttribute("allowUpdateDisplayName");
+			state.removeAttribute("allowUpdateDisplayName_phonetic");
+			state.removeAttribute("allowUpdateDisplayName_en");
+			state.removeAttribute("allowUpdateTitle");
+			state.removeAttribute("allowUpdateEmployeeNumber");
+			state.removeAttribute("allowUpdateAffiliation");
+			state.removeAttribute("allowUpdateDepartment");
+			state.removeAttribute("allowUpdateExternalAffiliation");
+			state.removeAttribute("allowShowDisplayName");
+			state.removeAttribute("allowShowDisplayName_phonetic");
+			state.removeAttribute("allowShowDisplayName_en");
+			state.removeAttribute("allowShowTitle");
+			state.removeAttribute("allowShowEmployeeNumber");
+			state.removeAttribute("allowShowAffiliation");
+			state.removeAttribute("allowShowDepartment");
+			state.removeAttribute("allowShowExternalAffiliation");
+		}
 
 		// return to main mode
 		state.removeAttribute("mode");
@@ -899,7 +1142,7 @@ public class UsersAction extends PagedResourceActionII
 	public void doCancel(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		if (!"POST".equals(data.getRequest().getMethod())) {
 			return;
 		}
@@ -918,7 +1161,7 @@ public class UsersAction extends PagedResourceActionII
 				}
 				catch (UserPermissionException e)
 				{
-					addAlert(state, rb.getFormattedMessage("useact.youdonot2", new Object[]{user.getId()}));
+					addAlert(state, rb.getFormattedMessage("useact.youdonot2", user.getId()));
 				}
 			}
 			else
@@ -936,6 +1179,32 @@ public class UsersAction extends PagedResourceActionII
 		state.removeAttribute("valueLastName");
 		state.removeAttribute("valueEmail");
 		state.removeAttribute("valueType");
+		if (allowKyotoUserPropertiesExtention) {
+			state.removeAttribute("valueDisplayName");
+			state.removeAttribute("valueDisplayName_phonetic");
+			state.removeAttribute("valueDisplayName_en");
+			state.removeAttribute("valueTitle");
+			state.removeAttribute("valueEmployeeNumber");
+			state.removeAttribute("valueAffiliation");
+			state.removeAttribute("valueDepartment");
+			state.removeAttribute("valueExternalAffiliation");
+			state.removeAttribute("allowUpdateDisplayName");
+			state.removeAttribute("allowUpdateDisplayName_phonetic");
+			state.removeAttribute("allowUpdateDisplayName_en");
+			state.removeAttribute("allowUpdateTitle");
+			state.removeAttribute("allowUpdateEmployeeNumber");
+			state.removeAttribute("allowUpdateAffiliation");
+			state.removeAttribute("allowUpdateDepartment");
+			state.removeAttribute("allowUpdateExternalAffiliation");
+			state.removeAttribute("allowShowDisplayName");
+			state.removeAttribute("allowShowDisplayName_phonetic");
+			state.removeAttribute("allowShowDisplayName_en");
+			state.removeAttribute("allowShowTitle");
+			state.removeAttribute("allowShowEmployeeNumber");
+			state.removeAttribute("allowShowAffiliation");
+			state.removeAttribute("allowShowDepartment");
+			state.removeAttribute("allowShowExternalAffiliation");
+		}
 
 		// return to main mode
 		state.removeAttribute("mode");
@@ -944,21 +1213,21 @@ public class UsersAction extends PagedResourceActionII
 		enableObserver(state);
 
 	} // doCancel
-	
+
 	/**
 	 * doCancelImport called when "eventSubmit_doCancelImport" is in the request parameters to cancel user imports
 	 */
 	public void doCancelImport(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		if (!"POST".equals(data.getRequest().getMethod())) {
 			return;
 		}
-		
+
 		//cleanup session
 		state.removeAttribute("importedUsers");
-		
+
 		//also cleanup our state handler (I think this should be combined into SessionState)
 		UsersActionState sstate = (UsersActionState)getState(context, data, UsersActionState.class);
 		sstate.setAttachments(new ArrayList());
@@ -978,7 +1247,7 @@ public class UsersAction extends PagedResourceActionII
 	public void doRemove(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		// set mode so we can skip some checks in readUserForm
 		state.setAttribute("mode", "remove");
 
@@ -996,7 +1265,7 @@ public class UsersAction extends PagedResourceActionII
 	public void doRemove_confirmed(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		if (!"POST".equals(data.getRequest().getMethod())) {
 			return;
 		}
@@ -1011,18 +1280,44 @@ public class UsersAction extends PagedResourceActionII
 		}
 		catch (UserPermissionException e)
 		{
-			addAlert(state, rb.getFormattedMessage("useact.youdonot2", new Object[]{user.getId()}));
+			addAlert(state, rb.getFormattedMessage("useact.youdonot2", user.getId()));
 		}
 
 		// cleanup
 		state.removeAttribute("user");
 		state.removeAttribute("newuser");
 		state.removeAttribute("new");
-                state.removeAttribute("valueEid");
-                state.removeAttribute("valueFirstName");
-                state.removeAttribute("valueLastName");
-                state.removeAttribute("valueEmail");
-                state.removeAttribute("valueType");
+        state.removeAttribute("valueEid");
+        state.removeAttribute("valueFirstName");
+        state.removeAttribute("valueLastName");
+        state.removeAttribute("valueEmail");
+        state.removeAttribute("valueType");
+		if (allowKyotoUserPropertiesExtention) {
+			state.removeAttribute("valueDisplayName");
+			state.removeAttribute("valueDisplayName_phonetic");
+			state.removeAttribute("valueDisplayName_en");
+			state.removeAttribute("valueTitle");
+			state.removeAttribute("valueEmployeeNumber");
+			state.removeAttribute("valueAffiliation");
+			state.removeAttribute("valueDepartment");
+			state.removeAttribute("valueExternalAffiliation");
+			state.removeAttribute("allowUpdateDisplayName");
+			state.removeAttribute("allowUpdateDisplayName_phonetic");
+			state.removeAttribute("allowUpdateDisplayName_en");
+			state.removeAttribute("allowUpdateTitle");
+			state.removeAttribute("allowUpdateEmployeeNumber");
+			state.removeAttribute("allowUpdateAffiliation");
+			state.removeAttribute("allowUpdateDepartment");
+			state.removeAttribute("allowUpdateExternalAffiliation");
+			state.removeAttribute("allowShowDisplayName");
+			state.removeAttribute("allowShowDisplayName_phonetic");
+			state.removeAttribute("allowShowDisplayName_en");
+			state.removeAttribute("allowShowTitle");
+			state.removeAttribute("allowShowEmployeeNumber");
+			state.removeAttribute("allowShowAffiliation");
+			state.removeAttribute("allowShowDepartment");
+			state.removeAttribute("allowShowExternalAffiliation");
+		}
 
 		// go to main mode
 		state.removeAttribute("mode");
@@ -1038,7 +1333,7 @@ public class UsersAction extends PagedResourceActionII
 	public void doCancel_remove(RunData data, Context context)
 	{
 		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		
+
 		if (!"POST".equals(data.getRequest().getMethod())) {
 			return;
 		}
@@ -1069,7 +1364,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Read the user form and update the user in state.
-	 * 
+	 *
 	 * @return true if the form is accepted, false if there's a validation error (an alertMessage will be set)
 	 */
 	private boolean readUserForm(RunData data, SessionState state)
@@ -1094,10 +1389,49 @@ public class UsersAction extends PagedResourceActionII
 		String pw = StringUtils.trimToNull(data.getParameters().getString("pw"));
         String pwConfirm = StringUtils.trimToNull(data.getParameters().getString("pw0"));
 
+		String displayName = null;
+		String displayName_phonetic = null;
+		String displayName_en = null;
+		String employeeNumber = null;
+		String title = null;
+		String title1 = null;
+		String title2 = null;
+		String title3 = null;
+		String affiliation = null;
+		String department = null;
+		String externalAffiliation = null;
+		String enrollment = null;
+		if (allowKyotoUserPropertiesExtention) {
+			displayName = StringUtils.trimToNull(data.getParameters().getString("display-name"));
+			state.setAttribute("valueDisplayName", displayName);
+			displayName_phonetic = StringUtils.trimToNull(data.getParameters().getString("display-name-phonetic"));
+			state.setAttribute("valueDisplayName_phonetic", displayName_phonetic);
+			displayName_en = StringUtils.trimToNull(data.getParameters().getString("display-name-en"));
+			state.setAttribute("valueDisplayName_en", displayName_en);
+			title = StringUtils.trimToNull(data.getParameters().getString("title"));
+			state.setAttribute("valueTitle", title);
+			title1 = StringUtils.trimToNull(data.getParameters().getString("title1"));
+			state.setAttribute("valueTitle1", title1);
+			title2 = StringUtils.trimToNull(data.getParameters().getString("title2"));
+			state.setAttribute("valueTitle2", title2);
+			title3 = StringUtils.trimToNull(data.getParameters().getString("title3"));
+			state.setAttribute("valueTitle3", title3);
+			employeeNumber = StringUtils.trimToNull(data.getParameters().getString("employee-number"));
+			state.setAttribute("valueEmployeeNumber", employeeNumber);
+			affiliation = StringUtils.trimToNull(data.getParameters().getString("affiliation"));
+			state.setAttribute("valueAffiliation", affiliation);
+			department = StringUtils.trimToNull(data.getParameters().getString("department"));
+			state.setAttribute("valueDepartment", department);
+			externalAffiliation = StringUtils.trimToNull(data.getParameters().getString("external-affiliation"));
+			state.setAttribute("valueExternalAffiliation", externalAffiliation);
+			enrollment = StringUtils.trimToNull(data.getParameters().getString("enrollment"));
+			state.setAttribute("valueEnrollment", enrollment);
+		}
+
         String pwcur = StringUtils.trimToNull(data.getParameters().getString("pwcur"));
-        
+
         Integer disabled = Integer.valueOf(StringUtils.trimToNull(data.getParameters().getString("disabled")) != null ? "1" : "0" );
-        
+
         String mode = (String) state.getAttribute("mode");
 		boolean singleUser = ((Boolean) state.getAttribute("single-user")).booleanValue();
 		boolean createUser = ((Boolean) state.getAttribute("create-user")).booleanValue();
@@ -1127,7 +1461,7 @@ public class UsersAction extends PagedResourceActionII
 				type = (String) state.getAttribute("create-type");
 			}
 		}
-		
+
 		if ((Boolean)state.getAttribute("user.recaptcha-enabled"))
 		{
 			String challengeField = data.getParameters().getString("recaptcha_challenge_field");
@@ -1143,38 +1477,38 @@ public class UsersAction extends PagedResourceActionII
 				return false;
 			}
 		}
-		
-		
+
+
 		//insure valid email address
 		//email.matches(".+@.+\\..+")
 		if(email != null && !EmailValidator.getInstance().isValid(email)) {
-				addAlert(state, rb.getString("useact.invemail"));	
+				addAlert(state, rb.getString("useact.invemail"));
 				return false;
 		}
-		
+
 		// get the user
 		UserEdit user = (UserEdit) state.getAttribute("user");
-		
+
 		//process any additional attributes
 		//we continue processing these until we get an empty attribute KEY
 		//counter starts at 1
-		
+
 		//data is of the form:
 		//	optionalAttr_1:att1
 		//	optionalAttrValue_1:value1
 		//	optionalAttr_2:att2
 		//	optionalAttrValue_2:value2
-		
+
 		int count = 1;
 		boolean continueProcessingOptionalAttributes = true;
-		
+
 		ResourcePropertiesEdit properties;
 		if(user == null) {
 			properties = new BaseResourcePropertiesEdit();
 		} else {
 			properties = user.getPropertiesEdit();
 		}
-		
+
 		//remove all properties that are in the confugred list
 		//then add back in only the ones that were sent
 		//this allows us to remove items via javascript and they get persisted to the db on form save
@@ -1182,30 +1516,30 @@ public class UsersAction extends PagedResourceActionII
 		for(String cp: configuredProperties.keySet()) {
 			properties.removeProperty(cp);
 		}
-		
-		
+
+
 		while(continueProcessingOptionalAttributes) {
-			
+
 			//this stores the key
 			String optionalAttributeKey = data.getParameters().getString("optionalAttr_"+count);
-			
+
 			if(StringUtils.isBlank(optionalAttributeKey)){
 				continueProcessingOptionalAttributes = false;
 				break;
 			}
-			
+
 			String optionalAttributeValue = data.getParameters().getString("optionalAttrValue_"+count);
-			
+
 			//only single values properties
 			//any null ones will wipe out existing ones
 			//and any duplicate ones will override previous ones (currently)
 			properties.addProperty(optionalAttributeKey, optionalAttributeValue);
-			
+
 			//System.out.println("optionalAttributeKey: " + optionalAttributeKey + ", optionalAttributeValue: " + optionalAttributeValue);
-			
+
 			count++;
 		}
-		
+
 
 		// add if needed
 		if (user == null)
@@ -1216,7 +1550,7 @@ public class UsersAction extends PagedResourceActionII
 				addAlert(state, rb.getString("usecre.eidmis"));
 				return false;
 			}
-			
+
 			// if in create mode, make sure we have a password
 			if (createUser)
 			{
@@ -1224,7 +1558,7 @@ public class UsersAction extends PagedResourceActionII
 				{
 					addAlert(state, rb.getString("usecre.pasismis"));
 					return false;
-				}				
+				}
 			}
 
 			// make sure we have matching password fields
@@ -1242,18 +1576,18 @@ public class UsersAction extends PagedResourceActionII
 
 			//Check if the email is duplicated
 			boolean allowEmailDuplicates = ServerConfigurationService.getBoolean("user.email.allowduplicates",true);
-			
+
 			if (!allowEmailDuplicates && UserDirectoryService.checkDuplicatedEmail(tempUser)){
 					addAlert(state, rb.getString("useact.theuseemail1"));
 					return false;
 			}
-			
-			
+
+
 			try
 			{
 				// add the user in one step so that all you need is add not update permission
 				// (the added might be "anon", and anon has add but not update permission)
-				
+
 				//SAK-18209 only an admin user should be able to specify a ID
 				if (!SecurityService.isSuperUser()) {
 					id = null;
@@ -1307,7 +1641,7 @@ public class UsersAction extends PagedResourceActionII
 					// add the user in one step so that all you need is add not update permission
 					// (the added might be "anon", and anon has add but not update permission)
 					user = UserDirectoryService.editUser(user.getId());
-	
+
 					// put the user in the state
 					state.setAttribute("user", user);
 				}
@@ -1320,7 +1654,7 @@ public class UsersAction extends PagedResourceActionII
 				{
 					Object[] params = new Object[]{id};
 					addAlert(state, rb.getFormattedMessage("useact.use_notfou", params));
-					
+
 					return false;
 				}
 				catch (UserPermissionException e)
@@ -1337,17 +1671,32 @@ public class UsersAction extends PagedResourceActionII
 			    return false;
 			}
 
-			
+
 			// eid, pw, type might not be editable
 			if (eid != null) user.setEid(eid);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setEmail(email);
 			if (type != null) user.setType(type);
-			
+
+			if (allowKyotoUserPropertiesExtention) {
+				properties.addProperty("displayName", displayName);
+				properties.addProperty("displayName;lang-ja;phonetic", displayName_phonetic);
+				properties.addProperty("displayName;lang-en", displayName_en);
+				properties.addProperty("title", title);
+				properties.addProperty("title1", title1);
+				properties.addProperty("title2", title2);
+				properties.addProperty("title3", title3);
+				properties.addProperty("employeeNumber", employeeNumber);
+				properties.addProperty("affiliation", affiliation);
+				properties.addProperty("department", department);
+				properties.addProperty("externalAffiliation", externalAffiliation);
+				properties.addProperty("enrollment", enrollment);
+			}
+
 			//add in the updated props
 			user.getPropertiesEdit().addAll(properties);
-			
+
 			if (SecurityService.isSuperUser()) {
 				if(disabled == 1){
 					user.getProperties().addProperty("disabled", "true");
@@ -1355,10 +1704,10 @@ public class UsersAction extends PagedResourceActionII
 					user.getProperties().removeProperty("disabled");
 				}
 			}
-			
+
 			//validate the password only for local users
 			if (!isProvidedType(user.getType())) {
-			
+
 				// make sure the old password matches, but don't check for super users
 				if (!SecurityService.isSuperUser()) {
 					if (!user.checkPassword(pwcur)) {
@@ -1387,14 +1736,14 @@ public class UsersAction extends PagedResourceActionII
 
 		return true;
 	}
-	
+
 	/**
 	 * Get the Map of optional attributes from sakai.properties
-	 * 
+	 *
 	 * First list defines the attribute , second the display value. If no display value the attribute name is used.
-	 * 
+	 *
 	 * Format is:
-	 * 
+	 *
 	 * user.additional.attribute.count=3
 	 * user.additional.attribute.1=att1
 	 * user.additional.attribute.2=att2
@@ -1406,9 +1755,9 @@ public class UsersAction extends PagedResourceActionII
 	 * @return
 	 */
 	private Map<String,String> getOptionalAttributes() {
-		
+
 		Map<String,String> atts = new LinkedHashMap<String,String>();
-		
+
 		String configs[] = ServerConfigurationService.getStrings("user.additional.attribute");
 		if (configs != null) {
 			for (int i = 0; i < configs.length; i++) {
@@ -1419,69 +1768,69 @@ public class UsersAction extends PagedResourceActionII
 				}
 			}
 		}
-		
+
 		return atts;
-		
+
 	}
-	
+
 	/**
 	 * Gets the current attributes (properties) for a user. Converts the ResourceProperties into a Map
 	 * @param user
 	 * @return
 	 */
 	private Map<String,String> getCurrentAttributes(UserEdit user) {
-		
+
 		Map<String,String> atts = new LinkedHashMap<String,String>();
-		
+
 		ResourceProperties rprops = user.getProperties();
-		
+
 		// no props
 		if(rprops == null) {
 			return atts;
 		}
-		
+
 		Iterator<String> props = user.getProperties().getPropertyNames();
-		
+
 		while(props.hasNext()){
 			String prop = props.next();
 			atts.put(prop, rprops.getProperty(prop));
 		}
-		
+
 		return atts;
 	}
-	
+
 	public void doAttachments(RunData rundata, Context context) {
-		
+
 		// use special form of the helper for the admin workspace
 		ToolSession session = SessionManager.getCurrentToolSession();
         session.setAttribute(FilePickerHelper.FILE_PICKER_ATTACH_LINKS, new Boolean(true).toString());
-		
+
 		// use the helper
 		startHelper(rundata.getRequest(), "sakai.filepicker");
-		
+
 		// setup the parameters for the helper
 		SessionState state = ((JetspeedRunData) rundata).getPortletSessionState(((JetspeedRunData) rundata).getJs_peid());
 		UsersActionState sstate = (UsersActionState)getState( context, rundata, UsersActionState.class );
-		
+
 		state.setAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS, sstate.getAttachments());
 		state.setAttribute(FilePickerHelper.FILE_PICKER_MAX_ATTACHMENTS, FilePickerHelper.CARDINALITY_SINGLE);
-		
+
 		//set return status
 		sstate.setStatus("processImport");
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	// ********
 	// ******** functions copied from VelocityPortletStateAction ********
 	// ********
 	/**
 	 * Get the proper state for this instance (if portlet is not known, only context).
-	 * 
+	 *
 	 * @param context
 	 *        The Template Context (it contains a reference to the portlet).
 	 * @param rundata
@@ -1498,7 +1847,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Get the proper state for this instance (if portlet is known).
-	 * 
+	 *
 	 * @param portlet
 	 *        The portlet being rendered.
 	 * @param rundata
@@ -1521,7 +1870,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Get the proper state for this instance (if portlet id is known).
-	 * 
+	 *
 	 * @param peid
 	 *        The portlet id.
 	 * @param rundata
@@ -1568,7 +1917,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Release the proper state for this instance (if portlet is not known, only context).
-	 * 
+	 *
 	 * @param context
 	 *        The Template Context (it contains a reference to the portlet).
 	 * @param rundata
@@ -1582,7 +1931,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Release the proper state for this instance (if portlet is known).
-	 * 
+	 *
 	 * @param portlet
 	 *        The portlet being rendered.
 	 * @param rundata
@@ -1596,7 +1945,7 @@ public class UsersAction extends PagedResourceActionII
 
 	/**
 	 * Release the proper state for this instance (if portlet id is known).
-	 * 
+	 *
 	 * @param peid
 	 *        The portlet id being rendered.
 	 * @param rundata
@@ -1629,14 +1978,14 @@ public class UsersAction extends PagedResourceActionII
 	} // releaseState
 
 	// ******* end of copy from VelocityPortletStateAction
-	
-	
+
+
 	private void processImportedUserFile(SessionState state, Context context, Reference file) {
-		
+
 		try{
 			ContentResource resource = ContentHostingService.getResource(file.getId());
 			String contentType = resource.getContentType();
-			
+
 			//check mime type
 			if(!StringUtils.equals(contentType, CSV_MIME_TYPE)) {
 				addAlert(state, rb.getString("import.error"));
@@ -1656,24 +2005,24 @@ public class UsersAction extends PagedResourceActionII
 			map.put("password", "password");
 			map.put("type", "type");
 			map.put("properties", "rawProps"); //specially formatted string, see ImportedUser class.
-			
+
 			strat.setColumnMapping(map);
 
 			CsvToBean<ImportedUser> csv = new CsvToBean<ImportedUser>();
 			List<ImportedUser> list = new ArrayList<ImportedUser>();
-			
+
 			list = csv.parse(strat, new CSVReader(new InputStreamReader(resource.streamContent())));
 			*/
-			
+
 			//SAK-21884 manual parse method so we can support arbitrary columns
 			CSVReader reader = new CSVReader(new InputStreamReader(resource.streamContent()));
 		    String [] nextLine;
 		    int lineCount = 0;
 		    List<ImportedUser> list = new ArrayList<ImportedUser>();
 		    Map<Integer,String> mapping = null;
-		    
+
 		    while ((nextLine = reader.readNext()) != null) {
-		        
+
 		    	if(lineCount == 0) {
 		        	//header row, capture it
 		    		mapping = mapHeaderRow(nextLine);
@@ -1681,44 +2030,44 @@ public class UsersAction extends PagedResourceActionII
 		        	//map the fields into the object
 		        	list.add(mapLine(nextLine, mapping));
 		        }
-		    	
+
 		        lineCount++;
 		    }
-			
+
 			state.setAttribute("importedUsers", list);
 			context.put("importedUsers", list);
-			
+
 		} catch (Exception e) {
 			Log.error("chef", "Error reading imported file: " + e.getClass() + " : " + e.getMessage());
 			addAlert(state, rb.getString("import.error"));
 			return;
 		}
-		
+
 		return;
 
 	}
-	
+
 	/**
-	 * Takes the header row from the CSV to determines the position of the columns so that we can 
-	 * correctly parse any arbitrary CSV file. This is required because when we iterate over the rest of the lines, 
+	 * Takes the header row from the CSV to determines the position of the columns so that we can
+	 * correctly parse any arbitrary CSV file. This is required because when we iterate over the rest of the lines,
 	 * we need to know what the column header is, so we can set the approriate ImportedUser property
 	 * or add into the ResourceProperties list, which ever is required.
-	 * 
+	 *
 	 * @param line	the already split line
 	 * @return
 	 */
 	private Map<Integer,String> mapHeaderRow(String[] line) {
-		
+
 		Map<Integer,String> mapping = new LinkedHashMap<Integer,String>();
-		
+
 		for(int i=0;i<line.length;i++){
 			mapping.put(i, line[i]);
 		}
-		
+
 		return mapping;
-		
+
 	}
-	
+
 	/**
 	 * Takes a row of data and maps it into the appropriate ImportedUser properties
 	 * We have a fixed list of properties, anything else goes into ResourceProperties
@@ -1727,14 +2076,14 @@ public class UsersAction extends PagedResourceActionII
 	 * @return
 	 */
 	private ImportedUser mapLine(String[] line, Map<Integer,String> mapping){
-		
+
 		ImportedUser u = new ImportedUser();
 		ResourceProperties p = new BaseResourcePropertiesEdit();
-		
+
 		for(Map.Entry<Integer,String> entry: mapping.entrySet()) {
 			int i = entry.getKey();
 			String col = entry.getValue();
-			
+
 			//now check each of the main properties in turn to determine which one to set, otherwise set into props
 			if(StringUtils.equals(col, IMPORT_USER_ID)) {
 				u.setEid(line[i]);
@@ -1748,6 +2097,30 @@ public class UsersAction extends PagedResourceActionII
 				u.setPassword(line[i]);
 			} else if(StringUtils.equals(col, IMPORT_TYPE)) {
 				u.setType(line[i]);
+			} else if(StringUtils.equals(col, IMPORT_DISPLAY_NAME)) {
+				u.getProperties().addProperty("displayName", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_DISPLAY_NAME_PHONETIC)) {
+				u.getProperties().addProperty("displayName;lang-ja;phonetic", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_DISPLAY_NAME_EN)) {
+				u.getProperties().addProperty("displayName;lang-en", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_TITLE)) {
+				u.getProperties().addProperty("title", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_TITLE1)) {
+				u.getProperties().addProperty("title1", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_TITLE2)) {
+				u.getProperties().addProperty("title2", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_TITLE3)) {
+				u.getProperties().addProperty("title3", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_EMPLOYEE_NUMBER)) {
+				u.getProperties().addProperty("employeeNumber", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_AFFILIATION)) {
+				u.getProperties().addProperty("affiliation", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_DEPARTMENT)) {
+				u.getProperties().addProperty("department", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_EXTERNAL_AFFILIATION)) {
+				u.getProperties().addProperty("externalAffiliation", line[i]);
+			} else if(StringUtils.equals(col, IMPORT_ENROLLMENT)) {
+				u.getProperties().addProperty("enrollment", line[i]);
 			} else {
 				//only add if not blank
 				if(StringUtils.isNotBlank(line[i])) {
@@ -1755,12 +2128,12 @@ public class UsersAction extends PagedResourceActionII
 				}
 			}
 		}
-		
+
 		u.setProperties(p);
-		
+
 		return u;
 	}
-	
+
 	/**
 	 * Check to see if the type is in the list of known provided types
 	 * @param userType User's type
@@ -1775,5 +2148,80 @@ public class UsersAction extends PagedResourceActionII
 				provided = true;
 		}
 		return provided;
+	}
+
+	/**
+	 * Determine to allow users to update attributes or not
+	 * @param
+	 * @return
+     */
+	private boolean isAllowUpdate(String attribute)  {
+		boolean allowed=false;
+		if (SecurityService.isSuperUser())  {
+			if (attribute.equals("displayName")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-ja;phonetic")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-en")) {allowed=true;}
+			else if (attribute.equals("title")) {allowed=true;}
+			else if (attribute.equals("title1")) {allowed=true;}
+			else if (attribute.equals("title2")) {allowed=true;}
+			else if (attribute.equals("title3")) {allowed=true;}
+			else if (attribute.equals("employeeNumber")) {allowed=true;}
+			else if (attribute.equals("affiliation")) {allowed=true;}
+			else if (attribute.equals("department")) {allowed=true;}
+			else if (attribute.equals("externalAffiliation")) {allowed=true;}
+			else if (attribute.equals("enrollment")) {allowed=true;}
+		}  else {
+			if (attribute.equals("displayName")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-ja;phonetic")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-en")) {allowed=true;}
+			else if (attribute.equals("title")) {allowed=true;}
+			else if (attribute.equals("title1")) {allowed=true;}
+			else if (attribute.equals("title2")) {allowed=true;}
+			else if (attribute.equals("title3")) {allowed=true;}
+			else if (attribute.equals("employeeNumber")) {allowed=false;}
+			else if (attribute.equals("affiliation")) {allowed=false;}
+			else if (attribute.equals("department")) {allowed=false;}
+			else if (attribute.equals("externalAffiliation")) {allowed=true;}
+			else if (attribute.equals("enrollment")) {allowed=false;}
+		}
+
+		return allowed;
+	}
+	/**
+	 * Determine to allow users to show attributes or not
+	 * @param
+	 * @return
+	 */
+	private boolean isAllowShow(String attribute)  {
+		boolean allowed=false;
+		if (SecurityService.isSuperUser())  {
+			if (attribute.equals("displayName")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-ja;phonetic")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-en")) {allowed=true;}
+			else if (attribute.equals("title")) {allowed=true;}
+			else if (attribute.equals("title1")) {allowed=true;}
+			else if (attribute.equals("title2")) {allowed=true;}
+			else if (attribute.equals("title3")) {allowed=true;}
+			else if (attribute.equals("employeeNumber")) {allowed=true;}
+			else if (attribute.equals("affiliation")) {allowed=true;}
+			else if (attribute.equals("department")) {allowed=true;}
+			else if (attribute.equals("externalAffiliation")) {allowed=true;}
+			else if (attribute.equals("enrollment")) {allowed=true;}
+		}  else {
+			if (attribute.equals("displayName")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-ja;phonetic")) {allowed=true;}
+			else if (attribute.equals("displayName;lang-en")) {allowed=true;}
+			else if (attribute.equals("title")) {allowed=false;}
+			else if (attribute.equals("title1")) {allowed=false;}
+			else if (attribute.equals("title2")) {allowed=false;}
+			else if (attribute.equals("title3")) {allowed=false;}
+			else if (attribute.equals("employeeNumber")) {allowed=false;}
+			else if (attribute.equals("affiliation")) {allowed=true;}
+			else if (attribute.equals("department")) {allowed=false;}
+			else if (attribute.equals("externalAffiliation")) {allowed=true;}
+			else if (attribute.equals("enrollment")) {allowed=false;}
+		}
+
+		return allowed;
 	}
 }

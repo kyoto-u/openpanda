@@ -28,6 +28,20 @@
             <h3><h:outputText value="#{msgs.userinfoheader}"/></h3>
             <table class="itemSummary" summary="<h:outputText value="#{msgs.userinfoheader}"/>">
                 <tr><th scope="row"><h:outputText value="#{msgs.name}" /></th><td><h:outputText value="#{SuTool.userinfo.displayName}" /></td></tr>
+                <c:if test="#{SuTool.allowKyotoUserPropertiesExtention}">
+				<tr><th scope="row"><h:outputText value="#{msgs.displayName}" /></th><td><h:outputText value="#{SuTool.displayName}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.displayName_en}" /></th><td><h:outputText value="#{SuTool.displayNameEn}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.displayName_ja_phonetic}" /></th><td><h:outputText value="#{SuTool.displayNameJaPhonetic}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.employeeNumber}" /></th><td><h:outputText value="#{SuTool.employeeNumber}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.title}" /></th><td><h:outputText value="#{SuTool.title}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.title1}" /></th><td><h:outputText value="#{SuTool.title1}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.title2}" /></th><td><h:outputText value="#{SuTool.title2}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.title3}" /></th><td><h:outputText value="#{SuTool.title3}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.affiliation}" /></th><td><h:outputText value="#{SuTool.affiliation}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.department}" /></th><td><h:outputText value="#{SuTool.department}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.externalAffiliation}" /></th><td><h:outputText value="#{SuTool.externalAffiliation}" /></td></tr>
+				<tr><th scope="row"><h:outputText value="#{msgs.enrollment}" /></th><td><h:outputText value="#{SuTool.enrollment}" /></td></tr>
+				</c:if>
                 <tr><th scope="row"><h:outputText value="#{msgs.email}" /></th><td><h:outputText value="#{SuTool.userinfo.email}" /></td></tr>
                 <tr><th scope="row"><h:outputText value="#{msgs.eid}" /></th><td><h:outputText value="#{SuTool.userinfo.eid}" /></td></tr>
                 <tr><th scope="row"><h:outputText value="#{msgs.id}" /></th><td><h:outputText value="#{SuTool.userinfo.id}" /></td></tr>
