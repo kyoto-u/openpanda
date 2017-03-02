@@ -5,11 +5,15 @@
 	<xsl:output method="xml" version="1.0" omit-xml-declaration="no" indent="yes" />
 	<xsl:param name="versionParam" select="'1.0'" />
 
+    <!-- The default font to use when rendering -->
+    <!-- This should be supplied but keep a default to make the xslt easier to test. -->
+    <xsl:param name="DEFAULT_FONT">Helvetica</xsl:param>
+    
 	<!-- ========================= -->
 	<!-- root element: report -->
 	<!-- ========================= -->
 	<xsl:template match="report">
-		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="{$DEFAULT_FONT}">
 			<fo:layout-master-set>
 				<fo:simple-page-master master-name="simpleA4"
 					page-height="29.7cm" page-width="21cm" margin-top="2cm"
