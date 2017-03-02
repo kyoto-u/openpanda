@@ -48,6 +48,8 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.avalon.framework.configuration.Configuration;
+import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
@@ -64,6 +66,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
@@ -119,6 +122,7 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 	private FopFactory				fopFactory		= FopFactory.newInstance();
 	private Templates				cachedXmlFoXSLT	= null;
 	private static final String		XML_FO_XSL_FILE	= "xmlReportToFo.xsl";
+	private static final String     CONFIG_FILE     = "fop.cfg.xml";
 	
 	/** Date formatters. */
 	private SimpleDateFormat		dateMonthFrmt 	= new SimpleDateFormat("yyyy-MM");
@@ -1121,6 +1125,9 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 		try{
 			// Setup a buffer to obtain the content length
 		    out = new ByteArrayOutputStream();		    
+			DefaultConfigurationBuilder cfgBuilder = new DefaultConfigurationBuilder();
+        	Configuration cfg = cfgBuilder.build(getClass().getClassLoader().getResourceAsStream("org/sakaiproject/sitestats/config/fop/"+CONFIG_FILE));
+			fopFactory.setUserConfig(cfg);
 		    fopFactory.setURIResolver(new LibraryURIResolver());			
 		    FOUserAgent foUserAgent = fopFactory.newFOUserAgent();			
 			
@@ -1135,6 +1142,7 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 	            cachedXmlFoXSLT = factory.newTemplates(new StreamSource(xslt));
             }
             Transformer transformer = cachedXmlFoXSLT.newTransformer();
+            transformer.setParameter("DEFAULT_FONT", ServerConfigurationService.getString("pdf.default.font", "Helvetica"));
         
             // Setup input for XSLT transformation
             Source src = new SAXSource(new ReportXMLReader(), new ReportInputSource(report));
