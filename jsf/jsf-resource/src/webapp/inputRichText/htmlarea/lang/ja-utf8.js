@@ -1,4 +1,4 @@
-﻿// I18N constants -- Japanese UTF-8
+// I18N constants -- Japanese UTF-8
 // by Manabu Onoue -- tmocsys@tmocsys.com
 
 HTMLArea.I18N = {
