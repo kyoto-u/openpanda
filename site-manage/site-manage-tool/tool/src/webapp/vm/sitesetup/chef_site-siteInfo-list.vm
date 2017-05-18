@@ -758,17 +758,17 @@
 						$role.Id
 					</dt>
 					<dd class="indnt3">
-							#set($description = "")
-							#if ($role.Description)
-								#set($description = $role.Description)
-							#else
+							##set($description = "")
+							##if ($role.Description)
+								##set($description = $role.Description)
+							##else
 								## search for internationalized description in bundle
                                 #set($propertiesKey = "sitegen.roledescription.")
                                 #set($RoleId = $role.Id)
 								#set($RoleId = $RoleId.replaceAll(" ",""))
 								#set($roleDesc="${propertiesKey}${RoleId}")
                                 #set($description = $tlang.getString($roleDesc,""))
-							#end
+							##end
 							$validator.escapeHtml($!description)
 
 					</dd>

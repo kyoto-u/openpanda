@@ -45,6 +45,8 @@ import uk.org.ponder.rsf.viewstate.SimpleViewParameters;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
 import uk.org.ponder.stringutil.StringList;
 
+import org.sakaiproject.util.ResourceLoader;
+
 /**
  * Assign same role while adding participant
  * @author
@@ -54,7 +56,10 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
 
 	/** Our log (commons). */
 	private static Log M_log = LogFactory.getLog(SameRoleProducer.class);
-	
+
+    /** to read role description */
+    private static ResourceLoader roledescription = new ResourceLoader("roledescription");
+
     public SiteAddParticipantHandler handler;
     public static final String VIEW_ID = "SameRole";
     public MessageLocator messageLocator;
@@ -109,7 +114,9 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
 	            
 	            // add role description
 	            if (StringUtils.isNotBlank(r.getDescription())) {
-	            	UIOutput.make(roleRow, "role-descr-label", StringUtils.trimToEmpty(r.getDescription()));
+	            	//UIOutput.make(roleRow, "role-descr-label", StringUtils.trimToEmpty(r.getDescription()));
+			//UIOutput.make(roleRow, "role-descr-label", roledescription.getString("role") );
+			UIOutput.make(roleRow, "role-descr-label", roledescription.getString( "sitegen.roledescription." + r.getId().replaceAll(" ","") ) );
 	            }
 	            
 	            roleItems.add(r.getId());
