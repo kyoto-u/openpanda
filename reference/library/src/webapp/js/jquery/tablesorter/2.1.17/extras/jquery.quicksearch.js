@@ -1,4 +1,4 @@
-﻿/* jQuery Quicksearch plugin
+/* jQuery Quicksearch plugin
  by riklomas https://github.com/riklomas/quicksearch
  Modified to include childRows (for tablesorter)
 

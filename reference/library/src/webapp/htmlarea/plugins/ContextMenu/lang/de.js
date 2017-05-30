@@ -1,4 +1,4 @@
-﻿// I18N constants
+// I18N constants
 
 // LANG: "de", ENCODING: UTF-8 | ISO-8859-1
 
