@@ -58,7 +58,7 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
 	private static Log M_log = LogFactory.getLog(SameRoleProducer.class);
 
     /** to read role description */
-    private static ResourceLoader roledescription = new ResourceLoader("roledescription");
+    private static ResourceLoader rb = new ResourceLoader("org.sakaiproject.api.app.messagecenter.bundle.role");
 
     public SiteAddParticipantHandler handler;
     public static final String VIEW_ID = "SameRole";
@@ -114,13 +114,11 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
 	            
 	            // add role description
 	            if (StringUtils.isNotBlank(r.getDescription())) {
-	            	//UIOutput.make(roleRow, "role-descr-label", StringUtils.trimToEmpty(r.getDescription()));
-			//UIOutput.make(roleRow, "role-descr-label", roledescription.getString("role") );
-			UIOutput.make(roleRow, "role-descr-label", roledescription.getString( "sitegen.roledescription." + r.getId().replaceAll(" ","") ) );
+			UIOutput.make(roleRow, "role-descr-label", rb.getString( "sitegen.roledescription." + r.getId().replaceAll(" ","")));
 	            }
 	            
 	            roleItems.add(r.getId());
-	            String label = r.getId();
+	            String label = rb.getString("sitegen.roleid." + r.getId().replaceAll(" ",""));
 	            roleDescriptions.add(label);
 				j++;
 	    	}

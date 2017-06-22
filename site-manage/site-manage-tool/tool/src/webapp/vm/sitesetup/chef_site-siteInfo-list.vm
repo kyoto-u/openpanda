@@ -755,7 +755,12 @@
 			<dl>
 				#foreach( $role in $allowedRoles )
 					<dt>
-						$role.Id
+						#set($RoleId = $role.Id)
+						#set($RoleId = $RoleId.replaceAll(" ",""))
+						#set($propertiesKey_roleid = "sitegen.roleid.")
+						#set($roleid = "${propertiesKey_roleid}${RoleId}")
+						#set($roleid = $tlang.getString($roleid))
+						$validator.escapeHtml($!roleid)
 					</dt>
 					<dd class="indnt3">
 							##set($description = "")
@@ -763,11 +768,9 @@
 								##set($description = $role.Description)
 							##else
 								## search for internationalized description in bundle
-                                #set($propertiesKey = "sitegen.roledescription.")
-                                #set($RoleId = $role.Id)
-								#set($RoleId = $RoleId.replaceAll(" ",""))
+								#set($propertiesKey = "sitegen.roledescription.")
 								#set($roleDesc="${propertiesKey}${RoleId}")
-                                #set($description = $tlang.getString($roleDesc,""))
+								#set($description = $tlang.getString($roleDesc,""))
 							##end
 							$validator.escapeHtml($!description)
 
