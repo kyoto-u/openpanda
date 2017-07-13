@@ -34,6 +34,8 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.api.app.messageforums.PermissionsMask;
 
+import org.sakaiproject.util.ResourceLoader;
+
 public class PermissionBean {
   
   /** Path to bundle messages */
@@ -47,6 +49,8 @@ public class PermissionBean {
   private String selectedLevel;
   private DBMembershipItem item;
   private PermissionLevelManager permissionLevelManager; 
+
+  private static ResourceLoader rolerb = new ResourceLoader("org.sakaiproject.api.app.messagecenter.bundle.role");
 
   public PermissionBean(DBMembershipItem item,
       PermissionLevelManager permissionLevelManager)
@@ -401,6 +405,14 @@ public class PermissionBean {
   public String getName()
   {
 	  return item.getName();
+  }
+
+  /** 
+   * @return Returns the trimmed role or group name.
+   */
+  public String getRoleid()
+  {
+    return rolerb.getString("sitegen.roleid." + getName().replace(" ", ""));
   }
 
 	/**
