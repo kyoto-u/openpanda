@@ -1,10 +1,14 @@
 ## Adds $viewAsStudentLink options from includeTabs.vm
 
 <li id="roleSwitch" class="Mrphs-roleSwitch Mrphs-toolsNav__menuitem">
+    #set($propertiesKey = "sitegen.roleid.")
     #if ($roleSwitchState)
         <a href="$switchRoleUrl" id="roleSwitchAnchor" class="Mrphs-roleSwitch__anchor Mrphs-toolsNav__menuitem--link">
             <i class="Mrphs-toolsNav__menuitem--icon fa fa-user-secret exit"></i>
-            <span class="Mrphs-toolsNav__menuitem--title">$rloader.getFormattedMessage("rs_exitRoleSwapWithRole", $roleUrlValue)</span>
+            #set($trimedrole = $roleUrlValue.replaceAll(" ", ""))
+            #set($roleid = "${propertiesKey}${trimedrole}")
+            #set($rolename = $rolerb.getString($roleid, ""))
+            <span class="Mrphs-toolsNav__menuitem--title">$rloader.getFormattedMessage("rs_exitRoleSwapWithRole", $rolename)</span>
         </a>
     #else
         #if ($roleswapdropdown)
@@ -13,14 +17,20 @@
             <select id="roleSwitchSelect" class="Mrphs-roleSwitch__dropdown">       
                 <option value="" selected="selected">${rloader.rs_viewSiteAs}</option>
             #foreach ( $role in $siteRoles )
-                <option value="$switchRoleUrl$role$panelString">$role</option>
+                #set($trimedrole = $role.replaceAll(" ", ""))
+                #set($roleid = "${propertiesKey}${trimedrole}")
+                #set($rolename = $rolerb.getString($roleid, ""))
+                <option value="$switchRoleUrl$role$panelString">$rolename</option>
             #end ## END of FOREACH ( $role in $siteRoles )
             </select>
         </p>
         #else
             <a href="$switchRoleUrl" id="roleSwitchAnchor" class="Mrphs-roleSwitch__link Mrphs-toolsNav__menuitem--link">
                 <i class="Mrphs-toolsNav__menuitem--icon fa fa-user-secret"></i>
-                <span>$rloader.getFormattedMessage("rs_enterRoleSwapWithRole", $roleUrlValue)</span>
+                #set($trimedrole = $roleUrlValue.replaceAll(" ", ""))
+                #set($roleid = "${propertiesKey}${trimedrole}")
+                #set($rolename = $rolerb.getString($roleid, ""))
+                #<span>$rloader.getFormattedMessage("rs_enterRoleSwapWithRole", $rolename)</span>
             </a>
         #end ## END OF IF ($roleswapdropdown)
     #end ## END of IF ($roleSwitchState)

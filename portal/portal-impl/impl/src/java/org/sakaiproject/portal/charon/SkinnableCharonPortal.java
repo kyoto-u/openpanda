@@ -158,6 +158,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	 * messages.
 	 */
 	private static ResourceLoader rloader = new ResourceLoader("sitenav");
+	private static ResourceLoader rolerb = new ResourceLoader("org.sakaiproject.api.app.messagecenter.bundle.role");
 
 	/**
 	 * Parameter value to indicate to look up a tool ID within a site
@@ -1004,6 +1005,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("includeLatestJQuery", PortalUtils.includeLatestJQuery("Portal"));
 		rcontext.put("pageTop", Boolean.valueOf(true));
 		rcontext.put("rloader", rloader);
+		rcontext.put("rolerb", rolerb);
 		//rcontext.put("browser", new BrowserDetector(request));
 		// Allow for inclusion of extra header code via property
 		String includeExtraHead = ServerConfigurationService.getString("portal.include.extrahead", "");
