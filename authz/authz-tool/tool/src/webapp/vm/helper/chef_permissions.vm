@@ -59,7 +59,7 @@
 							<a href="#" title="$thelp.getString("per.lis.head.title")">$thelp.getString("per.lis.head")</a>
 						</th>
 						#foreach($role in $roles)
-							<th class="role"><a href="#"  title="$thelp.getString("per.lis.role.title")">$roleName.getName($role.Id)</a></th>
+							<th class="role"><a href="#"  title="$thelp.getString("per.lis.role.title")">$roleName.getRoleName($role.Id)</a></th>
 						#end
 					</tr>
 						#foreach($lock in $abilities)
