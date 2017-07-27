@@ -8671,6 +8671,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				// init variables useful for actual edits and mainainersAfterProposedChanges check
 				AuthzGroup realmEdit = authzGroupService.getAuthzGroup(realmId);
 				String maintainRoleString = realmEdit.getMaintainRole();
+				String maintainRoleId = rb.getString("sitegen.roleid." + maintainRoleString.replaceAll(" ", ""));
 				List participants = collectionToList((Collection) state.getAttribute(STATE_PARTICIPANT_LIST));
 
 				// SAK 23029 Test proposed removals/updates; reject all where activeMainainer count would = 0 if all proposed changes were made
@@ -8678,7 +8679,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 				if (maintainersAfterProposedChanges.size() == 0) {
 					addAlert(state, 
-						rb.getFormattedMessage("sitegen.siteinfolist.lastmaintainuseractive", new Object[]{maintainRoleString} ));
+						rb.getFormattedMessage("sitegen.siteinfolist.lastmaintainuseractive", new Object[]{maintainRoleId} ));
 					return;
 				}
 
