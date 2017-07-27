@@ -69,6 +69,7 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
 	private static Log M_log = LogFactory.getLog(PermissionsHelperAction.class);
 
 	private static ResourceLoader rb = new ResourceLoader("authz-tool");
+	private static ResourceLoader rolerb = new ResourceLoader("org.sakaiproject.api.app.messagecenter.bundle.role");
 
 	private static final String STARTED = "sakaiproject.permissions.started";
 
@@ -774,5 +775,9 @@ public class PermissionsHelperAction extends VelocityPortletPaneledAction
  		public String getName(String roleId) {
  			return authzGroupService.getRoleName(roleId);
  		}
+ 		public String getRoleName(String roleId) {
+			return rolerb.getString("sitegen.roleid." + authzGroupService.getRoleName(roleId).replaceAll(" ", ""));
+ 		}
+	    
  	}
 }
