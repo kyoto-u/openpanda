@@ -689,12 +689,22 @@
 										#foreach( $r in $allowedRoles )
 											#if( $r.Id == $uRole )
 										<option value ="$r.Id" selected>
-											$r.Id
+											#set($RoleId = $r.Id)
+											#set($RoleId = $RoleId.replaceAll(" ",""))
+											#set($propertiesKey_roleid = "sitegen.roleid.")
+											#set($roleid = "${propertiesKey_roleid}${RoleId}")
+											#set($roleid = $tlang.getString($roleid))
+											$validator.escapeHtml($!roleid)
 										</option>
 										#else
 												#if( !($r.isProviderOnly() || ($hasRestrictedRole == "true")) )
 											<option value ="$r.Id">
-												$r.Id 
+												#set($RoleId = $r.Id)
+												#set($RoleId = $RoleId.replaceAll(" ",""))
+												#set($propertiesKey_roleid = "sitegen.roleid.")
+												#set($roleid = "${propertiesKey_roleid}${RoleId}")
+												#set($roleid = $tlang.getString($roleid))
+												$validator.escapeHtml($!roleid)
 											</option>
 											#end
 										#end
