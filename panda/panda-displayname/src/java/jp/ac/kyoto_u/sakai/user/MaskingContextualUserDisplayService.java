@@ -21,8 +21,6 @@ import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.util.StringUtil;
 
-import org.sakaiproject.authz.cover.SecurityService;
-
 public class MaskingContextualUserDisplayService implements ContextualUserDisplayService {
 	private static Log M_log = LogFactory.getLog(MaskingContextualUserDisplayService.class);
 
@@ -170,6 +168,9 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		String rawId = getUserProperty(user, userRegidProperty);
 		if (rawId == null) {
 			return null;
+		}
+		if(masked && rawId.length() == 10){
+			masked = false;
 		}
 
 		return masked ? maskStringForUser(user, rawId, regidMaskPatterns) : rawId;
