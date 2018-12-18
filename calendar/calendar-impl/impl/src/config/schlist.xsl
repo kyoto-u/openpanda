@@ -15,7 +15,7 @@
 <xsl:param name="from"/>
         
 <xsl:template match="schedule">
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="DejaVuSans">
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="IPAMincho">
 
   <fo:layout-master-set>
     <!-- page layout -->
@@ -41,7 +41,7 @@
    
 	
 	<fo:block font-size="12pt" 
-            font-family="DejaVuSans" 
+            font-family="IPAMincho" 
             line-height="1cm"
             space-after.optimum="1pt"
             color="black"
@@ -91,7 +91,7 @@
         <fo:list-item>
           <!-- insert a bullet -->
           <fo:list-item-label end-indent="label-end()">
-          	<fo:block><fo:inline   font-size="7pt" font-family="DejaVuSans">
+          	<fo:block><fo:inline   font-size="7pt" font-family="IPAMincho">
 			    <xsl:value-of select="@dt"/></fo:inline></fo:block>
           </fo:list-item-label>
           <!-- list text --> 

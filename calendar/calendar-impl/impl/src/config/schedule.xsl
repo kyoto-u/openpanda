@@ -538,7 +538,7 @@
 	<!-- end scheduleUtil templates -->
 
 	<xsl:template match="schedule">
-		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="DejaVuSans">
+		<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-family="IPAMincho">
 			<!-- defines page layout -->
 			<fo:layout-master-set>
 
@@ -571,7 +571,7 @@
 			<fo:page-sequence master-reference="calendar" initial-page-number="1">
 				<fo:static-content flow-name="xsl-region-before">
 					<xsl:variable name="frm-len" select="$frmlen"/>
-					<fo:block font-size="12pt" font-family="DejaVuSans" font-weight="bold"
+					<fo:block font-size="12pt" font-family="IPAMincho" font-weight="bold"
 							  line-height="0.5cm" space-after.optimum="1pt" color="black"
 							  text-align="center" padding-top="0pt">
 						<xsl:value-of select="$sched"/>
