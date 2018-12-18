@@ -40,6 +40,34 @@ the location of this file, but this doesn't work when the configuration is loade
           <font-triplet name="DejaVuSans" style="normal" weight="bold"/>
         </font>
 
+        <font
+              embed-url="classpath:///fonts/IPAfont00303/ipam.ttf"
+              metrics-url="classpath:///fonts/ipam.xml"
+              kerning="yes">
+          <font-triplet name="IPAMincho" style="normal" weight="normal"/>
+        </font>
+
+        <font
+              embed-url="classpath:///fonts/IPAfont00303/ipamp.ttf"
+              metrics-url="classpath:///fonts/ipamp.xml"
+              kerning="yes">
+          <font-triplet name="IPAPMincho" style="normal" weight="normal"/>
+        </font>
+
+        <font
+              embed-url="classpath:///fonts/IPAfont00303/ipamg.ttf"
+              metrics-url="classpath:///fonts/ipamg.xml"
+              kerning="yes">
+          <font-triplet name="IPAGothic" style="normal" weight="bold"/>
+        </font>
+
+        <font
+              embed-url="classpath:///fonts/IPAfont00303/ipamgp.ttf"
+              metrics-url="classpath:///fonts/ipamg.xml"
+              kerning="yes">
+          <font-triplet name="IPAPGothic" style="normal" weight="bold"/>
+        </font>
+
       </fonts>
 
     </renderer>
