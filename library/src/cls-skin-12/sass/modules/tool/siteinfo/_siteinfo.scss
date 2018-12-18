@@ -1,0 +1,18 @@
+.#{$namespace}sakai-siteinfo{
+	.groups-site{
+		list-style: none;
+		
+		li {
+			min-height: 4em;
+			&:nth-child(odd){
+				background: darken( $tool-background-color, 5% );
+			}
+		}
+	}
+}
+
+#toolSelectionList{
+	ul{
+		padding: 0 0 0 0;
+	}
+}
