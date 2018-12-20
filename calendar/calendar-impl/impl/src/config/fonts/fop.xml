@@ -59,6 +59,7 @@ the location of this file, but this doesn't work when the configuration is loade
               metrics-url="classpath:///fonts/ipamg.xml"
               kerning="yes">
           <font-triplet name="IPAGothic" style="normal" weight="bold"/>
+          <font-triplet name="IPMincho" style="normal" weight="bold"/>
         </font>
 
         <font
