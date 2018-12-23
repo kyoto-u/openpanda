@@ -2015,7 +2015,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                     useridSet.remove(assessmentGradingData.getAgentId());
                     canBeExported = true;
                     try {
-                        agentEid = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getEid();
+                        agentEid = getSubmissionUserId(assessmentGradingData.getAgentId());
                         firstName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getFirstName();
                         lastName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getLastName();
                     } catch (Exception e) {
@@ -2507,7 +2507,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
             while (iter.hasNext()) {
                 String id = (String) iter.next();
                 try {
-                    agentEid = userDirectoryService.getUser(id).getEid();
+                    agentEid = getSubmissionUserId(id);
                     firstName = userDirectoryService.getUser(id).getFirstName();
                     lastName = userDirectoryService.getUser(id).getLastName();
                 } catch (Exception e) {
@@ -3619,4 +3619,19 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
         };
         return getHibernateTemplate().execute(hcb);
     }
+
+    private final String SUBMISSION_USER_ID_PROPERTY="employeeNumber";
+    private String getSubmissionUserId(String userId){
+       String id=null;
+               try {
+                       id = (String)userDirectoryService.getUser(userId).getProperties().get(SUBMISSION_USER_ID_PROPERTY);
+                       if( id== null || id.isEmpty()){
+                           return userDirectoryService.getUser(userId).getEid();
+                       }
+               } catch (Exception e) {
+               }
+       return id;
+    }
+
+
 }
