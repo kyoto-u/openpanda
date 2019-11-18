@@ -26,7 +26,7 @@
 	            });
 	        });
 	    </script>
-	    
+
 		<ul class="navIntraTool actionToolbar">
 			<li class="firstToolBarItem" role="menuitem"><span>
 				<a
@@ -50,7 +50,7 @@
 
 
 
-				<%--//TODO: this datatable needs to be bound to the participants for an event 
+				<%--//TODO: this datatable needs to be bound to the participants for an event
 					the value, binding attributes need to reflect this--%>
 				<h:dataTable id="attendanceList"
 					value="#{AttendanceSignupBean.timeslotWrappers}"
@@ -67,7 +67,7 @@
 						<h:panelGroup id="timeslot">
 							<f:verbatim><h4 style="font-weight:bold;margin:.5em 0"></f:verbatim>
 								<h:outputText value="#{timeSlotWrapper.timeSlot.startTime}">
-									<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{timeSlotWrapper.timeSlot.startTime}"
 									rendered="#{AttendanceSignupBean.meetingWrapper.meeting.meetingCrossDays}">
@@ -75,7 +75,7 @@
 								</h:outputText>
 								<h:outputText value="#{msgs.timeperiod_divider}" escape="false" />
 								<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}">
-									<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}"
 									rendered="#{AttendanceSignupBean.meetingWrapper.meeting.meetingCrossDays}">
@@ -87,7 +87,7 @@
 								</h:outputText>
 							<f:verbatim><h4></f:verbatim>
 						</h:panelGroup>
-						
+
 						<h:panelGroup rendered="#{!timeSlotWrapper.timeSlot.canceled}">
 							<h:outputText rendered="#{empty timeSlotWrapper.attendeeWrappers}" value="#{msgs.attend_view_list_slot_list_empty_msg}" styleClass="instruction" style="display:block;padding:1em 2em"/>
 							<h:dataTable id="availableSpots"
@@ -98,8 +98,8 @@
 								headerClass="subListHeader noPrint"
 								summary="#{msgs.attend_view_list_slot_list_summary}"
 								rendered="#{!empty timeSlotWrapper.attendeeWrappers}"
-								>	
-								
+								>
+
 								<h:column>
 									<f:facet name="header">
 										<h:outputText escape="false" value="<label><input type='checkbox' class='selectAllThese'/> #{msgs.attend_view_select_all} </label>"/>
@@ -114,7 +114,7 @@
 								</h:column>
 							</h:dataTable>
 						</h:panelGroup>
-						
+
 						<h:panelGroup rendered="#{!timeSlotWrapper.timeSlot.canceled}">
 							<h:dataTable id="waitList"
 								rowClasses="oddRow,evenRow"
@@ -125,8 +125,8 @@
 								headerClass="subListHeader"
 								summary="#{msgs.attend_view_list_slot_list_summary}"
 								rendered="#{!empty timeSlotWrapper.waitingList}"
-								>	
-								
+								>
+
 								<h:column>
 									<f:facet name="header">
 										<h:outputText escape="true" value=" #{msgs.attend_view_list_slot_list_wait_head}"/>
@@ -141,7 +141,7 @@
 								</h:column>
 							</h:dataTable>
 						</h:panelGroup>
-						
+
 						<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.canceled}">
 								<h:outputText value="#{msgs.attend_view_list_slot_list_canceled}" styleClass="instruction" style="display:block;padding:1em 2em"/>
 						</h:panelGroup>

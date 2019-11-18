@@ -10,8 +10,8 @@
 	<sakai:view_container title="Signup Tool">
 		<style type="text/css">
 			@import url("/sakai-signup-tool/css/signupStyle.css");
-		</style>	
-	
+		</style>
+
 <h:outputText value="#{Portal.latestJQuery}" escape="false"/>
 	  <script TYPE="text/javascript" src="/sakai-signup-tool/js/signupScript.js"></script>
 	  <script TYPE="text/javascript">
@@ -27,15 +27,15 @@
 					else
 						jQuery(tag).slideUp("fast");
 				}
-			}	
-	
+			}
+
 			function showOtherDefaultSettings(imageFolderName1,imagefolderName2,ContentTagName){
 				var detailsTag = document.getElementById(ContentTagName);
 				switchShowOrHide(detailsTag);
-				
+
 				var image1 = document.getElementById(imageFolderName1);
 				switchShowOrHide(image1);
-				
+
 				var image2 = document.getElementById(imagefolderName2);
 				switchShowOrHide(image2);
 
@@ -43,12 +43,12 @@
 				switchShowOrHide(otherDefaultSettings);
 			}
 		</script>
-	  
-		
+
+
 		<sakai:view_content>
-			<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>      			
-			<h:outputText value="#{messageUIBean.infoMessage}" styleClass="information" escape="false" rendered="#{messageUIBean.info}"/>      			
-				
+			<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>
+			<h:outputText value="#{messageUIBean.infoMessage}" styleClass="information" escape="false" rendered="#{messageUIBean.info}"/>
+
 			<h:form id="meeting">
 			 	<sakai:view_title value="#{msgs.event_step5_page_title}"/>
 			 	<div class="form">
@@ -107,7 +107,7 @@
 									<t:column>
 										<h:outputText escape="false" value="(#{attach.fileSize}kb)" rendered="#{!attach.isLink}"/>
 									</t:column>
-								</t:dataTable>			         				
+								</t:dataTable>
 							</h:panelGrid>
 						</h:panelGroup>
 					</div>
@@ -120,14 +120,14 @@
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block">
 							<h:panelGroup>
 								<h:outputText value="#{NewSignupMeetingBean.signupMeeting.startTime}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{NewSignupMeetingBean.signupMeeting.startTime}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{NewSignupMeetingBean.signupMeeting.startTime}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>		
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{NewSignupMeetingBean.signupMeeting.startTime}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
 							</h:panelGroup>
 						</h:panelGroup>
 					</div>
@@ -140,24 +140,24 @@
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block">
 							<h:panelGroup rendered="#{!NewSignupMeetingBean.endTimeAutoAdjusted}">
 								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
 							<h:panelGroup rendered="#{NewSignupMeetingBean.endTimeAutoAdjusted}">
 								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" style="color:#b11;" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" style="color:#b11;" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" style="color:#b11;" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{NewSignupMeetingBean.meetingEndTime}" style="color:#b11;" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -166,7 +166,7 @@
 					<%-- recurrence --%>
 					<div class="row">
 						<h:panelGroup styleClass="col-xs-12 col-md-3 titleColumn" layout="block" rendered="#{NewSignupMeetingBean.recurrence}">
-							<h:outputText styleClass="titleText" value="#{msgs.event_recurrence}" escape="false"/> 
+							<h:outputText styleClass="titleText" value="#{msgs.event_recurrence}" escape="false"/>
 						</h:panelGroup>
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{NewSignupMeetingBean.recurrence or (NewSignupMeetingBean.recurrence && NewSignupMeetingBean.recurLengthChoice=='1') or (NewSignupMeetingBean.recurrence && NewSignupMeetingBean.recurLengthChoice=='0')}">
 							<h:outputText value="#{NewSignupMeetingBean.eventFreqType}" rendered="#{NewSignupMeetingBean.recurrence}" escape="false"/>
@@ -207,13 +207,13 @@
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{!NewSignupMeetingBean.announcementType}">
 							<h:panelGroup>
 								<h:outputText value="#{NewSignupMeetingBean.signupBeginInDate}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{NewSignupMeetingBean.signupBeginInDate}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{NewSignupMeetingBean.signupBeginInDate}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{NewSignupMeetingBean.signupBeginInDate}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -227,13 +227,13 @@
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{!NewSignupMeetingBean.announcementType}">
 							<h:panelGroup>
 								<h:outputText value="#{NewSignupMeetingBean.signupDeadlineInDate}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{NewSignupMeetingBean.signupDeadlineInDate}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{NewSignupMeetingBean.signupDeadlineInDate}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{NewSignupMeetingBean.signupDeadlineInDate}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -267,7 +267,7 @@
 							<h:outputText value="#{msgs.event_duration_each_timeslot}" styleClass="titleText" escape="false"/>
 						</h:panelGroup>
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{NewSignupMeetingBean.individualType}">
-							<h:outputText value="#{NewSignupMeetingBean.timeSlotDuration}" styleClass="longtext" escape="false"/>	
+							<h:outputText value="#{NewSignupMeetingBean.timeSlotDuration}" styleClass="longtext" escape="false"/>
 						</h:panelGroup>
 					</div>
 
@@ -307,31 +307,31 @@
 						</h:panelGroup>
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{NewSignupMeetingBean.customTimeslotType}">
 							<h:dataTable id="scheduleDetail_2" value="#{NewSignupMeetingBean.customTimeSlotWrpList}" var="timeSlot"
-							rowClasses="oddTimeSlotRow,evenTimeSlotRow"	columnClasses="timeslotCol,assignStudentsCol" 
+							rowClasses="oddTimeSlotRow,evenTimeSlotRow"	columnClasses="timeslotCol,assignStudentsCol"
 							styleClass="signupTable"  style="display:none; width: 55%">
 								<h:column>
 									<f:facet name="header">
 										<h:outputText value="#{msgs.tab_time_slot}"/>
 									</f:facet>
 									<h:panelGroup>
-										<h:outputText value="#{timeSlot.timeSlot.startTime}" styleClass="longtext">
-											<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+										<h:outputText value="#{timeSlot.timeSlot.startTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
+											<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
 										<h:outputText value="#{timeSlot.timeSlot.startTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
 											<f:convertDateTime pattern=", EEE," timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
-										<h:outputText value="#{timeSlot.timeSlot.startTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
-											<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
+										<h:outputText value="#{timeSlot.timeSlot.startTime}" styleClass="longtext">
+											<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
 										<h:outputText value="#{msgs.timeperiod_divider}" escape="false"/>
-										<h:outputText value="#{timeSlot.timeSlot.endTime}" styleClass="longtext">
-											<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+										<h:outputText value="#{timeSlot.timeSlot.endTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
+											<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
 										<h:outputText value="#{timeSlot.timeSlot.endTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
 											<f:convertDateTime pattern=", EEE," timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
-										<h:outputText value="#{timeSlot.timeSlot.endTime}" rendered="#{NewSignupMeetingBean.signupMeeting.meetingCrossDays}">
-											<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
+										<h:outputText value="#{timeSlot.timeSlot.endTime}" styleClass="longtext">
+											<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 										</h:outputText>
 									</h:panelGroup>
 								</h:column>
@@ -449,7 +449,7 @@
 									<h:selectBooleanCheckbox id="emailChoice" value="#{NewSignupMeetingBean.sendEmail}" onclick="isShowEmailChoice()" disabled="#{NewSignupMeetingBean.mandatorySendEmail}"/>
 									<h:outputLabel for="emailChoice" value="#{msgs.event_yes_email_notification}" escape="false"/>
 								</h:panelGroup>
-								
+
 								<h:panelGroup id="emailAttendeeOnly">
 									<h:selectOneRadio  value="#{NewSignupMeetingBean.sendEmailToSelectedPeopleOnly}" layout="pageDirection" styleClass="rs" >
 										<f:selectItem id="all_attendees" itemValue="all" itemLabel="#{msgs.label_email_all_people}" itemDisabled="true"/>
@@ -483,7 +483,7 @@
 							<h:outputText value="#{msgs.event_other_default_setting}" escape="false" styleClass="titleText"/>
 						</h:panelGroup>
 						<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block" rendered="#{!NewSignupMeetingBean.announcementType}">
-							<h:panelGroup>	
+							<h:panelGroup>
 								<h:outputLabel  id="imageOpen_otherSetting" style="display:none" styleClass="activeTag" onclick="showOtherDefaultSettings('meeting:imageOpen_otherSetting','meeting:imageClose_otherSetting','meeting:otherSetting');">
 									<h:graphicImage value="/images/open.gif"  alt="open" title="Click to hide details." style="border:none;vertical-align: middle;" styleClass="openCloseImageIcon"/>
 									<h:outputText value="#{msgs.event_close_other_default_setting}" escape="false" style="vertical-align: middle;"/>
@@ -583,28 +583,28 @@
 							</h:panelGroup>
 							<h:panelGroup styleClass="col-xs-12 col-md-9 valueColumn" layout="block">
 								<h:panelGroup id="otherSetting_14" styleClass="longtext">
-									<h:selectOneMenu id="slotscomments" value="#{ NewSignupMeetingBean.maxNumOfSlots}">  
-										 <f:selectItems  value="#{NewSignupMeetingBean.slots}"   /> 
+									<h:selectOneMenu id="slotscomments" value="#{ NewSignupMeetingBean.maxNumOfSlots}">
+										 <f:selectItems  value="#{NewSignupMeetingBean.slots}"   />
 									</h:selectOneMenu>
 									<h:outputLabel for="slotscomments" value="#{msgs.event_allowed_slots_comments}" escape="false"/>
-								</h:panelGroup>	
+								</h:panelGroup>
 							</h:panelGroup>
 						</div>
 					</div>
 			 	</div>
-					
-										
+
+
 				<h:inputHidden value="step2" binding="#{NewSignupMeetingBean.currentStepHiddenInfo}"/>
 				<sakai:button_bar>
-					<h:commandButton id="goNextPage" action="#{NewSignupMeetingBean.processSave}" value="#{msgs.publish_button}" onclick='displayProcessingIndicator(this);'/> 
-					<h:commandButton id="assignStudents" action="#{NewSignupMeetingBean.proceesPreAssignAttendee}" value="#{msgs.assign_attendee_publish_button}" disabled="#{NewSignupMeetingBean.announcementType}"/> 
+					<h:commandButton id="goNextPage" action="#{NewSignupMeetingBean.processSave}" value="#{msgs.publish_button}" onclick='displayProcessingIndicator(this);'/>
+					<h:commandButton id="assignStudents" action="#{NewSignupMeetingBean.proceesPreAssignAttendee}" value="#{msgs.assign_attendee_publish_button}" disabled="#{NewSignupMeetingBean.announcementType}"/>
 					<h:commandButton id="goBack" action="#{NewSignupMeetingBean.goBack}" value="#{msgs.goback_button}"/>
 					<h:commandButton id="Cancel" action="#{NewSignupMeetingBean.processCancel}" value="#{msgs.cancel_button}" immediate="true"/>
-					<h:outputText styleClass="messageProgress" style="display:none" value="#{msgs.publish_processing_submit_message}" />  
+					<h:outputText styleClass="messageProgress" style="display:none" value="#{msgs.publish_processing_submit_message}" />
 				</sakai:button_bar>
 
 			 </h:form>
-  		</sakai:view_content>	
+  		</sakai:view_content>
 	</sakai:view_container>
-	
-</f:view> 
+
+</f:view>

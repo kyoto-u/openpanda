@@ -17,7 +17,7 @@
 		</style>
 <h:outputText value="#{Portal.latestJQuery}" escape="false"/>
 		<script TYPE="text/javascript" LANGUAGE="JavaScript" src="/sakai-signup-tool/js/signupScript.js"></script>
-		
+
 		<script type="text/javascript">
 			var hiddenInputCollapeMInfo;
 			var showMInfoTitleTag;
@@ -25,12 +25,12 @@
 				hiddenInputCollapeMInfo =document.getElementById("meeting:meetingInfoCollapseExpand");
 				showMInfoTitleTag =document.getElementById("meeting:showMeetingTitleOnly");
 				//initialize
-				initMeetingInfoDetail();			
+				initMeetingInfoDetail();
 				});
-			
-			
+
+
 			function initMeetingInfoDetail(){
-				var collapseMInfoTag =document.getElementById("meeting:meetingInfoDetails");				
+				var collapseMInfoTag =document.getElementById("meeting:meetingInfoDetails");
 				if(collapseMInfoTag && hiddenInputCollapeMInfo && hiddenInputCollapeMInfo.value == 'true'){
 					collapseMInfoTag.style.display="none";
 					showMInfoTitleTag.style.display="";
@@ -39,17 +39,17 @@
 				}else{
 					collapseMInfoTag.style.display="";
 					showMInfoTitleTag.style.display="none";
-				}	
+				}
 			}
-			
-			function setMeetingCollapseInfo(val){				
+
+			function setMeetingCollapseInfo(val){
 				hiddenInputCollapeMInfo.value=val;
-				if(val)				  
+				if(val)
 				  	showMInfoTitleTag.style.display="";
 				 else
-				  	showMInfoTitleTag.style.display="none";				  
+				  	showMInfoTitleTag.style.display="none";
 			}
-			
+
 			//just introduce jquery slideUp/Down visual effect to overwrite top function
 			function switchShowOrHide(tag){
 				if(tag){
@@ -58,34 +58,34 @@
 					else
 						jQuery(tag).slideUp("fast");
 				}
-			}								
+			}
 		</script>
-			
+
 		<h:form id="signupMeeting">
 		   <h:panelGroup>
-				<f:verbatim><ul class="navIntraTool actionToolbar" role="menu"></f:verbatim> 
+				<f:verbatim><ul class="navIntraTool actionToolbar" role="menu"></f:verbatim>
 				<h:panelGroup>
 						<f:verbatim><li role="menuitem" class="firstToolBarItem"> <span></f:verbatim>
 					<h:commandLink id="download_xls" value="#{msgs.event_pageTop_link_for_download_xls}" action="#{DownloadEventBean.downloadOneEventAsExcel}" />
 					<f:verbatim></span></li></f:verbatim>
 				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{DownloadEventBean.csvExportEnabled && DownloadEventBean.currentUserAllowedUpdateSite}"> 	
+
+				<h:panelGroup rendered="#{DownloadEventBean.csvExportEnabled && DownloadEventBean.currentUserAllowedUpdateSite}">
 					<f:verbatim><li role="menuitem" ><span></f:verbatim>
 					<h:commandLink id="download_csv" value="#{msgs.event_pageTop_link_for_download_csv}" action="#{DownloadEventBean.downloadOneEventAsCsv}" rendered="#{DownloadEventBean.csvExportEnabled && DownloadEventBean.currentUserAllowedUpdateSite}"/>
 					<f:verbatim></span></li></f:verbatim>
 				</h:panelGroup>
-				
+
 				<f:verbatim><li role="menuitem" ><span></f:verbatim>
 					<h:outputLink id="print" value="javascript:window.print();">
 							<h:outputText value="#{msgs.print_event}" escape="false"/>
-					</h:outputLink>				
+					</h:outputLink>
 				<f:verbatim></span></li>
-								
-			  </ul></f:verbatim>		
+
+			  </ul></f:verbatim>
 			</h:panelGroup>
 		</h:form>
-		
+
 		<sakai:view_content>
 			<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}"
 				styleClass="alertMessage" escape="false"
@@ -105,7 +105,7 @@
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.title}" styleClass="longtext"/>
 							</h:panelGroup>
 				</h:panelGrid>
-				
+
 				<%-- show all meeting details when expanded --%>
 				<h:panelGroup id="meetingInfoDetails" styleClass="table-responsive" layout="block">
 						<h:panelGrid columns="2" columnClasses="titleColumn,valueColumn">
@@ -117,90 +117,90 @@
 								</h:panelGroup>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.title}" styleClass="longtext" />
 							</h:panelGroup>
-		
+
 							<h:outputText value="#{msgs.event_organizer}" styleClass="titleText" escape="false"/>
 							<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.creator}"
 								styleClass="longtext" />
-		
+
 							<h:outputText value="#{msgs.event_location}" styleClass="titleText" escape="false"/>
 							<h:outputText
 								value="#{AttendeeSignupMBean.meetingWrapper.meeting.location}"
 								styleClass="longtext" />
-		
+
 							<h:outputText value="#{msgs.event_date}" styleClass="titleText" escape="false"/>
 							<h:panelGroup>
 								<h:outputText
 									value="#{AttendeeSignupMBean.meetingWrapper.meeting.startTime}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText
 									value="#{AttendeeSignupMBean.meetingWrapper.meeting.startTime}" styleClass="longtext">
-									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E)" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
-							
+
 							<h:outputText value="#{msgs.event_time_period}" styleClass="titleText" escape="false"/>
 							<h:panelGroup>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.startTime}">
-									<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.startTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
 										<f:convertDateTime pattern=", EEEEEEEE" timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>	
-								<h:outputText value="#{msgs.timeperiod_divider}" escape="false"/>
-								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.endTime}">
-									<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
-								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}" >
-										<f:convertDateTime pattern=", EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>	
+								<h:outputText value="#{msgs.timeperiod_divider}" escape="false"/>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}" >
 										<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>	
-							</h:panelGroup>	
-							
+								</h:outputText>
+								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}" >
+										<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.endTime}">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+							</h:panelGroup>
+
 							<!-- iCalendar link, only rendered for attendees if it is a 'no signup required/announcement' meeting -->
 							<h:outputText value="#{msgs.event_icalendar_link}" styleClass="titleText" escape="false" rendered="#{AttendeeSignupMBean.icsEnabled && AttendeeSignupMBean.meetingWrapper.meeting.meetingType =='announcement'}"/>
 							<h:commandLink id="mICS" action="#{AttendeeSignupMBean.downloadICSForMeeting}" rendered="#{AttendeeSignupMBean.icsEnabled && AttendeeSignupMBean.meetingWrapper.meeting.meetingType =='announcement'}">
 								<h:graphicImage value="/images/calendar_add.png" alt="#{msgs.label_ics}" title="#{msgs.label_download_ics_meeting}" style="margin-right: 5px;" />
 								<h:outputText value="#{msgs.event_icalendar_label}"/>
 							</h:commandLink>
-		
+
 							<h:outputText id="noAnnouncement107" value="#{msgs.event_signup_start}" style="white-space: nowrap;" styleClass="titleText" rendered="#{!AttendeeSignupMBean.announcementType}" escape="false"/>
 							<h:panelGroup id="noAnnouncemnt108" rendered="#{!AttendeeSignupMBean.announcementType}">
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupBegins}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupBegins}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupBegins}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupBegins}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
-		
+
 							<h:outputText id="noAnnouncement120" value="#{msgs.event_signup_deadline}" style="white-space: nowrap;" styleClass="titleText" rendered="#{!AttendeeSignupMBean.announcementType}" escape="false"/>
 							<h:panelGroup id="noAnnouncement121" rendered="#{!AttendeeSignupMBean.announcementType}">
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupDeadline}" styleClass="longtext">
-									<f:convertDateTime pattern="EEEEEEEE, " timeZone="#{UserTimeZone.userTimeZone}"/>
-								</h:outputText>
-								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupDeadline}" styleClass="longtext">
 									<f:convertDateTime dateStyle="long" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupDeadline}" styleClass="longtext">
-									<f:convertDateTime pattern=", h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+									<f:convertDateTime pattern="(E), " timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{AttendeeSignupMBean.meetingWrapper.meeting.signupDeadline}" styleClass="longtext">
+									<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 								</h:outputText>
 							</h:panelGroup>
-							
+
 							<h:outputText value="#{msgs.event_status}" styleClass="titleText" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.passedDeadline || !AttendeeSignupMBean.meetingWrapper.meeting.startToSignUp}" escape="false"/>
 							<h:outputText value="#{msgs.event_not_start_signup_process}" styleClass="longtext" escape="false"  rendered="#{!AttendeeSignupMBean.meetingWrapper.meeting.startToSignUp}"/>
 							<h:outputText value="#{msgs.event_passed_deadline}" styleClass="longtext" escape="false"  rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.passedDeadline && !AttendeeSignupMBean.meetingWrapper.meeting.meetingExpired}"/>
 							<h:outputText value="#{msgs.event_isOver}" styleClass="longtext" escape="false"  rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingExpired && AttendeeSignupMBean.meetingWrapper.meeting.passedDeadline}"/>
-							
+
 							<%-- display published site/groups --%>
 							<h:outputText value="#{msgs.event_publish_to}" escape="false"  styleClass="titleText"/>
 								<h:panelGrid columns="1" styleClass="published_siteGroupTable">
-										<h:panelGroup >	
+										<h:panelGroup >
 						   	    				<h:outputLabel  id="imageOpen_publishedSiteGroup" style="display:none" styleClass="activeTag" onclick="showDetails('meeting:imageOpen_publishedSiteGroup','meeting:imageClose_publishedSiteGroup','meeting:publishedSiteGroups');">
 							   	    				<h:graphicImage value="/images/open.gif"  alt="open" style="border:none" />
 							   	    				<h:outputText value="#{msgs.event_hide_site_group_detail}" escape="false" />
@@ -221,18 +221,18 @@
 																		<h:outputText value=" - #{group.title}" escape="false" styleClass="published_grouptitle"/>
 																</h:column>
 															</h:dataTable>
-														</h:panelGroup>							
+														</h:panelGroup>
 													</h:column>
 												</h:dataTable>
 										</h:panelGroup>
 								</h:panelGrid>
 								<%-- end of display published site/groups --%>
-							
+
 							<h:outputText value="#{msgs.event_description}" styleClass="titleText" escape="false"/>
 							<h:outputText
 								value="#{AttendeeSignupMBean.meetingWrapper.meeting.description}"
 								escape="false" styleClass="longtext" />
-								
+
 							<h:outputText  value="#{msgs.attachments}" styleClass="titleText" escape="false" rendered="#{!AttendeeSignupMBean.meetingWrapper.emptyEventMainAttachment}"/>
 			         			<h:panelGrid columns="1" rendered="#{!AttendeeSignupMBean.meetingWrapper.emptyEventMainAttachment}">
 			         				<t:dataTable value="#{AttendeeSignupMBean.meetingWrapper.eventMainAttachments}" var="attach" >
@@ -247,17 +247,17 @@
 			         					<t:column>
 			         						<h:outputText escape="false" value="(#{attach.fileSize}kb)" rendered="#{!attach.isLink}"/>
 			         					</t:column>
-			         				</t:dataTable>			         				
-				         		</h:panelGrid>	
-								
+			         				</t:dataTable>
+				         		</h:panelGrid>
+
 							<h:outputText value="&nbsp;" escape="false"/>
 							<h:outputText value="&nbsp;" escape="false"/>
 						</h:panelGrid>
 				</h:panelGroup>
-				
+
 				<%-- control expand-collapse --%>
-				<h:panelGrid id="noAnnouncement197" columns="1" rendered="#{!AttendeeSignupMBean.announcementType}" columnClasses="alignRightColumn" styleClass="emailTable">																		
-						<h:panelGroup>	
+				<h:panelGrid id="noAnnouncement197" columns="1" rendered="#{!AttendeeSignupMBean.announcementType}" columnClasses="alignRightColumn" styleClass="emailTable">
+						<h:panelGroup>
 		   	    				<h:outputLabel  id="imageOpen_meetingInfoDetail"  styleClass="activeTag" onclick="showDetails('meeting:imageOpen_meetingInfoDetail','meeting:imageClose_meetingInfoDetail','meeting:meetingInfoDetails');setMeetingCollapseInfo(true);">
 			   	    				<h:graphicImage value="/images/openTop.gif"  alt="open" title="#{msgs.event_tool_tips_hide_details}" style="border:none; vertical-align: bottom;" styleClass="openCloseImageIcon" />
 			   	    				<h:outputText value="#{msgs.event_hide_meetingIfo_detail}" escape="false" />
@@ -267,9 +267,9 @@
 		   	    					<h:outputText value="#{msgs.event_show_meetingIfo_detail}" escape="false" />
 		   	    				</h:outputLabel>
 		   	    				<h:inputHidden id="meetingInfoCollapseExpand" value="#{AttendeeSignupMBean.collapsedMeetingInfo}"/>
-			            </h:panelGroup>				
+			            </h:panelGroup>
 				</h:panelGrid>
-								
+
 				<h:panelGrid rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingType =='announcement'}" columns="1" styleClass="annoncement">
 					<h:outputText value="#{msgs.event_is_open_session}" escape="false" />
 				</h:panelGrid>
@@ -287,26 +287,26 @@
 						<h:panelGroup>
 							<h:graphicImage value="/images/spacer.gif" width="15" height="13" alt="" style="border:none" rendered="#{!timeSlotWrapper.timeSlot.locked && !timeSlotWrapper.timeSlot.canceled && AttendeeSignupMBean.meetingWrapper.atleastOneTimeslotLockedOrCanceled}"/>
 							<h:graphicImage value="/images/lock.gif"  alt="#{msgs.event_tool_tip_ts_locked}" title="#{msgs.event_tool_tip_ts_locked}" style="border:none" rendered="#{timeSlotWrapper.timeSlot.locked && !timeSlotWrapper.timeSlot.canceled}"/>
-							<h:graphicImage value="/images/cancelled.gif"  alt="#{msgs.event_tool_tip_ts_cancelled}" title="#{msgs.event_tool_tip_ts_cancelled}" style="border:none" rendered="#{timeSlotWrapper.timeSlot.canceled}"/>							
+							<h:graphicImage value="/images/cancelled.gif"  alt="#{msgs.event_tool_tip_ts_cancelled}" title="#{msgs.event_tool_tip_ts_cancelled}" style="border:none" rendered="#{timeSlotWrapper.timeSlot.canceled}"/>
 							<h:outputText value="#{timeSlotWrapper.timeSlot.startTime}"
 								styleClass="longtext">
-								<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+								<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 							</h:outputText>
 							<h:outputText value="#{timeSlotWrapper.timeSlot.startTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
 								<f:convertDateTime pattern=", EEE" timeZone="#{UserTimeZone.userTimeZone}"/>
-							</h:outputText>	
+							</h:outputText>
 							<h:outputText value="#{msgs.timeperiod_divider}" escape="false"
 								styleClass="longtext" />
+								<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
+									<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
+								<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
+									<f:convertDateTime pattern="(E)," timeZone="#{UserTimeZone.userTimeZone}"/>
+								</h:outputText>
 							<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}"
 								styleClass="longtext">
-								<f:convertDateTime pattern="h:mm a" timeZone="#{UserTimeZone.userTimeZone}"/>
+								<f:convertDateTime pattern="a h:mm" timeZone="#{UserTimeZone.userTimeZone}"/>
 							</h:outputText>
-							<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
-								<f:convertDateTime pattern=", EEE," timeZone="#{UserTimeZone.userTimeZone}"/>
-							</h:outputText>
-							<h:outputText value="#{timeSlotWrapper.timeSlot.endTime}" rendered="#{AttendeeSignupMBean.meetingWrapper.meeting.meetingCrossDays}">
-								<f:convertDateTime  dateStyle="short" pattern="#{UserLocale.dateFormat}" timeZone="#{UserTimeZone.userTimeZone}"/>
-							</h:outputText>	
 						</h:panelGroup>
 					</h:column>
 
@@ -314,7 +314,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{msgs.tab_event_available_slots}" escape="false"/>
 						</f:facet>
-						<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.locked && !timeSlotWrapper.timeSlot.canceled}">				
+						<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.locked && !timeSlotWrapper.timeSlot.canceled}">
 							<h:outputText  value="#{msgs.event_locked}" escape="false" />
 						</h:panelGroup>
 						<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.canceled}">
@@ -336,30 +336,30 @@
 											escape="false"  styleClass="longtext"/>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.unlimitedAttendee}">
-										<h:outputText value="#{msgs.event_unlimited}" styleClass="longtext"/>									
+										<h:outputText value="#{msgs.event_unlimited}" styleClass="longtext"/>
 								</h:panelGroup>
 						</h:panelGroup>
 					</h:column>
-					
-					<h:column>		   
+
+					<h:column>
 							<f:facet name="header">
 								<h:outputText value="#{msgs.tab_event_signed_attendee}" escape="false"/>
 							</f:facet>
 							<h:panelGroup rendered="#{timeSlotWrapper.timeSlot.displayAttendees}">
 					   			<h:dataTable id="peopleOnSignup" value="#{timeSlotWrapper.attendeeWrappers}" var="attendeeWrapper" columnClasses="signedUpList">
 					   				<h:column>
-					   					<h:outputText value="#{attendeeWrapper.displayName}" rendered="#{attendeeWrapper.signupAttendee.attendeeUserId !=null}" title="#{msgs.event_tool_tip_on_signuplist}"/>			
-					   				</h:column>				   		
+					   					<h:outputText value="#{attendeeWrapper.displayName}" rendered="#{attendeeWrapper.signupAttendee.attendeeUserId !=null}" title="#{msgs.event_tool_tip_on_signuplist}"/>
+					   				</h:column>
 					   			</h:dataTable>
 					   			<h:dataTable id="peopleOnWaiting" value="#{timeSlotWrapper.waitingList}" var="attendeeWrapper" rendered="#{timeSlotWrapper.sizeOfWaitingList >0}"  styleClass="peopleOnListTable" columnClasses="waitingList">
 					   				<h:column>
-					   					<h:outputText value="#{attendeeWrapper.displayName}" rendered="#{attendeeWrapper.signupAttendee.attendeeUserId !=null}" title="#{msgs.event_tool_tip_on_waitinglist}" />   					
-					   				</h:column>				   		
+					   					<h:outputText value="#{attendeeWrapper.displayName}" rendered="#{attendeeWrapper.signupAttendee.attendeeUserId !=null}" title="#{msgs.event_tool_tip_on_waitinglist}" />
+					   				</h:column>
 					   			</h:dataTable>
-					   		</h:panelGroup>	
+					   		</h:panelGroup>
 					   		<h:outputText value="#{msgs.event_show_no_attendee_info}" escape="false"  rendered="#{!timeSlotWrapper.timeSlot.displayAttendees}"/>
 				   	</h:column>
-					
+
 
 					<h:column>
 						<f:facet name="header">
@@ -374,7 +374,7 @@
 							</h:commandLink>
 							<h:panelGroup>
 								<h:commandLink action="#{AttendeeSignupMBean.editAttendeeComment}">
-									<f:param id="timeslotId" name="timeslotId" value="#{timeSlotWrapper.timeSlot.id}"/>				   										   								
+									<f:param id="timeslotId" name="timeslotId" value="#{timeSlotWrapper.timeSlot.id}"/>
 									<h:outputText value="#{attendeeWrapper.displayName}" title="#{attendeeWrapper.commentForTooltips}" style="cursor:pointer;" rendered="#{attendeeWrapper.signupAttendee.attendeeUserId !=null}"/>
 									<h:graphicImage title="Click to view/edit comment" value="/images/comment.gif" width="18" height="18" alt="view or add comment" style="border:none" styleClass="openCloseImageIcon" rendered="#{timeSlotWrapper.currentUserSignedUp && timeSlotWrapper.comment}"/>
 								</h:commandLink>
@@ -396,15 +396,15 @@
 							disabled="#{!AttendeeSignupMBean.meetingWrapper.meeting.startToSignUp || AttendeeSignupMBean.currentUserSignedup || timeSlotWrapper.currentUserSignedUp ||timeSlotWrapper.timeSlot.locked || timeSlotWrapper.timeSlot.canceled ||AttendeeSignupMBean.meetingWrapper.meeting.passedDeadline}" />
 						<h:commandButton id="Cancel" styleClass="actButton"
 							action="#{AttendeeSignupMBean.attendeeCancelSignup}" value="#{msgs.participant_cancel_button}"
-							rendered="#{timeSlotWrapper.currentUserSignedUp }" 
+							rendered="#{timeSlotWrapper.currentUserSignedUp }"
 							disabled="#{timeSlotWrapper.timeSlot.canceled}"/>
 						<h:commandButton id="addMeOnWaitingList" styleClass="actButton"
 							action="#{AttendeeSignupMBean.attendeeAddToWaitingList}" value="#{msgs.add_waitlist_button}" title="#{msgs.tool_tip_add_waitlist}"
-							rendered="#{!timeSlotWrapper.currentUserOnWaitingList && !timeSlotWrapper.availableForSignup && !timeSlotWrapper.currentUserSignedUp}" 
+							rendered="#{!timeSlotWrapper.currentUserOnWaitingList && !timeSlotWrapper.availableForSignup && !timeSlotWrapper.currentUserSignedUp}"
 							disabled="#{!AttendeeSignupMBean.meetingWrapper.meeting.allowWaitList || !AttendeeSignupMBean.meetingWrapper.meeting.startToSignUp || timeSlotWrapper.timeSlot.locked || timeSlotWrapper.timeSlot.canceled ||AttendeeSignupMBean.meetingWrapper.meeting.passedDeadline}"/>
 						<h:commandButton id="CancelWaitingList" styleClass="actButton"
 							action="#{AttendeeSignupMBean.attendeeRemoveFromWaitingList}" value="#{msgs.remove_waitlist_button}"
-							rendered="#{timeSlotWrapper.currentUserOnWaitingList}" 
+							rendered="#{timeSlotWrapper.currentUserOnWaitingList}"
 							disabled="#{timeSlotWrapper.timeSlot.canceled}"/>
 					</h:column>
 
