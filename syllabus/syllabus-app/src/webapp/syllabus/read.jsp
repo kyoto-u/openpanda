@@ -43,7 +43,7 @@
 		});
 	});
  </script>
-			<h:outputText value="#{SyllabusTool.alertMessage}" styleClass="alertMessage" rendered="#{SyllabusTool.alertMessage != null}" />
+			<h:outputText value="#{SyllabusTool.alertMessage}" styleClass="sak-banner-error" rendered="#{SyllabusTool.alertMessage != null}" />
 			<h:form id="readview">
 		  	<sakai:tool_bar_message value="#{msgs.editNotice}" /> 
 				<sakai:doc_section>
@@ -95,7 +95,7 @@
 							value="#{msgs.add_attach}"/>
 					</sakai:button_bar>							
 	
-					<h:dataTable value="#{SyllabusTool.allAttachments}" var="eachAttach" summary="#{msgs.edit_att_list_summary}" styleClass="listHier lines nolines">
+					<h:dataTable value="#{SyllabusTool.allAttachments}" var="eachAttach" summary="#{msgs.edit_att_list_summary}" styleClass="table table-striped table-bordered table-hover">
 					  <h:column rendered="#{!empty SyllabusTool.allAttachments}">
 							<f:facet name="header">
 								<h:outputText value="#{msgs.attachmentTitle}" />
