@@ -5207,4 +5207,78 @@ public class SakaiScript extends AbstractWebService {
         return "success";
 
     }
+
+    /**
+     * Enable a user
+     *
+     * @param sessionid
+     *            The session id.
+     * @param eid
+     *            The user eid.
+     * @return
+     *			  Success or exception message
+     */
+    @WebMethod
+    @Path("/enableUser")
+    @Produces("text/plain")
+    @GET
+    public String enableUser(
+            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+            @WebParam(name = "eid", partName = "eid") @QueryParam("eid") String eid){
+        Session session = establishSession(sessionid);
+
+        if (!securityService.isSuperUser(session.getUserId())) {
+            log.warn("WS enableUser(): Permission denied. Restricted to super users.");
+            throw new RuntimeException("WS enableUser(): Permission denied. Restricted to super users.");
+        }
+
+        try {
+            String userid = userDirectoryService.getUserByEid(eid).getId();
+            UserEdit user = userDirectoryService.editUser(userid);
+            user.getPropertiesEdit().removeProperty("disabled");
+            userDirectoryService.commitEdit(user);
+        }
+        catch (Exception e) {
+            log.warn("WS enableUser(): " + e.getClass().getName() + " : " + e.getMessage(), e);
+            return "failure";
+        }
+        return "success";
+    }
+
+    /**
+     * Disable a user
+     *
+     * @param sessionid
+     *            The session id.
+     * @param eid
+     *            The user eid.
+     * @return
+     *			  Success or exception message
+     */
+    @WebMethod
+    @Path("/disableUser")
+    @Produces("text/plain")
+    @GET
+    public String disableUser(
+            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+            @WebParam(name = "eid", partName = "eid") @QueryParam("eid") String eid){
+        Session session = establishSession(sessionid);
+
+        if (!securityService.isSuperUser(session.getUserId())) {
+            log.warn("WS disableUser(): Permission denied. Restricted to super users.");
+            throw new RuntimeException("WS disableUser(): Permission denied. Restricted to super users.");
+        }
+
+        try {
+            String userid = userDirectoryService.getUserByEid(eid).getId();
+            UserEdit user = userDirectoryService.editUser(userid);
+            user.getPropertiesEdit().addProperty("disabled", "true");
+            userDirectoryService.commitEdit(user);
+        }
+        catch (Exception e) {
+            log.warn("WS disableUser(): " + e.getClass().getName() + " : " + e.getMessage(), e);
+            return "failure";
+        }
+        return "success";
+    }
 }
