@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>panda</artifactId>
+    <groupId>jp.ac.kyoto_u.sakai</groupId>
+    <version>21-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <name>panda-pack</name>
+  <groupId>jp.ac.kyoto_u.sakai</groupId>
+  <artifactId>panda-pack</artifactId>
+  <organization>
+    <name>kyoto-u</name>
+    <url>http://www.kyoto-u.ac.jp/</url>
+  </organization>
+  <inceptionYear>2013</inceptionYear>
+  <packaging>sakai-component</packaging>
+  <properties>
+    <deploy.target>components</deploy.target>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>jp.ac.kyoto_u.sakai</groupId>
+      <artifactId>panda-displayname</artifactId>
+      <version>10.7</version>
+    </dependency>
+    <dependency>
+      <groupId>jp.ac.kyoto_u.sakai</groupId>
+      <artifactId>panda-userdirectory</artifactId>
+      <version>10.7</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <resources />
+  </build>
+</project>
