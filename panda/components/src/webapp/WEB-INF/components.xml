@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+  <bean id="org.sakaiproject.user.api.ContextualUserDisplayService"
+      class="jp.ac.kyoto_u.sakai.user.MaskingContextualUserDisplayService"
+      init-method="init"
+      destroy-method="destroy">
+    <property name="maskString"><value>x</value></property>
+    <property name="eidMaskPatterns">
+      <map>
+        <entry key="student"><value><![CDATA[(?<=a0)\d+]]></value></entry>
+        <entry key="faculty"><value><![CDATA[\d+]]></value></entry>
+        <entry key="staff"><value><![CDATA[\d+]]></value></entry>
+        <entry key="researcher"><value><![CDATA[\d+]]></value></entry>
+      </map>
+    </property>
+    <property name="regidMaskPatterns">
+      <map>
+        <entry key="student"><null/></entry>
+        <entry key="faculty"><value><![CDATA[^\d\d\d\d\d]]></value></entry>
+        <entry key="staff"><value><![CDATA[^\d\d\d\d\d]]></value></entry>
+        <entry key="researcher"><value><![CDATA[^\d\d\d\d\d]]></value></entry>
+      </map>
+    </property>
+    <property name="unmaskForSuperUsers"><value>true</value></property>
+  </bean>
+
+  <!-- import resource="jldap-beans.xml" /-->
+
+</beans>
