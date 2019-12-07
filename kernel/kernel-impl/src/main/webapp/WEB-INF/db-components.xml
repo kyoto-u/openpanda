@@ -75,7 +75,7 @@
 
 		<!-- The maximum number of active connections that can be allocated from this pool at the same time, or negative for no limit. -->
 		<property name="maxActive">
-			<value>50</value>
+			<value>100</value>
 		</property>
 
 		<!-- The maximum number of active connections that can remain idle in the pool, without extra ones being released, or negative for no limit. -->
@@ -85,7 +85,7 @@
 
 		<!-- The minimum number of active connections that can remain idle in the pool, without extra ones being created, or 0 to create none. -->
 		<property name="minIdle">
-			<value>0</value>
+			<value>10</value>
 		</property>
 
 		<!-- The maximum number of milliseconds that the pool will wait (when there
@@ -172,6 +172,15 @@
 		<property name="timeBetweenEvictionRunsMillis">
 			<value>900000</value>
 		</property>
+
+ 		<!-- PandA DB Tuning by Shoji Kajita 2013/07/27 -->
+ 		<property name="removeAbandoned">
+                   <value>true</value>
+ 		</property>
+ 		<property name="logAbandoned">
+                   <value>true</value>
+ 		</property>
+ 
 	</bean>
 
 
