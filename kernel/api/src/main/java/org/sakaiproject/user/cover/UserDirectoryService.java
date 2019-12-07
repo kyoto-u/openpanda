@@ -22,6 +22,7 @@
 package org.sakaiproject.user.cover;
 
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.user.api.User;
 
 /**
  * <p>
@@ -336,4 +337,12 @@ public class UserDirectoryService
 
 		return service.getUserId(param0);
 	}
+ 
+ 	public static User findUserByAlternativeId(String alternativeId, String contextReference) throws org.sakaiproject.user.api.UserNotDefinedException
+ 	{
+ 		org.sakaiproject.user.api.UserDirectoryService service = getInstance();
+ 		if (service == null) return null;
+ 
+ 		return service.findUserByAlternativeId(alternativeId, contextReference);
+ 	}
 }
