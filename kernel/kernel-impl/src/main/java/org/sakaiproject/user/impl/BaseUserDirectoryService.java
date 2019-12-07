@@ -2636,13 +2636,23 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			if (rv == null)
 			{
 				// or do it this way
+ 				Locale loc = new ResourceLoader().getLocale();
 				StringBuilder buf = new StringBuilder(128);
-				if (m_firstName != null) buf.append(m_firstName);
-				if (m_lastName != null)
-				{
-					if (buf.length() > 0) buf.append(" ");
-					buf.append(m_lastName);
-				}
+ 				if (loc != null && loc.getLanguage().equals("ja"))  {
+ 					if (m_firstName != null) buf.append(m_lastName);
+ 					if (m_lastName != null)
+ 					{
+ 						if (buf.length() > 0) buf.append(" ");
+ 						buf.append(m_firstName);
+ 					}
+ 				} else {
+				    if (m_firstName != null) buf.append(m_firstName);
+				    if (m_lastName != null)
+					{
+					    if (buf.length() > 0) buf.append(" ");
+					    buf.append(m_lastName);
+					}
+ 				}
 
 				if (buf.length() == 0)
 				{
@@ -2749,7 +2759,8 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 					//KNL-524 no comma if the last name is null
 					if (m_lastName != null)
 					{
-						buf.append(", ");
+					    // buf.append(", ");
+						buf.append(" ");
 					}
 					buf.append(m_firstName);
 				}
