@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.authz.api.AuthzGroupService;
@@ -79,10 +80,12 @@ import org.sakaiproject.user.api.UserLockedException;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserPermissionException;
 import org.sakaiproject.user.api.UsersShareEmailUDP;
+import org.sakaiproject.user.api.AlternativeIdUDP;
 import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -1249,6 +1252,62 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 		return user;
 	}
+
+ 	public User findUserByAlternativeId(String alternativeId, String contextReference) {
+ 		User user = null;
+ 		if (m_provider != null && m_provider instanceof AlternativeIdUDP) {
+ 			user = ((AlternativeIdUDP)m_provider).findUserByAlternativeId(alternativeId, this, contextReference);
+ 		}
+ 		return user;
+ 	}
+ 
+ 	public List<User> findUsersByAlternativeId(String alternativeId, String contextReference) {
+ 
+ 		List<User> users = new ArrayList<User>();
+ 		List<UserEdit> providedUserRecords = null;
+ 
+ 		if (m_provider != null && m_provider instanceof AlternativeIdUDP) {
+ 			providedUserRecords =  ((AlternativeIdUDP)m_provider).findUsersByAlternativeId(alternativeId, this, contextReference);
+ 		} else {
+ 			log.debug("findUsersByAlternativeId capability is not supported by your provider");
+ 		}
+ 
+ 		if (providedUserRecords != null){
+ 			for (UserEdit user : providedUserRecords){
+ 				// KNL-741 these useredit objects should already have the eid-id mapping
+ 				// But just incase the provider hasn't mapped them.
+ 				checkAndEnsureMappedIdForProvidedUser(user);
+ 				users.add(user);
+ 			}
+ 		}
+ 
+ 		return users;
+ 
+ 	}
+ 
+         public List<User> findUsersByTitle(String title, String affiliation, String contextReference) {
+ 
+ 		List<User> users = new ArrayList<User>();
+ 		List<UserEdit> providedUserRecords = null;
+ 
+ 		if (m_provider != null && m_provider instanceof AlternativeIdUDP) {
+ 		    providedUserRecords =  ((AlternativeIdUDP)m_provider).findUsersByTitle(title, affiliation, this, contextReference);
+ 		} else {
+ 			log.debug("findUsersByAlternativeId capability is not supported by your provider");
+ 		}
+ 
+ 		if (providedUserRecords != null){
+ 			for (UserEdit user : providedUserRecords){
+ 				// KNL-741 these useredit objects should already have the eid-id mapping
+ 				// But just incase the provider hasn't mapped them.
+ 				checkAndEnsureMappedIdForProvidedUser(user);
+ 				users.add(user);
+ 			}
+ 		}
+ 
+ 		return users;
+ 
+ 	}
 
 	/**
 	 * @inheritDoc
