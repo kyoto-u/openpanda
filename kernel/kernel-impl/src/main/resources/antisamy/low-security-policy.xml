@@ -1922,6 +1922,8 @@
                 <literal-list>
                     <literal value="0"/>
                     <literal value="1"/>
+                    <literal value="true"/>
+                    <literal value="false"/>
                 </literal-list>
             </attribute>
             <attribute name="controller">
