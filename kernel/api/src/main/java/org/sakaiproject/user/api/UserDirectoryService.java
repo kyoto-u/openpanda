@@ -393,6 +393,19 @@ public interface UserDirectoryService extends EntityProducer
 	 */
 	String getUserId(String eid) throws UserNotDefinedException;
 
+  	/**
+ 	 * Find the user from an alternative id.
+ 	 * @param alternativeId
+ 	 *        An alternative ID for the user
+ 	 * @param contextReference
+ 	 *        The context
+ 	 * @return The user corresponding to the alternativeId; or
+ 	 *         null if the provider does not support alternative ID's.
+ 	 */
+ 	User findUserByAlternativeId(String alternativeId, String contextReference);
+         List<User> findUsersByAlternativeId(String alternativeId, String contextReference);
+         List<User> findUsersByTitle(String title, String affiliation, String contextReference);
+ 
 	/**
 	 * Access all user objects - known to us (not from external providers).
 	 *
