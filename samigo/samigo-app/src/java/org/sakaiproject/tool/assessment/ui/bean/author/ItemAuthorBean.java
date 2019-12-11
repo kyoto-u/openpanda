@@ -952,6 +952,8 @@ public class ItemAuthorBean implements Serializable {
 			RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
 			try {
 				RuleBasedCollator collator= new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
+ 				if (i1.getLabel() == null)  i1.setLabel("");  // CLE-7: fixed by Shoji Kajita 2014/04/24 
+ 				if (i2.getLabel() == null)  i2.setLabel("");  // CLE-7: fixed by Shoji Kajita 2014/04/24
 				return collator.compare(i1.getLabel(), i2.getLabel());
 			} catch (ParseException e) {}
 			return Collator.getInstance().compare(i1.getLabel(), i2.getLabel());
