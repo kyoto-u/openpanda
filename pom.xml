@@ -120,6 +120,7 @@
                 <module>webcomponents</module>
                 <module>webjars</module>
                 <module>webservices</module>
+                <module>panda</module>
             </modules>
         </profile>
         <profile>
@@ -206,6 +207,7 @@
                 <module>webjars</module>
                 <module>webservices</module>
                 <module>yaft</module>
+                <module>panda</module>
             </modules>
         </profile>
 
