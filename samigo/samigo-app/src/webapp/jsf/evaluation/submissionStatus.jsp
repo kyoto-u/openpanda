@@ -157,7 +157,7 @@ $Id$
 	  </h:panelGroup>
     </h:panelGroup>
 	<div class="pager-holder col-md-6" style="text-align: right">
-	  <sakai:pager id="pager" totalItems="#{submissionStatus.dataRows}" firstItem="#{submissionStatus.firstRow}" pageSize="#{submissionStatus.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" />
+	  <sakai:pager id="pager" totalItems="#{submissionStatus.dataRows}" firstItem="#{submissionStatus.firstRow}" pageSize="#{submissionStatus.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" renderNext="true" renderPrev="true" renderLast="true" renderFirst="true" pageSizes="#{evaluationMessages.paging_pagesizes}" textPageSize="#{evaluationMessages.paging_textpagesize}" />
 	</div>
   </h:panelGroup>
 
@@ -170,7 +170,7 @@ $Id$
 
     <h:column rendered="#{submissionStatus.sortType ne 'lastName'}">
      <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortLastName}" immediate="true" id="lastName" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortLastName} #{submissionStatus.sortLimitString}" immediate="true" id="lastName" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.name}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
@@ -213,7 +213,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'lastName' && submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortLastName}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortLastName} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.name}" />
           <f:param name="sortBy" value="lastName" />
           <f:param name="sortAscending" value="false" />
@@ -260,7 +260,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'lastName' && !submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortLastName}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortLastName} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.name}" />
           <f:param name="sortBy" value="lastName" />
           <f:param name="sortAscending" value="true" />
@@ -309,8 +309,7 @@ $Id$
    <!-- STUDENT ID -->
     <h:column  rendered="#{submissionStatus.sortType ne 'agentDisplayId'}" >
      <f:facet name="header">
-       <h:commandLink title="#{evaluationMessages.t_sortUserId}" id="agentDisplayId" action="submissionStatus" >
-          <h:outputText value="#{evaluationMessages.uid}" />
+       <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" id="agentDisplayId" action="submissionStatus" >
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
         <f:param name="sortBy" value="agentDisplayId" />
@@ -322,8 +321,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'agentDisplayId' && submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortUserId}" action="submissionStatus">
-          <h:outputText value="#{evaluationMessages.uid}" />
+        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdDescending}" rendered="#{submissionStatus.sortAscending}" url="/images/sortascending.gif"/>
           <f:actionListener
@@ -335,8 +333,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'agentDisplayId' && !submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortUserId}" action="submissionStatus">
-          <h:outputText value="#{evaluationMessages.uid}" />
+        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <f:param name="sortAscending" value="true" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdAscending}" rendered="#{!submissionStatus.sortAscending}" url="/images/sortdescending.gif"/>
           <f:actionListener
@@ -350,7 +347,7 @@ $Id$
     <!-- ROLE -->
     <h:column rendered="#{submissionStatus.sortType ne 'role'}">
      <f:facet name="header" >
-        <h:commandLink title="#{evaluationMessages.t_sortRole}" id="role" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortRole} #{submissionStatus.sortLimitString}" id="role" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.role}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
@@ -363,7 +360,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'role' && submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortRole}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortRole} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.role}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortRoleDescending}" rendered="#{submissionStatus.sortAscending}" url="/images/sortascending.gif"/>
@@ -376,7 +373,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'role' && !submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortRole}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortRole} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.role}" />
           <f:param name="sortAscending" value="true" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortRoleAscending}" rendered="#{!submissionStatus.sortAscending}" url="/images/sortdescending.gif"/>
@@ -390,7 +387,7 @@ $Id$
     <!-- DATE -->
     <h:column rendered="#{submissionStatus.sortType ne 'submittedDate'}">
      <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" id="submittedDate" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{submissionStatus.sortLimitString}" id="submittedDate" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.date}" />
         <f:actionListener
           type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
@@ -405,7 +402,7 @@ $Id$
 	
 	<h:column rendered="#{submissionStatus.sortType eq 'submittedDate' && submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.date}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortSubmittedDateDescending}" rendered="#{submissionStatus.sortAscending}" url="/images/sortascending.gif"/>
@@ -421,7 +418,7 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'submittedDate' && !submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" action="submissionStatus">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{submissionStatus.sortLimitString}" action="submissionStatus">
           <h:outputText value="#{evaluationMessages.date}" />
           <f:param name="sortAscending" value="true" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortSubmittedDateAscending}" rendered="#{!submissionStatus.sortAscending}" url="/images/sortdescending.gif"/>

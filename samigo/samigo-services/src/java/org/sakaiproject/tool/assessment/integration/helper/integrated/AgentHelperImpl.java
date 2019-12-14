@@ -35,6 +35,7 @@ import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.AgentHelper;
 import org.sakaiproject.tool.assessment.osid.shared.impl.AgentImpl;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
@@ -168,6 +169,27 @@ log.debug("getEidById agentString s = " + s);
     }
     catch(Exception e){
       log.warn("getDisplayName: " + e.getMessage());
+    }
+    return s;
+  }
+
+  /**
+  * Get the Agent display id.
+  * @param agentS the Agent string.
+  * @return the Agent display id.
+  */
+  public String getDisplayId(String agentString, String siteType)
+  {
+    org.sakaiproject.user.api.ContextualUserDisplayService cus = (org.sakaiproject.user.api.ContextualUserDisplayService) ComponentManager.get(org.sakaiproject.user.api.ContextualUserDisplayService.class);
+ 
+    String s="";
+    try{
+      if (!agentString.startsWith("anonymous_"))
+      s = cus != null ? cus.getUserDisplayId(UserDirectoryService.getUser(agentString), siteType):"";
+      //  s=UserDirectoryService.getUser(agentString).getDisplayId();
+    }
+    catch(Exception e){
+      log.warn("getDisplayId: " + e.getMessage());
     }
     return s;
   }
@@ -336,6 +358,25 @@ log.debug("getEidById agentString s = " + s);
     return currentSiteName;
   }
 
+  /**
+   * Get the current site type.
+   * @return the site type.
+   */
+  public String getCurrentSiteType(boolean accessViaUrl){
+    // access via url => users does not login via any sites-daisyf
+    String currentSiteType = null;
+    if (!accessViaUrl)
+    {
+      try{
+        currentSiteType =
+          SiteService.getSite(getCurrentSiteId(accessViaUrl)).getType();
+      }
+      catch (Exception e){
+        log.warn("getCurrentSiteType : "  + e.getMessage());
+      }
+    }
+    return currentSiteType;
+  }
 
   /**
    * Get the site name.

@@ -124,6 +124,7 @@ public class TotalScoresBean implements Serializable, PhaseAware {
   private Map answeredItems;
   private boolean hasRandomDrawPart;
   private String scoringOption;
+  private String sortLimitString;
   
   private String selectedSectionFilterValue = null;
 
@@ -191,6 +192,14 @@ public class TotalScoresBean implements Serializable, PhaseAware {
 			log.warn(ex.getMessage(), ex);
 		}
 
+		// default PageSize setting (by Shoji Kajita)
+		String defaultSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "paging_default_pagesize");
+		if (defaultSizeString != null)  {
+		    setMaxDisplayedRows(Integer.valueOf(defaultSizeString));
+		}
+
+		sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
+
 		if (searchString == null) {
 			searchString = defaultSearchString;
 		}
@@ -224,6 +233,7 @@ public class TotalScoresBean implements Serializable, PhaseAware {
 		List newAgents;
 		if (maxDisplayedScoreRows == 0) {
 			newAgents = matchingAgents;
+ 			log.debug("init(): maxDisplayedScoreRows=0");
 		} else {
 			int nextPageRow = Math.min(firstScoreRow + maxDisplayedScoreRows, scoreDataRows);
 			newAgents = new ArrayList(matchingAgents.subList(firstScoreRow, nextPageRow));
@@ -1232,4 +1242,12 @@ public class TotalScoresBean implements Serializable, PhaseAware {
 	public boolean getRestrictedDelete() {
 		return deleteRestrictedForCurrentSite;
 	}
+
+ 	public String getSortLimitString() {
+ 		return sortLimitString;
+ 	}
+ 
+ 	public void setSortLimitString(String sortLimitString) {
+ 		this.sortLimitString = sortLimitString;
+ 	}
 }

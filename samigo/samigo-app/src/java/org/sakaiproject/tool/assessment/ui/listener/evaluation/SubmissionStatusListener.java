@@ -255,22 +255,29 @@ public class SubmissionStatusListener
         }
       }
       prepareNotSubmittedAgentResult(students_not_submitted.iterator(), agents, userRoles, retakeAssessment, studentGradingSummaryDataMap);
-      bs = new BeanSort(agents, bean.getSortType());
-      if (
-        (bean.getSortType()).equals("assessmentGradingId") )
-      {
-        bs.toNumericSort();
-      } else {
-        bs.toStringSort();
-      }
+ 
+      String sortLimitSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_size");
+      if (agents.size() <= Integer.valueOf(sortLimitSizeString))  {
 
-      if (sortAscending) {
-      	log.debug("TotalScoreListener: setRoleAndSortSection() :: sortAscending");
-      	agents = (List)bs.sort();
-      }
-      else {
-      	log.debug("TotalScoreListener: setRoleAndSortSection() :: !sortAscending");
-      	agents = (List)bs.sortDesc();
+	  bs = new BeanSort(agents, bean.getSortType());
+	  if (
+	      (bean.getSortType()).equals("assessmentGradingId") )
+	      {
+		  bs.toNumericSort();
+	      } else {
+	      bs.toStringSort();
+	  }
+
+	  if (sortAscending) {
+	      log.debug("TotalScoreListener: setRoleAndSortSection() :: sortAscending");
+	      agents = (List)bs.sort();
+	  }
+	  else {
+	      log.debug("TotalScoreListener: setRoleAndSortSection() :: !sortAscending");
+	      agents = (List)bs.sortDesc();
+	  }
+      }  else  {
+	  log.error("SubmissionStatusListener: submissionStatus() :: Abort sorting. The size of agents (" + agents.size() + ") is too large to sort in a reasnable time (Current Sort Limit: " + sortLimitSizeString + ").");
       }
       
       bean.setAgents(agents);

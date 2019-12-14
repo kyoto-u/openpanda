@@ -398,4 +398,17 @@ log.debug("agentfacade.getEid(agentS) agentString = " + agentString);
     public String getDisplayIdString() {
         return helper.getDisplayId(agentString);
     }
+
+   /**
+    * Get the current site type.
+    * @return the site type.
+    */
+   public static String getCurrentSiteType()
+   {
+     AgentFacade facade = new AgentFacade();
+     boolean accessViaUrl = facade.isAccessViaUrl();
+ 
+     return helper.getCurrentSiteType(accessViaUrl);
+   }
+
 }

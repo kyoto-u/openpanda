@@ -69,6 +69,8 @@ public interface AgentHelper extends Serializable
 
   public String getCurrentSiteName(boolean accessViaUrl);
 
+  public String getCurrentSiteType(boolean accessViaUrl);
+
   public String getSiteName(String siteId);
 
   public String getDisplayNameByAgentId(String agentId);
@@ -94,4 +96,7 @@ public interface AgentHelper extends Serializable
   public boolean isFileUploadAvailable();
 
   public String getDisplayId(String agentId);
+
+  public String getDisplayId(String agentString, String siteType);
+
 }
