@@ -218,7 +218,7 @@ $(document).ready(function(){
   </h:panelGroup>
    
   <h:panelGroup layout="block" styleClass="samigo-pager col-md-6" style="text-align: right">
-    <sakai:pager id="pager1" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" />
+    <sakai:pager id="pager1" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" renderNext="true" renderPrev="true" renderLast="true" renderFirst="true" pageSizes="#{evaluationMessages.paging_pagesizes}" textPageSize="#{evaluationMessages.paging_textpagesize}" />
   </h:panelGroup>
 </h:panelGroup>
 
@@ -251,7 +251,7 @@ $(document).ready(function(){
   </h:panelGroup>
   
   <h:panelGroup>
-	<sakai:pager id="pager2" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" />
+	<sakai:pager id="pager2" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status} renderNext="true" renderPrev="true" renderLast="true" renderFirst="true" pageSizes="#{evaluationMessages.paging_pagesizes}" textPageSize="#{evaluationMessages.paging_textpagesize}" />
   </h:panelGroup>
 </h:panelGroup>
 
@@ -290,7 +290,7 @@ $(document).ready(function(){
     <!-- NAME/SUBMISSION ID -->
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType ne 'lastName'}">
      <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortLastName}" immediate="true" id="lastName" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortLastName} #{totalScores.sortLimitString}" immediate="true" id="lastName" action="totalScores">
           <h:outputText value="#{evaluationMessages.name}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -336,7 +336,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType eq 'lastName' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortLastName}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortLastName} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.name}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortLastNameDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -383,7 +383,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType eq 'lastName' && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortLastName}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortLastName} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.name}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortLastNameAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -435,7 +435,7 @@ $(document).ready(function(){
     <!-- ANONYMOUS and ASSESSMENTGRADINGID -->
     <h:column rendered="#{totalScores.anonymous eq 'true' && totalScores.sortType ne 'assessmentGradingId'}">
      <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmissionId}" action="totalScores" >
+        <h:commandLink title="#{evaluationMessages.t_sortSubmissionId} #{totalScores.sortLimitString}" action="totalScores" >
           <h:outputText value="#{evaluationMessages.sub_id}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -462,7 +462,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.anonymous eq 'true' && totalScores.sortType eq 'assessmentGradingId' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmissionId}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmissionId} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.sub_id}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortSubmissionIdDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -489,7 +489,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.anonymous eq 'true' && totalScores.sortType eq 'assessmentGradingId' && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortSubmissionId}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortSubmissionId} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.sub_id}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortSubmissionIdAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -519,7 +519,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType!='agentDisplayId'}" >
      <f:facet name="header">
        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{totalScores.sortLimitString}" id="agentDisplayId" action="totalScores" >
-          <h:outputText value="#{totalScores.idString}" />
+        <h:outputText value="#{totalScores.idString}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
         <f:param name="sortBy" value="agentDisplayId" />
@@ -559,7 +559,7 @@ $(document).ready(function(){
     <!-- ROLE -->
     <h:column rendered="#{totalScores.sortType ne 'role'}">
      <f:facet name="header" >
-        <h:commandLink title="#{evaluationMessages.t_sortRole}" id="role" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortRole} #{totalScores.sortLimitString}" id="role" action="totalScores">
           <h:outputText value="#{evaluationMessages.role}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -572,7 +572,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.sortType=='role' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortRole}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortRole} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.role}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortRoleDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -585,7 +585,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.sortType=='role'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortRole}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortRole} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.role}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortRoleAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -600,7 +600,7 @@ $(document).ready(function(){
     <!-- DATE -->
     <h:column rendered="#{totalScores.sortType!='submittedDate' && totalScores.allSubmissions!='4'}">
      <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" id="submittedDate" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{totalScores.sortLimitString}" id="submittedDate" action="totalScores">
           <h:outputText value="#{evaluationMessages.submit_date}" />
         <f:actionListener
           type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -628,7 +628,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.sortType=='submittedDate' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.submit_date}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortSubmittedDateDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -656,7 +656,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.sortType=='submittedDate'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortSubmittedDate} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.submit_date}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortSubmittedDateAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -685,7 +685,7 @@ $(document).ready(function(){
     <!-- TIME -->
     <h:column rendered="#{totalScores.isTimedAssessment && totalScores.sortType!='timeElapsed'}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortTime}" id="time" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortTime} #{totalScores.sortLimitString}" id="time" action="totalScores">
           <h:outputText value="#{evaluationMessages.time}" />
           <f:actionListener
              type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -698,7 +698,7 @@ $(document).ready(function(){
 
 	<h:column rendered="#{totalScores.isTimedAssessment && totalScores.sortType=='timeElapsed' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortTime}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortTime} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.time}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortTimeDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -711,7 +711,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.isTimedAssessment && totalScores.sortType=='timeElapsed'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortTime}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortTime} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.time}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortTimeAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -725,7 +725,7 @@ $(document).ready(function(){
     <!-- TOTAL -->
     <h:column rendered="#{totalScores.sortType!='totalAutoScore' && totalScores.allSubmissions!='4'}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortScore}" id="totalAutoScore" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortScore} #{totalScores.sortLimitString}" id="totalAutoScore" action="totalScores">
           <h:outputText value="#{evaluationMessages.score}" />
           <f:param name="sortBy" value="totalAutoScore" />
           <f:param name="sortAscending" value="true"/>
@@ -738,7 +738,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.sortType=='totalAutoScore' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortScore}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortScore} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.score}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortAdjustScoreDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -751,7 +751,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.sortType=='totalAutoScore'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortScore}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortScore} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.score}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortAdjustScoreAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -765,7 +765,7 @@ $(document).ready(function(){
     <!-- ADJUSTMENT -->
     <h:column rendered="#{totalScores.sortType!='totalOverrideScore' && totalScores.allSubmissions!='4'}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortAdjustScore}" id="totalOverrideScore" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortAdjustScore} #{totalScores.sortLimitString}" id="totalOverrideScore" action="totalScores">
     	    <h:outputText value="#{evaluationMessages.adjustment}" />
         	<f:actionListener
              type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -779,7 +779,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.sortType=='totalOverrideScore' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortAdjustScore}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortAdjustScore} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.adjustment}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortScoreDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -792,7 +792,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.sortType=='totalOverrideScore'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortAdjustScore}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortAdjustScore} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.adjustment}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortScoreAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -846,7 +846,7 @@ $(document).ready(function(){
     <!-- FINAL SCORE -->
     <h:column rendered="#{totalScores.sortType!='finalScore'}">
      <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortFinalScore}" id="finalScore" action="totalScores" >
+      <h:commandLink title="#{evaluationMessages.t_sortFinalScore} #{totalScores.sortLimitString}" id="finalScore" action="totalScores" >
         <h:outputText value="#{evaluationMessages.tot}" />
          <f:actionListener
             type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
@@ -859,7 +859,7 @@ $(document).ready(function(){
 
     <h:column rendered="#{totalScores.sortType=='finalScore' && totalScores.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortFinalScore}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortFinalScore} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.tot}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortFinalScoreDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -872,7 +872,7 @@ $(document).ready(function(){
     
     <h:column rendered="#{totalScores.sortType=='finalScore'  && !totalScores.sortAscending}">
       <f:facet name="header">
-      <h:commandLink title="#{evaluationMessages.t_sortFinalScore}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortFinalScore} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.tot}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortFinalScoreAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
@@ -888,7 +888,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.sortType!='comments' && totalScores.allSubmissions!='4'}">
      <f:facet name="header">
       <h:panelGroup>
-	  <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent}" id="comments" action="totalScores">
+	  <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent} #{totalScores.sortLimitString}" id="comments" action="totalScores">
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />    
         <h:outputText value="#{evaluationMessages.comment_for_student}"/>
@@ -914,7 +914,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.sortType=='comments' && totalScores.sortAscending}">
       <f:facet name="header">
         <h:panelGroup>
-        <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent}" action="totalScores">
+        <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent} #{totalScores.sortLimitString}" action="totalScores">
           <h:outputText value="#{evaluationMessages.comment_for_student}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortCommentDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
@@ -938,7 +938,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.sortType=='comments'  && !totalScores.sortAscending}">
       <f:facet name="header">
      <h:panelGroup>
-      <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent}" action="totalScores">
+      <h:commandLink title="#{evaluationMessages.t_sortCommentsForStudent} #{totalScores.sortLimitString}" action="totalScores">
         <h:outputText value="#{evaluationMessages.comment_for_student}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortCommentAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>

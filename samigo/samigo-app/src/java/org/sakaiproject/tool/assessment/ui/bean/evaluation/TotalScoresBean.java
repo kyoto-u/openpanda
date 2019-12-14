@@ -231,6 +231,7 @@ public class TotalScoresBean implements Serializable, PhaseAware {
 		List newAgents;
 		if (maxDisplayedScoreRows == 0) {
 			newAgents = matchingAgents;
+ 			log.debug("init(): maxDisplayedScoreRows=0");
 		} else {
 			int nextPageRow = Math.min(firstScoreRow + maxDisplayedScoreRows, scoreDataRows);
 			newAgents = new ArrayList(matchingAgents.subList(firstScoreRow, nextPageRow));
