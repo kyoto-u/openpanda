@@ -28,6 +28,6 @@
     <property name="unmaskForSuperUsers"><value>true</value></property>
   </bean>
 
-  <!-- import resource="jldap-beans.xml" /-->
+  <import resource="jldap-beans.xml" />
 
 </beans>
