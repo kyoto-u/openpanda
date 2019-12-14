@@ -944,27 +944,33 @@ import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 				}
 			}
 
-			bs = new BeanSort(agents, bean.getSortType());
-			log.debug("check point D");
-			if ((bean.getSortType()).equals("assessmentGradingId")
-					|| (bean.getSortType()).equals("totalAutoScore")
-					|| (bean.getSortType()).equals("totalOverrideScore")
-					|| (bean.getSortType()).equals("finalScore")) {
-				bs.toNumericSort();
-			} else {
-				bs.toStringSort();
-			}
+ 			String sortLimitSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_size");
+ 			if (agents.size() <= Integer.valueOf(sortLimitSizeString)) {
 
-			if (bean.isSortAscending()) {
+			    bs = new BeanSort(agents, bean.getSortType());
+			    log.debug("check point D");
+			    if ((bean.getSortType()).equals("assessmentGradingId")
+				|| (bean.getSortType()).equals("totalAutoScore")
+				|| (bean.getSortType()).equals("totalOverrideScore")
+				|| (bean.getSortType()).equals("finalScore")) {
+				bs.toNumericSort();
+			    } else {
+				bs.toStringSort();
+			    }
+
+			    if (bean.isSortAscending()) {
 				log.debug("sortAscending");
 				agents = (List) bs.sort();
-			} else {
+			    } else {
 				log.debug("!sortAscending");
 				agents = (List) bs.sortDesc();
+			    }
+ 			}  else  {
+			    log.error("QuestionScoreListener: questionScores() :: Abort sorting. The size of agents (" + agents.size() + ") is too large to sort in a reasnable time (Current Sort Limit: " + sortLimitSizeString + ").");
 			}
 
 			if (bean.getTypeId().equals("9")) {
-				agents = sortMatching(agents);
+			    agents = sortMatching(agents);
 			}
 
 			bean.setAgents(agents);

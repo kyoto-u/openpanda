@@ -772,6 +772,12 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     String sortProperty = bean.getSortType();
     log.debug("TotalScoreListener: setRoleAndSortSection() :: sortProperty = " + sortProperty);
     
+    String sortLimitSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_size");
+    if (agents.size() > Integer.valueOf(sortLimitSizeString))  {
+	log.error("TotalScoreListener: setRoleAndSortSelection() :: Abort sorting. The size of agents (" + agents.size() + ") is too large to sort in a reasnable time (Current Sort Limit: " + sortLimitSizeString + ").");
+	return;
+    }
+
     bs = new BeanSort(agents, sortProperty);
 
     if ((sortProperty).equals("lastName")) bs.toStringSort();

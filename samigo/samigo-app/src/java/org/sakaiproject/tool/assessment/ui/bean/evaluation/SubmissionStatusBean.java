@@ -42,6 +42,7 @@ import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentS
 import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
 import org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 
 /* For evaluation: Submission Status backing bean. */
 @Slf4j
@@ -73,6 +74,7 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
   private String totalPeople;
   private String firstItem;
   private Map answeredItems;
+  private String sortLimitString;
   
   //private String selectedSectionFilterValue = TotalScoresBean.ALL_SECTIONS_SELECT_VALUE;
   private String selectedSectionFilterValue = null;
@@ -104,6 +106,13 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
 
 	protected void init() {
         defaultSearchString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "search_default_student_search_string");
+	// default PageSize setting (by Shoji Kajita)
+	String defaultSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "paging_default_pagesize");
+	if (defaultSizeString != null)  {
+	    setMaxDisplayedRows(Integer.valueOf(defaultSizeString));
+	}
+
+	sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
 
         if (searchString == null) {
 			searchString = defaultSearchString;
@@ -715,6 +724,14 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
 		}
 		return releasedToGroups;
 	}
+
+	public String getSortLimitString() {
+		return sortLimitString;
+	}
+
+	public void setSortLimitString(String sortLimitString) {
+		this.sortLimitString = sortLimitString;
+	}	
 
   public String getRbcsToken() {
     return rbcsToken;
