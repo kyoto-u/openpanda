@@ -124,6 +124,10 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
   @Getter @Setter
   private PublishedAssessmentIfc publishedAssessment;
   @Getter @Setter
+  private String sortIdString;
+  @Getter @Setter
+  private String idString;
+  @Getter @Setter
   private String sortLimitString; 
 
   @Getter @Setter
@@ -182,6 +186,7 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
 
 	protected void init() {
         defaultSearchString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "search_default_student_search_string");
+
 	// default PageSize setting (by Shoji Kajita)
 	String defaultSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "paging_default_pagesize");
 	String siteType = AgentFacade.getCurrentSiteType();
@@ -190,6 +195,13 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
             setMaxDisplayedRows(Integer.valueOf(defaultSizeString));
 	}
 
+	if (siteType.equalsIgnoreCase("course") || siteType.equalsIgnoreCase("training"))  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortRegId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "regId");
+	}  else  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortUserId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "uid");
+	}
 	sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
 
         if (searchString == null) {

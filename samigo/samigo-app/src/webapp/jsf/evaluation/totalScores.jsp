@@ -523,6 +523,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType!='agentDisplayId'}" >
      <f:facet name="header">
        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{totalScores.sortLimitString}" id="agentDisplayId" action="totalScores" >
+          <h:outputText value="#{totalScores.idString}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
         <f:param name="sortBy" value="agentDisplayId" />
@@ -535,6 +536,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType eq 'agentDisplayId' && totalScores.sortAscending}">
       <f:facet name="header">
         <h:commandLink title="#{evaluationMessages.t_sortUserId} #{totalScores.sortLimitString}" action="totalScores">
+          <h:outputText value="#{totalScores.idString}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
           <f:actionListener
@@ -547,6 +549,7 @@ $(document).ready(function(){
     <h:column rendered="#{totalScores.anonymous eq 'false' && totalScores.sortType eq 'agentDisplayId' && !totalScores.sortAscending}">
       <f:facet name="header">
       <h:commandLink title="#{evaluationMessages.t_sortUserId} #{totalScores.sortLimitString}" action="totalScores">
+        <h:outputText value="#{totalScores.idString}" />
         <f:param name="sortAscending" value="true"/>
         <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
         <f:actionListener
