@@ -173,6 +173,27 @@ log.debug("getEidById agentString s = " + s);
   }
 
   /**
+  * Get the Agent display id.
+  * @param agentS the Agent string.
+  * @return the Agent display id.
+  */
+  public String getDisplayId(String agentString, String siteType)
+  {
+    org.sakaiproject.user.api.ContextualUserDisplayService cus = (org.sakaiproject.user.api.ContextualUserDisplayService) ComponentManager.get(org.sakaiproject.user.api.ContextualUserDisplayService.class);
+ 
+    String s="";
+    try{
+      if (!agentString.startsWith("anonymous_"))
+      s = cus != null ? cus.getUserDisplayId(UserDirectoryService.getUser(agentString), siteType):"";
+      //  s=UserDirectoryService.getUser(agentString).getDisplayId();
+    }
+    catch(Exception e){
+      log.warn("getDisplayId: " + e.getMessage());
+    }
+    return s;
+  }
+
+  /**
    * Get the Agent first name.
    * @param agentString teh agent string
    * @return the Agent first name.
@@ -336,6 +357,25 @@ log.debug("getEidById agentString s = " + s);
     return currentSiteName;
   }
 
+  /**
+   * Get the current site type.
+   * @return the site type.
+   */
+  public String getCurrentSiteType(boolean accessViaUrl){
+    // access via url => users does not login via any sites-daisyf
+    String currentSiteType = null;
+    if (!accessViaUrl)
+    {
+      try{
+        currentSiteType =
+          SiteService.getSite(getCurrentSiteId(accessViaUrl)).getType();
+      }
+      catch (Exception e){
+        log.warn("getCurrentSiteType : "  + e.getMessage());
+      }
+    }
+    return currentSiteType;
+  }
 
   /**
    * Get the site name.

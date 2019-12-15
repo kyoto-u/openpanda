@@ -162,7 +162,15 @@ log.debug("agentfacade.getEid(agentS) agentString = " + agentString);
     return helper.getDisplayName(agentS);
   }
 
-
+  /**
+   * Get the Agent display id.
+   * @param agentS the Agent string.
+   * @return the Agent display id.
+   */
+  public String getDisplayId(String siteType)
+  {
+    return helper.getDisplayId(this.agentString, siteType);
+  }
 
   /**
    * Get the Agent display name for this agent.
@@ -243,6 +251,17 @@ log.debug("agentfacade.getEid(agentS) agentString = " + agentString);
     return helper.getCurrentSiteName(accessViaUrl);
   }
 
+  /**
+   * Get the current site type.
+   * @return the site type.
+   */
+  public static String getCurrentSiteType()
+  {
+    AgentFacade facade = new AgentFacade();
+    boolean accessViaUrl = facade.isAccessViaUrl();
+
+    return helper.getCurrentSiteType(accessViaUrl);
+  }
 
   /**
    * Get the site name.

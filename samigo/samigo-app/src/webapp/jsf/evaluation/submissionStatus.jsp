@@ -261,8 +261,8 @@ $Id$
    <!-- STUDENT ID -->
     <h:column  rendered="#{submissionStatus.sortType ne 'agentDisplayId'}" >
      <f:facet name="header">
-       <h:commandLink title="#{evaluationMessages.t_sortUserId}" id="agentDisplayId" action="submissionStatus" >
-          <h:outputText value="#{evaluationMessages.uid}" />
+       <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" id="agentDisplayId" action="submissionStatus" >
+          <h:outputText value="#{totalScores.idString}" />
         <f:actionListener
            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
         <f:param name="sortBy" value="agentDisplayId" />
@@ -274,8 +274,8 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'agentDisplayId' && submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortUserId}" action="submissionStatus">
-          <h:outputText value="#{evaluationMessages.uid}" />
+        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" action="submissionStatus">
+          <h:outputText value="#{totalScores.idString}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdDescending}" rendered="#{submissionStatus.sortAscending}" url="/images/sortascending.gif"/>
           <f:actionListener
@@ -287,8 +287,8 @@ $Id$
 
 	<h:column rendered="#{submissionStatus.sortType eq 'agentDisplayId' && !submissionStatus.sortAscending}">
       <f:facet name="header">
-        <h:commandLink title="#{evaluationMessages.t_sortUserId}" action="submissionStatus">
-          <h:outputText value="#{evaluationMessages.uid}" />
+        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{submissionStatus.sortLimitString}" action="submissionStatus">
+          <h:outputText value="#{totalScores.idString}" />
           <f:param name="sortAscending" value="true" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdAscending}" rendered="#{!submissionStatus.sortAscending}" url="/images/sortdescending.gif"/>
           <f:actionListener

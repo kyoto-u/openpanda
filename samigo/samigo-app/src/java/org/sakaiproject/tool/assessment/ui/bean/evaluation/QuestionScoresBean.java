@@ -51,6 +51,7 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.assessment.business.entity.RecordingData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.ui.bean.util.Validator;
 import org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
@@ -127,6 +128,12 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
   private Map itemScoresMap;
   @Getter @Setter
   private PublishedAssessmentIfc publishedAssessment;
+  @Getter @Setter
+  private String sortIdString;
+  @Getter @Setter
+  private String idString;
+  @Getter @Setter
+  private String sortLimitString; 
 
   @Getter @Setter
   private String selectedSectionFilterValue = null;
@@ -186,6 +193,23 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
 
 	protected void init() {
         defaultSearchString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "search_default_student_search_string");
+
+	// default PageSize setting (by Shoji Kajita)
+	String defaultSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "paging_default_pagesize");
+	String siteType = AgentFacade.getCurrentSiteType();
+
+	if (defaultSizeString != null)  {
+            setMaxDisplayedRows(Integer.valueOf(defaultSizeString));
+	}
+
+	if (siteType.equalsIgnoreCase("course") || siteType.equalsIgnoreCase("training"))  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortRegId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "regId");
+	}  else  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortUserId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "uid");
+	}
+	sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
 
         if (searchString == null) {
 			searchString = defaultSearchString;
