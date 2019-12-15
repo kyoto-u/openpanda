@@ -74,6 +74,8 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
   private String totalPeople;
   private String firstItem;
   private Map answeredItems;
+  private String sortIdString;
+  private String idString;
   private String sortLimitString;
   
   //private String selectedSectionFilterValue = TotalScoresBean.ALL_SECTIONS_SELECT_VALUE;
@@ -106,12 +108,21 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
 
 	protected void init() {
         defaultSearchString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "search_default_student_search_string");
+
 	// default PageSize setting (by Shoji Kajita)
 	String defaultSizeString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "paging_default_pagesize");
 	if (defaultSizeString != null)  {
 	    setMaxDisplayedRows(Integer.valueOf(defaultSizeString));
 	}
 
+	String siteType = AgentFacade.getCurrentSiteType();
+	if (siteType.equalsIgnoreCase("course") || siteType.equalsIgnoreCase("training"))  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortRegId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "regId");
+	}  else  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortUserId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "uid");
+	}
 	sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
 
         if (searchString == null) {
@@ -724,6 +735,22 @@ public class SubmissionStatusBean implements Serializable, PhaseAware {
 		}
 		return releasedToGroups;
 	}
+
+ 	public String getSortIdString() {
+		return sortIdString;
+	}
+
+	public void setSortIdString(String sortIdString) {
+		this.sortIdString = sortIdString;
+	}	
+
+	public String getIdString() {
+		return idString;
+	}
+
+	public void setIdString(String idString) {
+		this.idString = idString;
+	}	
 
 	public String getSortLimitString() {
 		return sortLimitString;

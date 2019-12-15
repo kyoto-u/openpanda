@@ -662,7 +662,7 @@ $Id$
     <h:column rendered="#{questionScores.anonymous eq 'false' && questionScores.sortType!='agentDisplayId'}" >
      <f:facet name="header">
        <h:commandLink title="#{evaluationMessages.t_sortUserId} #{questionScores.sortLimitString}" id="agentDisplayId" action="questionScores" >
-          <h:outputText value="#{evaluationMessages.uid}" />
+          <h:outputText value="#{totalScores.idString}" />
       <f:actionListener
          type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreUpdateListener" />
         <f:actionListener
@@ -677,6 +677,7 @@ $Id$
     <h:column rendered="#{questionScores.anonymous eq 'false' && questionScores.sortType eq 'agentDisplayId' && questionScores.sortAscending}">
       <f:facet name="header">
         <h:commandLink title="#{evaluationMessages.t_sortUserId} #{questionScores.sortLimitString}" action="questionScores">
+          <h:outputText value="#{totalScores.idString}" />
           <f:param name="sortAscending" value="false" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdDescending}" rendered="#{questionScores.sortAscending}" url="/images/sortascending.gif"/>
       	  <f:actionListener
@@ -691,6 +692,7 @@ $Id$
     <h:column rendered="#{questionScores.anonymous eq 'false' && questionScores.sortType eq 'agentDisplayId' && !questionScores.sortAscending}">
       <f:facet name="header">
         <h:commandLink title="#{evaluationMessages.t_sortUserId} #{questionScores.sortLimitString}" action="questionScores">
+          <h:outputText value="#{totalScores.idString}" />
           <f:param name="sortAscending" value="true" />
           <h:graphicImage alt="#{evaluationMessages.alt_sortUserIdAscending}" rendered="#{!questionScores.sortAscending}" url="/images/sortdescending.gif"/>
       	  <f:actionListener
