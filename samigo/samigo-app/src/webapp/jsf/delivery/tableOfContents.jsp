@@ -34,7 +34,7 @@
     <title><h:outputText value="#{deliveryMessages.table_of_contents}" /></title>
     <script type="text/javascript" src="/samigo-app/jsf/widget/hideDivision/hideDivision.js"></script>
     <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
-    <h:outputText value="#{delivery.mathJaxHeader}" escape="false" rendered="#{delivery.actionString=='takeAssessmentViaUrl' and delivery.isMathJaxEnabled}"/>
+    <h:outputText value="#{delivery.mathJaxHeader}" escape="false" rendered="#{(delivery.actionString=='takeAssessmentViaUrl' ||  delivery.actionString=='previewAssessment') and delivery.isMathJaxEnabled}"/>
     </head>
     <body onload="<%= request.getAttribute("html.body.onload") %>">
 <!--div class="portletBody"-->
@@ -211,7 +211,7 @@ function saveTime()
       disabled="#{delivery.actionString=='previewAssessment'}" />
   </h:panelGroup>
   <h:commandButton id="save" type="submit" value="#{commonMessages.action_save}"
-    action="#{delivery.save_work}" rendered="#{delivery.actionString=='previewAssessment'
+    action="#{delivery.saveWork}" rendered="#{delivery.actionString=='previewAssessment'
       || delivery.actionString=='takeAssessment'
       || delivery.actionString=='takeAssessmentViaUrl'}" /> 
 

@@ -46,7 +46,6 @@ import java.util.zip.ZipFile;
 import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -109,6 +108,7 @@ import org.sakaiproject.taggable.api.TaggingHelperInfo;
 import org.sakaiproject.taggable.api.TaggingManager;
 import org.sakaiproject.taggable.api.TaggingProvider;
 import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.tool.api.*;
 import org.sakaiproject.user.api.CandidateDetailProvider;
 import org.sakaiproject.user.api.User;
@@ -977,6 +977,7 @@ public class AssignmentAction extends PagedResourceActionII {
     private TimeService timeService;
     private ToolManager toolManager;
     private UserDirectoryService userDirectoryService;
+    private UserTimeService userTimeService;
     private RangeAndGroupsDelegate rangeAndGroups;
 
     public AssignmentAction() {
@@ -1009,6 +1010,7 @@ public class AssignmentAction extends PagedResourceActionII {
         timeService = ComponentManager.get(TimeService.class);
         toolManager = ComponentManager.get(ToolManager.class);
         userDirectoryService = ComponentManager.get(UserDirectoryService.class);
+        userTimeService = ComponentManager.get(UserTimeService.class);
         rangeAndGroups = new RangeAndGroupsDelegate(assignmentService, rb, siteService, securityService, formattedText);
     }
 
@@ -3573,22 +3575,6 @@ public class AssignmentAction extends PagedResourceActionII {
         String siteId = (String) state.getAttribute(STATE_CONTEXT_STRING);
         String toolId = toolManager.getCurrentPlacement().getId();
 
-        List<BasicUser> submitters
-            = userSubmissions.stream().map(ss -> {
-
-                BasicUser bu = new BasicUser(ss.getUser());
-                String ref = AssignmentReferenceReckoner.reckoner().submission(ss.submission).reckon().getReference();
-                bu.url = serverConfigurationService.getPortalUrl() + "/site/" + siteId + "/tool/" + toolId + "?assignmentId=" + assignmentRef + "&submissionId=" + ref + "&panel=Main&sakai_action=doGrade_submission";
-                return bu;
-            }).collect(Collectors.toList());
-
-        try {
-            String jsonSubmitters = new ObjectMapper().writeValueAsString(submitters);
-            context.put("jsonSubmitters", jsonSubmitters);
-        } catch (Exception e) {
-            log.error("Failed to set jsonSubmitters variable in grading template", e);
-        }
-
         String template = (String) getContext(data).get("template");
 
         boolean useSakaiGrader = false;
@@ -3967,7 +3953,7 @@ public class AssignmentAction extends PagedResourceActionII {
         if (timeValue == null) {
             timeValue = Instant.now().truncatedTo(ChronoUnit.DAYS);
         }
-        LocalDateTime bTime = timeValue.atZone(timeService.getLocalTimeZone().toZoneId()).toLocalDateTime();
+        LocalDateTime bTime = timeValue.atZone(userTimeService.getLocalTimeZone().toZoneId()).toLocalDateTime();
         state.setAttribute(month, bTime.getMonthValue());
         state.setAttribute(day, bTime.getDayOfMonth());
         state.setAttribute(year, bTime.getYear());
@@ -4414,6 +4400,8 @@ public class AssignmentAction extends PagedResourceActionII {
             Map<String, Reference> attachmentReferences = new HashMap<>();
             assignment.getAttachments().forEach(r -> attachmentReferences.put(r, entityManager.newReference(r)));
             context.put("attachmentReferences", attachmentReferences);
+
+            supplementItemIntoContext(state, context, assignment, null);
         }
 
         if (taggingManager.isTaggable() && assignment != null) {
@@ -4503,6 +4491,7 @@ public class AssignmentAction extends PagedResourceActionII {
             Map<String, Reference> assignmentAttachmentReferences = new HashMap<>();
             assignment.getAttachments().forEach(r -> assignmentAttachmentReferences.put(r, entityManager.newReference(r)));
             context.put("assignmentAttachmentReferences", assignmentAttachmentReferences);
+            context.put("value_CheckAnonymousGrading", assignmentService.assignmentUsesAnonymousGrading(assignment));
         }
         String submissionId = "";
         SecurityAdvisor secAdv = (userId, function, reference) -> {
@@ -7172,7 +7161,7 @@ public class AssignmentAction extends PagedResourceActionII {
         if (!Validator.checkDate(day, month, year)) {
             addAlert(state, rb.getFormattedMessage("date.invalid", rb.getString(invalidBundleMessage)));
         }
-        return LocalDateTime.of(year, month, day, hour, min, 0).atZone(timeService.getLocalTimeZone().toZoneId()).toInstant();
+        return LocalDateTime.of(year, month, day, hour, min, 0).atZone(userTimeService.getLocalTimeZone().toZoneId()).toInstant();
     }
 
     /**
@@ -7778,6 +7767,7 @@ public class AssignmentAction extends PagedResourceActionII {
             AssignmentModelAnswerItem mAnswer = assignmentSupplementItemService.getModelAnswer(aId);
             if (mAnswer != null) {
                 assignmentSupplementItemService.cleanAttachment(mAnswer);
+                mAnswer.setAttachmentSet(new HashSet<>());
                 assignmentSupplementItemService.removeModelAnswer(mAnswer);
             }
         } else if (state.getAttribute(MODELANSWER_TEXT) != null) {
@@ -7816,7 +7806,9 @@ public class AssignmentAction extends PagedResourceActionII {
             AssignmentAllPurposeItem nAllPurpose = assignmentSupplementItemService.getAllPurposeItem(aId);
             if (nAllPurpose != null) {
                 assignmentSupplementItemService.cleanAttachment(nAllPurpose);
+                nAllPurpose.setAttachmentSet(new HashSet<>());
                 assignmentSupplementItemService.cleanAllPurposeItemAccess(nAllPurpose);
+                nAllPurpose.setAccessSet(new HashSet<>());
                 assignmentSupplementItemService.removeAllPurposeItem(nAllPurpose);
             }
         } else if (state.getAttribute(ALLPURPOSE_TITLE) != null) {
@@ -8793,7 +8785,7 @@ public class AssignmentAction extends PagedResourceActionII {
             int year = (Integer) state.getAttribute(yearString);
             int hour = (Integer) state.getAttribute(hourString);
             int min = (Integer) state.getAttribute(minString);
-            return LocalDateTime.of(year, month, day, hour, min, 0).atZone(timeService.getLocalTimeZone().toZoneId()).toInstant();
+            return LocalDateTime.of(year, month, day, hour, min, 0).atZone(userTimeService.getLocalTimeZone().toZoneId()).toInstant();
         } else {
             return null;
         }
@@ -10789,7 +10781,7 @@ public class AssignmentAction extends PagedResourceActionII {
             state.setAttribute(ALLOW_RESUBMIT_CLOSEHOUR, closeHour);
             int closeMin = Integer.valueOf(params.getString(ALLOW_RESUBMIT_CLOSEMIN));
             state.setAttribute(ALLOW_RESUBMIT_CLOSEMIN, closeMin);
-            resubmitCloseTime = LocalDateTime.of(closeYear, closeMonth, closeDay, closeHour, closeMin, 0, 0).atZone(timeService.getLocalTimeZone().toZoneId()).toInstant();
+            resubmitCloseTime = LocalDateTime.of(closeYear, closeMonth, closeDay, closeHour, closeMin, 0, 0).atZone(userTimeService.getLocalTimeZone().toZoneId()).toInstant();
             state.setAttribute(AssignmentConstants.ALLOW_RESUBMIT_CLOSETIME, String.valueOf(resubmitCloseTime.toEpochMilli()));
             // no need to show alert if the resubmission setting has not changed
             if (properties == null || change_resubmit_option(state, properties)) {
@@ -11095,7 +11087,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // open date is shifted forward by the offset
         Instant tOpen = t.plusSeconds(openDateOffset);
-        LocalDateTime ldtOpen = LocalDateTime.ofInstant(tOpen, ZoneId.systemDefault());
+        LocalDateTime ldtOpen = LocalDateTime.ofInstant(tOpen, userTimeService.getLocalTimeZone().toZoneId());
         minute = ldtOpen.getMinute();
         hour = ldtOpen.getHour();
         month = ldtOpen.getMonthValue();
@@ -11117,7 +11109,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // due date is shifted forward by the offset
         Instant tDue = t.plusSeconds(dueDateOffset);
-        LocalDateTime ldtDue = LocalDateTime.ofInstant(tDue, ZoneId.systemDefault());
+        LocalDateTime ldtDue = LocalDateTime.ofInstant(tDue, userTimeService.getLocalTimeZone().toZoneId());
         minute = ldtDue.getMinute();
         hour = ldtDue.getHour();
         month = ldtDue.getMonthValue();
@@ -11144,7 +11136,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // Accept until date is shifted forward by the offset
         Instant tAccept = t.plusSeconds(acceptUntilDateOffset);
-        LocalDateTime ldtAccept = LocalDateTime.ofInstant(tAccept, ZoneId.systemDefault());
+        LocalDateTime ldtAccept = LocalDateTime.ofInstant(tAccept, userTimeService.getLocalTimeZone().toZoneId());
         minute = ldtAccept.getMinute();
         hour = ldtAccept.getHour();
         month = ldtAccept.getMonthValue();
@@ -11167,7 +11159,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // Peer evaluation date is shifted forward by the offset
         Instant tPeer = t.plusSeconds(peerEvaluationDateOffset);
-        LocalDateTime ldtPeer = LocalDateTime.ofInstant(tPeer, ZoneId.systemDefault());
+        LocalDateTime ldtPeer = LocalDateTime.ofInstant(tPeer, userTimeService.getLocalTimeZone().toZoneId());
         minute = ldtPeer.getMinute();
         hour = ldtPeer.getHour();
         month = ldtPeer.getMonthValue();
@@ -14528,17 +14520,45 @@ public class AssignmentAction extends PagedResourceActionII {
                     AssignmentSubmission s1 = u1.getSubmission();
                     AssignmentSubmission s2 = u2.getSubmission();
 
-
                     if (s1 == null) {
                         result = -1;
                     } else if (s2 == null) {
                         result = 1;
                     } else {
-                        String ts1 = s1.getProperties().get(AssignmentConstants.REVIEW_SCORE);
-                        String ts2 = s2.getProperties().get(AssignmentConstants.REVIEW_SCORE);
-                        int score1 = ts1 != null ? Integer.parseInt(ts1) : 0;
-                        int score2 = ts2 != null ? Integer.parseInt(ts2) : 0;
-                        result = score1 > score2 ? 1 : -1;
+                        List<ContentReviewResult> r1 = assignmentService.getContentReviewResults(s1);
+                        List<ContentReviewResult> r2 = assignmentService.getContentReviewResults(s2);
+
+                        if (CollectionUtils.isEmpty(r1)) {
+                            result = -1;
+                        } else if (CollectionUtils.isEmpty(r2)) {
+                            result = 1;
+                        } else {
+                            int score1 = -99;
+                            int score2 = -99;
+
+                            // Find the highest score in all of the possible submissions
+                            for (ContentReviewResult crr1 : r1) {
+                                String reviewReport = crr1.getReviewReport();
+                                // Yes, "Error" appears to be magic throughout the review code
+                                // Error should appear before pending
+                                if (StringUtils.equals(reviewReport, "Error")) {
+                                    score1 = -1;
+                                } else if (crr1.getReviewScore() > score1) {
+                                    score1 = crr1.getReviewScore(); // This will return -2 for pending
+                                }
+                            }
+
+                            for (ContentReviewResult crr2 : r2) {
+                                String reviewReport = crr2.getReviewReport();
+                                if (StringUtils.equals(reviewReport, "Error")) {
+                                    score2 = -1;
+                                } else if (crr2.getReviewScore() > score2) {
+                                    score2 = crr2.getReviewScore();
+                                }
+                            }
+
+                            result = score1 > score2 ? 1 : -1;
+                        }
                     }
                 }
 

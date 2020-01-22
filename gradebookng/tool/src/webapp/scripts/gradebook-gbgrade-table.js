@@ -634,6 +634,7 @@ GbGradeTable.ajax = function (params, callback) {
   GbGradeTable.domElement.trigger("gbgradetable.action", params);
 };
 
+
 GbGradeTable.renderTable = function (elementId, tableData) {
   GbGradeTable.domElement = $('#' + elementId);
   GbGradeTable.students = tableData.students;
@@ -978,6 +979,12 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     $(window).trigger('resize');
   });
 
+  $("sakai-maximise-button").on("maximise-tool", function () {
+    $(window).trigger('resize');
+  }).on("minimise-tool", function () {
+    $(window).trigger('resize');
+  });
+
   // append all dropdown menus to body to avoid overflows on table
   var $dropdownMenu;
   var $link;
@@ -1238,7 +1245,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
   on("click", ".gb-dropdown-menu .gb-message-students", function (event) {
 
     $(`#gb-messager-for-${event.target.dataset.assignmentId}`)
-      .dialog({ close: function () { $(this).dialog("destroy"); } })
+      .dialog({ width: 500, close: function () { $(this).dialog("destroy"); } })
       .on("submission-message-sent", function (e) {
         $(this).dialog("destroy");
         $(this).off("submission-message-sent");
@@ -2883,7 +2890,7 @@ GbGradeTable.setupCellMetaDataSummary = function() {
     }
   });
 
-  $(GbGradeTable.instance.rootElement).on("click", "th .gb-external-app, th .gb-grade-item-flags > *, th .gb-flag-extra-credit", function(event){
+  $(GbGradeTable.instance.rootElement).on("click", "th .gb-external-app, th .gb-grade-item-flags > *, th .gb-flag-extra-credit, th .gb-flag-equal-weight", function(event){
     event.preventDefault();
     event.stopImmediatePropagation();
 

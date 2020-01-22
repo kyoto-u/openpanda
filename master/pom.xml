@@ -37,10 +37,11 @@
     <sakai.hibernate.groupId>org.hibernate</sakai.hibernate.groupId>
     <sakai.hibernate.artifactId>hibernate-core</sakai.hibernate.artifactId>
     <sakai.hibernate.version>4.3.11.Final</sakai.hibernate.version>
-    <sakai.httpclient.version>4.5.8</sakai.httpclient.version>
-    <sakai.httpcore.version>4.4.11</sakai.httpcore.version>
-    <sakai.httpmime.version>4.5.8</sakai.httpmime.version>
-    <sakai.jackson.version>2.9.10</sakai.jackson.version>
+    <sakai.hikaricp.version>3.4.2</sakai.hikaricp.version>
+    <sakai.httpclient.version>4.5.11</sakai.httpclient.version>
+    <sakai.httpcore.version>4.4.13</sakai.httpcore.version>
+    <sakai.httpmime.version>4.5.11</sakai.httpmime.version>
+    <sakai.jackson.version>2.10.1</sakai.jackson.version>
     <sakai.jsoup.version>1.12.1</sakai.jsoup.version>
     <sakai.woodstox.version>5.2.1</sakai.woodstox.version>
     <sakai.stax2.version>4.2</sakai.stax2.version>
@@ -48,9 +49,9 @@
     <sakai.jstl.version>1.2</sakai.jstl.version>
     <sakai.lombok.version>1.18.10</sakai.lombok.version>
     <sakai.lucene.version>4.10.4</sakai.lucene.version>
-    <sakai.org.json.version>20180813</sakai.org.json.version>
+    <sakai.org.json.version>20190722</sakai.org.json.version>
     <sakai.pluto.version>1.1.7</sakai.pluto.version>
-    <sakai.quartz.version>2.3.1</sakai.quartz.version>
+    <sakai.quartz.version>2.3.2</sakai.quartz.version>
     <sakai.opencsv.version>5.0</sakai.opencsv.version>
     <sakai.servletapi.version>2.4</sakai.servletapi.version>
     <sakai.groovy.version>2.4.17</sakai.groovy.version>
@@ -66,19 +67,19 @@
     <sakai.spring.plugin.version>1.2.0.RELEASE</sakai.spring.plugin.version>
     <sakai.spring.test.artifactId>spring-test</sakai.spring.test.artifactId>
     <sakai.spring.test.version>4.3.25.RELEASE</sakai.spring.test.version>
-    <sakai.tika.version>1.22</sakai.tika.version>
-    <sakai.tomcat.version>9.0.29</sakai.tomcat.version>
+    <sakai.tika.version>1.23</sakai.tika.version>
+    <sakai.tomcat.version>9.0.30</sakai.tomcat.version>
     <sakai.velocity.version>1.6.4</sakai.velocity.version>
     <sakai.xerces.impl.version>2.12.0</sakai.xerces.impl.version>
     <sakai.xerces.api.version>2.6.2</sakai.xerces.api.version>
     <sakai.log4j.version>1.2.17</sakai.log4j.version>
-    <sakai.slf4j.version>1.7.26</sakai.slf4j.version>
+    <sakai.slf4j.version>1.7.30</sakai.slf4j.version>
     <sakai.poi.version>4.1.1</sakai.poi.version>
     <sakai.mockito.version>2.28.2</sakai.mockito.version>
     <sakai.powermock.version>2.0.2</sakai.powermock.version>
     <sakai.okiosid.version>2.0</sakai.okiosid.version>
     <joda.time.version>2.10.5</joda.time.version>
-    <sakai.weld.shaded.version>3.1.2.Final</sakai.weld.shaded.version>
+    <sakai.weld.shaded.version>3.1.3.Final</sakai.weld.shaded.version>
     <jayway.jsonpath.version>2.4.0</jayway.jsonpath.version>
     <sakai.genericdao.version>0.11.0</sakai.genericdao.version>
     <reflectutils.version>0.9.20</reflectutils.version>
@@ -105,7 +106,7 @@
     <ckeditor.wordcount.version>1.17.6</ckeditor.wordcount.version>
     <ckeditor.a11ychecker.version>1.1.1</ckeditor.a11ychecker.version>
     <ckeditor.balloonpanel.version>4.9.2</ckeditor.balloonpanel.version>
-    <ckeditor.image2.version>4.13.0</ckeditor.image2.version>
+    <ckeditor.image2.version>4.13.1</ckeditor.image2.version>
     
   </properties>
   <distributionManagement>
@@ -243,7 +244,7 @@
     <pluginRepository>
       <id>central</id>
       <name>Maven Plugin Repository</name>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
       <layout>default</layout>
       <snapshots>
         <enabled>false</enabled>
@@ -255,7 +256,7 @@
     <pluginRepository>
         <id>opencast</id>
         <name>Opencast Repo</name>
-        <url>http://nexus.opencast.org/nexus/content/groups/public</url>
+        <url>https://nexus.opencast.org/nexus/content/groups/public</url>
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
@@ -269,7 +270,7 @@
       <id>central</id>
       <name>Maven Repository Switchboard</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -291,7 +292,7 @@
     <repository>
       <id>repository.spring.release</id>
       <name>Spring GA Repository</name>
-      <url>http://repo.spring.io/release</url>
+      <url>https://repo.spring.io/release</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -299,7 +300,7 @@
     <repository>
       <id>repository.spring.libs.release</id>
       <name>Spring Lib Repository</name>
-      <url>http://repo.spring.io/libs-release</url>
+      <url>https://repo.spring.io/libs-release</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -321,7 +322,7 @@
     <repository>
         <id>opencast</id>
         <name>Opencast Repo</name>
-        <url>http://nexus.opencast.org/nexus/content/groups/public</url>
+        <url>https://nexus.opencast.org/nexus/content/groups/public</url>
         <snapshots>
             <enabled>false</enabled>
         </snapshots>
@@ -686,7 +687,7 @@
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.13</version>
+        <version>1.14</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -1871,13 +1872,13 @@
       <dependency>
           <groupId>org.mariadb.jdbc</groupId>
           <artifactId>mariadb-java-client</artifactId>
-          <version>2.5.0</version>
+          <version>2.5.3</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.zaxxer</groupId>
         <artifactId>HikariCP</artifactId>
-        <version>3.3.1</version>
+        <version>${sakai.hikaricp.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
@@ -2018,7 +2019,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -2038,7 +2039,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.2.0</version>
           <configuration>
             <archive>
               <manifest>
@@ -2085,17 +2086,17 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
+          <version>3.8.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M3 </version>
+          <version>3.0.0-M4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -2152,14 +2153,22 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>findbugs-maven-plugin</artifactId>
-          <version>3.0.5</version>
-          <configuration>
-            <findbugsXmlOutput>true</findbugsXmlOutput>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>3.1.12.2</version>
+         <configuration>
+            <spotbugsXmlOutput>true</spotbugsXmlOutput>
             <xmlOutput>true</xmlOutput>
             <effort>Max</effort>
           </configuration>
+         <dependencies>
+         <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+               <version>3.1.12</version>
+             </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -2247,7 +2256,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M2</version>
+        <version>3.0.0-M3</version>
         <executions>
           <execution>
             <id>enforce-versions</id>
@@ -2349,7 +2358,7 @@
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
         <artifactId>wagon-ssh-external</artifactId>
-        <version>3.3.3</version>
+        <version>3.3.4</version>
       </extension>
     </extensions>
 

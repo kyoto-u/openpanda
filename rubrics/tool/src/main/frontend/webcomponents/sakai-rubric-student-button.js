@@ -11,19 +11,18 @@ class SakaiRubricStudentButton extends RubricsElement {
 
     this.hidden = true;
     this.instructor = false;
-
-    SakaiRubricsLanguage.loadTranslations().then(result => this.i18nLoaded = result);
+    this.i18nPromise = SakaiRubricsLanguage.loadTranslations();
   }
 
   static get properties() {
 
     return {
-      token: { type: String },
+      token: String,
       entityId: { attribute: "entity-id", type: String },
       toolId: { attribute: "tool-id", type: String },
       evaluatedItemId: { attribute: "evaluated-item-id", type: String},
-      hidden: { type: Boolean },
-      instructor: { type: Boolean },
+      hidden: Boolean,
+      instructor: Boolean,
     };
   }
 
@@ -38,23 +37,21 @@ class SakaiRubricStudentButton extends RubricsElement {
 
   set token(newValue) {
 
+    this.i18nPromise.then(r => this.rubricsUtils.initLightbox(newValue, r));
     this._token = newValue;
-    this.rubricsUtils.initLightbox(this._token, true);
   }
 
   get token() { return this._token; }
 
   render() {
 
-    return html`${this.hidden ? html``
-      : html`
-      <span class="fa fa-table" style="cursor: pointer;" title="${tr("preview_rubric")}" @click="${this.showRubric}" />
+    return html`${this.hidden ? "" : html`
+      <a @click=${this.showRubric} href="javascript:;" title="${tr("preview_rubric")}"><span class="fa fa-table" /></a>
     `}`;
   }
 
-  showRubric() {
-
-    this.rubricsUtils.showRubric(undefined, {"tool-id": this.toolId, "entity-id": this.entityId, "evaluated-item-id": this.evaluatedItemId, "instructor": this.instructor});
+  showRubric(e) {
+    this.rubricsUtils.showRubric(undefined, {"tool-id": this.toolId, "entity-id": this.entityId, "evaluated-item-id": this.evaluatedItemId, "instructor": this.instructor}, e.target);
   }
 
   setHidden() {

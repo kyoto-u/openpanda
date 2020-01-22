@@ -62,6 +62,7 @@ import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
 import org.sakaiproject.entitybroker.util.AbstractEntityProvider;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Group;
@@ -609,8 +610,6 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         String resubmitNumber = (String) params.get("resubmitNumber");
         String resubmitDate = (String) params.get("resubmitDate");
 
-        System.out.println(resubmitDate);
-
         List<String> alerts = new ArrayList<>();
 
         Assignment assignment = submission.getAssignment();
@@ -649,6 +648,11 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         options.put(GRADE_SUBMISSION_FEEDBACK_ATTACHMENT,  attachmentRefs);
 
         options.put(GRADE_SUBMISSION_DONT_CLEAR_CURRENT_ATTACHMENTS, Boolean.TRUE);
+
+        // Add any rubrics params
+        params.keySet().stream().filter(k -> k.startsWith(RubricsConstants.RBCS_PREFIX)).forEach(k -> options.put(k, params.get(k)));
+
+        options.put("siteId", (String) params.get("siteId"));
 
         submission = assignmentToolUtils.gradeSubmission(submission, gradeOption, options, alerts);
 
@@ -1240,6 +1244,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         private String feedbackText;
         private String feedbackComment;
         private String privateNotes;
+        private String groupId;
         private Set<String> feedbackAttachments;
         private Map<String, String> properties = new HashMap<>();
 
@@ -1249,27 +1254,26 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 
             this.id = as.getId();
             this.gradableId = as.getAssignment().getId();
-            this.submittedText = as.getSubmittedText();
-            this.dateSubmitted = as.getDateSubmitted();
             this.submitted = as.getSubmitted();
-            this.submittedAttachments = as.getAttachments();
-            this.userSubmission = as.getUserSubmission();
-            Instant dateSubmitted = as.getDateSubmitted();
-            if (dateSubmitted != null) {
-                this.late = dateSubmitted.compareTo(as.getAssignment().getDueDate()) > 0;
+            if (this.submitted) {
+                this.submittedText = as.getSubmittedText();
+                this.dateSubmitted = as.getDateSubmitted();
+                if (dateSubmitted != null) {
+                    this.late = dateSubmitted.compareTo(as.getAssignment().getDueDate()) > 0;
+                }
+                this.submittedAttachments = as.getAttachments();
             }
+            this.submitters
+                = as.getSubmitters().stream().map(ass -> new SimpleSubmitter(ass)).collect(Collectors.toList());
+            this.groupId = as.getGroupId();
+            this.userSubmission = as.getUserSubmission();
             this.returned = as.getReturned();
             this.feedbackText = as.getFeedbackText();
             this.feedbackComment = as.getFeedbackComment();
             this.privateNotes = as.getPrivateNotes();
             this.feedbackAttachments = as.getFeedbackAttachments();
-
             this.graded = as.getGraded();
-
             this.properties = as.getProperties();
-
-            this.submitters
-                = as.getSubmitters().stream().map(ass -> new SimpleSubmitter(ass)).collect(Collectors.toList());
         }
     }
 

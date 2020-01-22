@@ -11,23 +11,23 @@ export class SakaiRubricStudentPreviewButton extends RubricsElement {
 
     this.display = "button";
 
-    SakaiRubricsLanguage.loadTranslations().then(result => this.i18nLoaded = result );
+    this.i18nPromise = SakaiRubricsLanguage.loadTranslations();
   }
 
   static get properties() {
 
     return {
-      token: { type: String },
-      display: { type: String },
+      token: String,
+      display: String,
       toolId: { attribute: "tool-id", type: String },
       entityId: { attribute: "entity-id", type: String },
-      rubricId: { type: String },
+      rubricId: String,
     };
   }
 
   set token(newValue) {
 
-    this.rubricsUtils.initLightbox(newValue);
+    this.i18nPromise.then(r => this.rubricsUtils.initLightbox(newValue, r));
     this._token = "Bearer " + newValue;
   }
 
@@ -51,7 +51,7 @@ export class SakaiRubricStudentPreviewButton extends RubricsElement {
     return html`
       ${this.display === "button" ?
       html`<h3><sr-lang key="grading_rubric" /></h3>
-      <button @click="${this.showRubric}"><sr-lang key="preview_rubric" /></button>`
+      <button aria-haspopup="dialog" @click="${this.showRubric}"><sr-lang key="preview_rubric" /></button>`
       : html`<span class="fa fa-table" style="cursor: pointer;" title="${tr("preview_rubric")}" @click="${this.showRubric}" />`
       }
     `;

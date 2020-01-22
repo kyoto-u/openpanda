@@ -94,7 +94,7 @@ var rubricsUtils = {
   lightbox: null,
   windowRef: window!=window.top ? window.top : window,
 
-  initLightbox(token) {
+  initLightbox(token, i18n) {
 
     if (rubricsUtils.lightbox) {
       return;
@@ -106,7 +106,16 @@ var rubricsUtils = {
     });
 
     var scrollTop = rubricsUtils.windowRef.pageYOffset || rubricsUtils.windowRef.document.documentElement.scrollTop;
-    this.appendStringAsNodes(rubricsUtils.windowRef.document.body, '<div class="rubrics-lightbox" style="display:none"><div class="container"><a href="#" class=>&times;</a><sakai-rubric-student token="' + token + '"></sakai-rubric-student></div></div>');
+
+    this.appendStringAsNodes(rubricsUtils.windowRef.document.body, `
+      <div class="rubrics-lightbox" tabindex="0" style="display:none">
+        <div class="container">
+          <a href="#" aria-label="${i18n["close_dialog"]}">&times;</a>
+          <sakai-rubric-student token="${token}"></sakai-rubric-student>
+        </div>
+      </div>
+    `);
+
     rubricsUtils.lightbox = $(".rubrics-lightbox", rubricsUtils.windowRef.document);
   },
 
@@ -125,12 +134,14 @@ var rubricsUtils = {
     this.css(rubricsUtils.windowRef.document.body, {"overflow": "auto"});
   },
 
-  showRubric(id, attributes) {
+  showRubric(id, attributes, launchingElement) {
 
     this.css(rubricsUtils.windowRef.document.body, {"overflow": "hidden"});
     var scrollTop = rubricsUtils.windowRef.pageYOffset || rubricsUtils.windowRef.document.documentElement.scrollTop;
 
-    this.css(rubricsUtils.lightbox[0], {height: rubricsUtils.windowRef.window.innerHeight + "px", width: rubricsUtils.windowRef.window.innerWidth + "px", top: scrollTop + "px"})
+    this.css(rubricsUtils.lightbox[0], {height: rubricsUtils.windowRef.window.innerHeight + "px"
+                                          , width: rubricsUtils.windowRef.window.innerWidth + "px"
+                                          , top: scrollTop + "px"})
 
     var el = $("sakai-rubric-student", rubricsUtils.windowRef.document)[0];
 
@@ -150,6 +161,15 @@ var rubricsUtils = {
       el.setAttribute("instructor", attributes["instructor"]);
     }
     this.css(rubricsUtils.lightbox[0], {"display": "block"});
+    rubricsUtils.lightbox.focus();
+    rubricsUtils.lightbox.keydown(e => {
+      if (e.keyCode === 27) {
+        rubricsUtils.closeLightbox();
+        if (launchingElement) {
+          launchingElement.focus();
+        }
+      }
+    });
   },
 };
 

@@ -41,7 +41,6 @@
 <!-- content... -->
 <!-- FORM -->
 
-
 <!-- HEADING -->
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
 <h:form id="itemForm">
@@ -86,16 +85,13 @@
         <h:outputLabel value="#{authorMessages.answer_point_value_display}" styleClass="col-md-2 form-control-label"/>
         <div class="col-md-5 samigo-inline-radio">
             <h:selectOneRadio value="#{itemauthor.currentItem.itemScoreDisplayFlag}" >
-                <f:selectItem itemValue="true" itemLabel="#{authorMessages.yes}" />
-                <f:selectItem itemValue="false" itemLabel="#{authorMessages.no}" />
+                <f:selectItem itemValue="false" itemLabel="#{authorMessages.yes}" />
+                <f:selectItem itemValue="true" itemLabel="#{authorMessages.no}" />
             </h:selectOneRadio>
         </div>
     </div>    
 
-    <!-- Extra Credit -->
-    <%@ include file="/jsf/author/inc/extraCreditSetting.jspf" %>
-
-  <!-- 2 TEXT -->
+    <!-- 2 TEXT -->
     <div class="form-group row">
         <h:outputLabel value="#{authorMessages.q_text}" styleClass="col-md-4 col-lg-2 form-control-label"/>
         <!-- WYSIWYG -->
@@ -192,7 +188,6 @@
             </div>
         </div> 
     </h:panelGroup>
-
 
     <%@ include file="/jsf/author/item/tags.jsp" %>
 

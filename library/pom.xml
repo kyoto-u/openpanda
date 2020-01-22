@@ -14,7 +14,7 @@
 	<packaging>war</packaging>
 	<properties>
 		<!-- This is used in re-write rules as well -->
-		<ckeditor.version>4.13.0</ckeditor.version>
+		<ckeditor.version>4.13.1</ckeditor.version>
 		<bootstrap-version>3.3.7</bootstrap-version>
 		<font-awesome-version>4.7.0</font-awesome-version>
 		<!-- Default extra plugins enabled -->
@@ -57,9 +57,9 @@
 		     have a scope of runtime -->
 		<!--Used in ELFinder, inside CK Editor, file editor -->
 		<dependency>
-			<groupId>org.webjars</groupId>
+			<groupId>org.webjars.npm</groupId>
 			<artifactId>codemirror</artifactId>
-			<version>5.49.0</version>
+			<version>5.50.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -201,7 +201,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>select2</artifactId>
-            <version>4.0.8</version>
+            <version>4.0.12</version>
             <scope>runtime</scope>
         </dependency>
 		<!--Used in Lessons, embed calendar item -->
@@ -238,9 +238,9 @@
 		</dependency>
 		<!--Used in Tests&Quizzes, Gradebook, Forums, autocomplete with previous inputs -->
 		<dependency>
-			<groupId>org.webjars</groupId>
+			<groupId>org.webjars.npm</groupId>
 			<artifactId>awesomplete</artifactId>
-			<version>1.1.4</version>
+			<version>1.1.5</version>
 		</dependency>
 		<!--Used in Profile, record name pronunciation -->
 		<dependency>
@@ -252,13 +252,13 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>webrtc-adapter</artifactId>
-			<version>7.2.9</version>
+			<version>7.4.0</version>
 		</dependency>
 		<!--Used in Tests&Quizzes, validation of fill in numeric questions -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>mathjs</artifactId>
-			<version>6.2.3</version>
+			<version>6.5.0</version>
 		</dependency>
 		<!--Used in feedback tool-->
 		<dependency>
@@ -449,7 +449,7 @@
 					</plugin>
 					<plugin>
 						<artifactId>maven-clean-plugin</artifactId>
-						<version>2.6.1</version>
+						<version>3.1.0</version>
 						<executions>
 							<execution>
 								<id>remove-skin</id>

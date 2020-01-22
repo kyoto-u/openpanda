@@ -84,25 +84,6 @@
 					  	setTimeout("wait=false;", 1500);//1.5 sec
 					}			
 			}
-			
-			//JSF issue for onclick, this goes around 
-			function confirmTsCancel(link,msg){
-				if (link.onclick == confirmDelete) {
-				    return;
-				  }
-				                
-				  deleteClick = link.onclick;
-				  deleteMsg = msg;
-				  link.onclick = confirmDelete;
-			}
-			function confirmDelete() {
-				  var ans = confirm(deleteMsg);
-				  if (ans) {
-				    return deleteClick();
-				  } else {
-				    return false;
-				  }
-			}	
 				
 		</script>
 		<script type="text/javascript">			
@@ -187,7 +168,7 @@
 											<h:graphicImage value="/images/new.png" alt="New time slot" title="#{msgs.title_tip_delete_this_ts}"  styleClass="openCloseImageIcon" rendered="#{tsWrapper.newTimeslotBlock && UserDefineTimeslotBean.placeOrderBean != UserDefineTimeslotBean.newMeetingBeanOrderName}"/>
 							        		<h:graphicImage value="/images/ts_delete.png" alt="delete slot" title="#{msgs.title_tip_delete_this_ts}" style="border:none;cursor:pointer;" styleClass="openCloseImageIcon"/>
 							        	</h:commandLink>
-							        	<h:commandLink action="#{UserDefineTimeslotBean.deleteTSblock}" rendered="#{!tsWrapper.newlyAddedTS && UserDefineTimeslotBean.placeOrderBean != UserDefineTimeslotBean.copyBeanOrderName }" actionListener="#{UserDefineTimeslotBean.validateTimeslots}" onmousedown="confirmTsCancel(this,'#{msgs.confirm_cancel}');">
+							        	<h:commandLink action="#{UserDefineTimeslotBean.deleteTSblock}" rendered="#{!tsWrapper.newlyAddedTS && UserDefineTimeslotBean.placeOrderBean != UserDefineTimeslotBean.copyBeanOrderName }" actionListener="#{UserDefineTimeslotBean.validateTimeslots}" onclick="return confirm('#{msgs.confirm_cancel}');">
 							        		<h:graphicImage value="/images/ts_delete.png" alt="delete slot" title="#{msgs.title_tip_delete_this_ts}" style="border:none;cursor:pointer;" styleClass="openCloseImageIcon" />
 							        	</h:commandLink>
 								</t:column>
@@ -198,7 +179,7 @@
 						    		<h:panelGrid columns="1">
 							    		<h:panelGroup styleClass="titleText">
 											<h:inputText id="startTime" value="#{tsWrapper.timeSlot.startTimeString}"/>
-											<h:inputHidden id="hiddenStartTime" value="#{tsWrapper.timeSlot.startTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/></h:inputHidden>
+											<h:inputHidden id="hiddenStartTime" value="#{tsWrapper.timeSlot.startTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="#{UserTimeZone.userTimeZone}" /></h:inputHidden>
 										</h:panelGroup>
 										<h:message for="startTime" errorClass="alertMessageInline"/>
 									</h:panelGrid>
@@ -210,7 +191,7 @@
 									<h:panelGrid columns="1">
 										<h:panelGroup styleClass="titleText">
 											<h:inputText id="endTime" value="#{tsWrapper.timeSlot.endTimeString}"/>
-											<h:inputHidden id="hiddenEndTime" value="#{tsWrapper.timeSlot.endTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/></h:inputHidden>
+											<h:inputHidden id="hiddenEndTime" value="#{tsWrapper.timeSlot.endTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="#{UserTimeZone.userTimeZone}" /></h:inputHidden>
 										</h:panelGroup>
 										<h:message for="endTime" errorClass="alertMessageInline"/>
 									</h:panelGrid>

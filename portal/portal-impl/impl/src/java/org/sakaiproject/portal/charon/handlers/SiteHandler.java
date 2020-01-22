@@ -128,10 +128,10 @@ public class SiteHandler extends WorksiteHandler
 	// This is Sakai 11 only so please do not back-port or merge this default value
 	private static final String IFRAME_SUPPRESS_DEFAULT = ":all:sakai.gradebook.gwt.rpc:com.rsmart.certification:sakai.rsf.evaluation:kaltura.media:kaltura.my.media";
 
-	private static final String SAK_PROP_SHOW_FAV_STARS = "portal.favoriteSitesBar.showFavStarsOnAllSites";
+	private static final String SAK_PROP_SHOW_FAV_STARS = "portal.favoriteSitesBar.showFavoriteStars";
 	private static final boolean SAK_PROP_SHOW_FAV_STARS_DFLT = true;
 
-	private static final String SAK_PROP_SHOW_FAV_STARS_ON_ALL = "portal.favoriteSitesBar.showFavoriteStars";
+	private static final String SAK_PROP_SHOW_FAV_STARS_ON_ALL = "portal.favoriteSitesBar.showFavStarsOnAllSites";
 	private static final boolean SAK_PROP_SHOW_FAV_STARS_ON_ALL_DFLT = true;
 
 	private static final long AUTO_FAVORITES_REFRESH_INTERVAL_MS = 30000;
@@ -897,6 +897,7 @@ public class SiteHandler extends WorksiteHandler
 
 			int tabDisplayLabel = 1;
 			boolean toolsCollapsed = false;
+			boolean toolMaximised = false;
 
 			if (loggedIn) 
 			{
@@ -915,10 +916,15 @@ public class SiteHandler extends WorksiteHandler
 				try {
 					toolsCollapsed = props.getBooleanProperty("toolsCollapsed");
 				} catch (Exception any) {}
+
+				try {
+					toolMaximised = props.getBooleanProperty("toolMaximised");
+				} catch (Exception any) {}
 			}
 
 			rcontext.put("tabDisplayLabel", tabDisplayLabel);
 			rcontext.put("toolsCollapsed", Boolean.valueOf(toolsCollapsed));
+			rcontext.put("toolMaximised", Boolean.valueOf(toolMaximised));
 			
 			SiteView siteView = portal.getSiteHelper().getSitesView(
 					SiteView.View.DHTML_MORE_VIEW, req, session, siteId);
