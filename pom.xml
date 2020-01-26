@@ -121,6 +121,7 @@
                 <module>webjars</module>
                 <module>webservices</module>
                 <module>panda</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
         <profile>
@@ -208,6 +209,7 @@
                 <module>webservices</module>
                 <module>yaft</module>
                 <module>panda</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
 
