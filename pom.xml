@@ -123,6 +123,7 @@
                 <module>webservices</module>
                 <module>wicket</module>
                 <module>panda</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
         <profile>
@@ -213,6 +214,7 @@
                 <module>wicket</module>
                 <module>yaft</module>
                 <module>panda</module>
+                <module>pdfgenerationservice</module>
             </modules>
         </profile>
 
