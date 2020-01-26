@@ -5060,6 +5060,10 @@ public class AssignmentAction extends PagedResourceActionII {
 
         ParameterParser params = data.getParameters();
         String assignmentReference = params.getString("assignmentReference");
+
+        if (assignmentReference == null) {
+            assignmentReference = params.getString("assignmentId");
+        }
         state.setAttribute(VIEW_SUBMISSION_ASSIGNMENT_REFERENCE, assignmentReference);
 
         User u = (User) state.getAttribute(STATE_USER);
@@ -8857,15 +8861,33 @@ public class AssignmentAction extends PagedResourceActionII {
 
         Assignment a = getAssignment(assignmentId, "doView_assignment", state);
 
-        // get resubmission option into state
-        assignment_resubmission_option_into_state(a, null, state);
+        String siteId = a.getContext();
 
-        // assignment read event
-        eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT, assignmentId, false));
+        //String contextString = (String) state.getAttribute(STATE_CONTEXT_STRING);
 
-        if (state.getAttribute(STATE_MESSAGE) == null) {
-            state.setAttribute(STATE_MODE, MODE_INSTRUCTOR_VIEW_ASSIGNMENT);
+        boolean allowSubmitAssignment = assignmentService.allowAddSubmission(siteId);
+        boolean allowAddAssignment = assignmentService.allowAddAssignment(siteId);
+
+        if (allowSubmitAssignment && !allowAddAssignment) {
+            // Retrieve the status of the assignment
+            String assignStatus = getAssignmentStatus(assignmentId, state);
+            if (assignStatus != null && !assignStatus.equals(rb.getString("gen.open")) && !allowAddAssignment) {
+                addAlert(state, rb.getFormattedMessage("gen.notavail", assignStatus));
+            }
+            doView_submission(data);
+        } else {
+            // get resubmission option into state
+            assignment_resubmission_option_into_state(a, null, state);
+
+            // assignment read event
+            eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT, assignmentId, false));
+
+            if (state.getAttribute(STATE_MESSAGE) == null) {
+                state.setAttribute(STATE_MODE, MODE_INSTRUCTOR_VIEW_ASSIGNMENT);
+            }
         }
+
+        eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT, assignmentId, false));
 
     } // doView_Assignment
 
@@ -13787,7 +13809,6 @@ public class AssignmentAction extends PagedResourceActionII {
         Boolean useSakaiGrader = (Boolean) state.getAttribute(USE_SAKAI_GRADER);
 
         if (submissionsSearchOnly == null || useSakaiGrader == null) {
-            System.out.println("TRYING TOOL ...");
             try {
                 Site site = siteService.getSite(siteId);
                 ToolConfiguration tc = site.getToolForCommonId(ASSIGNMENT_TOOL_ID);
@@ -14528,7 +14549,9 @@ public class AssignmentAction extends PagedResourceActionII {
                         List<ContentReviewResult> r1 = assignmentService.getContentReviewResults(s1);
                         List<ContentReviewResult> r2 = assignmentService.getContentReviewResults(s2);
 
-                        if (CollectionUtils.isEmpty(r1)) {
+                        if (CollectionUtils.isEmpty(r1) && CollectionUtils.isEmpty(r2)) {
+                            result = 0;
+                        } else if (CollectionUtils.isEmpty(r1)) {
                             result = -1;
                         } else if (CollectionUtils.isEmpty(r2)) {
                             result = 1;
@@ -14538,26 +14561,28 @@ public class AssignmentAction extends PagedResourceActionII {
 
                             // Find the highest score in all of the possible submissions
                             for (ContentReviewResult crr1 : r1) {
-                                String reviewReport = crr1.getReviewReport();
-                                // Yes, "Error" appears to be magic throughout the review code
-                                // Error should appear before pending
-                                if (StringUtils.equals(reviewReport, "Error")) {
+                                if (score1 <= -2 && crr1.isPending()) {
+                                    score1 = -2;
+                                } else if (score1 <= -1 && StringUtils.equals(crr1.getReviewReport(), "Error")) {
+                                    // Yes, "Error" appears to be magic throughout the review code
+                                    // Error should appear before pending
                                     score1 = -1;
                                 } else if (crr1.getReviewScore() > score1) {
-                                    score1 = crr1.getReviewScore(); // This will return -2 for pending
+                                    score1 = crr1.getReviewScore();
                                 }
                             }
 
                             for (ContentReviewResult crr2 : r2) {
-                                String reviewReport = crr2.getReviewReport();
-                                if (StringUtils.equals(reviewReport, "Error")) {
+                                if (score2 <= -2 && crr2.isPending()) {
+                                    score2 = -2;
+                                } else if (score2 <= -1 && StringUtils.equals(crr2.getReviewReport(), "Error")) {
                                     score2 = -1;
                                 } else if (crr2.getReviewScore() > score2) {
                                     score2 = crr2.getReviewScore();
                                 }
                             }
 
-                            result = score1 > score2 ? 1 : -1;
+                            result = score1 == score2 ? 0 : (score1 > score2 ? 1 : -1);
                         }
                     }
                 }

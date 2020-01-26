@@ -515,6 +515,8 @@ public interface AssignmentService extends EntityProducer {
      */
     public void getSubmissionsZip(OutputStream out, String ref, String queryString) throws IdUnusedException, PermissionException;
 
+    public boolean permissionCheck(String permission, String resource, String user);
+
     /**
      * Access the internal reference which can be used to assess security clearance.
      *
@@ -745,6 +747,8 @@ public interface AssignmentService extends EntityProducer {
     String getUsersLocalDateTimeString(Instant date, FormatStyle dateStyle, FormatStyle timeStyle);
 
     public List<ContentReviewResult> getContentReviewResults(AssignmentSubmission submission);
+
+    public List<ContentReviewResult> getSortedContentReviewResults(AssignmentSubmission submission);
 
     /**
      * Determines whether it is appropriate to display the content review results for a submission. For instance, this will be false if the submission is a draft or if the user doesn't have permission

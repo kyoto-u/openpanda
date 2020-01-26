@@ -144,6 +144,7 @@ import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.rubrics.logic.model.ToolItemRubricAssociation;
+import org.sakaiproject.search.api.SearchService;
 import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
@@ -177,6 +178,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
@@ -228,6 +230,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     @Setter private RubricsService rubricsService;
     @Setter private SecurityService securityService;
     @Setter private SessionManager sessionManager;
+    @Setter private SearchService searchService;
     @Setter private ServerConfigurationService serverConfigurationService;
     @Setter private SiteService siteService;
     @Setter private TaggingManager taggingManager;
@@ -1222,12 +1225,12 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         if (!allowUpdateAssignment(reference)) {
             throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_UPDATE_ASSIGNMENT, null);
         }
-        eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_UPDATE_ASSIGNMENT, reference, true));
 
         assignment.setDateModified(Instant.now());
         assignment.setModifier(sessionManager.getCurrentSessionUserId());
         assignmentRepository.update(assignment);
 
+        eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_UPDATE_ASSIGNMENT, reference, true));
     }
 
     @Override
@@ -2733,7 +2736,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                 || permissionCheck(SECURE_SHARE_DRAFTS, siteService.siteReference(assignment.getContext()), null); // any role user with share draft permission
     }
 
-    private boolean permissionCheck(String permission, String resource, String user) {
+    public boolean permissionCheck(String permission, String resource, String user) {
         boolean access = false;
         if (!StringUtils.isAnyBlank(resource, permission)) {
             if (StringUtils.isBlank(user)) {
@@ -4241,6 +4244,24 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         return reviewResults;
     }
 
+    public List<ContentReviewResult> getSortedContentReviewResults(AssignmentSubmission s){
+        List<ContentReviewResult> reviewResults = getContentReviewResults(s);
+
+        Comparator<ContentReviewResult> byReviewScore = Comparator.comparing(r ->
+        {
+            if (r.isPending()) {
+                return -2;
+            }
+            else if (StringUtils.equals(r.getReviewReport(), "Error")) {
+                return -1;
+            }
+            return r.getReviewScore();
+        });
+
+        reviewResults.sort(byReviewScore.reversed());
+        return reviewResults;
+    }
+
     @Override
     public boolean isContentReviewVisibleForSubmission(AssignmentSubmission submission)
     {
@@ -4319,7 +4340,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                 return contentReviewService.getReviewReportStudent(contentId, assignmentReference, userDirectoryService.getCurrentUser().getId());
             }
         } catch (Exception e) {
-            log.warn(":getReviewReport(ContentResource) {}", e.getMessage());
+            log.debug(":getReviewReport(ContentResource) {}", e.getMessage());
             return "Error";
         }
     }
