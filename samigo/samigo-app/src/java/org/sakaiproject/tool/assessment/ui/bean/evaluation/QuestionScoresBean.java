@@ -204,6 +204,14 @@ public class QuestionScoresBean implements Serializable, PhaseAware {
 	}
 	sortLimitString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "sort_limit_warning");
 
+	if (siteType.equalsIgnoreCase("course") || siteType.equalsIgnoreCase("training"))  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortRegId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "regId");
+	}  else  {
+	    sortIdString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "t_sortUserId");
+	    idString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.EvaluationMessages", "uid");
+	}
+
         if (searchString == null) {
 			searchString = defaultSearchString;
 		}
