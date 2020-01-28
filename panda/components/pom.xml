@@ -25,12 +25,12 @@
     <dependency>
       <groupId>jp.ac.kyoto_u.sakai</groupId>
       <artifactId>panda-displayname</artifactId>
-      <version>10.7</version>
+      <version>${sakai.version}</version>
     </dependency>
     <dependency>
       <groupId>jp.ac.kyoto_u.sakai</groupId>
       <artifactId>panda-userdirectory</artifactId>
-      <version>10.7</version>
+      <version>${sakai.version}</version>
     </dependency>
   </dependencies>
   <build>
