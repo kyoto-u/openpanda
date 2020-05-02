@@ -18,12 +18,7 @@ package org.sakaiproject.assignment.impl;
 import static org.sakaiproject.assignment.api.AssignmentServiceConstants.*;
 import static org.sakaiproject.assignment.api.model.Assignment.Access.*;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -2891,7 +2886,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                         //submittersName = submittersName.concat("_");
                                     }
 
-                                    // add all submission attachment into the submission attachment folder
+                                    // add all submission attachment of one submitter into the submission attachment folder
                                     zipAttachments(out, submittersName, sSubAttachmentFolder, s.getAttachments());
                                     out.closeEntry();
                                 }
@@ -2947,6 +2942,10 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
             if (caughtException == null) {
                 // continue
+                // add mksummary.py
+                addMksummary(root, out, "mksummary.py", exceptionMessage);
+                // add placecomments.py
+                addMksummary(root, out, "placecomments.py", exceptionMessage);
                 if (withGradeFile) {
                     final ZipEntry gradesCSVEntry = new ZipEntry(root + "grades." + sheet.getFileExtension());
                     out.putNextEntry(gradesCSVEntry);
@@ -2995,6 +2994,24 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     // tried
                 }
             }
+        }
+    }
+
+    private void addMksummary(String root, ZipOutputStream out, String FileName, StringBuilder exceptionMessage) {
+        File file = new File(FileName);
+        try {
+            String assignmentPath = serverConfigurationService.getString("assignment.mksummary.folder", "");
+            InputStream src = new FileInputStream(assignmentPath + "/" + FileName);
+            out.putNextEntry(new ZipEntry(root + file.getName()));
+            byte dat[] = new byte[1024 * 10];
+            int bCount = -1;
+            BufferedInputStream bContent = new BufferedInputStream(src, dat.length);
+            while ((bCount = bContent.read(dat, 0, dat.length)) != -1) {
+                out.write(dat, 0, bCount);
+            }
+            out.closeEntry();
+        } catch (IOException e){
+            exceptionMessage.append("IOException for adding python scripts \n");
         }
     }
 
@@ -3147,6 +3164,10 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             } // while -- there is submission
 
             if (caughtException == null) {
+                // add mksummary.py
+                addMksummary(root, out, "mksummary.py", exceptionMessage);
+                // add placecomments.py
+                addMksummary(root, out, "placecomments.py", exceptionMessage);
                 // continue
                 if (withGradeFile) {
                     final ZipEntry gradesCSVEntry = new ZipEntry(root + "grades." + sheet.getFileExtension());

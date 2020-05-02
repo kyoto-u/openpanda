@@ -13093,7 +13093,7 @@ public class AssignmentAction extends PagedResourceActionII {
                             // at least the zip file has a grade.csv
                             zipHasGradeFile = true;
 
-                            // read grades.cvs from zip
+                            // read grades.csv from zip
 
                             String csvSep = assignmentService.getCsvSeparator();
                             CSVReader reader = new CSVReader(new InputStreamReader(zipFile.getInputStream(entry)), csvSep.charAt(0));
