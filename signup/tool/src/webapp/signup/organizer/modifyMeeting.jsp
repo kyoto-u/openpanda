@@ -12,11 +12,11 @@
 			@import url("/sakai-signup-tool/css/signupStyle.css");
 		</style>	
 
-<h:outputText value="#{Portal.latestJQuery}" escape="false"/>
-        <script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
-        <script type="text/javascript" src="/sakai-signup-tool/js/signupScript.js"></script>
-        
-		<script type="text/javascript">
+		<h:outputText value="#{Portal.latestJQuery}" escape="false"/>
+        <script src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+        <script src="/sakai-signup-tool/js/signupScript.js"></script>
+
+		<script>
 			jQuery(document).ready(function(){
 
                 localDatePicker({
@@ -52,6 +52,8 @@
                 });
 
         		sakai.initSignupBeginAndEndsExact();
+				
+
         	});
     	</script>
  
@@ -73,6 +75,10 @@
     			setIframeHeight_DueTo_Ckeditor();
     			initDropDownAndInput('meeting:customLocationLabel','meeting:customLocationLabel_undo','meeting:customLocation','meeting:selectedLocation');
     	        initDropDownAndInput('meeting:customCategoryLabel','meeting:customCategoryLabel_undo','meeting:customCategory','meeting:selectedCategory');
+
+                var menuLink = $('#signupMainMenuLink');
+                menuLink.addClass('current');
+                menuLink.html(menuLink.find('a').text());
 
         	});
 	        
@@ -110,8 +116,9 @@
 		
 		
 		<sakai:view_content>
-			<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>      			
 			<h:form id="meeting">
+				<%@ include file="/signup/menu/signupMenu.jsp" %>
+				<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>
 				<div class="page-header">
 					<sakai:view_title value="#{msgs.event_modify_meeting_page_title}"/>
 				</div>

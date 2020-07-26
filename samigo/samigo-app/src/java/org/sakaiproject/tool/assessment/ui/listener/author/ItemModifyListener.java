@@ -37,10 +37,11 @@ import javax.faces.event.ActionListener;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.rubrics.logic.RubricsService;
-import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
@@ -50,7 +51,6 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.AgentDataIfc;
-import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.ItemFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedItemFacade;
@@ -75,8 +75,8 @@ import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionBean;
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.user.api.UserDirectoryService;
-
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * <p>Title: Samigo</p>
@@ -89,6 +89,7 @@ public class ItemModifyListener implements ActionListener
   //private String scalename;  // used for multiple choice Survey
 
   private RubricsService rubricsService = ComponentManager.get(RubricsService.class);
+  private static final ResourceLoader RB_AUTHOR_MESSAGES = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");  
 
   /**
    * Standard process action method.
@@ -147,8 +148,6 @@ public class ItemModifyListener implements ActionListener
     	  assessdelegate = new PublishedAssessmentService();
       }
 
-      GradingService gradingService = new GradingService();
-
     try {
       ItemFacade itemfacade = delegate.getItem(itemId);
 
@@ -161,10 +160,16 @@ public class ItemModifyListener implements ActionListener
               // you'd think a slight variant of the published would work for core, but it generates an error
               Long assessmentId = null;
               String createdBy = null;
-              Long sectionId = itemfacade.getSection().getSectionId();
-              AssessmentFacade af = assessdelegate.getBasicInfoOfAnAssessmentFromSectionId(sectionId);
-              assessmentId = af.getAssessmentBaseId();
-              createdBy = af.getCreatedBy();
+              if (isEditPendingAssessmentFlow) {
+                  Long sectionId = itemfacade.getSection().getSectionId();
+                  AssessmentFacade af = assessdelegate.getBasicInfoOfAnAssessmentFromSectionId(sectionId);
+                  assessmentId = af.getAssessmentBaseId();
+                  createdBy = af.getCreatedBy();
+              } else {
+                  PublishedAssessmentIfc assessment = (PublishedAssessmentIfc) itemfacade.getSection().getAssessment();
+                  assessmentId = assessment.getPublishedAssessmentId();
+                  createdBy = assessment.getCreatedBy();
+              }
               if (!authzBean.isUserAllowedToEditAssessment(assessmentId.toString(), createdBy, !isEditPendingAssessmentFlow)) {
                   String err = (String) ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AuthorMessages", "denied_edit_assessment_error");
                   context.addMessage(null, new FacesMessage(err));
@@ -181,7 +186,8 @@ public class ItemModifyListener implements ActionListener
               boolean authorized = false;
               poolloop:
               for (Long poolId : poolIds) {
-                  for (AgentFacade agent : qpdelegate.getAgentsWithAccess(poolId)) {
+                  List agents = qpdelegate.getAgentsWithAccess(poolId);
+                  for (Object agent : agents) {
                       if (currentUserId.equals(((AgentDataIfc) agent).getIdString())) {
                           authorized = true;
                           break poolloop;
@@ -198,23 +204,9 @@ public class ItemModifyListener implements ActionListener
           } else {
               log.warn("Skip authorization for unknown target '" + target + "' for itemId '" + itemId + "', this should probably never happen.");
           }
-        }
+      }
 
-        bean.setItemId(itemfacade.getItemId().toString());
-
-        PublishedAssessmentIfc assessment = (PublishedAssessmentIfc) itemfacade.getSection().getAssessment();
-        Long assessmentId = assessment.getPublishedAssessmentId();
-        List<AssessmentGradingData> assessmentGradingData = gradingService.getAllSubmissions(assessmentId.toString());
-        if (assessmentGradingData != null && assessmentGradingData.size() > 0) {
-            assessmentGradingData.forEach(agd -> {
-                agd.getItemGradingSet().forEach(igd -> {
-                    if (igd.getSubmittedDate() != null && igd.getPublishedItemId().toString().equals(bean.getItemId())) {
-                        bean.setHasSubmissions(true);
-                    }
-                });
-            });
-        }
-
+      bean.setItemId(itemfacade.getItemId().toString());
       bean.setItemType(itemfacade.getTypeId().toString());
       itemauthorbean.setItemType(itemfacade.getTypeId().toString());
 
@@ -223,7 +215,7 @@ public class ItemModifyListener implements ActionListener
         itemauthorbean.setItemNo(String.valueOf(itemfacade.getSequence().intValue() ));
       }
 
-      bean.setExtraCredit(itemfacade.getIsExtraCredit()==null?false:itemfacade.getIsExtraCredit());
+      bean.setExtraCredit(itemfacade.getIsExtraCredit());
 
       Double score = itemfacade.getScore();
       if (score == null)
@@ -540,15 +532,13 @@ public class ItemModifyListener implements ActionListener
            answerArray[seq.intValue()-1] = answerobj;
          }
          for (int i=0; i<answerArray.length; i++) {
-           Set<AnswerFeedbackIfc> feedbackSet = answerArray[i].getAnswerFeedbackSet();
+           Set feedbackSet = answerArray[i].getAnswerFeedbackSet();
 	   // contains only one element in the Set
 	   if (feedbackSet.size() == 1) {
-	     AnswerFeedbackIfc afbobj = feedbackSet.iterator().next();
+	     AnswerFeedbackIfc afbobj=(AnswerFeedbackIfc) feedbackSet.iterator().next();
              afeedback = afbobj.getText();
            }
 	   AnswerBean answerbean = new AnswerBean();
-	            answerbean.setId(answerArray[i].getId());
-	            answerbean.setAnswerFeedbackId(feedbackSet.iterator().next().getId());
                 answerbean.setText(answerArray[i].getText());
                 answerbean.setSequence(answerArray[i].getSequence());
                 answerbean.setLabel(answerArray[i].getLabel());
@@ -569,7 +559,6 @@ public class ItemModifyListener implements ActionListener
 		}
 		answerbeanlist.add(answerbean);
          }
-
 			  // set correct choice for single correct
 			  if (Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CHOICE)) {
 				  Iterator iter2 = correctlist.iterator();
@@ -848,12 +837,6 @@ public class ItemModifyListener implements ActionListener
 	         }
 	       }
 	       
-	       // if match was not found, must be a distractor
-	       /*if (choicebean.getMatch() == null || "".equals(choicebean.getMatch())) {
-	    	   choicebean.setMatch(MatchItemBean.CONTROLLING_SEQUENCE_DISTRACTOR);
-	    	   choicebean.setIsCorrect(Boolean.TRUE);
-	    	   choicebean.setControllingSequence(MatchItemBean.CONTROLLING_SEQUENCE_DISTRACTOR);
-	       }*/
 	       imageMapItemBeanList.add(choicebean);
 	     }
 
@@ -912,8 +895,8 @@ public class ItemModifyListener implements ActionListener
        }
        
        // if match was not found, must be a distractor
-       if (choicebean.getMatch() == null || "".equals(choicebean.getMatch())) {
-    	   choicebean.setMatch(MatchItemBean.CONTROLLING_SEQUENCE_DISTRACTOR);
+       if (StringUtils.isBlank(choicebean.getMatch())) {
+    	   choicebean.setMatch("*" + RB_AUTHOR_MESSAGES.getString("none_above") + "*");
     	   choicebean.setIsCorrect(Boolean.TRUE);
     	   choicebean.setControllingSequence(MatchItemBean.CONTROLLING_SEQUENCE_DISTRACTOR);
        }
@@ -934,13 +917,13 @@ public class ItemModifyListener implements ActionListener
     while (iter.hasNext()){
     	ItemMetaDataIfc meta= (ItemMetaDataIfc) iter.next();
        if (meta.getLabel().equals(ItemMetaDataIfc.OBJECTIVE)){
-	 bean.setObjective(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setObjective(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.KEYWORD)){
-	 bean.setKeyword(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setKeyword(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.RUBRIC)){
-	 bean.setRubric(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setRubric(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.RANDOMIZE)){
 	 bean.setRandomized(meta.getEntry());

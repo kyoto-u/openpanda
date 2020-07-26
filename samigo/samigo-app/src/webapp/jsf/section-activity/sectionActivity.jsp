@@ -9,7 +9,7 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{sectionActivityMessages.section_activity_report}"/></title>
-      <script type="text/javascript" src="/samigo-app/js/eventInfo.js"></script>
+      <script src="/samigo-app/js/eventInfo.js"></script>
       <link rel="stylesheet" type="text/css" href="/samigo-app/css/tool_sam.css">
       </head>
     <body onload="<%= request.getAttribute("html.body.onload") %>">
@@ -31,7 +31,7 @@
   </div>
 
   <h:panelGroup layout="block" styleClass="form-group">
- 		 <h:outputLabel value="#{sectionActivityMessages.view_student}" style="instruction"/>
+ 		 <h:outputLabel value="#{sectionActivityMessages.view_student}" />
  		 <h:outputText escape="false" value="&#160;" />			
  		 <h:selectOneMenu value="#{sectionActivity.selectedUser}" id="studentName" required="true" onchange="document.forms[0].submit();">
       	 	 <f:selectItems value="#{sectionActivity.displayNamesList}" />  

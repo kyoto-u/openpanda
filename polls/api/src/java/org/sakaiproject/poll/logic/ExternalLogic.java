@@ -63,6 +63,11 @@ public interface ExternalLogic {
 	 */
 	public String getCurrentLocationReference();
 	
+	/**
+	 * @return the current tool URL of the current user
+	 */
+	String getCurrentToolURL();
+	
 
 	/**
 	 * @return the current sakai user id (not username)
@@ -237,5 +242,32 @@ public interface ExternalLogic {
      * Get the total number of users that have permission for voting
      */
     public int getNumberUsersCanVote();
+    
+    
+    /**
+     * @param text
+     * @return
+     */
+    public String convertFormattedTextToPlaintext(String text);
+    
+
+    /**
+     * @param text
+     * @param errorMessages
+     * @return
+     */
+    public String processFormattedText(String text, StringBuilder errorMessages);
+    
+    
+    /**
+     * @param strFromBrowser
+     * @param errorMessages
+     * @param checkForEvilTags
+     * @param replaceWhitespaceTags
+     * @return
+     */
+    public String processFormattedText(String strFromBrowser, StringBuilder errorMessages,
+            boolean checkForEvilTags,
+            boolean replaceWhitespaceTags);
 
 }

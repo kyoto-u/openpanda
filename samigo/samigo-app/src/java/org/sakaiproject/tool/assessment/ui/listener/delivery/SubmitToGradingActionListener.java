@@ -56,6 +56,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
+import org.sakaiproject.tool.assessment.services.DataException;
 import org.sakaiproject.tool.assessment.services.FinFormatException;
 import org.sakaiproject.tool.assessment.services.GradebookServiceException;
 import org.sakaiproject.tool.assessment.services.GradingService;
@@ -105,13 +106,21 @@ public class SubmitToGradingActionListener implements ActionListener {
 	 * @param ae
 	 * @throws AbortProcessingException
 	 */
-	public void processAction(ActionEvent ae) throws AbortProcessingException, FinFormatException, SaLengthException {
+	public void processAction(ActionEvent ae) throws AbortProcessingException, FinFormatException, SaLengthException, DataException {
 		try {
 			log.debug("SubmitToGradingActionListener.processAction() ");
 			
 			// get managed bean
 			DeliveryBean delivery = (DeliveryBean) ContextUtil
 					.lookupBean("delivery");
+
+			for (ItemGradingData checkIGD : delivery.getAssessmentGrading().getItemGradingSet()) {
+				Long itemId = checkIGD.getPublishedItemId();
+				ItemDataIfc item = (ItemDataIfc) delivery.getPublishedItemHash().get(itemId);
+				if (item == null) {
+					throw new DataException("Items in ItemGradingSet missing in PublishedItemHash");
+				}
+			}
 
 			if ((ContextUtil.lookupParam("showfeedbacknow") != null
 					&& "true"
@@ -447,7 +456,7 @@ public class SubmitToGradingActionListener implements ActionListener {
 		// If this assessment grading data has been updated (comments or adj. score) by grader and then republic and allow student to resubmit
 		// when the student submit his answers, we update the status back to 0 and remove the grading entry/info.
 		if (AssessmentGradingData.ASSESSMENT_UPDATED_NEED_RESUBMIT.equals(adata.getStatus()) || AssessmentGradingData.ASSESSMENT_UPDATED.equals(adata.getStatus())) {
-			adata.setStatus(0);
+			adata.setStatus(AssessmentGradingData.IN_PROGRESS);
 			adata.setGradedBy(null);
 			adata.setGradedDate(null);
 			adata.setComments(null);
@@ -698,28 +707,40 @@ public class SubmitToGradingActionListener implements ActionListener {
 		case 15: // CALCULATED_QUESTION
 		case 16: //IMAGEMAP_QUESTION 	
 		case 11: // FIN
-			boolean addedToAdds = false;
 			for (int m = 0; m < grading.size(); m++) {
 				ItemGradingData itemgrading = grading.get(m);
 				itemgrading.setAgentId(AgentFacade.getAgentString());
 				itemgrading.setSubmittedDate(new Date());
 			}
+			int fakeitemgrading=-1;
 			for (int m = 0; m < grading.size(); m++) {
 				ItemGradingData itemgrading = grading.get(m);
+				String s = itemgrading.getAnswerText();
 				if (itemgrading.getItemGradingId() != null
 						&& itemgrading.getItemGradingId().intValue() > 0) {
-					adds.addAll(grading);
-					break;
-				} else if (itemgrading.getAnswerText() != null && !itemgrading.getAnswerText().equals("")) {
-					String s = itemgrading.getAnswerText();
-					log.debug("s = " + s);
+					if ("1".equals(delivery.getNavigation()) && itemgrading.getPublishedAnswerId()==null && StringUtils.isBlank(s)) {
+						//Mark this as the fake itemgrading record
+						fakeitemgrading=m;	 
+				    } else {
+						log.debug("Existing Itemgrading with AnswerText = {}",s);
+						// Change to allow student submissions in rich-text [SAK-17021]
+						itemgrading.setAnswerText(s);
+						adds.add(itemgrading);
+				    }	
+				}
+				else if (StringUtils.isNotBlank(s)) {
+					log.debug("New Itemgrading with AnswerText = {}", s);
 					// Change to allow student submissions in rich-text [SAK-17021]
 					itemgrading.setAnswerText(s);
-					adds.addAll(grading);
-					if (!addedToAdds) {
-						adds.addAll(grading);
-						addedToAdds = true;
-					}
+					adds.add(itemgrading);
+				}
+			}
+			//Now if the list of adds is empty we add the fake itemgrading, otherwise we deleted as it is not longer necessary
+			if (fakeitemgrading>-1) {
+				if (adds.size()>0) {
+					removes.add(grading.get(fakeitemgrading));
+				} else {
+					adds.add(grading.get(fakeitemgrading));
 				}
 			}
 			break;

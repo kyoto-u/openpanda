@@ -120,6 +120,7 @@
                 <module>webcomponents</module>
                 <module>webjars</module>
                 <module>webservices</module>
+                <module>wicket</module>
                 <module>panda</module>
                 <module>pdfgenerationservice</module>
             </modules>
@@ -207,6 +208,7 @@
                 <module>web</module>
                 <module>webjars</module>
                 <module>webservices</module>
+                <module>wicket</module>
                 <module>yaft</module>
                 <module>panda</module>
                 <module>pdfgenerationservice</module>

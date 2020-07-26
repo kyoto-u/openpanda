@@ -33,17 +33,15 @@
   <f:view>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
-        <title><h:outputText value="#{authorMessages.item_display_author}"/></title>
-        <!-- AUTHORING -->
-        <script src="/samigo-app/js/authoring.js"></script>
+      <title><h:outputText value="#{authorMessages.item_display_author}"/></title>
+      <!-- AUTHORING -->
+      <script type="text/javascript" src="/samigo-app/js/authoring.js"></script>
+
       </head>
-
 <body onload="<%= request.getAttribute("html.body.onload") %>;resetInsertAnswerSelectMenus();disablePartialCreditField();">
-
 
 <div class="portletBody container-fluid">
 <!-- content... -->
-<h:outputText styleClass="sak-banner-warn" value="#{authorFrontDoorMessages.item_has_submissions}" rendered="#{itemauthor.currentItem.hasSubmissions}" />
 <!-- FORM -->
 <!-- HEADING -->
 <%@ include file="/jsf/author/item/itemHeadings.jsp" %>
@@ -80,7 +78,7 @@
   <!-- this is for creating multiple choice questions -->
   <!-- 1 POINTS -->
   <div class="form-group row"> 
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.answer_point_value}" />
+    <h:outputLabel for="answerptr" styleClass="col-md-2" value="#{authorMessages.answer_point_value}" />
     <div class="col-md-2">
       <h:inputText id="answerptr" label="#{authorMessages.pt}" value="#{itemauthor.currentItem.itemScore}" required="true" styleClass="form-control ConvertPoint" disabled="#{author.isEditPoolFlow}">
         <f:validateDoubleRange minimum="0.00" />
@@ -90,9 +88,9 @@
   </div>
 
   <div class="form-group row">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.answer_point_value_display}" />    
+    <h:outputLabel for="itemScoreDisplay" styleClass="col-md-2" value="#{authorMessages.answer_point_value_display}" />    
 	<div class="col-md-10">
-      <t:selectOneRadio id="itemScoreDisplay" value="#{itemauthor.currentItem.itemScoreDisplayFlag}" layout="spread" disabled="#{itemauthor.currentItem.hasSubmissions}">
+      <t:selectOneRadio id="itemScoreDisplay" value="#{itemauthor.currentItem.itemScoreDisplayFlag}" layout="spread">
         <f:selectItem itemValue="true" itemLabel="#{authorMessages.yes}" />
         <f:selectItem itemValue="false" itemLabel="#{authorMessages.no}" />
       </t:selectOneRadio>
@@ -105,7 +103,7 @@
 
   <f:subview id="minPoints" rendered="#{itemauthor.allowMinScore}">
     <div class="form-group row">
-        <h:outputLabel value="#{authorMessages.answer_min_point_value}" styleClass="col-md-2" />
+        <h:outputLabel for="answerminptr" value="#{authorMessages.answer_min_point_value}" styleClass="col-md-2" />
         <div  class="col-md-2">          
             <h:inputText id="answerminptr" value="#{itemauthor.currentItem.itemMinScore}" size="6"  onchange="toggleNegativePointVal(this.value);" styleClass=" form-control  ConvertPoint">
               <f:validateDoubleRange />
@@ -136,8 +134,7 @@
 	 		        onclick="this.form.onsubmit();this.form.submit();"
                     onkeypress="this.form.onsubmit();this.form.submit();"
                     value="#{itemauthor.currentItem.itemType}"
-					valueChangeListener="#{itemauthor.currentItem.toggleChoiceTypes}"
-                    disabled="#{itemauthor.currentItem.hasSubmissions}" >
+	                valueChangeListener="#{itemauthor.currentItem.toggleChoiceTypes}" >
       <f:selectItem itemValue="1" itemLabel="#{commonMessages.multiple_choice_sin}" escape="false" />  
       <f:selectItem itemValue="12" itemLabel="#{commonMessages.multipl_mc_ss}" escape="false" /> 
       <f:selectItem itemValue="2"   itemLabel="#{commonMessages.multipl_mc_ms}" escape="false" />
@@ -152,10 +149,9 @@
 					  onclick="this.form.onsubmit();this.form.submit();"
 					  onkeypress="this.form.onsubmit();this.form.submit();"
 					  value="#{itemauthor.currentItem.partialCreditFlag}"
-					  valueChangeListener="#{itemauthor.currentItem.togglePartialCredit}"
-					  disabled="#{itemauthor.currentItem.hasSubmissions}">
+					  valueChangeListener="#{itemauthor.currentItem.togglePartialCredit}">
         <f:selectItem itemValue="false" itemLabel="#{authorMessages.enable_nagative_marking}"  />
-        <f:selectItem itemValue="true" itemLabel="#{authorMessages.enable_partial_credit}" />
+        <f:selectItem itemValue="true" itemLabel="#{authorMessages.enable_partial_credit}"  />
       </h:selectOneRadio>
       <h:panelGroup>
 	    <h:outputText value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" escape="false" />
@@ -177,8 +173,7 @@
 					  layout="pageDirection"
 					  onclick="this.form.onsubmit();this.form.submit();"
 					  onkeypress="this.form.onsubmit();this.form.submit();"
-					  value="#{itemauthor.currentItem.mcmsPartialCredit}"
-					  disabled="#{itemauthor.currentItem.hasSubmissions}">
+					  value="#{itemauthor.currentItem.mcmsPartialCredit}">
       <f:selectItem itemValue="true" itemLabel="#{commonMessages.mutlipl_mc_ms_partial_credit}"  />
       <f:selectItem itemValue="false" itemLabel="#{commonMessages.multipl_mc_ms_full_credit}"  />
     </h:selectOneRadio>
@@ -189,11 +184,11 @@
   <h:panelGroup id="discountTable"
         rendered="#{(itemauthor.currentItem.itemType==1 &&(itemauthor.currentItem.partialCreditFlag=='false'||itemauthor.currentItem.partialCreditEnabled==false))
         || itemauthor.currentItem.itemType==12 || (itemauthor.currentItem.itemType==2 && itemauthor.currentItem.mcmsPartialCredit=='false')}">
-  <h:outputLabel value="#{authorMessages.negative_point_value}"/>
+  <h:outputLabel for="answerdsc" value="#{authorMessages.negative_point_value}"/>
   <h:inputText id="answerdsc" value="#{itemauthor.currentItem.itemDiscount}" required="true" styleClass="ConvertPoint">
     <f:validateDoubleRange/>
   </h:inputText>
-  <f:verbatim> <script defer='defer'>
+  <f:verbatim> <script type="text/javascript" defer='defer'>
   		var itemType = "${itemauthor.currentItem.itemType}";
   		var discDiv=document.getElementById('itemForm:discountDiv');
 		
@@ -227,7 +222,7 @@
   <!-- 2 TEXT -->
   
    <div class="form-group row ">
-       <h:outputLabel value="#{authorMessages.q_text}" styleClass="col-md-2 form-control-label"/>
+       <h:outputLabel for="questionItemText_textinput" value="#{authorMessages.q_text}" styleClass="col-md-2 form-control-label"/>
        <div class="col-md-8 row">
        <div class="col-md-12">
             <a id="multiple_show_editor" onclick="javascript:show_multiple_text(this);" href="#">
@@ -237,7 +232,7 @@
        <div class="col-md-12">
           <!-- WYSIWYG -->
           <h:panelGrid>
-              <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.itemText}" hasToggle="plain" mode="author">
+              <samigo:wysiwyg identity="questionItemText" rows="140" value="#{itemauthor.currentItem.itemText}" hasToggle="plain" mode="author">
                   <f:validateLength maximum="60000"/>
               </samigo:wysiwyg>
           </h:panelGrid>
@@ -271,7 +266,7 @@
     <f:selectItem itemValue="#{answer.label}" itemLabel="&#160; #{answer.label}" escape="false" />
   </h:selectOneRadio>
 
-  <h:commandLink title="#{authorMessages.t_removeC}" id="removelink" onfocus="document.forms[1].onsubmit();" action="#{itemauthor.currentItem.removeChoices}" rendered="#{!itemauthor.currentItem.hasSubmissions}">
+  <h:commandLink title="#{authorMessages.t_removeC}" id="removelink" onfocus="document.forms[1].onsubmit();" action="#{itemauthor.currentItem.removeChoices}" >
     <h:outputText id="text" value="#{commonMessages.remove_action}"/>
     <f:param name="answerid" value="#{answer.label}"/>
   </h:commandLink>
@@ -286,7 +281,7 @@
 
         <!-- WYSIWYG -->
   <h:panelGrid rendered="#{itemauthor.target == 'questionpool' || (itemauthor.target != 'questionpool' && (author.isEditPendingAssessmentFlow && assessmentSettings.feedbackAuthoring ne '1') || (!author.isEditPendingAssessmentFlow && publishedSettings.feedbackAuthoring ne '1'))}">
-         <samigo:wysiwyg rows="140" value="#{answer.feedback}" hasToggle="plain" mode="author">
+         <samigo:wysiwyg identity="questionAnswerFeedback" rows="140" value="#{answer.feedback}" hasToggle="plain" mode="author">
            <f:validateLength maximum="60000"/>
          </samigo:wysiwyg>
   </h:panelGrid>
@@ -324,9 +319,9 @@
 <h:inputHidden id="selectedCheckboxesAnswers" value="#{itemauthor.currentItem.corrAnswers}" />
 
   <div class="form-group row">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.insert_additional_a}" />
+    <h:outputLabel for="insertAdditionalAnswerSelectMenu" styleClass="col-md-2" value="#{authorMessages.insert_additional_a}" />
     <div class="col-md-10">
-      <h:selectOneMenu id="insertAdditionalAnswerSelectMenu" onchange="clickAddChoiceLink();" value="#{itemauthor.currentItem.additionalChoices}" disabled="#{itemauthor.currentItem.hasSubmissions}">
+      <h:selectOneMenu id="insertAdditionalAnswerSelectMenu" onchange="clickAddChoiceLink();" value="#{itemauthor.currentItem.additionalChoices}" >
         <f:selectItem itemLabel="#{authorMessages.select_menu}" itemValue="0"/>
         <f:selectItem itemLabel="1" itemValue="1"/>
         <f:selectItem itemLabel="2" itemValue="2"/>
@@ -342,7 +337,7 @@
 
   <!-- 4 RANDOMIZE -->
   <div class="form-group row">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.randomize_answers}" />
+    <h:outputLabel for="question-randomize" styleClass="col-md-2" value="#{authorMessages.randomize_answers}" />
     <div class="col-md-10">
       <t:selectOneRadio id="question-randomize" value="#{itemauthor.currentItem.randomized}" layout="spread">
         <f:selectItem itemValue="true" itemLabel="#{authorMessages.yes}" />
@@ -357,7 +352,7 @@
 
   <!-- 5 RATIONALE -->
   <div class="form-group row">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.require_rationale}" />
+    <h:outputLabel for="question-rationale" styleClass="col-md-2" value="#{authorMessages.require_rationale}" />
     <div class="col-md-10">
       <t:selectOneRadio id="question-rationale" value="#{itemauthor.currentItem.rationale}" layout="spread">
         <f:selectItem itemValue="true" itemLabel="#{authorMessages.yes}"/>
@@ -372,7 +367,7 @@
 
   <!-- 6 PART -->
   <h:panelGroup styleClass="form-group row" layout="block" rendered="#{itemauthor.target == 'assessment' && !author.isEditPoolFlow}">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.assign_to_p} " />
+    <h:outputLabel for="assignToPart" styleClass="col-md-2" value="#{authorMessages.assign_to_p} " />
     <div class="col-md-10">
       <h:selectOneMenu id="assignToPart" value="#{itemauthor.currentItem.selectedSection}">
         <f:selectItems value="#{itemauthor.sectionSelectList}" />
@@ -382,7 +377,7 @@
 
   <!-- 7 POOL -->
   <h:panelGroup styleClass="form-group row" layout="block" rendered="#{itemauthor.target == 'assessment' && author.isEditPendingAssessmentFlow}">
-    <h:outputLabel styleClass="col-md-2" value="#{authorMessages.assign_to_question_p} " />
+    <h:outputLabel for="assignToPool" styleClass="col-md-2" value="#{authorMessages.assign_to_question_p} " />
     <div class="col-md-10">
       <h:selectOneMenu rendered="#{itemauthor.target == 'assessment'}" id="assignToPool" value="#{itemauthor.currentItem.selectedPool}">
         <f:selectItem itemValue="" itemLabel="#{authorMessages.select_a_pool_name}" />
@@ -395,17 +390,17 @@
   <h:panelGroup rendered="#{itemauthor.target == 'questionpool' || (itemauthor.target != 'questionpool' && (author.isEditPendingAssessmentFlow && assessmentSettings.feedbackAuthoring ne '2') || (!author.isEditPendingAssessmentFlow && publishedSettings.feedbackAuthoring ne '2'))}">
 
     <div class="form-group row">
-      <h:outputLabel styleClass="col-md-2" value="#{authorMessages.correct_answer_opti}" />
+      <h:outputLabel for="questionFeedbackCorrect_textinput" styleClass="col-md-2" value="#{authorMessages.correct_answer_opti}" />
       <div class="col-md-8">
-        <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.corrFeedback}" hasToggle="plain" mode="author">
+        <samigo:wysiwyg identity="questionFeedbackCorrect" rows="140" value="#{itemauthor.currentItem.corrFeedback}" hasToggle="plain" mode="author">
           <f:validateLength maximum="60000"/>
         </samigo:wysiwyg>
       </div>
     </div>
     <div class="form-group row">
-      <h:outputLabel styleClass="col-md-2" value="#{authorMessages.incorrect_answer_op}" />
+      <h:outputLabel for="questionFeedbackIncorrect_textinput" styleClass="col-md-2" value="#{authorMessages.incorrect_answer_op}" />
       <div class="col-md-8">
-     <samigo:wysiwyg rows="140" value="#{itemauthor.currentItem.incorrFeedback}"  hasToggle="plain" mode="author">
+     <samigo:wysiwyg identity="questionFeedbackIncorrect" rows="140" value="#{itemauthor.currentItem.incorrFeedback}"  hasToggle="plain" mode="author">
        <f:validateLength maximum="60000"/>
      </samigo:wysiwyg>
       </div>
@@ -416,11 +411,11 @@
   <h:panelGroup rendered="#{itemauthor.showMetadata == 'true'}" styleClass="longtext">
   <h:outputLabel value="Metadata"/>
 <h:panelGrid columns="2" columnClasses="shorttext">
-<h:outputText value="#{authorMessages.objective}" />
+<h:outputLabel for="obj" value="#{authorMessages.objective}" />
   <h:inputText size="30" id="obj" value="#{itemauthor.currentItem.objective}" />
-<h:outputText value="#{authorMessages.keyword}" />
+<h:outputLabel for="keyword" value="#{authorMessages.keyword}" />
   <h:inputText size="30" id="keyword" value="#{itemauthor.currentItem.keyword}" />
-<h:outputText value="#{authorMessages.rubric_colon}" />
+<h:outputLabel for="rubric" value="#{authorMessages.rubric_colon}" />
   <h:inputText size="30" id="rubric" value="#{itemauthor.currentItem.rubric}" />
 </h:panelGrid>
 </h:panelGroup>
@@ -457,7 +452,7 @@
 </div>
 
 <f:verbatim> 
-	<script type="text/javascript" defer='defer'>
+	<script defer='defer'>
 	$(document).ready(function(){
 		var itemType = "${itemauthor.currentItem.itemType}";
 		var prefixId='#itemForm\\:';

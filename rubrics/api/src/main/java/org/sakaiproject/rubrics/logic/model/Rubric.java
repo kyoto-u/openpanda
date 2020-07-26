@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -43,6 +44,7 @@ import javax.persistence.Table;
 
 import lombok.ToString;
 import org.sakaiproject.rubrics.logic.listener.MetadataListener;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -70,6 +72,9 @@ public class Rubric implements Modifiable, Serializable, Cloneable {
     private String title;
     private String description;
 
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean weighted = Boolean.FALSE;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "rbc_rubric_criterions")
     @OrderColumn(name = "order_index")
@@ -87,7 +92,14 @@ public class Rubric implements Modifiable, Serializable, Cloneable {
     @PostUpdate
     public void determineLockStatus() {
         if (getToolItemAssociations() != null && getToolItemAssociations().size() > 0) {
-            getMetadata().setLocked(true);
+            for(ToolItemRubricAssociation tira : getToolItemAssociations()) {
+                if(tira.getParameters() == null) {
+                    getMetadata().setLocked(true);
+                } else if(!tira.getParameters().containsKey(RubricsConstants.RBCS_SOFT_DELETED) || !tira.getParameters().get(RubricsConstants.RBCS_SOFT_DELETED)) {
+                    getMetadata().setLocked(true);
+                    break;
+                }
+            }
         }
     }
 
@@ -96,6 +108,7 @@ public class Rubric implements Modifiable, Serializable, Cloneable {
         Rubric clonedRubric = new Rubric();
         clonedRubric.setId(null);
         clonedRubric.setTitle(this.title);
+        clonedRubric.setWeighted(this.weighted);
         clonedRubric.setDescription(this.description);
         Metadata metadata = new Metadata();
         metadata.setLocked(false);
@@ -117,6 +130,7 @@ public class Rubric implements Modifiable, Serializable, Cloneable {
         Rubric clonedRubric = new Rubric();
         clonedRubric.setId(null);
         clonedRubric.setTitle(this.title);
+        clonedRubric.setWeighted(this.weighted);
         clonedRubric.setDescription(this.description);
         Metadata metadata = new Metadata();
         metadata.setLocked(false);

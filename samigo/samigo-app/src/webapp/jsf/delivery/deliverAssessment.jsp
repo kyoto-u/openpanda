@@ -40,7 +40,8 @@
       <script src="/sakai-editor/editor-launch.js"></script>
       <script src="/samigo-app/js/saveForm.js"></script>
       <script src="/samigo-app/js/finInputValidator.js"></script>
-      <script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
+      <script src="/webcomponents/rubrics/sakai-rubrics-utils.js<h:outputText value="#{studentScores.CDNQuery}" />"></script>
+      <script type="module" src="/webcomponents/rubrics/rubric-association-requirements.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
 
     <h:panelGroup rendered="#{delivery.actionString == 'reviewAssessment'}">
       <script>
@@ -70,7 +71,7 @@
 <!-- JAVASCRIPT -->
 <%@ include file="/js/delivery.js" %>
 
-<script type="text/JavaScript">
+<script>
 function checkRadio()
 {
   for (i=0; i<document.forms[0].elements.length; i++)
@@ -196,7 +197,7 @@ document.links[newindex].onclick();
 <link rel="stylesheet" type="text/css" href="/samigo-app/css/imageQuestion.student.css">
 <link rel="stylesheet" type="text/css" href="/samigo-app/css/imageQuestion.author.css">
 
-<script type="text/JavaScript">
+<script>
 	var dynamicListMap = [];		
 	jQuery(window).load(function(){
 		
@@ -357,7 +358,7 @@ document.links[newindex].onclick();
          </sakai-rubric-student>
        </h:panelGroup>
 
-       <h:panelGroup rendered="#{delivery.actionString == 'takeAssessment'}">
+       <h:panelGroup rendered="#{delivery.actionString == 'takeAssessment' || delivery.actionString == 'takeAssessmentViaUrl'}">
            <sakai-rubric-student-preview-button
                 token="<h:outputText value="#{delivery.rbcsToken}" />"
                 tool-id="sakai.samigo"
@@ -481,7 +482,7 @@ document.links[newindex].onclick();
 <h:panelGrid columns="6" border="0" rendered="#{!(delivery.pageContents.isNoParts && delivery.navigation eq '1')}">
   <%-- PREVIOUS --%>
   <h:panelGrid columns="1" border="0">
-	<h:commandButton id="previous" type="submit" value="#{deliveryMessages.previous}"
+	<h:commandButton id="previous" type="submit" value="#{deliveryMessages.previous}" styleClass="active"
     action="#{delivery.previous}"
     disabled="#{!delivery.previous}" 
 	rendered="#{(delivery.actionString=='previewAssessment'
@@ -492,7 +493,7 @@ document.links[newindex].onclick();
 
   <%-- NEXT --%>
   <h:panelGrid columns="1" border="0" columnClasses="act">
-    <h:commandButton id="next1" type="submit" value="#{commonMessages.action_next}"
+    <h:commandButton id="next1" type="submit" value="#{commonMessages.action_next}" styleClass="active"
     action="#{delivery.nextPage}" disabled="#{!delivery.doContinue}"
 	rendered="#{(delivery.actionString=='previewAssessment'
                  || delivery.actionString=='takeAssessment'
@@ -515,7 +516,7 @@ document.links[newindex].onclick();
 
   <%-- SAVE --%>
   <h:panelGrid columns="1" border="0" >
-  <h:commandButton id="save" type="submit" value="#{commonMessages.action_save}"
+  <h:commandButton id="save" type="submit" value="#{commonMessages.action_save}" styleClass="active"
     action="#{delivery.saveWork}" rendered="#{delivery.actionString=='previewAssessment'
                  || delivery.actionString=='takeAssessment'
                  || delivery.actionString=='takeAssessmentViaUrl'}" />
@@ -523,7 +524,7 @@ document.links[newindex].onclick();
 
   <h:panelGrid columns="1"  border="0">
   <%-- EXIT --%>
-  <h:commandButton type="submit" value="#{deliveryMessages.button_exit}"
+  <h:commandButton type="submit" value="#{deliveryMessages.button_exit}" styleClass="active"
     action="#{delivery.saveAndExit}" id="saveAndExit"
     rendered="#{(delivery.actionString=='previewAssessment'  
                  || delivery.actionString=='takeAssessment'
@@ -606,8 +607,8 @@ document.links[newindex].onclick();
 <!-- end content -->
 </div>
 <f:verbatim></div></f:verbatim>
-<script type="text/javascript" src="/samigo-app/js/questionProgress.js"></script>
-<script type="text/JavaScript">
+<script src="/samigo-app/js/questionProgress.js"></script>
+<script>
 	<%= request.getAttribute("html.body.onload") %> 
 	setLocation(); 
 	checkRadio();

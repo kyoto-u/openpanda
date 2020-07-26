@@ -111,6 +111,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateQueryException;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j
 public class AssessmentFacadeQueries extends HibernateDaoSupport implements AssessmentFacadeQueriesAPI {
@@ -396,7 +397,7 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 		}*/
 
 		RubricsService rubricsService = (RubricsService) SpringBeanLocator.getInstance().getBean("org.sakaiproject.rubrics.logic.RubricsService");
-		rubricsService.deleteRubricAssociationsByItemIdPrefix(assessmentId + ".", RubricsConstants.RBCS_TOOL_SAMIGO);
+		rubricsService.softDeleteRubricAssociationsByItemIdPrefix(assessmentId + ".", RubricsConstants.RBCS_TOOL_SAMIGO);
 
 		assessment.setLastModifiedBy(AgentFacade.getAgentString());
 		assessment.setLastModifiedDate(new Date());
@@ -719,7 +720,7 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 		AgentFacade agent = null;
 		for (AssessmentData a : list) {
 			releaseToGroups = null;
-			if (a.getReleaseTo().equals(AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS)) {
+			if (AssessmentAccessControl.RELEASE_TO_SELECTED_GROUPS.equals(a.getReleaseTo())) {
 				if (groupsForSite == null) {
 					groupsForSite = getGroupsForSite(siteAgentId);
 				}
@@ -1653,6 +1654,8 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 						if(rubricsService.getRubricAssociation(RubricsConstants.RBCS_TOOL_SAMIGO, associationId, fromContext).isPresent()) {
 							transversalMap.put(ItemEntityProvider.ENTITY_PREFIX + "/" + associationId, ItemEntityProvider.ENTITY_PREFIX + "/" + a.getAssessmentBaseId() + "." + item.getItemId());
 						}
+					} catch(HttpClientErrorException hcee) {
+						log.debug("Current user doesn't have permission to get a rubric: {}", hcee.getMessage());
 					} catch(Exception e){
 						log.error("Error while trying to duplicate Rubrics: {} ", e.getMessage());
 					}
@@ -2408,6 +2411,10 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
     	assessment.setLastModifiedBy(AgentFacade.getAgentString());
     	assessment.setLastModifiedDate(new Date());
     	assessment.setStatus(AssessmentIfc.ACTIVE_STATUS);
+
+    	RubricsService rubricsService = (RubricsService) SpringBeanLocator.getInstance().getBean("org.sakaiproject.rubrics.logic.RubricsService");
+    	rubricsService.restoreRubricAssociationsByItemIdPrefix(assessmentId + ".", RubricsConstants.RBCS_TOOL_SAMIGO);
+
     	int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount();
     	while (retryCount > 0) {
     		try {

@@ -95,8 +95,8 @@ import org.sakaiproject.tool.assessment.ui.web.session.SessionUtil;
 import org.sakaiproject.tool.assessment.util.ExtendedTimeDeliveryService;
 import org.sakaiproject.tool.assessment.util.FormatException;
 import org.sakaiproject.tool.assessment.util.SamigoLRSStatements;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
 
 /**
  * <p>Title: Samigo</p>
@@ -116,7 +116,6 @@ public class DeliveryActionListener
   private long previewGradingId = (long)(Math.random() * 1000);
   private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
   private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
-
 
   /**
    * ACTION.
@@ -416,7 +415,7 @@ public class DeliveryActionListener
                   eventLogData.setAssessmentId(Long.valueOf(id));
                   eventLogData.setProcessId(delivery.getAssessmentGradingId());
                   eventLogData.setStartDate(new Date());
-                  eventLogData.setTitle(FormattedText.convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
+                  eventLogData.setTitle(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
                   eventLogData.setUserEid(agentEid); 
                   String site_id = AgentFacade.getCurrentSiteId();
                   //take assessment via url
@@ -550,7 +549,7 @@ public class DeliveryActionListener
     		eventLogData.setAssessmentId(Long.valueOf(id));
     		eventLogData.setProcessId(delivery.getAssessmentGradingId());
     		eventLogData.setStartDate(new Date());
-    		eventLogData.setTitle(FormattedText.convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
+    		eventLogData.setTitle(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
     		eventLogData.setUserEid(agentEid); 
     		String site_id =AgentFacade.getCurrentSiteId();
     		//take assessment via url
@@ -1021,7 +1020,7 @@ public class DeliveryActionListener
       }
 
       // scoring
-      maxPoints += itemBean.getItemData().getIsExtraCredit()?0:itemBean.getMaxPoints();
+      maxPoints += itemBean.getItemData().getIsExtraCredit() ? 0 : itemBean.getMaxPoints();
       points += itemBean.getExactPoints();
       itemBean.setShowStudentScore(delivery.isShowStudentScore());
       itemBean.setShowStudentQuestionScore(delivery.isShowStudentQuestionScore());
@@ -1103,7 +1102,7 @@ public class DeliveryActionListener
       }
 
       // scoring
-      maxPoints += itemBean.getItemData().getIsExtraCredit()==true?0:itemBean.getMaxPoints();
+      maxPoints += itemBean.getItemData().getIsExtraCredit() ? 0 : itemBean.getMaxPoints();
       points += itemBean.getExactPoints();
       itemBean.setShowStudentScore(delivery.isShowStudentScore());
       itemBean.setShowStudentQuestionScore(delivery.isShowStudentQuestionScore());
@@ -1161,7 +1160,7 @@ public class DeliveryActionListener
     }
     // Set comments and points
     Iterator i = itemBean.getItemGradingDataArray().iterator();
-    List itemGradingAttachmentList = new ArrayList();
+    List<ItemGradingAttachment> itemGradingAttachmentList = new ArrayList<>();
     while (i.hasNext())
     {
       ItemGradingData data = (ItemGradingData) i.next();
@@ -1181,7 +1180,7 @@ public class DeliveryActionListener
       // set the itemGradingAttachment only for Review and Grading flows because itemGradingAttachment 
       // can exist in these two flows only (grader can only enter comments for submitted assessments) 
       if (delivery.getActionMode() == 3 || delivery.getActionMode() == 4) {
-    	  itemGradingAttachmentList.addAll(data.getItemGradingAttachmentList());
+          itemGradingAttachmentList.addAll(data.getItemGradingAttachmentSet());
       }
       else {
     	  itemGradingAttachmentList.addAll(new ArrayList<ItemGradingAttachment>());
@@ -1508,9 +1507,9 @@ public class DeliveryActionListener
             }
           }
           // CALCULATED_QUESTION
-          if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION))
-          {
-                key = commaDelimtedCalcQuestionAnswers(item, delivery, itemBean);
+          // Don't recalculate this N * M times when the key doesn't change between iterations
+          if (item.getTypeId().equals(TypeIfc.CALCULATED_QUESTION) && key.isEmpty()) {
+            key = commaDelimitedCalcQuestionAnswers(item, delivery, itemBean);
           }
           //myanswers will get the answer even for matrix and multiple choices survey
           myanswers.add(answer);
@@ -1827,11 +1826,9 @@ public class DeliveryActionListener
       iter2 = shuffled.iterator();
 
       int i = 0;
-      ResourceLoader rb = null;
-      if (rb == null) { 	 
-  		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-  	  }
-      choices.add(new SelectItem("0", rb.getString("matching_select"), "")); // default value for choice
+      ResourceLoader d_rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+      ResourceLoader a_rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+      choices.add(new SelectItem("0", d_rb.getString("matching_select"), "")); // default value for choice
       while (iter2.hasNext())
       {
         AnswerIfc answer = (AnswerIfc) iter2.next();
@@ -1845,7 +1842,7 @@ public class DeliveryActionListener
       GradingService gs = new GradingService();
       if (gs.hasDistractors(item)) {
         String noneOfTheAboveOption = Character.toString(alphabet.charAt(i++));
-        newAnswers.add(noneOfTheAboveOption + "." + " None of the Above");
+        newAnswers.add(noneOfTheAboveOption + ". " + a_rb.getString("none_above"));
         choices.add(new SelectItem(NONE_OF_THE_ABOVE.toString(), noneOfTheAboveOption, ""));
       }
 
@@ -1925,7 +1922,7 @@ public class DeliveryActionListener
           if ((data.getPublishedAnswerId()!=null) && data.getPublishedAnswerId().equals(answer.getId()))
           {
             fbean.setItemGradingData(data);
-            fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
+            fbean.setResponse(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(data.getAnswerText()));
             if (answer.getText() == null)
             {
               answer.setText("");
@@ -2080,7 +2077,7 @@ public class DeliveryActionListener
           {
         	  
             fbean.setItemGradingData(data);
-            fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
+            fbean.setResponse(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(data.getAnswerText()));
             if (answer.getText() == null)
             {
               answer.setText("");
@@ -2346,7 +2343,7 @@ public class DeliveryActionListener
                   if ((data.getPublishedAnswerId()!=null) && (data.getPublishedAnswerId().equals(answer.getId())))
                   {
                       fbean.setItemGradingData(data);
-                      fbean.setResponse(FormattedText.convertFormattedTextToPlaintext(data.getAnswerText()));
+                      fbean.setResponse(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(data.getAnswerText()));
                       if (answer.getText() == null)
                       {
                           answer.setText("");
@@ -2847,7 +2844,7 @@ public class DeliveryActionListener
    * CALCULATED_QUESTION
    * This returns the comma delimted answer key for display such as "42.1,23.19"
    */
-  private String commaDelimtedCalcQuestionAnswers(ItemDataIfc item, DeliveryBean delivery, ItemContentsBean itemBean) {
+  private String commaDelimitedCalcQuestionAnswers(ItemDataIfc item, DeliveryBean delivery, ItemContentsBean itemBean) {
 	  long gradingId = determineCalcQGradingId(delivery);
 	  String agentId = determineCalcQAgentId(delivery, itemBean);
 	  

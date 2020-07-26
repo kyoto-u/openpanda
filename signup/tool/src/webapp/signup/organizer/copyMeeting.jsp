@@ -12,11 +12,11 @@
 			@import url("/sakai-signup-tool/css/signupStyle.css");
 		</style>
 <h:outputText value="#{Portal.latestJQuery}" escape="false"/>
-        <script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
-		<script TYPE="text/javascript" LANGUAGE="JavaScript" src="/sakai-signup-tool/js/signupScript.js"></script>
-		
-    	<script type="text/javascript">
-    		 
+        <script src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+		<script src="/sakai-signup-tool/js/signupScript.js"></script>
+
+		<script>
+
 		     var timeslotTag; 
 		     var maxAttendeeTag;
 		     var originalTsVal; 
@@ -104,6 +104,11 @@
 		    	 isShowAssignToAllChoice();
 		    	 
 		    	 sakai.initSignupBeginAndEndsExact();
+
+                var menuLink = $('#signupMainMenuLink');
+                menuLink.addClass('current');
+                menuLink.html(menuLink.find('a').text());
+
     	 	});
     	 				 	         	         	    	 
 	         function alertTruncatedAttendees(alertMsg,hasTruncated){         	
@@ -173,11 +178,11 @@
 			}
 			
 		</script>
-		
 		<sakai:view_content>
-			<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>      			
-			<h:outputText id="iframeId" value="#{CopyMeetingSignupMBean.iframeId}" style="display:none"/>	
+			<h:outputText id="iframeId" value="#{CopyMeetingSignupMBean.iframeId}" style="display:none"/>
 			<h:form id="meeting">
+				<%@ include file="/signup/menu/signupMenu.jsp" %>
+				<h:outputText value="#{msgs.event_error_alerts} #{messageUIBean.errorMessage}" styleClass="alertMessage" escape="false" rendered="#{messageUIBean.error}"/>
 				<div class="page-header">
 					<sakai:view_title value="#{msgs.event_copy_meeting_page_title}"/>
 				</div>

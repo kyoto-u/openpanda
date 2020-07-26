@@ -46,6 +46,7 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
 import org.sakaiproject.api.app.podcasts.PodcastPermissionsService;
 import org.sakaiproject.api.app.podcasts.PodcastService;
 import org.sakaiproject.api.app.podcasts.exception.PodcastException;
@@ -97,6 +98,8 @@ public class podHomeBean {
 
 	private static final String POD_ADD_ISO_HIDDEN_DATE = "podAddISO8601";
 	private static final String POD_REVISE_ISO_HIDDEN_DATE = "podReviseISO8601";
+	
+	private Boolean fromPermissions = false;
 
 	
 	// error handling variables
@@ -504,44 +507,22 @@ public class podHomeBean {
 		return permissionMsg;
 	}
 
-	 /**
-	  * Constructs call to permissions helper and redirects to it to display
-	  * Podcasts folder permissions page.
-	  */ 
-	 public String processPermissions() {
-			ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-			ToolSession toolSession = SessionManager.getCurrentToolSession();
-			
-			try {
-				String url = "sakai.permissions.helper.helper/tool?session." +
-								PermissionsHelper.DESCRIPTION + "=" + getPermissionsMessage() +
-								"&session." + PermissionsHelper.TARGET_REF + "=" + 
-								podcastService.getPodcastsFolderRef() + 
-								"&session." + PermissionsHelper.PREFIX + "=" + CONTENT +
-								"&session." + PermissionsHelper.ROLES_REF + "=" +
-								"/site/" + podcastService.getSiteId();
-				
-				// Set permission descriptions
-		          if (toolSession != null) {
-		        	  ResourceLoader pRb = new ResourceLoader("org.sakaiproject.api.podcasts.bundle.permissions");
-		        	  HashMap<String, String> pRbValues = new HashMap<String, String>();
-		        	  for (Iterator<Entry<String, String>> mapIter = pRb.entrySet().iterator();mapIter.hasNext();)
-		        	  {
-		        		  Entry<String, String> entry = mapIter.next();
-		        		  pRbValues.put(entry.getKey(), entry.getValue());
-		        	  }
-
-		        	  toolSession.setAttribute("permissionDescriptions", pRbValues); 
-		          }
-
-		        context.redirect(url);
-		    }
-			catch (IOException e) {
-		            throw new RuntimeException("Failed to redirect to helper", e);
-		    }
-		
+	/**
+	 * Constructs call to permissions helper and redirects to it to display
+	 * Podcasts folder permissions page.
+	 */ 
+	public String processPermissions() {
+		if(fromPermissions) {
+			fromPermissions = false;
 			return null;
 		}
+		fromPermissions = true;
+		return "podcastPermissions";
+	}
+	
+	public String getGroupReference() {
+		return podcastService.getPodcastsFolderRef();
+	}
 
 	/**
 	 * Used to inject the podcast service into this bean.
@@ -1161,7 +1142,7 @@ public class podHomeBean {
 
 		FileItem item = (FileItem) event.getNewValue();
 		String fieldName = item.getFieldName();
-		filename = Validator.getFileName(item.getName());
+		filename = FilenameUtils.getName(item.getName());
 		fileSize = item.getSize();
 		fileContentType = item.getContentType();
 //		log.info("processFileUpload(): item: " + item

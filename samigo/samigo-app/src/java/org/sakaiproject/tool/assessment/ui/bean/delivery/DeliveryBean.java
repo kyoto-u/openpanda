@@ -22,15 +22,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -42,9 +43,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -77,6 +75,7 @@ import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.EventLogFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
+import org.sakaiproject.tool.assessment.services.DataException;
 import org.sakaiproject.tool.assessment.services.FinFormatException;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
@@ -95,7 +94,6 @@ import org.sakaiproject.tool.assessment.ui.listener.delivery.LinearAccessDeliver
 import org.sakaiproject.tool.assessment.ui.listener.delivery.SubmitToGradingActionListener;
 import org.sakaiproject.tool.assessment.ui.listener.select.SelectActionListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
 import org.sakaiproject.tool.assessment.ui.model.delivery.TimedAssessmentGradingModel;
 import org.sakaiproject.tool.assessment.ui.queue.delivery.TimedAssessmentQueue;
 import org.sakaiproject.tool.assessment.ui.web.session.SessionUtil;
@@ -103,8 +101,12 @@ import org.sakaiproject.tool.assessment.util.ExtendedTimeDeliveryService;
 import org.sakaiproject.tool.assessment.util.MimeTypesLocator;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /* For delivery: Delivery backing bean */
 @Slf4j
@@ -486,6 +488,10 @@ public class DeliveryBean implements Serializable {
     deliveryAgent = new AgentFacade();
   }
 
+  public TimeZone getUserTimeZone() {
+    return userTimeService.getLocalTimeZone();
+  }
+
   public String getBeginTimeString() {
 	    if (beginTime == null) {
 	      return "";
@@ -713,13 +719,16 @@ public class DeliveryBean implements Serializable {
 	  
 	  SubmitToGradingActionListener listener = new SubmitToGradingActionListener();
 	  // submission remaining and totalSubmissionPerAssessmentHash is updated inside 
-	  // SubmitToGradingListener
-	  try {
-		  listener.processAction(null);
-	  } catch (FinFormatException | SaLengthException e) {
-		  log.debug(e.getMessage());
-		  return "takeAssessment";
-	  }
+    // SubmitToGradingListener
+    try {
+      listener.processAction(null);
+    } catch (FinFormatException | SaLengthException e) {
+      log.debug(e.getMessage());
+      return "takeAssessment";
+    } catch (DataException e) {
+      log.error(e.getMessage());
+      return "discrepancyInData";
+    }
 	  
 	  // We don't need to call completeItemGradingData to create new ItemGradingData for linear access
 	  // because each ItemGradingData is created when it is viewed/answered 
@@ -867,12 +876,15 @@ public class DeliveryBean implements Serializable {
 			  || this.actionMode == TAKE_ASSESSMENT_VIA_URL) {
 		  syncTimeElapsedWithServer();
 		  SubmitToGradingActionListener listener = new SubmitToGradingActionListener();
-		  try {
-			  listener.processAction(null);
-		  } catch (FinFormatException | SaLengthException fine) {
-			  log.debug(fine.getMessage());
-			  return "takeAssessment";
-		  }
+      try {
+        listener.processAction(null);
+      } catch (FinFormatException | SaLengthException e) {
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
 	  }
 
 	  skipFlag = true;
@@ -903,12 +915,15 @@ public class DeliveryBean implements Serializable {
 			  || this.actionMode == TAKE_ASSESSMENT_VIA_URL) {
 		  syncTimeElapsedWithServer();
 		  SubmitToGradingActionListener listener = new SubmitToGradingActionListener();
-		  try {
-			  listener.processAction(null);
-		  } catch (FinFormatException | SaLengthException e) {
-			  log.debug(e.getMessage());
-			  return "takeAssessment";
-		  }
+      try {
+        listener.processAction(null);
+      } catch (FinFormatException | SaLengthException e) {
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
 	  }
 	  
 	  setFromTableOfContents(true);
@@ -941,12 +956,15 @@ public class DeliveryBean implements Serializable {
 			  || this.actionMode == TAKE_ASSESSMENT_VIA_URL) {
     	syncTimeElapsedWithServer();
     	SubmitToGradingActionListener listener = new SubmitToGradingActionListener();
-    	try {
-    		listener.processAction(null);
-    	} catch (FinFormatException | SaLengthException e) {
-  		  log.debug(e.getMessage());
-  		  return "takeAssessment";
-    	}
+      try {
+        listener.processAction(null);
+      } catch (FinFormatException | SaLengthException e) {
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
     }
     
     String returnValue;
@@ -999,9 +1017,12 @@ public class DeliveryBean implements Serializable {
       try {
         listener.processAction(null);
       } catch (FinFormatException | SaLengthException e) {
-		  log.debug(e.getMessage());
-		  return "takeAssessment";
-	  }
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
     }
 
     int oPartIndex = partIndex;
@@ -1056,11 +1077,14 @@ public class DeliveryBean implements Serializable {
       SubmitToGradingActionListener listener =
         new SubmitToGradingActionListener();
       try {
-    	  listener.processAction(null);
+        listener.processAction(null);
       } catch (FinFormatException | SaLengthException e) {
-		  log.debug(e.getMessage());
-		  return "takeAssessment";
-	  }
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
     }
 
     DeliveryActionListener l2 = new DeliveryActionListener();
@@ -1107,12 +1131,15 @@ public class DeliveryBean implements Serializable {
 			  setConfirmation(confirmation);
 			  lastSave = true;
           }
-          try {
-              listener.processAction(null);
-          } catch (FinFormatException | SaLengthException e) {
-              log.debug(e.getMessage());
-              return "takeAssessment";
-          }
+        try {
+          listener.processAction(null);
+        } catch (FinFormatException | SaLengthException e) {
+          log.debug(e.getMessage());
+          return "takeAssessment";
+        } catch (DataException e) {
+          log.error(e.getMessage());
+          return "discrepancyInData";
+        }
       }
       DeliveryActionListener l2 = new DeliveryActionListener();
       l2.processAction(null);
@@ -1143,11 +1170,14 @@ public class DeliveryBean implements Serializable {
       SubmitToGradingActionListener listener =
         new SubmitToGradingActionListener();
       try {
-    	  listener.processAction(null);
+        listener.processAction(null);
       } catch (FinFormatException | SaLengthException e) {
-		  log.debug(e.getMessage());
-		  return "takeAssessment";
-	  }
+        log.debug(e.getMessage());
+        return "takeAssessment";
+      } catch (DataException e) {
+        log.error(e.getMessage());
+        return "discrepancyInData";
+      }
     }
     
     DeliveryActionListener l2 = new DeliveryActionListener();
@@ -1361,7 +1391,7 @@ public class DeliveryBean implements Serializable {
 		  agentEid= "N/A";
 	  }
 	  eventLogData.setUserEid(agentEid);
-	  eventLogData.setTitle(FormattedText.convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
+	  eventLogData.setTitle(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(publishedAssessment.getTitle()));
 	  String site_id= AgentFacade.getCurrentSiteId();
 	  if(site_id == null) {
 		  //take assessment via url
@@ -1655,11 +1685,16 @@ public class DeliveryBean implements Serializable {
   }
 
   public String getSiteId() {
-    siteId = null;
-    Placement currentPlacement = ToolManager.getCurrentPlacement();
-    if(currentPlacement != null)
-      siteId = currentPlacement.getContext();
-    return siteId;
+
+    if (StringUtils.isNotBlank(siteId)) {
+      return siteId;
+    } else {
+      Placement currentPlacement = ToolManager.getCurrentPlacement();
+      if (currentPlacement != null) {
+        siteId = currentPlacement.getContext();
+      }
+      return siteId;
+    }
   }
 
   public String getAgentAccessString() {

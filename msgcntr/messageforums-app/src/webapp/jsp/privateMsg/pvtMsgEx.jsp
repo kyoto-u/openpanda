@@ -11,12 +11,21 @@
 	<sakai:view title="#{msgs.pvt_rcvd_msgs}">
 <!--jsp/privateMsg/pvtMsgEx.jsp-->
 
-		<script type="text/javascript">includeLatestJQuery("msgcntr");</script>
-		<script type="text/javascript" src="/messageforums-tool/js/sak-10625.js"></script>
-		<script type="text/javascript" src="/messageforums-tool/js/forum.js"></script>
-		<script type="text/javascript" src="/messageforums-tool/js/messages.js"></script>
+		<script>includeLatestJQuery("msgcntr");</script>
+		<script src="/messageforums-tool/js/sak-10625.js"></script>
+		<script src="/messageforums-tool/js/forum.js"></script>
+		<script src="/messageforums-tool/js/messages.js"></script>
+        <script>
+            $(document).ready(function() {
+                var menuLink = $('#messagesMainMenuLink');
+                var menuLinkSpan = menuLink.closest('span');
+                menuLinkSpan.addClass('current');
+                menuLinkSpan.html(menuLink.text());
+            });
+        </script>
+        <%@ include file="/jsp/privateMsg/pvtMenu.jsp" %>
 
-		<h:form id="prefs_form_search">
+		<h:form id="prefs_pvt_form">
 
 			<%@ include file="topNav.jsp" %>
 
@@ -33,7 +42,7 @@
 					<h:outputLabel value="#{msgs.cdfm_checkall}"/>
 				</h:panelGroup>
 		    </f:facet>
-				<h:selectBooleanCheckbox value="#{rcvdItems.isSelected}" onclick="updateCount(this.checked); toggleBulkOperations(anyChecked(), 'prefs_form_search');" />
+				<h:selectBooleanCheckbox value="#{rcvdItems.isSelected}" onclick="updateCount(this.checked); toggleBulkOperations(anyChecked(), 'prefs_pvt_form');" />
 		  </h:column>
 		  <h:column>
 				<f:facet name="header">
@@ -100,7 +109,7 @@
 					<h:outputLabel value="#{msgs.cdfm_checkall}"/>
 				</h:panelGroup>
 		    </f:facet>
-		    <h:selectBooleanCheckbox value="#{rcvdItems.isSelected}" onclick="updateCount(this.checked); toggleBulkOperations(anyChecked(), 'prefs_form_search');" />
+		    <h:selectBooleanCheckbox value="#{rcvdItems.isSelected}" onclick="updateCount(this.checked); toggleBulkOperations(anyChecked(), 'prefs_pvt_form');" />
 		  </h:column>
 		  <h:column>
 				<f:facet name="header">
@@ -153,12 +162,12 @@
 		</div>
 
 <%-- Added if user clicks Check All --%>
-    <script language="Javascript" type="text/javascript">
+    <script>
      // setting number checked just in case Check All being processed
      // needed to 'enable' bulk operations
      numberChecked = <h:outputText value="#{PrivateMessagesTool.numberChecked}" />;
 
-     toggleBulkOperations(numberChecked > 0, 'prefs_form_search');
+     toggleBulkOperations(numberChecked > 0, 'prefs_pvt_form');
      </script>
  
    	</h:form>
