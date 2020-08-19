@@ -1,0 +1,143 @@
+.#{$namespace}sakai-profile2 {
+
+	.create-worksite {
+	   .create-worksite-panel {
+	       .content {
+	           .label {
+	               color: #414141;
+	           }
+	       }
+	   }
+	}
+
+	.label{
+		font-size: 110%;
+		padding: 0 0 0 0;
+		line-height: 2.3em;
+		&:not(.notBold) {
+			font-weight: 700;
+		}
+	}
+
+	.recordButton {
+		border-radius: 17px;
+		padding: 7px 30px;
+		background: #D10029;
+		color: white;
+		border-color: #D10029;
+		box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+		margin-bottom: 10px;
+		@include display-flex;
+		@include flex-direction(row);
+		@include align-items(center);
+
+		&:active, &:hover, &:focus {
+			background: #b50024;
+			border-color: #b50024;
+			color: white;
+		}
+	}
+
+	#prev-audio-player audio, .audioPlayer audio {
+		max-width: 100%;
+	}
+
+	.content {
+		font-size: 14px;
+	}
+
+	.navIntraTool {
+	    margin: -2px -14px 0 0;
+	    @media #{$phone}{
+	    	margin-top: 10px;
+	    }
+	}
+
+	.Mrphs-pageColumns--single {
+	    margin: 1em 0 1em 0;
+	    clear: both;
+	}
+
+	.portletBody {
+	    background: #fff;
+	    padding: 2.5em 0 40px 0;
+	}
+
+	/* tabs */
+
+	.tab-row ul {
+	  @extend .nav;
+	  @extend .nav-tabs;
+	  @extend .sakai_tabs;
+	}
+
+	.panel-profile-message{
+		padding: 0.5em;
+		background: #F5F5F5;
+		position: relative;
+	}
+	.profileSayItActionBar {
+		@include display-flex;
+		@include justify-content(space-between);
+		@include align-items(center);
+		margin-top: $standard-space;
+		
+		.act {
+			margin: 0;
+		}
+	}
+
+	.gallery-form{
+		img{
+			cursor: pointer;
+		}
+		.sakai-wicket-iconwithtooltip{
+			position: absolute;
+			margin-top: 0em;
+		} 
+		.addPictureLabel{
+			margin-right: 1.6em; 
+		}
+		.wicket-mfu-container{
+			margin: 1em 0 0 0;
+		}
+		input[type="submit"]{
+			float: right;
+			margin: -1.6em 0 0 0;
+		}
+		.input-file-container{
+			input[type="file"]{
+				@extend .form-control;
+				height: auto !important;
+				position: relative !important;
+				left: 0 !important;
+			}
+		}
+		.label.no-pictures{
+			color: #212121;
+			font-weight: 400;
+		}
+	}
+
+	.table-preferences{
+		max-width: 800px;
+	}
+
+	#privacy-settings{
+
+		max-width: 1200px;
+
+		.row{
+			margin-bottom: 1em;
+		}
+	}
+
+	#searchinput{
+		margin: 0.5em 0 0 0;
+	}
+
+	.profileContent {
+	    max-width: 65em;
+	}
+
+}

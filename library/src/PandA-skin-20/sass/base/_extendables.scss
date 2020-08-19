@@ -1,0 +1,488 @@
+@import "base/compass";
+
+.blurry{
+	@include filter( blur(0.1em) );
+}
+
+.mobile_blocked{
+	@media #{$phone}{
+		display: inline;
+		td{
+			display: block;
+		}
+	}
+}
+
+.space_mobile{
+	@media #{$phone}{
+		background: darken( $background-color, 2% );
+		border-top:    1px solid darken( $background-color, 10% );
+		border-bottom: 1px solid darken( $background-color, 10% );
+		margin: 0.5em -1.02em;
+		padding: 1em 0.95em;
+		box-shadow: inset 0px 0px 7px 0px rgba(0,0,0,0.25);
+	}
+}
+
+@mixin bs-callout($color, $bgcolor) {
+  display: block;
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border: 1px solid;
+  border-left-width: 5px;
+  border-color: lighten($color, 25%);
+  border-left-color: $color;
+  color: darken($color, 30%);
+  background-color: $bgcolor;
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    color: darken($color, 25%);
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  code, .highlight {
+    background-color: #fff;
+  }
+}
+
+.bs-callout-primary, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+  @include bs-callout($info-color, $info-background-color);
+}
+
+.bs-callout-success, .messageValidation, .messageSuccess {
+  @include bs-callout($ok-color, $ok-background-color);
+}
+.bs-callout-warn, .bs-callout-alert, .messageWarning, .messageConfirmation {
+  @include bs-callout($warn-color, $warn-background-color);
+}
+.bs-callout-danger, .bs-callout-error, .messageError {
+  @include bs-callout($error-color, $error-background-color);
+}
+
+@mixin sakai-banner($bordercolor, $bgcolor, $color, $icon, $isInline: false) {
+	position: relative;
+	@if $isInline {
+		display: inline-block;
+		margin: 0;
+		padding: 0 $standard-space;
+	} @else {
+		display: block;
+		margin: $standard-spacing 0;
+		padding: $standard-spacing;
+	}
+	border-left: calc( #{$standard-spacing} / 2) solid $bordercolor;
+	background-color: $bgcolor;
+	color: $color;
+	
+	// display an icon indicating banner type on the left of the text
+	&:before {
+		content: '';
+		@extend .fa;
+		@extend .fa-fw;		// fixed width icons
+		@extend #{$icon};	// icon passed in through mixin's parameter
+		margin-right: $standard-space;	// space between icon and message text
+		color: $bordercolor;
+	}
+	
+	// display a closing X on the right of the banner to indicate that the banner is dismissible
+	.dismiss {
+		@if $isInline == false {
+			position: absolute;
+			top: $standard-spacing;			// space between icon and top edge of banner
+			right: $standard-spacing;		// space between icon and right edge of banner
+		} @else {
+			margin-left: $standard-space;	// space between icon and end of message text
+		}
+		text-decoration: none;
+		
+		span {
+			font-size: 0;		// hide the accessible text
+		}
+		
+		&:before {
+			content: '';
+			@extend .fa;
+			@extend .fa-fw;	// fixed width icons
+			@extend .fa-close;
+		}
+	}
+	
+	// any links in the banners should have the same text color contrast and be underlined
+	a[href] {
+		color: $color;
+		text-decoration: underline;
+	}
+}
+
+.sak-banner-info {
+	@include sakai-banner($infoBanner-bordercolor, $infoBanner-bgcolor, $text-color, $infoBanner-icon, false);
+}
+.sak-banner-info-inline {
+	@include sakai-banner($infoBanner-bordercolor, $infoBanner-bgcolor, $text-color, $infoBanner-icon, true);
+}
+.sak-banner-success {
+	@include sakai-banner($successBanner-bordercolor, $successBanner-bgcolor, $text-color, $successBanner-icon, false);
+}
+.sak-banner-success-inline {
+	@include sakai-banner($successBanner-bordercolor, $successBanner-bgcolor, $text-color, $successBanner-icon, true);
+}
+.sak-banner-warn {
+	@include sakai-banner($warnBanner-bordercolor, $warnBanner-bgcolor, $text-color, $warnBanner-icon, false);
+}
+.sak-banner-warn-inline {
+	@include sakai-banner($warnBanner-bordercolor, $warnBanner-bgcolor, $text-color, $warnBanner-icon, true);
+}
+.sak-banner-error {
+	@include sakai-banner($errorBanner-bordercolor, $errorBanner-bgcolor, $text-color, $errorBanner-icon, false);
+}
+.sak-banner-error-inline {
+	@include sakai-banner($errorBanner-bordercolor, $errorBanner-bgcolor, $text-color, $errorBanner-icon, true);
+}
+.sak-banner-dismiss {
+	padding-right: calc(#{$standard-spacing} + 1.2em + #{$standard-spacing});		// allow enough room for dismiss "X"
+}
+
+@mixin icon( $width : $icon-size, $height : $icon-size ){
+	border: 0px none;
+	display: inline-block;
+	height:  $height;
+	width:   $width;
+	&:hover{
+		opacity: 0.5;
+	}
+}
+
+@mixin toolicon( $width : $icon-size, $height : $icon-size ){
+	
+	@if $skin-with-icons {
+		border:  0px none;
+		display: inline-block;
+		height:  $height;
+		width:   $width;
+		margin:  0 0.25em 0.15em 0;
+	}
+}
+
+.select{
+	background-color: $background-color;
+	background-image: url("images/icon-arrow-down.png");
+	background-position: right 50%;
+	background-repeat: no-repeat;
+	color: $text-color;
+	font-family: $font-family;
+	font-size: #{$default-font-size - 1};
+	padding: 0.3em 2.2em 0.3em 0.5em;
+	text-align: left;
+	max-width: 100%;
+	@include appearance(none);
+	@include border-radius(3px);
+	&::-ms-expand {
+	    display: none;
+	}
+	
+	&[multiple], &[size]:not([size='1']) {
+		background-image: none;
+	}
+	
+	&:focus {
+		box-shadow: 0px 0px $focus-outline-width $focus-outline-width $focus-outline-color;
+	}
+	
+	&[disabled="disabled"],&[disabled],&[disabled="true"] {
+		opacity: 0.7;
+		background-color: #f3f3f3;
+		cursor: not-allowed;
+	}
+}
+
+.nav.nav-tabs, .sakai_tabs{
+	margin: 0 0.4em 0 0;
+	> li{
+		&.active, &.selected, &.activeTab{
+			> a{
+				background: $tool-tab-active-background-color;
+				border-top: 1px solid #ddd;
+				border-left: 1px solid #ddd;
+				border-right: 1px solid #ddd;
+				border-bottom: 1px solid $tool-tab-active-background-color !important;
+				color: $primary-color;
+				&:hover{
+					background: $tool-tab-active-background-color;
+					color: $primary-color;
+				}
+			}
+		}
+		> a{
+			background: $tool-tab-background-color;
+			border: 1px solid #ddd !important;
+			color: $text-color;
+			cursor: pointer;
+			margin: 0 0em 0 0.5em;
+			text-decoration: none;
+		}
+	}
+}
+
+@mixin sakai_button($sb-text-color,
+					$sb-background,
+					$sb-border-color,
+					$sb-hover-text-color,
+					$sb-hover-background,
+					$sb-hover-border-color,
+					$sb-active-text-color,
+					$sb-active-background,
+					$sb-active-border-color,
+					$sb-text-transform,
+					$sb-font-weight,
+					$sb-shadow,
+					$sb-hover-shadow,
+					$sb-active-shadow) {
+	display: inline-block;
+	margin: 0;
+	padding: 7px $standard-spacing;
+	border: 1px solid $sb-border-color;
+	@include border-radius($button-radius);
+	background: $sb-background;
+	font-family: $font-family;
+	font-size: 1em;
+	font-weight: $sb-font-weight;
+	line-height: 18px;
+	color: $sb-text-color;
+	text-decoration: none;
+	text-transform: $sb-text-transform;
+	cursor: pointer;
+	@include appearance(none);
+	box-shadow: $sb-shadow;
+
+	&:before { // icon
+		color: $sb-text-color;
+	}
+
+	&:focus {
+		outline: $sakai-focus-outline;
+		outline-offset: $focus-outline-offset;
+	}
+
+	&:hover, &:focus {
+		color: $sb-hover-text-color;
+		text-decoration: none;
+		background: $sb-hover-background;
+		border-color: $sb-hover-border-color;
+		box-shadow: $sb-hover-shadow;
+		&:before { // icon
+			color: $sb-hover-text-color;
+		}
+	}
+
+	&:active {
+		outline: 0;		// no focus outline on click
+		color: $sb-active-text-color;
+		text-decoration: none;
+		background: $sb-active-background;
+		border-color: $sb-active-border-color;
+		box-shadow: $sb-active-shadow;
+		
+		&:before { // icon
+			color: $sb-active-text-color;
+		}
+	}
+
+	&[disabled="disabled"], &[disabled], &[disabled="true"], &[class="disabled"] {
+		&, &:hover, &:active, &:focus {
+			color: $button-disabled-text-color;
+			text-decoration: none;
+			background: $button-disabled-background;
+			border-color: $button-disabled-border-color;
+			box-shadow: $button-disabled-shadow;
+			cursor: not-allowed;
+		}
+	}
+}
+
+// the primary button is the primary action task at hand (as opposed to secondary actions that are less utilized)
+@mixin sakai_primary_button() {
+	@include sakai_button(	$button-primary-text-color,
+							$button-primary-background,
+							$button-primary-border-color,
+							$button-primary-hover-text-color,
+							$button-primary-hover-background,
+							$button-primary-hover-border-color,
+							$button-primary-active-text-color,
+							$button-primary-active-background,
+							$button-primary-active-border-color,
+							$button-primary-text-transform,
+							$button-primary-font-weight,
+							$button-primary-shadow,
+							$button-primary-hover-shadow,
+							$button-primary-active-shadow);
+}
+
+// the standard button design for non-primary action buttons (opposite of sakai_primary_button above)
+@mixin sakai_secondary_button() {
+	@include sakai_button(	$button-text-color,
+							$button-background,
+							$button-border-color,
+							$button-hover-text-color,
+							$button-hover-background,
+							$button-hover-border-color,
+							$button-active-text-color,
+							$button-active-background,
+							$button-active-border-color,
+							$button-text-transform,
+							$button-font-weight,
+							$button-shadow,
+							$button-hover-shadow,
+							$button-active-shadow);
+}
+
+button.btn-primary, .act .active {
+	@include sakai_primary_button();
+}
+
+.button_color, button:not(.fc-button), .button, a[href].button, button.ui-state-default, .btn-group .btn, .btn.btn-default, .button.link, a.btn-link, button.btn-link {
+	@include sakai_secondary_button();
+}
+
+.input-group-btn .btn {
+  margin: 0 0 0 -1px;
+}
+
+a.noPointers, input.noPointers {
+	pointer-events: none;
+}
+
+.act {
+	@include display-flex;
+	@include flex-wrap(wrap);
+	@include align-items(center);
+	margin: $standard-spacing 0;
+	
+	> input, > button, > a, > .active {
+		margin-right: $standard-space;
+		
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
+/*** Begin button spinner overlay ***/
+@-moz-keyframes rotate {
+	from {-moz-transform: rotate(0deg);}
+	to {-moz-transform: rotate(360deg);}
+}
+
+@-webkit-keyframes rotate {
+	from {-webkit-transform: rotate(0deg);}
+	to {-webkit-transform: rotate(360deg);}
+}
+
+@keyframes rotate {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
+.spinButton, .spinSelect {
+	position: relative;
+}
+
+.spinButton:after, .spinPlaceholder:after, .spinSelect:after {
+	content: "";
+	background: url("images/ring58.png") center center no-repeat;
+	-moz-animation-name: rotate;
+	-moz-animation-duration: 1.6s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+	-webkit-animation-name: rotate;
+	-webkit-animation-duration: 1.6s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	animation-name: rotate;
+	animation-duration: 1.6s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	display: inline;
+	vertical-align: middle;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.spinSelect:after {
+	left: initial;
+	right: 4px;
+	width: 16px;
+}
+
+.spinPlaceholder, .allocatedSpinPlaceholder {
+	position: relative;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 5px;
+}
+
+.spinnerBesideContainer { 
+	@include display-flex;
+	@include align-items( center );
+	label {
+		margin: 0 4px 0 0;
+	}
+	select {
+		margin-bottom: 0px;
+	}
+}
+
+/*** End button spinner overlay ***/
+.ui-dialog.ui-widget {
+	@media #{$phone}{
+		width: 95% !important; 
+		left: 2.5% !important;
+	}
+}
+
+.ui-dialog .ui-dialog-buttonpane button{
+	@include sakai_primary_button();
+}
+
+label.panelGridLabel{
+	margin-right: 0.5em;
+}
+
+.inputColorContainer{
+	input{
+		@media #{$phone}{
+			display: inline-block;
+			max-width: calc( 100% - 20px);
+		}
+	}
+	td{
+		vertical-align: baseline;
+	}
+}
+
+/*** Drop files bar for Resources & Dropbox ***/
+.dropzone {
+	overflow: visible;
+	border: 2px dashed $tool-menu-color !important;
+	border-radius: 5px;
+	background-color: $tool-menu-background-color !important;
+	&:hover {
+		border-color: lighten( $tool-menu-color, 5% ) !important;
+		background-color: lighten( $tool-menu-background-color, 5% ) !important;
+	}
+	
+	.dz-progress{
+		top: 70% !important;
+	}
+}
+
+.dropzone .dz-message .note {
+	font-size: 0.8em;
+	font-weight: 200;
+	display: block;
+	margin-top: 1.4rem;
+}
