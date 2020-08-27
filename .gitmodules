@@ -1,3 +1,6 @@
 [submodule "sakora-csv"]
 	path = sakora-csv
 	url = https://github.com/sakaicontrib/sakora-csv
+[submodule "sakai-extension"]
+	path = sakai-extension
+	url = https://github.com/kaltura/sakai-extension
