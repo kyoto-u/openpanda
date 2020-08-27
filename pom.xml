@@ -125,6 +125,7 @@
                 <module>panda</module>
                 <module>pdfgenerationservice</module>
                 <module>sakora-csv</module>
+                <module>sakai-extension</module>
             </modules>
         </profile>
         <profile>
@@ -216,6 +217,8 @@
                 <module>yaft</module>
                 <module>panda</module>
                 <module>pdfgenerationservice</module>
+                <module>sakora-csv</module>
+                <module>sakai-extension</module>
             </modules>
         </profile>
 
