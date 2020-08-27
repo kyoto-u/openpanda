@@ -396,6 +396,7 @@ public class ReportManagerImpl extends HibernateDaoSupport implements ReportMana
 		}else{
 			// inverse
 			rpp.inverseUserSelection = true;
+			rpp.userIds = null;
 		}
 		params.setWhoUserIds(rpp.userIds);
 		
