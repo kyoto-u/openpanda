@@ -123,6 +123,7 @@
                 <module>wicket</module>
                 <module>panda</module>
                 <module>pdfgenerationservice</module>
+                <module>sakora-csv</module>
             </modules>
         </profile>
         <profile>
