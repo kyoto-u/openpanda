@@ -124,6 +124,7 @@
                 <module>pdfgenerationservice</module>
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
+                <module>attendance</module>
             </modules>
         </profile>
         <profile>
@@ -214,6 +215,7 @@
                 <module>pdfgenerationservice</module>
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
+                <module>attendance</module>
             </modules>
         </profile>
 

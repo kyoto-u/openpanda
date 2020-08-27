@@ -4,3 +4,6 @@
 [submodule "sakai-extension"]
 	path = sakai-extension
 	url = https://github.com/kaltura/sakai-extension
+[submodule "attendance"]
+	path = attendance
+	url = https://github.com/sakaicontrib/attendance
