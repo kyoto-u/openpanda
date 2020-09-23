@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<registration>
+	<tool id="sakai.courselink" 
+		title="Courselink Tool" 
+		description="This description is set in the courselink-tool registration file, found in the webapp/tools directory">
+
+		<!--<category name="course" />
+      		<category name="project" />-->
+		<category name="myworkspace" />
+      		<category name="sakai.admin" />
+
+		<configuration name="functions.require" /> 
+		
+    </tool>
+</registration>
+
