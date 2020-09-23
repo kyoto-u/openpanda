@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    	<!-- Bring in the hibernate related beans -->
+    	<import resource="spring-hibernate.xml" />
+    	<import resource="hibernate-hbms.xml" />
+
+	<!--  SakaiProxy -->
+ 	<bean id="courselink.kyoto_u.ac.jp.logic.SakaiProxy"
+    	class="courselink.kyoto_u.ac.jp.logic.SakaiProxyImpl"
+        init-method="init">
+        <!-- API injection -->
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+		<property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService" />
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+		<property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+	    <property name="cmService" ref="org.sakaiproject.coursemanagement.api.CourseManagementService" />
+            <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+            <property name="aliasService" ref="org.sakaiproject.alias.api.AliasService" />
+	</bean>
+
+	<!-- ProjectLogic -->
+	<bean id="courselink.kyoto_u.ac.jp.logic.ProjectLogic"
+    	class="courselink.kyoto_u.ac.jp.logic.ProjectLogicImpl"
+    	init-method="init" >
+        <property name="dao"
+            ref="courselink.kyoto_u.ac.jp.dao.CourselinkDao" />
+        <property name="sakaiProxy"
+            ref="courselink.kyoto_u.ac.jp.logic.SakaiProxy" />
+	<property name="defaultTools">
+		<list>
+                        <!-- SAKU-20: Shoji Kajita -->
+			<!-- <value>home</value> -->
+			<value>sakai.schedule</value>
+			<value>sakai.announcements</value>
+			<value>sakai.resources</value>
+			<value>sakai.assignment.grades</value>
+			<value>sakai.dropbox</value>
+			<value>sakai.mailbox</value>
+			<value>sakai.siteinfo</value>
+			<!-- value>sakai.dashboard</value -->
+		</list>
+	</property>
+    </bean>
+
+    <!-- create an entity provider bean -->
+    <bean class="courselink.kyoto_u.ac.jp.logic.entity.CourselinkEntityProvider"	init-method="init"
+>
+        <property name="logic" ref="courselink.kyoto_u.ac.jp.logic.ProjectLogic" />
+        <property name="sakaiProxy"
+            ref="courselink.kyoto_u.ac.jp.logic.SakaiProxy" />
+        <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
+	<property name="entityBroker" ref="org.sakaiproject.entitybroker.EntityBroker" />
+	<property name="entityManager"
+		ref="org.sakaiproject.entity.api.EntityManager" />
+     </bean>
+
+</beans>

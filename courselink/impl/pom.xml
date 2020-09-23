@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>courselink</artifactId>
+		<groupId>kyoto-u</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<name>Courselink Impl</name>
+	<groupId>kyoto-u</groupId>
+	<artifactId>courselink-impl</artifactId>
+	<packaging>jar</packaging>
+	<dependencies>
+
+		<dependency>
+			<groupId>kyoto-u</groupId>
+			<artifactId>courselink-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+        	<dependency>
+            		<groupId>org.springframework</groupId>
+            		<artifactId>spring-orm</artifactId>
+        	</dependency>
+        	<dependency>
+            		<groupId>org.hibernate</groupId>
+            		<artifactId>hibernate-core</artifactId>
+        	</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<!-- Sakai dependencies -->
+        	<!-- generic DAO -->
+        	<dependency>
+            		<groupId>org.sakaiproject.genericdao</groupId>
+            		<artifactId>generic-dao</artifactId>
+        	</dependency>
+
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-component-manager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-util</artifactId>
+		</dependency>
+        	<dependency>
+            		<groupId>org.sakaiproject.entitybroker</groupId>
+            		<artifactId>entitybroker-api</artifactId>
+        	</dependency>
+        	<dependency>
+            		<groupId>org.sakaiproject.entitybroker</groupId>
+            		<artifactId>entitybroker-utils</artifactId>
+        	</dependency>
+    		<dependency>
+      	    		<groupId>org.sakaiproject.edu-services.course-management</groupId>
+      	    		<artifactId>coursemanagement-api</artifactId>
+    		</dependency>
+
+	</dependencies>
+	<build>
+		<!-- configure the build to use the standard maven structure -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+	</build>
+</project>
