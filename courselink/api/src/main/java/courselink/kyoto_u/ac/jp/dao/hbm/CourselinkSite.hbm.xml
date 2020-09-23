@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- put your value object in the class name,
+		the table name is optional but you should specify it to avoid collisions -->
+	<class name="courselink.kyoto_u.ac.jp.model.CourselinkSite"
+			table="courselink_site">
+
+		<!-- create the primary key id, using native is typically the best way -->
+		<id name="id" type="long">
+	    	<generator class="native">
+                <param name="sequence">courselink_SITE_ID_SEQ</param>
+	    	</generator>
+		</id>
+		<property name="siteId" type="string" length="99" not-null="true" column="site_id"/>
+		<property name="createUserId" type="string" length="255" column="create_user_id"/>
+		<property name="createDate" type="java.util.Date" column="create_date"/>
+
+		<set
+			name="courselinkRequests"
+			lazy="false"
+			inverse="true"
+			cascade="all"
+		>
+			<key>
+				<column name="courselink_site_id" />
+			</key>
+			<one-to-many
+				class="courselink.kyoto_u.ac.jp.model.CourselinkRequest"
+			/>
+		</set>
+	</class>
+	<query name="findSitesByRequestOwnerId">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite
+		left join fetch courselinkSite.courselinkRequests courselinkRequest
+		where courselinkRequest.ownerId = :requestOwnerId]]>
+  	</query>
+	<query name="findSitesNoRequests">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite
+		left join fetch courselinkSite.courselinkRequests courselinkRequest
+		where courselinkRequest = null]]>
+  	</query>
+  	<query name="findAll">
+  	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite]]>
+  	</query>
+  	<query name="findAllBySiteId">
+  	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite
+  	  where siteId = :siteId]]>
+  	</query>
+</hibernate-mapping>
