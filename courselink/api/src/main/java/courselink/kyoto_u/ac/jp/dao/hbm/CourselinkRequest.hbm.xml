@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- put your value object in the class name,
+		the table name is optional but you should specify it to avoid collisions -->
+	<class name="courselink.kyoto_u.ac.jp.model.CourselinkRequest"
+			table="courselink_request">
+
+		<!-- create the primary key id, using native is typically the best way -->
+		<id name="id" type="long">
+	    	<generator class="native">
+                <param name="sequence">courselink_REQUEST_ID_SEQ</param>
+	    	</generator>
+		</id>
+		<property name="ownerId" type="string" length="255" not-null="true"  index="courselinkRequestIndex" column="owner_id"/>
+		<property name="insertDate" type="java.util.Date" column="insert_date"/>
+		<property name="status" type="integer" column="status" not-null="true" />
+		<property name="memo" type="string" length="255"  column="memo"/>
+		<many-to-one
+			name="courselinkSite"
+			class="courselink.kyoto_u.ac.jp.model.CourselinkSite"
+			not-null="false"
+			cascade="all"
+			index="courselinkRequestIndex"
+		>
+			<column name="courselink_site_id"/>
+		</many-to-one>
+	</class>
+	<query name="findRequests">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkRequest courselinkRequest
+		left join fetch courselinkRequest.courselinkSite courselinkSite
+		where courselinkRequest.status = :requestStatus]]>
+  	</query>
+	<query name="findRequestsBySiteId">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkRequest courselinkRequest
+		left join fetch courselinkRequest.courselinkSite courselinkSite
+		where courselinkSite.siteId = :siteId and courselinkRequest.status = :requestStatus]]>
+  	</query>
+	<query name="findRequestsByOwnerId">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkRequest courselinkRequest
+		left join fetch courselinkRequest.courselinkSite courselinkSite
+		where courselinkRequest.ownerId = :requestOwnerId and courselinkRequest.status = :requestStatus]]>
+  	</query>
+	<query name="findRequestsByDate">
+	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkRequest courselinkRequest
+		left join fetch courselinkRequest.courselinkSite courselinkSite
+		where courselinkRequest.insertDate <= :insertDate]]>
+  	</query>
+	<query name="removeRequestsByDate">
+	<![CDATA[delete courselink.kyoto_u.ac.jp.model.CourselinkRequest courselinkRequest
+		where courselinkRequest.insertDate <= :insertDate]]>
+  	</query>
+
+</hibernate-mapping>

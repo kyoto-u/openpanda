@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <!-- define the list of HBM mapping files -->
+    <bean id="courselink.kyoto_u.ac.jp.HBMMappingList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <value>courselink/kyoto_u/ac/jp/dao/hbm/CourselinkSite.hbm.xml</value>
+                <value>courselink/kyoto_u/ac/jp/dao/hbm/CourselinkRequest.hbm.xml</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- create a DAO bean, use the hibernate implementation -->
+    <bean id="courselink.kyoto_u.ac.jp.dao.CourselinkDaoTarget"
+            class="courselink.kyoto_u.ac.jp.dao.CourselinkDaoImpl"
+            init-method="init">
+        <property name="sessionFactory"
+            ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+        <property name="persistentClasses">
+            <list>
+                <value>courselink.kyoto_u.ac.jp.model.CourselinkSite</value>
+                <value>courselink.kyoto_u.ac.jp.model.CourselinkRequest</value>
+            </list>
+        </property>
+    </bean>
+
+	<!-- This wraps our DAO so that the transactions are managed -->
+	<bean id="courselink.kyoto_u.ac.jp.dao.CourselinkDao"
+			class="org.sakaiproject.genericdao.springutil.CurrentClassLoaderTxProxyFactoryBean">
+		<property name="transactionManager"
+			ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+		<property name="target"
+			ref="courselink.kyoto_u.ac.jp.dao.CourselinkDaoTarget" />
+		<property name="transactionAttributes">
+			<props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="count*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- create a data preloading bean that has transaction protection -->
+	<bean id="courselink.kyoto_u.ac.jp.dao.PreloadData"
+			class="courselink.kyoto_u.ac.jp.dao.PreloadDataImpl"
+			init-method="init">
+		<property name="dao"
+			ref="courselink.kyoto_u.ac.jp.dao.CourselinkDao" />
+	</bean>
+
+</beans>
