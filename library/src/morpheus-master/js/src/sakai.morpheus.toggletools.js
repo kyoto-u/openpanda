@@ -27,27 +27,15 @@ portal.maximiseTool = function () {
 
   document.getElementsByTagName("body").item(0).classList.add("tool-maximised");
   portal.updateMaximisedToolsPref(true);
-  $PBJQ("sakai-maximise-button").each((i ,e) => e.setMaximised());
-
-  $PBJQ(document)
-    .off('keyup.usernav')
-    .on("keyup.maximise", e => {
-
-      // Exit fullscreen mode on escape
-      if (e.keyCode === 27) {
-        e.stopPropagation();
-        $PBJQ(document).off("keyup.maximise");
-        $PBJQ("sakai-maximise-button").each((i ,e) => e.minimise());
-      }
-    });
+  document.querySelectorAll("sakai-maximise-button").forEach(e => e.setMaximised());
+  $PBJQ(document).off('keyup.usernav');
 }
 
 portal.minimiseTool = function () {
 
   document.getElementsByTagName("body").item(0).classList.remove("tool-maximised");
   portal.updateMaximisedToolsPref(false);
-  $PBJQ(document).off("keyup.maximise");
-  $PBJQ("sakai-maximise-button").each((i ,e) => e.setMinimised());
+  document.querySelectorAll("sakai-maximise-button").forEach(e => e.setMinimised());
 }
 
 portal.toggleMinimizeNav = function () {
@@ -70,6 +58,8 @@ portal.toggleMinimizeNav = function () {
     el.attr('aria-pressed', true);
   }
 };
+
+document.querySelector("#maximised-indicator a").addEventListener("click", portal.minimiseTool);
 
 $PBJQ("#toolsNav-toggle-li button").on("click", portal.toggleMinimizeNav);
 
@@ -95,10 +85,10 @@ $PBJQ(document).ready(function () {
             }
             $PBJQ('#subSites').css(subsitesPosition);
             $PBJQ('#subSites').addClass('floating');
-			
+
             // focus on first subsite for accessibility recommendations
             $PBJQ('#subSites').find('li a').first().focus();
-			
+
             if ($PBJQ("#toggleSubsitesLink").position().top < 240) {
                 $PBJQ("#subSites.floating").addClass('ontop');
             }
