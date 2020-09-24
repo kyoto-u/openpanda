@@ -546,7 +546,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     Assignment a = getAssignment(refReckoner.getId());
                                     String filename = a.getTitle() + "_" + date;
                                     res.setContentType("application/zip");
-                                    res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+                                    //res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+                                    res.setHeader("Content-Disposition", "attachment; filename = bulk_download.zip");
 
                                     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
                                         @Override
