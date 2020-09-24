@@ -205,8 +205,9 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 				final String enrollmentSetId = dataMap.get("enrollmentSetId");
 				final String enrollmentStatus = dataMap.get("enrollmentStatus");
 
-				final String filename = createFilename(site, groupId, viewType, enrollmentSetId, enrollmentStatus);
-				response.addHeader("Content-Disposition", "attachment; filename=" + filename);
+				//final String filename = createFilename(site, groupId, viewType, enrollmentSetId, enrollmentStatus);
+				//response.addHeader("Content-Disposition", "attachment; filename=" + filename);
+				response.addHeader("Content-Disposition", "attachment; filename=exported_roster.xlsx");
 				response.addHeader("Content-Encoding", "base64");
 				response.addHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
