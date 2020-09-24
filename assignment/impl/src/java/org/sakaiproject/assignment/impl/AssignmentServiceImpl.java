@@ -178,7 +178,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
@@ -540,7 +539,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     Assignment a = getAssignment(refReckoner.getId());
                                     String filename = a.getTitle() + "_" + date;
                                     res.setContentType("application/zip");
-                                    res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+                                    //res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+                                    res.setHeader("Content-Disposition", "attachment; filename = bulk_download.zip");
 
                                     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
                                         @Override
