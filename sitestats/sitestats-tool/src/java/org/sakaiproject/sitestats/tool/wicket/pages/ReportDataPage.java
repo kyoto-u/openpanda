@@ -18,6 +18,8 @@
  */
 package org.sakaiproject.sitestats.tool.wicket.pages;
 
+import static org.apache.wicket.markup.html.WebPage.*;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -26,12 +28,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -48,15 +47,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.EmptyRequestHandler;
-
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.sitestats.api.EventStat;
-import org.sakaiproject.sitestats.api.PrefsData;
 import org.sakaiproject.sitestats.api.LessonBuilderStat;
+import org.sakaiproject.sitestats.api.PrefsData;
 import org.sakaiproject.sitestats.api.ResourceStat;
 import org.sakaiproject.sitestats.api.SitePresence;
 import org.sakaiproject.sitestats.api.Stat;
@@ -77,6 +77,8 @@ import org.sakaiproject.sitestats.tool.wicket.models.ReportDefModel;
 import org.sakaiproject.sitestats.tool.wicket.providers.ReportsDataProvider;
 import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Nuno Fernandes
@@ -604,7 +606,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportXls() {
-		String fileName = getExportFileName();
+		//String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		byte[] hssfWorkbookBytes = Locator.getFacade().getReportManager().getReportAsExcel(report, fileName);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
@@ -630,7 +633,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportCsv() {
-		String fileName = getExportFileName();
+		//String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		String csvString = Locator.getFacade().getReportManager().getReportAsCsv(report);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
@@ -656,7 +660,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportPdf() {
-		String fileName = getExportFileName();
+		//String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		byte[] pdf = Locator.getFacade().getReportManager().getReportAsPDF(report);
 
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
