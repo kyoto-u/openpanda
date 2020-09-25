@@ -15,8 +15,6 @@
  */
 package org.sakaiproject.gradebookng.tool.panels.importExport;
 
-import com.opencsv.CSVWriter;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,6 +51,8 @@ import org.sakaiproject.service.gradebook.shared.CourseGrade;
 import org.sakaiproject.service.gradebook.shared.SortType;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
+
+import com.opencsv.CSVWriter;
 
 public class ExportPanel extends BasePanel {
 
@@ -288,10 +288,16 @@ public class ExportPanel extends BasePanel {
 			tempFile = File.createTempFile("gradebookTemplate", ".csv");
 
 			//CSV separator is comma unless the comma is the decimal separator, then is ;
-			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.ISO_8859_1.name())){
+			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8.name())){
 				FormattedText formattedText = ComponentManager.get(FormattedText.class);
 				CSVWriter csvWriter = new CSVWriter(fstream, ".".equals(formattedText.getDecimalSeparator()) ? CSVWriter.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
-				
+
+				try {
+					fstream.write(BOM);
+				} catch(IOException e) {
+					// tried
+				}
+
 				// Create csv header
 				final List<String> header = new ArrayList<>();
 				if (!isCustomExport || this.includeStudentId) {
