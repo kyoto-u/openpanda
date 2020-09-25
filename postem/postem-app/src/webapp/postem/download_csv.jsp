@@ -9,6 +9,7 @@
   String fileName = "postem_" + titleName + ".csv";
   String escapedFileName = URLEncoder.encode(fileName, "UTF-8");
   String userAgent = request.getHeader("User-Agent");
+  String BOM = "\uFEFF";
 
   if (userAgent != null && userAgent.contains("MSIE")) {
     response.setHeader("Content-Disposition", "attachment; filename=" + escapedFileName);
@@ -30,6 +31,7 @@
 	response.setHeader("Cache-control", "must-revalidate");
 	
 	String csv = tool.getCsv();
+	out.print(BOM);
 	out.print(csv);
 	//out.flush();
 	request.getSession(false).invalidate();
