@@ -29,9 +29,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.component.cover.ServerConfigurationService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * NOTE: CSV export capabilities are extremely limited! UTF-16 text (such as
@@ -45,11 +45,14 @@ public class SpreadsheetDataFileWriterCsv implements SpreadsheetDataFileWriter {
 		SpreadsheetUtil.setEscapedAttachmentHeader(response, fileName + ".csv");
 
 		String csvString = getAsCsv(spreadsheetData);
-		response.setContentLength(csvString.length());
 		OutputStream out = null;
 		try {
+			final byte[] data = csvString.getBytes("UTF-8");
+			final byte[] bomData = new byte[]{ (byte)0xef,(byte)0xbb, (byte)0xbf };
+			response.setContentLength(data.length+bomData.length);
 			out = response.getOutputStream();
-			out.write(csvString.getBytes("UTF-8"));
+			out.write(bomData);
+			out.write(data);
 			out.flush();
 		} catch (IOException e) {
 			log.error(e.getMessage());
