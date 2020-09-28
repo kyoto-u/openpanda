@@ -256,7 +256,7 @@ $(document).ready(function(){
   </h:panelGroup>
   
   <h:panelGroup>
-	<sakai:pager id="pager2" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status} renderNext="true" renderPrev="true" renderLast="true" renderFirst="true" pageSizes="#{evaluationMessages.paging_pagesizes}" textPageSize="#{evaluationMessages.paging_textpagesize}" />
+	<sakai:pager id="pager2" totalItems="#{totalScores.dataRows}" firstItem="#{totalScores.firstRow}" pageSize="#{totalScores.maxDisplayedRows}" textStatus="#{evaluationMessages.paging_status}" renderNext="true" renderPrev="true" renderLast="true" renderFirst="true" pageSizes="#{evaluationMessages.paging_pagesizes}" textPageSize="#{evaluationMessages.paging_textpagesize}" />
   </h:panelGroup>
 </h:panelGroup>
 
