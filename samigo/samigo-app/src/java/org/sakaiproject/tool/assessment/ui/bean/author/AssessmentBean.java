@@ -23,16 +23,13 @@
 package org.sakaiproject.tool.assessment.ui.bean.author;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.portal.util.PortalUtils;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
@@ -40,13 +37,13 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
-import org.sakaiproject.tool.assessment.facade.PublishedSectionFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.services.shared.TypeService;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /* For author: Assessment backing bean.*/
 @Slf4j
@@ -73,6 +70,7 @@ public class AssessmentBean  implements Serializable {
   private boolean hasGradingData = false;
   private boolean hasSubmission = false;
   private Boolean showPrintAssessment = null;
+  private Boolean showMarkupOption = null;
 
   /*
    * Creates a new AssessmentBean object.
@@ -347,4 +345,18 @@ public class AssessmentBean  implements Serializable {
   public String getCDNQuery() {
 		return PortalUtils.getCDNQuery();
   }
+
+  public boolean getShowMarkupOption() {
+	  if(showMarkupOption == null){
+		  String markupViewOption = ServerConfigurationService.getString("samigo.showMarkupOption", "false");
+		  return Boolean.parseBoolean(markupViewOption);
+	  }
+	  return showMarkupOption;
+  }
+
+  public void setShowMarkupOption(Boolean showMarkupOption) {
+	  this.showMarkupOption= showMarkupOption;
+  }
+
+
 }
