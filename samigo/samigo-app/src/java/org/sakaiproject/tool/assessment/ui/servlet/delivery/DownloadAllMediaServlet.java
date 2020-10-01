@@ -44,7 +44,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
@@ -58,6 +57,8 @@ import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.QuestionScoresBean;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Title: Samigo</p>
@@ -119,7 +120,8 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
     else {
     	res.setContentType("application/x-zip-compressed");
   	    StringBuilder zipFilename = new StringBuilder();
-  	    zipFilename.append(assessmentName);
+  	    //zipFilename.append(assessmentName);
+  	    zipFilename.append("exported-samigo");
   	    String partAndQues = getPartNumAndQuestionNum(publishedItemId);
 	    log.debug("partAndQues = " + partAndQues);
 	    zipFilename.append(partAndQues);
