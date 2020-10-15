@@ -642,11 +642,17 @@ public class ReportDataPage extends BasePage {
 		response.setContentType("text/comma-separated-values");
 		response.setAttachmentHeader(fileName + ".csv");
 		response.setHeader("Cache-Control", "max-age=0");
-		response.setContentLength(csvString.length());
+		//response.setContentLength(csvString.length());
 		OutputStream out = null;
 		try{
+
+			final byte[] data = csvString.getBytes("UTF-8");
+			final byte[] bomData = new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf};
+			response.setContentLength(data.length + bomData.length);
 			out = response.getOutputStream();
-			out.write(csvString.getBytes());
+			//out.write(csvString.getBytes());
+			out.write(bomData);
+			out.write(data);
 			out.flush();
 		}catch(IOException e){
 			log.error(e.getMessage());
