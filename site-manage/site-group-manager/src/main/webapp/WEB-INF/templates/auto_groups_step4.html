@@ -51,7 +51,8 @@
                <tbody>
                  <tr th:each="user : ${autoGroup.value}">
                    <td th:if="${userMap.get(user) != null}" th:text="${userMap.get(user).displayName}">Obi Wan Kenobi</td>
-                   <td th:if="${userMap.get(user) != null}" th:text="${userMap.get(user).eid}">obiwan</td>
+                   <!-- td th:if="${userMap.get(user) != null}" th:text="${userMap.get(user).eid}">obiwan</td -->
+                   <td th:if="${userMap.get(user) != null}" th:text="${userMap.get(user).displayId}">obiwan</td>
                    <td th:text="${userRoleMap.get(user)}">Master Jedi</td>
                    <td th:if="${!sectionMemberMap.isEmpty()}" th:text="${sectionMemberMap.get(user)}">Jedi Order/Not Sith</td>
                  </tr>

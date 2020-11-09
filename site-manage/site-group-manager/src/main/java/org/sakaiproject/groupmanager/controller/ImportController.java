@@ -1,4 +1,4 @@
-/****************************************************************************** 
+/******************************************************************************
 * Copyright (c) 2020 Apereo Foundation
 
 * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -22,28 +22,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.groupmanager.constants.GroupManagerConstants;
 import org.sakaiproject.groupmanager.service.SakaiService;
@@ -52,6 +40,19 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.sitemanage.api.SiteHelper;
 import org.sakaiproject.user.api.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -184,13 +185,17 @@ public class ImportController {
                 
                 // The user doesn't exist in Sakai.
                 if (!userOptional.isPresent()) {
+                	if(!userOptional.get().getProperties().getProperty("employeeNumber").isEmpty()){
+                		userEid = userOptional.get().getProperties().getProperty("employeeNumber");
+                	}
                     nonExistingUsers.add(userEid);
                     membershipErrors = true;
                     continue;
                 }
 
                 User user = userOptional.get();
-                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getEid());
+                //String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getEid());
+                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getDisplayId());
 
                 //The user is not a member of the site.
                 if (site.getMember(user.getId()) == null) {
