@@ -28,7 +28,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,19 +38,19 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.jsf.util.LocaleUtil;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.userauditservice.api.UserAuditRegistration;
-import org.sakaiproject.userauditservice.api.UserAuditService;
-import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.userauditservice.api.UserAuditRegistration;
+import org.sakaiproject.userauditservice.api.UserAuditService;
+import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UserAuditEventLog {
@@ -63,6 +62,7 @@ public class UserAuditEventLog {
 	public static final Comparator<EventLog> auditStampComparatorEL;
 	public static final Comparator<EventLog> actionTextComparatorEL;
 	public static final Comparator<EventLog> sourceTextComparatorEL;
+	public static final Comparator<EventLog> displayIdComparatorEL;
 	protected String sortColumn;
 	protected boolean sortAscending;
 	private int totalItems = -1;
@@ -120,6 +120,15 @@ public class UserAuditEventLog {
 				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
 			}
 		};
+
+		displayIdComparatorEL = new Comparator<EventLog>() {
+			public int compare(EventLog one, EventLog another) {
+				int comparison = Collator.getInstance().compare(one.getSourceText(),another.getSourceText());
+				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
+			}
+		};
+
+
 	}
 	
 	protected Comparator<EventLog> getComparatorEL()
@@ -149,6 +158,8 @@ public class UserAuditEventLog {
         else if("sourceText".equals(sortColumn))
         {
         	comparator = sourceTextComparatorEL;
+        }else if("employeeNumber".equals(sortColumn)) {
+        	comparator = displayIdComparatorEL;
         }
         else
         {
@@ -231,7 +242,8 @@ public class UserAuditEventLog {
 			{
 				if (uar.getDatabaseSourceKey().equals(source))
 				{
-					String[] params = new String[] {actionUser.getSortName(), actionUser.getEid()};	
+					//String[] params = new String[] {actionUser.getSortName(), actionUser.getEid()};
+					String[] params = new String[] {actionUser.getSortName(), actionUser.getDisplayId()};
 					sourceText = uar.getSourceText(params);
 					break;
 				}
