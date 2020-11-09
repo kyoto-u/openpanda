@@ -820,4 +820,7 @@ public interface AssignmentService extends EntityProducer {
      * @return
      */
     public String createContentReviewAssignment(Assignment a, String assignmentRef, Instant openTime, Instant dueTime, Instant closeTime);
+
+    public String getSubmissionUserId(User u);
+
 }

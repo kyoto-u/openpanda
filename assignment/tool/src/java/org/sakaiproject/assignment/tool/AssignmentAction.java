@@ -53,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -427,6 +428,9 @@ public class AssignmentAction extends PagedResourceActionII {
      * state sort submission by submitters last name *
      */
     private static final String SORTED_GRADE_SUBMISSION_BY_LASTNAME = "sorted_grade_submission_by_lastname";
+
+    private static final String SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER = "sorted_grade_submission_by_employeenumber";
+
     /**
      * state sort submission by submit time *
      */
@@ -4328,6 +4332,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("sortedBy", state.getAttribute(SORTED_GRADE_SUBMISSION_BY));
         context.put("sortedAsc", state.getAttribute(SORTED_GRADE_SUBMISSION_ASC));
         context.put("sort_lastName", SORTED_GRADE_SUBMISSION_BY_LASTNAME);
+        context.put("sort_employeeNumber", SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER);
         context.put("sort_submitTime", SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME);
         context.put("sort_submitStatus", SORTED_GRADE_SUBMISSION_BY_STATUS);
         context.put("sort_submitGrade", SORTED_GRADE_SUBMISSION_BY_GRADE);
@@ -5169,6 +5174,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("sortedAsc", state.getAttribute(SORTED_SUBMISSION_ASC));
 
         context.put("sortedBy_lastName", SORTED_GRADE_SUBMISSION_BY_LASTNAME);
+        context.put("sortedBy_employeeNumber", SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER);
         context.put("sortedBy_submitTime", SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME);
         context.put("sortedBy_grade", SORTED_GRADE_SUBMISSION_BY_GRADE);
         context.put("sortedBy_status", SORTED_GRADE_SUBMISSION_BY_STATUS);
@@ -12965,7 +12971,11 @@ public class AssignmentAction extends PagedResourceActionII {
                                                 User u = null;
                                                 // check for anonymous grading
                                                 if (!isAnon) {
-                                                    u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    //u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    u = userDirectoryService.findUserByAlternativeId(eid,"Site Info");
+                                                    if(u == null){
+                                                    	u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    }
                                                 } else { // anonymous so pull the real eid out of our hash table
                                                     String anonId = items[IDX_GRADES_CSV_EID];
                                                     String id = (String) anonymousSubmissionAndEidTable.get(anonId);
@@ -13024,8 +13034,15 @@ public class AssignmentAction extends PagedResourceActionII {
                                     try {
                                         String eid = hssfRow.getCell(1).getStringCellValue();
                                         if (!assignment.getIsGroup()) {
+
+                                        	User u = null;
+
                                             if (!isAnon) {
-                                                User u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                                //User u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                            	u = userDirectoryService.findUserByAlternativeId(hssfRow.getCell(1).getStringCellValue(),"Site Info");
+                                            	if(u == null){
+                                            		u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                            	}
                                                 if (u == null) throw new Exception("User not found!");
                                                 eid = u.getId();
                                             } else {
@@ -13108,7 +13125,12 @@ public class AssignmentAction extends PagedResourceActionII {
                                 userEid = StringUtils.trimToNull(userEid);
                                 if (!assignment.getIsGroup() && !isAnon) {
                                     try {
-                                        User u = userDirectoryService.getUserByEid(userEid);
+                                        //User u = userDirectoryService.getUserByEid(userEid);
+                                        User u = null;
+                                        u = userDirectoryService.findUserByAlternativeId(userEid, "employeeNumber");
+                                        if(u == null){
+                                        	u = userDirectoryService.getUserByEid(userEid);
+                                        }
                                         if (u != null) userEid = u.getId();
                                     } catch (UserNotDefinedException unde) {
                                         log.warn("User not found: {}", userEid);
@@ -14893,6 +14915,23 @@ public class AssignmentAction extends PagedResourceActionII {
                     String lName1 = u1.getUser() == null ? u1.getGroup().getTitle() : u1.getUser().getSortName();
                     String lName2 = u2.getUser() == null ? u2.getGroup().getTitle() : u2.getUser().getSortName();
                     result = compareString(lName1, lName2);
+                }
+            } else if (m_criteria.equals(SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER)) {
+                // sorted by the submitters sort name
+                SubmitterSubmission u1 = (SubmitterSubmission) o1;
+                SubmitterSubmission u2 = (SubmitterSubmission) o2;
+
+                if (u1 == null || u2 == null || (u1.getUser() == null && u1.getGroup() == null) || (u2.getUser() == null && u2.getGroup() == null)) {
+                    result = 1;
+                } else if (m_anon) {
+                    String anon1 = u1.getSubmission().getId();
+                    String anon2 = u2.getSubmission().getId();
+                    result = compareString(anon1, anon2);
+                } else {
+                    String employeeNumber1 = u1.getUser().getProperties().get("employeeNumber") == null ? u1.getUser().getEid() : (String)u1.getUser().getProperties().get("employeeNumber");
+                    String employeeNumber2 = u2.getUser().getProperties().get("employeeNumber") == null ? u2.getUser().getEid() : (String)u2.getUser().getProperties().get("employeeNumber");
+
+                    result = compareString(employeeNumber1, employeeNumber2);
                 }
             } else if (m_criteria.equals(SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME)) {
                 // sorted by submission time

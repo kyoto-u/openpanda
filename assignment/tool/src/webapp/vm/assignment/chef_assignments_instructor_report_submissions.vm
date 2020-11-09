@@ -62,6 +62,19 @@
 								#end
 							</a>
 						</th>
+						<th id="employeeNumber">
+							<a href="javascript:void(0)" onclick="location='#toolLinkParam("AssignmentAction" "doSort_submission" "criteria=$!sortedBy_employeeNumber")'; return false;"
+								 title=" $tlang.getString("gen.sorbyemp")">
+								 $tlang.getString("gen.employeeNumber")
+								#if ($sortedBy.equals($!sortedBy_employeeNumber))
+									#if ($sortedAsc.equals("true"))
+										<img id="sortascendinglastname" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" />
+									#else
+										<img id="sortdescendinglastname" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" />
+									#end
+								#end
+							</a>
+						</th>
 						<th id="assignment">
 							<a href="javascript:void(0)" onclick="location='#toolLinkParam("AssignmentAction" "doSort_submission" "criteria=$!sortedBy_assignment")'; return false;"
 							  title="$tlang.getString("listassig.sorbytit")">
@@ -136,9 +149,9 @@
 							#if ($!submission.User)
 								#set($submitterName = $!submission.User.SortName)
 								#set($submitterId = $!submission.User.DisplayId)
-								#if ($submitterId)
-									#set($submitterName = $submitterName.concat(" (").concat($submitterId).concat(")"))
-								#end
+								##if ($submitterId)
+									##set($submitterName = $submitterName.concat(" (").concat($submitterId).concat(")"))
+								##end
 								#if ($!assignment.IsGroup)
 									#if ($!submission.Group)
 										#set($submitterName=$submitterName.concat(" [").concat($!submission.Group.Title).concat("]"))
@@ -148,6 +161,24 @@
 									$anonymousSubmissionId
 								#else
 									$formattedText.escapeHtml($!submitterName)
+								#end
+							#end
+							#if ($!submission.MultiGroup)
+							</span>
+							#end
+							</td>
+							<td headers="employeeNumber">
+							#if ($submission.MultiGroup)
+							<span class="error alertMessage">
+							#end
+							#if ($!submission.User)
+								#set($submitterId = $!submission.User.DisplayId)
+								#if ($!assignment.IsGroup)
+								#end
+								#if( $isAnon )
+									$anonymousSubmissionId
+								#else
+									$formattedText.escapeHtml($!submitterId)
 								#end
 							#end
 							#if ($!submission.MultiGroup)
