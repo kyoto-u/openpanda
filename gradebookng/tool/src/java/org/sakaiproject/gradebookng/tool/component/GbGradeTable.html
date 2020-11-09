@@ -229,6 +229,15 @@
                 </div>
             </div>
         </script>
+        <script id="employeeNumberHeaderTemplate" type="text/template">
+            <div class="relative">
+                <div class="colHeader">
+                    <a class="gb-title">
+                        <wicket:message key="column.header.employeenumber"/>
+                    </a>
+                </div>
+            </div>
+        </script>
         <script id="studentNumberHeaderTemplate" type="text/template">
             <div class="relative">
                 <div class="colHeader">
@@ -317,9 +326,9 @@
         </script>
         <script id="studentCellTemplate" type="text/template">
             {if settings.isStudentOrderedByLastName}
-                {var tooltip = lastName + ", " + firstName + " (" + eid + ")"}
+                {var tooltip = lastName + ", " + firstName}
             {else}
-                {var tooltip = firstName + " " + lastName + " (" + eid + ")"}
+                {var tooltip = firstName + " " + lastName}
             {/if}
             {var tooltip = tooltip.replace(/"/g, '&quot;')}
             <div class="relative gb-student-cell" title="${tooltip}">
@@ -331,16 +340,10 @@
                                     <span class="gb-last-name">${lastName}</span>,
                                     <span class="gb-first-name">${firstName}</span>
                                 </div>
-                                <div>
-                                    (<span class="gb-eid">${eid}</span>)
-                                </div>
                             {else}
                                 <div>
                                     <span class="gb-first-name">${firstName}</span>
                                     <span class="gb-last-name">${lastName}</span>
-                                </div>
-                                <div>
-                                    (<span class="gb-eid">${eid}</span>)
                                 </div>
                             {/if}
                         </a>
@@ -348,6 +351,19 @@
                 </div>
             </div>
         </script>
+
+        <script id="employeeNumberCellTemplate" type="text/template">
+            {var tooltip = eid}
+            {var tooltip = tooltip.replace(/"/g, '&quot;')}
+            <div class="relative gb-student-cell" title="${tooltip}">
+                <div class="gb-value">
+                    <div class="rowHeader">
+                        <span class="gb-eid">${eid}</span>
+                    </div>
+                </div>
+            </div>
+        </script>
+
         <script id="metadataTemplate" type="text/template">
             <div id="${id}" class="gb-metadata">
                 <a href="javascript:void(0);" class="gb-metadata-close"></a>
