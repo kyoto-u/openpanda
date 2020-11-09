@@ -88,6 +88,8 @@ import org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager;
 import org.sakaiproject.api.app.messageforums.Topic;
 import org.sakaiproject.api.app.messageforums.cover.ForumScheduleNotificationCover;
 import org.sakaiproject.api.app.messageforums.cover.SynopticMsgcntrManagerCover;
+import org.sakaiproject.api.app.messageforums.events.ForumsMessageEventParams;
+import org.sakaiproject.api.app.messageforums.events.ForumsTopicEventParams;
 import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager;
 import org.sakaiproject.authz.api.AuthzGroup;
@@ -117,6 +119,8 @@ import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VE
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.portal.util.PortalUtils;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
+import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
@@ -6853,8 +6857,9 @@ public class DiscussionForumTool {
 		  String userString = "";
 		  userString = userDirectoryService.getUser(currentUserId).getDisplayName();
 		  String userEidString = "";
-		  userEidString = userDirectoryService.getUser(currentUserId).getDisplayId();
-		  
+		  //userEidString = userDirectoryService.getUser(currentUserId).getDisplayId();
+		  userEidString = userDirectoryService.getUser(currentUserId).getDisplayId("messageForum");
+
 		  if((userString != null && userString.length() > 0) && ServerConfigurationService.getBoolean("msg.displayEid", true))
 		  {
 			  return userString + " (" + userEidString + ")";
@@ -8516,7 +8521,8 @@ public class DiscussionForumTool {
 
 		JSONObject jsonMembershipItem = new JSONObject();
 		jsonMembershipItem.element("membershipItemId", item.getId()).element("roleId", item.getRole().getId())
-				.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getEid());
+				//.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getEid());
+				.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getDisplayId("messageForum"));
 		usersList.add(jsonMembershipItem);
 
 		JSONArray memberGroupsArray = new JSONArray();

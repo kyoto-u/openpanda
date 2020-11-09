@@ -20,9 +20,34 @@
  **********************************************************************************/
 package org.sakaiproject.tool.messageforums;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.stream.Collectors;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -113,6 +138,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ManagedBean(name="PrivateMessagesTool")
@@ -820,7 +848,7 @@ public class PrivateMessagesTool {
       User user=userDirectoryService.getUser(id) ;
       if (ServerConfigurationService.getBoolean("msg.displayEid", true))
       {
-    	  userName= user.getSortName() + " (" + user.getDisplayId() + ")";
+    	  userName= user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
       }
       else
       {
@@ -840,7 +868,7 @@ public class PrivateMessagesTool {
      User user=userDirectoryService.getUser(userId) ;
      if (ServerConfigurationService.getBoolean("msg.displayEid", true))
      {
-    	 userName= user.getDisplayName() + " (" + user.getDisplayId() + ")";
+    	 userName= user.getDisplayName() + " (" + user.getDisplayId("messageForum") + ")";
      }
      else {
     	 userName= user.getDisplayName();
@@ -4228,7 +4256,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     	 User user = userDirectoryService.getUser(getUserId());
     	 if (ServerConfigurationService.getBoolean("msg.displayEid", true))
     	 {
-    		 authorString = user.getSortName() + " (" + user.getDisplayId() + ")";
+    		 authorString = user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
     	 }
     	 else
     	 {

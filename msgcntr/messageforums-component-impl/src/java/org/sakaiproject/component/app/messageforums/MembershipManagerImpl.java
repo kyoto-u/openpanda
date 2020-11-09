@@ -55,6 +55,8 @@ import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.ResourceLoader;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class MembershipManagerImpl implements MembershipManager {
 
@@ -356,6 +358,14 @@ public class MembershipManagerImpl implements MembershipManager {
 					returnMap.put(memberItem.getId(), memberItem);
 				} catch (UserNotDefinedException e) {
 					log.warn("User {} not defined", userId);
+			// Don't want admin as part of the list
+			if (user != null && !"admin".equals(userId)) {
+				MembershipItem memberItem = MembershipItem.getInstance();
+				memberItem.setType(memberItemType);
+				if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
+					memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
+				} else {
+					memberItem.setName(user.getSortName());
 				}
 			}
 		}
