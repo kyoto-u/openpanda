@@ -325,6 +325,24 @@ function printView(url) {
 							#end 
 						</a>
 					</th>
+					#if(!$assignment.IsGroup)
+					<th id="employeenumber">
+						<a href="javascript:void(0)" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_employeeNumber")'; return false;"   title="$tlang.getString("gen.sorbyemp")">
+							#if ($assignment.IsGroup)
+								$tlang.getString("gen.group")
+							#else
+								$tlang.getString("gen.employeeNumber")
+							#end
+							#if ($sortedBy.equals($!sort_employeeNumber))
+								#if ($sortedAsc.equals("true"))
+									<img id="sort_ascending_employeenumber" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" />
+								#else
+									<img id="sort_descending_employeenumber" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" />
+								#end
+							#end
+						</a>
+					</th>
+					#end
 					#if($!isAdditionalNotesEnabled && !$assignment.IsGroup)
 					<th id="notes">
 						$tlang.getString("gen.notes")
@@ -422,10 +440,10 @@ function printView(url) {
 						#set($submitterDisplayId=$!siteUser.getDisplayId())
 					#end
 					#set($submitterId = $!siteUser.getId())
-					#if ($!submitterDisplayId)
+					##if ($!submitterDisplayId)
 						##attach the displayId
-						#set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))
-					#end
+						##set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))
+					##end
 					#if ($!submission)## && $submission.submitted)
 						## SAK-17606
 						#set($anonymousSubmissionId = $submission.getId() + ' ' + ($tlang.getString("grading.anonymous.title")))
@@ -517,6 +535,13 @@ function printView(url) {
 								#end
 								#end
 							</td>
+							#if(!$assignment.IsGroup)
+							<td headers="employeenumber">
+								<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$formattedText.escapeUrl($assignmentReference)&submissionId=$formattedText.escapeUrl($userSubmission.Reference)")" title="$tlang.getString("listsub.grasub")">
+									$submitterDisplayId
+								</a>
+							</td>
+							#end
 							#if($!isAdditionalNotesEnabled && !$assignment.IsGroup)
 							<td headers="notes">
 								#set($notes = [])
@@ -627,6 +652,9 @@ function printView(url) {
 								&nbsp;
 							</td>
 							<td headers="studentname">
+								$!siteUser.sortName
+							</td>
+							<td headers="employeenumber">
 								$!siteUser.sortName
 							</td>
 							<td headers="submitted">

@@ -3026,7 +3026,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 submittersString = submittersString.concat(fullName);
                                 // add the eid to the end of it to guarantee folder name uniqness
                                 // if user Eid contains non ascii characters, the user internal id will be used
-                                final String userEid = submitters[i].getEid();
+                                //final String userEid = submitters[i].getEid();
+                                final String userEid = getSubmissionUserId(submitters[i]);
+
                                 final String candidateEid = escapeInvalidCharsEntry(userEid);
                                 if (candidateEid.equals(userEid)) {
                                     submittersString = submittersString + "(" + candidateEid + ")";
@@ -3054,7 +3056,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 // SAK-17606
                                 if (!isAnon) {
                                 	log.debug("Zip user: " + submitters[i].toString());
-                                    params[0] = submitters[i].getDisplayId();
+                                    //params[0] = submitters[i].getDisplayId();
+                                    params[0] = getSubmissionUserId(submitters[i]);
                                     params[1] = submitters[i].getEid();
                                     params[2] = submitters[i].getLastName();
                                     params[3] = submitters[i].getFirstName();
@@ -4552,4 +4555,14 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         dupes.sort(Comparator.comparing(r -> r.user.getDisplayName()));
         return dupes;
     }
+
+    private final String SUBMISSION_USER_ID_PROPERTY="employeeNumber";
+    public String getSubmissionUserId(User u){
+        String id = (String)u.getProperties().get(SUBMISSION_USER_ID_PROPERTY);
+        if( id == null || id.isEmpty()){
+            return u.getEid();
+        }
+        return id;
+    }
+
 }

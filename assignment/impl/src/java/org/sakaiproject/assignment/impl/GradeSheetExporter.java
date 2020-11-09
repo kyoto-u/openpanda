@@ -124,7 +124,8 @@ public class GradeSheetExporter {
             members.sort(new UserSortNameComparator());
             for (User user : members) {
                 // put user displayid and sortname in the first two cells
-                Submitter submitter = new Submitter(user.getDisplayId(), user.getSortName());
+                //Submitter submitter = new Submitter(user.getDisplayId(), user.getSortName());
+                Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getSortName());
                 submitterMap.put(user.getId(), submitter);
                 if (isNotesEnabled) {
                     Optional<List<String>> additionalNotes = candidateDetailProvider.getAdditionalNotes(user, site);
