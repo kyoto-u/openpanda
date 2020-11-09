@@ -102,7 +102,7 @@ public class ExportPanel extends BasePanel {
 				setDefaultModelObject(ExportPanel.this.includeStudentId);
 			}
 		});
-
+/*
 		add(new AjaxCheckBox("includeStudentDisplayId", Model.of(this.includeStudentDisplayId)) {
 			private static final long serialVersionUID = 1L;
 
@@ -112,7 +112,7 @@ public class ExportPanel extends BasePanel {
 				setDefaultModelObject(ExportPanel.this.includeStudentDisplayId);
 			}
 		});
-
+*/
 		add(new AjaxCheckBox("includeStudentName", Model.of(this.includeStudentName)) {
 			private static final long serialVersionUID = 1L;
 
