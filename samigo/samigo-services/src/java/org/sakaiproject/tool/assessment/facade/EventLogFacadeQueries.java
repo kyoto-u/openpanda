@@ -15,7 +15,6 @@
  */
 package org.sakaiproject.tool.assessment.facade;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +31,8 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EventLogFacadeQueries extends HibernateDaoSupport implements EventLogFacadeQueriesAPI {
@@ -154,7 +155,7 @@ public class EventLogFacadeQueries extends HibernateDaoSupport implements EventL
 	      }
 	   }
 	   if (user!=null)
-	      display = user.getSortName() + " (" + userEid + ")";
+		   display = user.getSortName();
 	   
 	   return display;
 	}

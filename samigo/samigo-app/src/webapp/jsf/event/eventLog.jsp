@@ -118,6 +118,26 @@
 	  <h:outputText value="#{log.userDisplay}"/>
      </h:panelGroup>
 	</h:column>
+
+	<!-- employeeNumber... -->
+	 <h:column >
+	  <f:facet name="header">
+        <h:commandLink title="#{eventLogMessages.t_sortEmployeeNumber}" action="eventLog">
+        <h:outputText value="#{eventLogMessages.employee_number}"/>
+        <f:param name="sortAscending" value="#{!eventLog.sortAscending}"/>
+        <f:param name="sortBy" value="userEid" />
+        <h:graphicImage alt="#{eventLogMessages.alt_sortEmployeeNumberAscending}" rendered="#{eventLog.sortType eq 'employeeNumber' && eventLog.sortAscending}" url="/images/sortascending.gif"/>
+        <h:graphicImage alt="#{eventLogMessages.alt_sortEmployeeNumberDescending}" rendered="#{eventLog.sortType eq 'employeeNumber' && !eventLog.sortAscending}" url="/images/sortdescending.gif"/>
+        <f:actionListener
+             type="org.sakaiproject.tool.assessment.ui.listener.author.EventLogListener" />
+      </h:commandLink>
+	  </f:facet>
+
+	 <h:panelGroup styleClass="#{eventLog.isDeleted(log.assessmentId) ? 'eventLogDeleted' : ''}">
+	  <h:outputText value="#{log.userEid}"/>
+     </h:panelGroup>
+	</h:column>
+
 	 <!-- Date Started... -->
 	<h:column>
 	  <f:facet name="header">
