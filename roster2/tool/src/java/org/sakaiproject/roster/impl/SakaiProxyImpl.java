@@ -37,7 +37,6 @@ package org.sakaiproject.roster.impl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,6 +51,7 @@ import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -67,6 +67,8 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.sakaiproject.api.common.edu.person.SakaiPerson;
+import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
 import org.sakaiproject.api.privacy.PrivacyManager;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
@@ -75,8 +77,6 @@ import org.sakaiproject.authz.api.GroupProvider;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
-import org.sakaiproject.api.common.edu.person.SakaiPerson;
-import org.sakaiproject.api.common.edu.person.SakaiPersonManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.coursemanagement.api.Enrollment;
@@ -91,8 +91,8 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.memory.api.SimpleConfiguration;
-import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.logic.ProfileConnectionsLogic;
+import org.sakaiproject.profile2.logic.ProfileLogic;
 import org.sakaiproject.profile2.util.ProfileConstants;
 import org.sakaiproject.roster.api.RosterEnrollment;
 import org.sakaiproject.roster.api.RosterFunctions;
@@ -121,7 +121,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * <code>SakaiProxy</code> acts as a proxy between Roster and Sakai components.
- * 
+ *
  * @author Daniel Robinson (d.b.robinson@lancaster.ac.uk)
  * @author Adrian Fish (a.fish@lancaster.ac.uk)
  */
@@ -150,11 +150,11 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
     private static final String SAK_PROP_SHOW_PERMS_TO_MAINTAINERS = "roster.showPermsToMaintainers";
     private static final boolean SAK_PROP_SHOW_PERMS_TO_MAINTAINERS_DEFAULT = true;
     private Pattern userPropsRegex;
-	
+
 	public void init() {
-		
+
 		List<String> registered = functionManager.getRegisteredFunctions();
-		
+
         if (!registered.contains(RosterFunctions.ROSTER_FUNCTION_EXPORT)) {
             functionManager.registerFunction(RosterFunctions.ROSTER_FUNCTION_EXPORT, true);
         }
@@ -178,7 +178,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
         if (!registered.contains(RosterFunctions.ROSTER_FUNCTION_VIEWPROFILE)) {
             functionManager.registerFunction(RosterFunctions.ROSTER_FUNCTION_VIEWPROFILE, true);
         }
-        
+
         if (!registered.contains(RosterFunctions.ROSTER_FUNCTION_VIEWEMAIL)) {
             functionManager.registerFunction(RosterFunctions.ROSTER_FUNCTION_VIEWEMAIL, true);
         }
@@ -200,7 +200,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
         memberComparator = new RosterMemberComparator(getFirstNameLastName());
         userPropsRegex = Pattern.compile(serverConfigurationService.getString("roster.filter.user.properties.regex", "^udp\\.dn$"));
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -208,7 +208,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		boolean showToMaintainers = serverConfigurationService.getBoolean(SAK_PROP_SHOW_PERMS_TO_MAINTAINERS, SAK_PROP_SHOW_PERMS_TO_MAINTAINERS_DEFAULT);
 		return (showToMaintainers && isSiteMaintainer(getCurrentSiteId())) || securityService.isSuperUser();
 	}
-	
+
 	public Site getSite(String siteId) {
 
 		try {
@@ -218,7 +218,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -250,7 +250,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
         return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -259,30 +259,30 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		return serverConfigurationService.getInt("roster.defaultState",
 				DEFAULT_ROSTER_STATE);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String getDefaultRosterStateString() {
-		
+
 		Integer defaultRosterState = getDefaultRosterState();
-		
+
 		if (defaultRosterState > -1 && defaultRosterState < ROSTER_STATES.length - 1) {
 			return ROSTER_STATES[defaultRosterState];
 		} else {
 			return ROSTER_STATES[DEFAULT_ROSTER_STATE];
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String getDefaultSortColumn() {
-		
+
 		return serverConfigurationService
 				.getString("roster.defaultSortColumn", DEFAULT_SORT_COLUMN);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -301,7 +301,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		return serverConfigurationService.getBoolean(
 				"roster.display.firstNameLastName", DEFAULT_FIRST_NAME_LAST_NAME);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -311,14 +311,14 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 				"roster.display.hideSingleGroupFilter",
 				DEFAULT_HIDE_SINGLE_GROUP_FILTER);
 	}
-		
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Boolean getViewEmail() {
 		return getViewEmail(getCurrentSiteId());
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -328,7 +328,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		if(serverConfigurationService.getBoolean("roster_view_email",DEFAULT_VIEW_EMAIL)) {
 			return hasUserSitePermission(getCurrentUserId(), RosterFunctions.ROSTER_FUNCTION_VIEWEMAIL, siteId);
 		}
-		return false;		
+		return false;
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
 		return view_connections;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -445,7 +445,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
         return userDirectoryService.getUsers(site.getUsers());
     }
-	
+
 	public List<RosterMember> getMembership(String currentUserId, String siteId, String groupId, String roleId, String enrollmentSetId, String enrollmentStatus) {
 
         if (currentUserId == null) {
@@ -468,7 +468,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             return rosterMembers;
         }
 	}
-		
+
     private Map<String, User> getUserMap(Set<Member> members) {
 
         Map<String, User> userMap = new HashMap<String, User>();
@@ -599,7 +599,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
         String userId = getCurrentUserId();
 
 		Set<Member> membership = getUnfilteredMembers(groupId, site);
-		
+
 		if (membership == null) {
 			return null;
 		}
@@ -665,9 +665,9 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 				return null;
 			}
 		}
-		
+
 		log.debug("membership.size(): {}", filtered.size());
-		
+
 		//remove duplicates. Yes, its a Set but there can be dupes because its storing objects and from multiple groups.
 		Set<String> check = new HashSet<String>();
 		List<RosterMember> cleanedMembers = new ArrayList<RosterMember>();
@@ -688,7 +688,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 				}
 			}
 		}
-		
+
 		log.debug("cleanedMembers.size(): {}", cleanedMembers.size());
 
 		return cleanedMembers;
@@ -699,7 +699,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			String currentUserId, String siteId, AuthzGroup authzGroup) {
 
 		log.debug("filterHiddenMembers");
-		
+
 		boolean viewHidden = false;
 		if (isAllowed(currentUserId,
 				RosterFunctions.ROSTER_FUNCTION_VIEWHIDDEN, authzGroup.getReference())) {
@@ -708,7 +708,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		}
 
 		List<RosterMember> filtered = new ArrayList<RosterMember>();
-		
+
 		Set<String> userIds = new HashSet<String>();
 
 		for (Iterator<RosterMember> i = members.iterator(); i.hasNext(); ) {
@@ -724,22 +724,22 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		//get the list of visible roles, optional config.
 		//if set, the only users visible in the tool will be those with their role defined in this list
 		String[] visibleRoles = serverConfigurationService.getStrings("roster2.visibleroles");
-		
+
 		boolean filterRoles = ArrayUtils.isNotEmpty(visibleRoles);
 
 		log.debug("visibleRoles: {}", ArrayUtils.toString(visibleRoles));
 		log.debug("filterRoles: {}", filterRoles);
-		
+
 		// determine filtered membership
 		for (RosterMember member : members) {
 			String userId = member.getUserId();
-			
+
 			// skip if not the current user and privacy restricted or user not in group
 			if (!userId.equals(currentUserId) && ((!viewHidden && hiddenUserIds.contains(userId))
                                                         || authzGroup.getMember(userId) == null)) {
 				continue;
 			}
-			
+
 			// now filter out users based on their role
 			if (filterRoles) {
 				String memberRoleId = member.getRole();
@@ -750,15 +750,15 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 				filtered.add(member);
 			}
 		}
-		
+
 		log.debug("filteredMembership.size(): {}", filtered.size());
-		
+
 		return filtered;
 	}
 
-	
+
 	private Set<Member> getUnfilteredMembers(String groupId, Site site) {
-		
+
 		Set<Member> membership = new HashSet<Member>();
 
 		if (null == groupId) {
@@ -774,7 +774,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
 		return membership;
 	}
-	
+
 	private RosterMember getRosterMember(Map<String, User> userMap, Collection<Group> groups, Member member, Site site, Map<String, String> pronunceMap)
         throws UserNotDefinedException {
 
@@ -785,9 +785,11 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			throw new UserNotDefinedException(userId);
 		}
 
+		String employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
 		RosterMember rosterMember = new RosterMember(userId);
 		rosterMember.setEid(user.getEid());
-		rosterMember.setDisplayId(member.getUserDisplayId());
+		rosterMember.setDisplayId(employeeNumber);
+		//rosterMember.setDisplayId(member.getUserDisplayId());
 		rosterMember.setRole(member.getRole().getId());
 		rosterMember.setEmail(user.getEmail());
 		rosterMember.setDisplayName(user.getDisplayName());
@@ -829,11 +831,11 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
 		return rosterMember;
 	}
-	
+
 	/**
 	 * Returns the enrollment set members for the specified site and enrollment
 	 * set.
-	 * 
+	 *
 	 * @param siteId the ID of the site.
 	 * @param enrollmentSetId the ID of the enrollment set.
 	 * @return the enrollment set members for the specified site and enrollment
@@ -893,6 +895,12 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
         if (siteMembers != null) {
             log.debug("Cache hit on '{}'.", key);
+
+            if("Student".equals(site.getMember(getCurrentUserId()).getRole().getId())){
+            	for(RosterMember rosterMember : siteMembers){
+            		rosterMember.setDisplayId("xxxx");
+            	}
+            }
             return siteMembers;
         } else {
             log.debug("Cache miss on '{}'.", key);
@@ -1064,7 +1072,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             return membersMap;
         }
     }
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1075,7 +1083,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			log.debug("No currentUserId. Returning null ...");
 			return null;
 		}
-		
+
 		log.debug("currentUserId: {}", currentUserId);
 
 		Site site = getSite(siteId);
@@ -1083,9 +1091,9 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			log.debug("No site. Returning null ...");
 			return null;
 		}
-		
+
 		log.debug("site: {}", site.getId());
-		
+
 		RosterSite rosterSite = new RosterSite(siteId);
 
 		rosterSite.setTitle(site.getTitle());
@@ -1131,7 +1139,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			return rosterSite;
 
 		}
-		
+
 		List<RosterEnrollment> siteEnrollmentSets = getEnrollmentSets(siteId,
 				groupProvider);
 
@@ -1210,7 +1218,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
 		String[] sectionIds = groupProvider.unpackId(getSite(siteId)
 				.getProviderGroupId());
-		
+
 		// avoid duplicates
 		List<String> enrollmentSetIdsProcessed = new ArrayList<String>();
 
@@ -1245,11 +1253,11 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 		}
 		return siteEnrollmentSets;
 	}
-	
+
 	/**
 	 * Calls the SecurityService unlock method. This is the method you must use in order for Delegated Access to work.
 	 * Note that the SecurityService automatically handles super users.
-	 * 
+	 *
 	 * @param userId		user uuid
 	 * @param permission	permission to check for
 	 * @param reference		reference to entity. The getReference() method should get you out of trouble.
@@ -1258,13 +1266,13 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 	private boolean isAllowed(String userId, String permission, String reference) {
 		return securityService.unlock(userId, permission, reference);
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Boolean hasUserSitePermission(String userId, String permission, String siteId) {
-				
+
 		Site site = getSite(siteId);
 		if (null == site) {
 			return false;
@@ -1272,13 +1280,13 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			return isAllowed(userId, permission, site.getReference());
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Boolean hasUserGroupPermission(String userId, String permission,
 			String siteId, String groupId) {
-				
+
 		Site site = getSite(siteId);
 		if (null == site) {
 			return false;
@@ -1290,7 +1298,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			}
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1339,7 +1347,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
                 index = membership.stream().collect(Collectors.toMap(RosterMember::getUserId, RosterMember::getDisplayName));
                 cache.put(siteId+groupId, index);
             }
-		
+
 		    return index;
         } catch (Exception e) {
             log.error("Exception whilst retrieving search index for site '" + siteId + "'. Returning null ...", e);
