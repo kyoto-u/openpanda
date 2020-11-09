@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.api.app.messageforums.MembershipManager;
 import org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager;
 import org.sakaiproject.api.privacy.PrivacyManager;
@@ -51,6 +49,8 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MembershipManagerImpl implements MembershipManager{
@@ -407,7 +407,7 @@ public class MembershipManagerImpl implements MembershipManager{
 				MembershipItem memberItem = MembershipItem.getInstance();
 				memberItem.setType(memberItemType);
 				if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
-					memberItem.setName(user.getSortName() + " (" + user.getDisplayId() + ")");
+					memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
 				} else {
 					memberItem.setName(user.getSortName());
 				}

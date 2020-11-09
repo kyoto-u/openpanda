@@ -44,9 +44,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.api.app.messageforums.AnonymousManager;
 import org.sakaiproject.api.app.messageforums.Attachment;
 import org.sakaiproject.api.app.messageforums.DiscussionForum;
@@ -71,14 +69,16 @@ import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ManagedBean(name="mfStatisticsBean")
@@ -2145,7 +2145,7 @@ public class MessageForumStatisticsBean {
 			User user=userDirectoryService.getUser(userId) ;
 			if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
 				if(user != null) {
-					userName= user.getLastName() + ", " + user.getFirstName() + " (" + user.getDisplayId() + ")" ;
+					userName= user.getLastName() + ", " + user.getFirstName() + " (" + user.getDisplayId("messageForum") + ")" ;
 				}
 			} else {
 				if(user != null) {
