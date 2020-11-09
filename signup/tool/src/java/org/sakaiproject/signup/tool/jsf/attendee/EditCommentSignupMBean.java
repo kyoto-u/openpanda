@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.faces.context.FacesContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.signup.logic.SignupUser;
 import org.sakaiproject.signup.logic.SignupUserActionException;
@@ -39,7 +37,8 @@ import org.sakaiproject.signup.tool.jsf.organizer.OrganizerSignupMBean;
 import org.sakaiproject.signup.tool.jsf.organizer.action.EditComment;
 import org.sakaiproject.signup.tool.util.Utilities;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -312,7 +311,8 @@ public class EditCommentSignupMBean extends SignupUIBaseBean {
 		String eid = attendeeWrapper.getSignupAttendee().getAttendeeUserId();
 		User user = sakaiFacade.getUser(attendeeWrapper.getSignupAttendee().getAttendeeUserId());
 		if(user !=null){
-			eid = user.getEid();
+			//eid = user.getEid();
+			eid = user.getDisplayId();
 		}
 
 		return eid;
