@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -109,6 +108,15 @@ public class UserAuditEventLog {
 				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
 			}
 		};
+
+		displayIdComparatorEL = new Comparator<EventLog>() {
+			public int compare(EventLog one, EventLog another) {
+				int comparison = Collator.getInstance().compare(one.getSourceText(),another.getSourceText());
+				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
+			}
+		};
+
+
 	}
 
 	protected Comparator<EventLog> getComparatorEL()
@@ -134,6 +142,8 @@ public class UserAuditEventLog {
         else if("sourceText".equals(sortColumn))
         {
         	comparator = sourceTextComparatorEL;
+        }else if("employeeNumber".equals(sortColumn)) {
+        	comparator = displayIdComparatorEL;
         }
         else
         {
