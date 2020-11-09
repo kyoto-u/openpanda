@@ -57,15 +57,15 @@ import lombok.extern.slf4j.Slf4j;
 public class SiteParticipantHelper {
 
 	private static String NULL_STRING = "";
-	
+
 	private static org.sakaiproject.authz.api.GroupProvider groupProvider = (org.sakaiproject.authz.api.GroupProvider) ComponentManager
 	.get(org.sakaiproject.authz.api.GroupProvider.class);
-	
+
 	private static AuthzGroupService authzGroupService = ComponentManager.get(AuthzGroupService.class);
-	
+
 	private static org.sakaiproject.coursemanagement.api.CourseManagementService cms = (org.sakaiproject.coursemanagement.api.CourseManagementService) ComponentManager
 	.get(org.sakaiproject.coursemanagement.api.CourseManagementService.class);
-	
+
 	private static org.sakaiproject.user.api.ContextualUserDisplayService cus = (org.sakaiproject.user.api.ContextualUserDisplayService) ComponentManager
 	.get(org.sakaiproject.user.api.ContextualUserDisplayService.class);
 
@@ -93,7 +93,7 @@ public class SiteParticipantHelper {
 	public static void addParticipantsFromEnrollmentSet(Map<String, Participant> participantsMap, AuthzGroup realm, String providerCourseEid, EnrollmentSet enrollmentSet, String sectionTitle) {
 		addParticipantsFromEnrollmentSet(participantsMap, realm, providerCourseEid, enrollmentSet, sectionTitle, null, null, null);
 	}
-	
+
 	/**
 	 * Add participant from provider-defined enrollment set
 	 * @param participantsMap
@@ -110,7 +110,7 @@ public class SiteParticipantHelper {
 	public static void addParticipantsFromEnrollmentSet(Map<String, Participant> participantsMap, AuthzGroup realm, String providerCourseEid, EnrollmentSet enrollmentSet, String sectionTitle,
 															String filterType, String filterID, Set<Member> groupMembership) {
 		boolean refreshed = false;
-		
+
 		if (enrollmentSet != null)
 		{
 			Set enrollments = cms.getEnrollments(enrollmentSet.getEid());
@@ -120,13 +120,13 @@ public class SiteParticipantHelper {
 				for (Iterator eIterator = enrollments.iterator();eIterator.hasNext();)
 				{
 					Enrollment e = (Enrollment) eIterator.next();
-					
+
 					// ignore the dropped enrollments
 					if(e.isDropped()){
 						continue;
 					}
-					
-					try 
+
+					try
 					{
 						User user = eidToUserMap.get(e.getUserId());
 						if (user == null) {
@@ -134,7 +134,7 @@ public class SiteParticipantHelper {
 						}
 						String userId = user.getId();
 						Member member = realm.getMember(userId);
-						
+
 						// this person is in the cm, so they should be in the realm
 						// force a refresh. Only do this once, since a refresh should get everyone
 						// it would be nice for AuthzGroupService to expose refresh, but a save
@@ -153,7 +153,7 @@ public class SiteParticipantHelper {
 						    	log.warn("SiteParticipantHelper.addParticipantsFromEnrollment " + exc.getMessage());
 						    }
 						}
-						
+
 						if (member != null)
 						{
 							try
@@ -250,14 +250,14 @@ public class SiteParticipantHelper {
 
 	/**
 	 * Collect all member users data in one call
-	 * 
+	 *
 	 * @param memberships
 	 * @return
 	 */
 	public static Map<String, User> getEidUserMapFromCollection(Collection<Object> cObjects) {
 		Set<String> rvEids = new HashSet<String>();
 		for (Object cObject : cObjects) {
-			
+
 			if (cObject instanceof Enrollment)
 			{
 				rvEids.add(((Enrollment) cObject).getUserId());
@@ -267,7 +267,7 @@ public class SiteParticipantHelper {
 			} else if (cObject instanceof Member)
 			{
 				rvEids.add(((Member) cObject).getUserEid());
-			} 
+			}
 		}
 		Map<String, User> eidToUserMap = new HashMap<String, User>();
 		List<User> rvUsers = UserDirectoryService.getUsersByEids(rvEids);
@@ -290,14 +290,14 @@ public class SiteParticipantHelper {
 	public static void addParticipantsFromMemberships(Map participantsMap, AuthzGroup realm, Set memberships, String sectionTitle, String filterType, String filterID,
 														Set<Member> groupMembership) {
 		boolean refreshed = false;
-		
+
 		if (memberships != null)
 		{
 			Map<String, User> eidToUserMap = getEidUserMapFromCollection(memberships);
 			for (Iterator<Membership> mIterator = memberships.iterator();mIterator.hasNext();)
 			{
 				Membership m = (Membership) mIterator.next();
-				try 
+				try
 				{
 					User user = eidToUserMap.get(m.getUserId());
 					if (user == null) {
@@ -305,7 +305,7 @@ public class SiteParticipantHelper {
 					}
 					String userId = user.getId();
 					Member member = realm.getMember(userId);
-					
+
 					// this person is in the cm, so they should be in the realm
 					// force a refresh. Only do this once, since a refresh should get everyone
 					// it would be nice for AuthzGroupService to expose refresh, but a save
@@ -324,7 +324,7 @@ public class SiteParticipantHelper {
 					    	log.warn("SiteParticipantHelper:addParticipantsFromMembership " + exc.getMessage());
 					    }
 					}
-					
+
 					if (member != null)
 					{
 						// get or add provided participant
@@ -349,7 +349,7 @@ public class SiteParticipantHelper {
 							participant.uniqname = userId;
 							participant.active=member.isActive();
 						}
-						
+
 						conditionallyAddParticipantToMap(participantsMap, filterType, filterID, userId, participant, groupMembership);
 					}
 				} catch (UserNotDefinedException exception) {
@@ -384,7 +384,7 @@ public class SiteParticipantHelper {
 		// get all user info once
 		Map<String, User> eidToUserMap = getEidUserMapFromCollection(grants);
 		boolean refreshed = false;
-		
+
 		for (Iterator<Member> i = grants.iterator(); i.hasNext();) {
 			Member g = (Member) i.next();
 			try {
@@ -456,7 +456,7 @@ public class SiteParticipantHelper {
 
 	/**
 	 * getExternalRealmId
-	 * 
+	 *
 	 */
 	private static String getExternalRealmId(String siteId) {
 		String realmId = SiteService.siteReference(siteId);
@@ -470,27 +470,27 @@ public class SiteParticipantHelper {
 		return rv;
 
 	} // getExternalRealmId
-	
+
 	/**
 	 * getProviderCourseList a course site/realm id in one of three formats, for
 	 * a single section, for multiple sections of the same course, or for a
 	 * cross-listing having multiple courses. getProviderCourseList parses a
 	 * realm id into year, term, campus_code, catalog_nbr, section components.
-	 * 
+	 *
 	 * @param id
 	 *            is a String representation of the course realm id (external
 	 *            id).
 	 */
 	public static List<String> getProviderCourseList(String siteId) {
 		String id = getExternalRealmId(siteId);
-		
+
 		Vector<String> rv = new Vector<String>();
 		if (id == null || NULL_STRING.equals(id) ) {
 			return rv;
 		}
 		// Break Provider Id into course id parts
 		String[] courseIds = groupProvider.unpackId(id);
-		
+
 		// Iterate through course ids
 		for (int i=0; i<courseIds.length; i++) {
 			String courseId = (String) courseIds[i];
@@ -631,7 +631,7 @@ public class SiteParticipantHelper {
 
 	private static void addOfficialInstructorOfRecord(Map<String, Participant> participantsMap, AuthzGroup realm, String sectionTitle, EnrollmentSet enrollmentSet,
 														String filterType, String filterID, Set<Member> groupMembership) {
-		
+
 		if (enrollmentSet != null)
 		{
 			Set<String>instructorEids = cms.getInstructorsOfRecordIds(enrollmentSet.getEid());
@@ -685,10 +685,10 @@ public class SiteParticipantHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get a list of restricted roles, taking into account the current site type
-	 * 
+	 *
 	 * @param siteType
 	 * 				the current site's type
 	 * @return a list of restricted role IDs for the given site type
@@ -698,12 +698,12 @@ public class SiteParticipantHelper {
 		// Add all root level restricted roles
 		Set<String> retVal = new HashSet<String>();
 		retVal.addAll(Arrays.asList(ArrayUtils.nullToEmpty(scs.getStrings(SAK_PROP_RESTRICTED_ROLES))));
-		
+
 		// Add all site type specficic restricted roles
 		if(siteType != null && !"".equals(siteType)) {
 			retVal.addAll(Arrays.asList(ArrayUtils.nullToEmpty(scs.getStrings(SAK_PROP_RESTRICTED_ROLES + "." + siteType))));
 		}
-		
+
 		return retVal;
 	}
 
@@ -712,9 +712,9 @@ public class SiteParticipantHelper {
 	 * and the list of restricted roles defined in sakai.properties.
 	 * If the properties are not found, just return all the roles.
 	 * If the user is an admin, return all the roles.
-	 * 
+	 *
 	 * SAK-23257
-	 * 
+	 *
 	 * @param siteType
 	 * 				the current site's type
 	 * @return A list of 'allowed' role objects for the given site type
@@ -725,10 +725,10 @@ public class SiteParticipantHelper {
 		if (siteType == null) {
 			siteType = "";
 		}
-		
+
 		// Get all the restricted roles for this site type, as well as all restricted roles at the top level (restricted for all site types)
 		Set<String> restrictedRoles = getRestrictedRoles(siteType);
-				
+
 		// Loop through all the roles for this site type
 		for( Role role : allRolesForSiteType )
 		{
@@ -740,7 +740,7 @@ public class SiteParticipantHelper {
 			{
 				retVal.add( role );
 			}
-        	
+
         	// Otherwise, only add the role to the list of 'allowed' roles if it's not present in the set of 'restricted' roles
          	else
          	{
@@ -750,7 +750,7 @@ public class SiteParticipantHelper {
         		}
          	}
         }
-		
+
 		return retVal;
 	}
 
@@ -760,8 +760,8 @@ public class SiteParticipantHelper {
 		list.addAll(allRolesForSiteType);
 		return getAllowedRoles( siteType, list );
 	}
-	
-	public static String makeUserDisplayName( String userId ) 
+
+	public static String makeUserDisplayName( String userId )
 	{
 		String userDisplayName = NULL_STRING;
 
