@@ -18,13 +18,13 @@
 * agreements. See the NOTICE file distributed with this work for
 * additional information regarding copyright ownership.
 *
-* The Apereo Foundation licenses this file to you under the Educational 
-* Community License, Version 2.0 (the "License"); you may not use this file 
-* except in compliance with the License. You may obtain a copy of the 
+* The Apereo Foundation licenses this file to you under the Educational
+* Community License, Version 2.0 (the "License"); you may not use this file
+* except in compliance with the License. You may obtain a copy of the
 * License at:
 *
 * http://opensource.org/licenses/ecl2.txt
-* 
+*
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -75,6 +76,7 @@ import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -353,8 +355,22 @@ public class SakaiFacadeImpl implements SakaiFacade {
 	 */
 	public String getUserDisplayLastFirstName(String userId) {
 		try {
-			final String dispLastName = userDirectoryService.getUser(userId).getLastName();
-			final String dispFirstName = userDirectoryService.getUser(userId).getFirstName();
+
+			PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+			Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+
+			String firstName = "";
+			String lastName = "";
+
+			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+				firstName = userDirectoryService.getUser(userId).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(userId).getFirstName() : userDirectoryService.getUser(userId).getProperties().getProperty("sn;lang-en");
+				lastName = userDirectoryService.getUser(userId).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(userId).getLastName() : userDirectoryService.getUser(userId).getProperties().getProperty("givenName;lang-en");
+			}else{
+				lastName = userDirectoryService.getUser(userId).getLastName();
+				firstName = userDirectoryService.getUser(userId).getFirstName();
+			}
+			final String dispLastName = lastName;
+			final String dispFirstName = firstName;
 			if(StringUtils.isEmpty(dispLastName) && StringUtils.isEmpty(dispFirstName)){
 				//Case: local user can have no first and last names
 				return userDirectoryService.getUser(userId).getDisplayId();
@@ -633,6 +649,10 @@ public class SakaiFacadeImpl implements SakaiFacade {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<SignupUser> getAllPossbileCoordinatorsOnFastTrack(SignupMeeting meeting) {
+
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+
 		List<SignupUser> coordinators = new ArrayList<SignupUser>();
 		List<SignupSite> signupSites = meeting.getSignupSites();
 		Set<String> userIdsHasPermissionToCreate = new HashSet<String>();
@@ -645,7 +665,17 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		
 		List<User> sakaiUsers = userDirectoryService.getUsers(userIdsHasPermissionToCreate);
 		for (User user : sakaiUsers) {
-			SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), user.getFirstName(), user.getLastName(), 
+
+			String firstName = "";
+			String lastName = "";
+
+			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+				firstName = user.getProperties().getProperty("sn;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("sn;lang-en");
+				lastName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("givenName;lang-en");
+			}
+			//SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), user.getFirstName(), user.getLastName(),
+			//		null, "", true);
+			SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), firstName, lastName,
 					null, "", true);
 	 				coordinators.add(signupUser);	
 	 	}
@@ -868,12 +898,27 @@ public class SakaiFacadeImpl implements SakaiFacade {
 	}
 	
 	private void addAndPopulateSignupUsersInfo(Set<SignupUser> signupUsers, Map<String,Role> memberRoleMap, List<String> userIds, Site site){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 		//it should filter out non-existing userIds
 		List<User> sakaiUsers = userDirectoryService.getUsers(userIds);
 		
 		if(sakaiUsers !=null){
 			for (User user : sakaiUsers) {
-				SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), user.getFirstName(), user.getLastName(), 
+
+				String firstName = "";
+				String lastName = "";
+				if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+					firstName = user.getProperties().getProperty("sn;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("sn;lang-en");
+					lastName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("givenName;lang-en");
+				}else{
+					firstName = user.getFirstName();
+					lastName = user.getLastName();
+				}
+
+				//SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), user.getFirstName(), user.getLastName(),
+				//		memberRoleMap.get(user.getId()), site.getId(), site.isPublished());
+				SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), firstName, lastName,
 						memberRoleMap.get(user.getId()), site.getId(), site.isPublished());
 				processAddOrUpdateSignupUsers(signupUsers, signupUser);
 				// comment: member.getUserDisplayId() not used			
