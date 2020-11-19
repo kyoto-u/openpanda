@@ -262,7 +262,8 @@ public class UserAuditEventLog {
 		}
 		
 		public String getUserDisplayName() {
-			userDisplayName = user.getSortName();
+			//userDisplayName = user.getSortName();
+			userDisplayName = user.getDisplayName();
 			return userDisplayName;
 		}
 	
