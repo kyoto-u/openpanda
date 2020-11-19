@@ -152,7 +152,8 @@ public class EventLogFacadeQueries extends HibernateDaoSupport implements EventL
 	      }
 	   }
 	   if (user!=null)
-		   display = user.getSortName();
+		   //display = user.getSortName() + " (" + userEid + ")";
+		   display = user.getDisplayName();
 	   
 	   return display;
 	}

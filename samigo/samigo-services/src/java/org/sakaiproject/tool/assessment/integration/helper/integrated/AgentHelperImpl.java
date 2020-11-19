@@ -23,25 +23,28 @@ package org.sakaiproject.tool.assessment.integration.helper.integrated;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.authz.api.AuthzGroup;
+import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
-import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.AgentHelper;
 import org.sakaiproject.tool.assessment.osid.shared.impl.AgentImpl;
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
+import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.cover.UserDirectoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -202,8 +205,15 @@ log.debug("getEidById agentString s = " + s);
   public String getFirstName(String agentString)
   {
     String s="";
+    PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+	Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
     try{
       if (!agentString.startsWith("anonymous_"))
+    	  if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+  			if(UserDirectoryService.getUser(agentString).getProperties().getProperty("sn;lang-en") != null){
+  				return UserDirectoryService.getUser(agentString).getProperties().getProperty("sn;lang-en");
+  			}
+  		  }
         s=UserDirectoryService.getUser(agentString).getFirstName();
     }
     catch(Exception e){
@@ -220,8 +230,15 @@ log.debug("getEidById agentString s = " + s);
   public String getLastName(String agentString)
   {
     String s="";
+    PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+	Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
     try{
       if (!agentString.startsWith("anonymous_"))
+    	  if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+    		  if(UserDirectoryService.getUser(agentString).getProperties().getProperty("givenName;lang-en") != null){
+    				return UserDirectoryService.getUser(agentString).getProperties().getProperty("givenName;lang-en");
+    		  }
+    	  }
         s=UserDirectoryService.getUser(agentString).getLastName();
     }
     catch(Exception e){

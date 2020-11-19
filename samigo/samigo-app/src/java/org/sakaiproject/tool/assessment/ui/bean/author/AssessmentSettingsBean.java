@@ -1869,7 +1869,8 @@ public class AssessmentSettingsBean implements Serializable {
 				for (Iterator iter = enrollments.iterator(); iter.hasNext();) {
 					EnrollmentRecord enrollmentRecord = (EnrollmentRecord) iter.next();
 					String userId = enrollmentRecord.getUser().getUserUid();
-					String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					//String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					String userDisplayName = enrollmentRecord.getUser().getDisplayName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
 					studentTargets.put(userId, userDisplayName);
 				}
 			}
