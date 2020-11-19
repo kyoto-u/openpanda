@@ -838,6 +838,7 @@ Handlebars.registerHelper('translate', function (key) {
 });
 
 Handlebars.registerHelper('getName', function (firstNameLastName) {
+	firstNameLastName = 'true';
   return (firstNameLastName) ? this.displayName : this.sortName;
 });
 
