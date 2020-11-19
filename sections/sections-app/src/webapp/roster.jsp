@@ -61,12 +61,12 @@
             </f:facet>
             <h:commandLink
                 action="editStudentSections"
-                value="#{enrollment.user.sortName}"
+                value="#{enrollment.user.displayName}"
                 rendered="#{navMenuBean.sectionEnrollmentMangementEnabled}">
                     <f:param name="studentUid" value="#{enrollment.user.userUid}"/>
             </h:commandLink>
             <h:outputText
-                value="#{enrollment.user.sortName}"
+                value="#{enrollment.user.displayName}"
                 rendered="#{!navMenuBean.sectionEnrollmentMangementEnabled}"/>
         </h:column>
         <h:column>
