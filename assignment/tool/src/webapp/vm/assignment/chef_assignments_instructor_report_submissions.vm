@@ -147,7 +147,8 @@
 							<span class="error alertMessage">
 							#end
 							#if ($!submission.User)
-								#set($submitterName = $!submission.User.SortName)
+								##set($submitterName = $!submission.User.SortName)
+								#set($submitterName = $!submission.User.getDisplayName())
 								#set($submitterId = $!submission.User.DisplayId)
 								##if ($submitterId)
 									##set($submitterName = $submitterName.concat(" (").concat($submitterId).concat(")"))

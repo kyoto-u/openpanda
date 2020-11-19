@@ -47,6 +47,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -163,6 +164,7 @@ import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.CandidateDetailProvider;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -237,6 +239,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     @Setter private ToolManager toolManager;
     @Setter private UserDirectoryService userDirectoryService;
     @Setter private UserTimeService userTimeService;
+    @Setter private PreferencesService preferencesService;
 
     private boolean allowSubmitByInstructor;
     private boolean exposeContentReviewErrorsToUI;
@@ -2949,6 +2952,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
         boolean isAdditionalNotesEnabled = false;
         Site st = null;
+        Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
         try {
             st = siteService.getSite(siteId);
             isAdditionalNotesEnabled = candidateDetailProvider != null && candidateDetailProvider.isAdditionalNotesEnabled(st);
@@ -3018,7 +3022,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 if (i > 0) {
                                     submittersString = submittersString.concat("; ");
                                 }
-                                String fullName = submitters[i].getSortName();
+                                //String fullName = submitters[i].getSortName();
+                                String fullName = submitters[i].getDisplayName();
                                 // in case the user doesn't have first name or last name
                                 if (!fullName.contains(",")) {
                                     fullName = fullName.concat(",");
@@ -3059,8 +3064,13 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     //params[0] = submitters[i].getDisplayId();
                                     params[0] = getSubmissionUserId(submitters[i]);
                                     params[1] = submitters[i].getEid();
-                                    params[2] = submitters[i].getLastName();
-                                    params[3] = submitters[i].getFirstName();
+                                    if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+                                    	params[2] = submitters[i].getProperties().getProperty("sn;lang-en") == null ? submitters[i].getLastName() : submitters[i].getProperties().getProperty("sn;lang-en");
+                                        params[3] = submitters[i].getProperties().getProperty("givenName;lang-en") == null ? submitters[i].getFirstName() : submitters[i].getProperties().getProperty("givenName;lang-en");
+                                    }else{
+                                    	params[2] = submitters[i].getLastName();
+                                        params[3] = submitters[i].getFirstName();
+                                    }
                                     params[4] = this.getGradeForSubmitter(s, submitters[i].getId());
                                     if (s.getDateSubmitted() != null) {
                                     	params[5] = s.getDateSubmitted().toString(); // TODO may need to be formatted

@@ -56,6 +56,7 @@
         <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager"/>
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
         <property name="userTimeService" ref="org.sakaiproject.time.api.UserTimeService"/>
+        <property name="preferencesService" ref="org.sakaiproject.user.api.PreferencesService" />
     </bean>
 
     <bean id="org.sakaiproject.assignment.impl.AssignmentContentProducer"

@@ -435,8 +435,9 @@ function printView(url) {
 						#set($gusers = $submission.getSubmitters())
 					#else
 						#set($siteUser = $userSubmission.User)
-						#set($submitterSortName=$!siteUser.sortName) 
-						#set($submitterName=$!submitterSortName) 
+						##set($submitterSortName=$!siteUser.sortName)
+						#set($submitterSortName=$!siteUser.getDisplayName())
+						#set($submitterName=$!submitterSortName)
 						#set($submitterDisplayId=$!siteUser.getDisplayId())
 					#end
 					#set($submitterId = $!siteUser.getId())
