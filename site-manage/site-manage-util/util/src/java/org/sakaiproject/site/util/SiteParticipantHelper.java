@@ -176,7 +176,8 @@ public class SiteParticipantHelper {
 							{
 								participant = new Participant();
 								participant.credits = e.getCredits() != null?e.getCredits():"";
-								participant.name = user.getSortName();
+								//participant.name = user.getSortName();
+								participant.name = user.getDisplayName();
 								if (member.isProvided())
 								{
 									participant.providerRole = member.getRole()!=null?member.getRole().getId():"";
@@ -337,7 +338,8 @@ public class SiteParticipantHelper {
 						{
 							participant = new Participant();
 							participant.credits = "";
-							participant.name = user.getSortName();
+							//participant.name = user.getSortName();
+							participant.name = user.getDisplayName();
 							if (member.isProvided())
 							{
 								participant.providerRole = member.getRole()!=null?member.getRole().getId():"";
@@ -423,7 +425,8 @@ public class SiteParticipantHelper {
 					{
 						participant = new Participant();
 					}
-					participant.name = user.getSortName();
+					//participant.name = user.getSortName();
+					participant.name = user.getDisplayName();
 					participant.regId = user.getDisplayId();
 					participant.uniqname = userId;
 					participant.role = g.getRole()!=null?g.getRole().getId():"";
@@ -661,7 +664,8 @@ public class SiteParticipantHelper {
 							{
 								participant = new Participant();
 								participant.credits = "";
-								participant.name = user.getSortName();
+								//participant.name = user.getSortName();
+								participant.name = user.getDisplayName();
 								if (member.isProvided())
 								{
 									participant.providerRole = member.getRole()!=null?member.getRole().getId():"";

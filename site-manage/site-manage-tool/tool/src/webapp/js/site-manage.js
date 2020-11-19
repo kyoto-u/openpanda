@@ -79,7 +79,7 @@ sakai.getGroupInfo = function(trigger, dialogTarget, memberstr, printstr, tables
         
         jQuery.getJSON(groupURL, function(data){
             $.each(data.membership_collection, function(i, item){
-                var sortName = $('<div>').text(item.userSortName).html();
+                var sortName = $('<div>').text(item.userDisplayName).html();
                 var role = $('<div>').text(item.memberRole).html();
                 var email = $('<div>').text(item.userEmail).html();
                 list = list + "<tr><td>" + count + ")&nbsp;" + sortName + "</td><td>" + role + "</td><td><a href=\'mailto:" + email + "\'>" + email + "</a></td></tr>";

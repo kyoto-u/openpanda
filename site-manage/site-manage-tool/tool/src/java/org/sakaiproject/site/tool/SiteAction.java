@@ -15,14 +15,14 @@
  */
 package org.sakaiproject.site.tool;
 
-import static org.sakaiproject.site.util.SiteConstants.STATE_TEMPLATE_INDEX;
+import static org.sakaiproject.site.util.SiteConstants.*;
 
-import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
@@ -60,6 +60,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -180,7 +181,6 @@ import org.sakaiproject.util.comparator.GroupTitleComparator;
 import org.sakaiproject.util.comparator.ToolTitleComparator;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * <p>
@@ -2095,7 +2095,8 @@ public class SiteAction extends PagedResourceActionII {
 			Time siteModifiedTime = site.getModifiedTime();
 			if( siteModifiedBy != null )
 			{
-				context.put( "siteModifiedBy", siteModifiedBy.getSortName() );
+				//context.put( "siteModifiedBy", siteModifiedBy.getSortName() );
+				context.put( "siteModifiedBy", siteModifiedBy.getDisplayName() );
 			}
 			if( siteModifiedTime != null )
 			{
