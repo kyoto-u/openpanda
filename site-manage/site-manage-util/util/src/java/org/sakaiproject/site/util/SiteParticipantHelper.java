@@ -177,7 +177,8 @@ public class SiteParticipantHelper {
 									participant.credits = e.getCredits() != null ? e.getCredits() : "";
 									final String statusId = Optional.ofNullable(e.getEnrollmentStatus()).orElse("");
 									participant.enrollmentStatus = cms.getEnrollmentStatusDescription(statusId);
-									participant.name = user.getSortName();
+									// participant.name = user.getSortName();
+									participant.name = user.getDisplayName();
 									if (member.isProvided())
 									{
 										participant.providerRole = member.getRole()!=null?member.getRole().getId():"";
@@ -338,7 +339,8 @@ public class SiteParticipantHelper {
 						{
 							participant = new Participant();
 							participant.credits = "";
-							participant.name = user.getSortName();
+							//participant.name = user.getSortName();
+							participant.name = user.getDisplayName();
 							if (member.isProvided())
 							{
 								participant.providerRole = member.getRole()!=null?member.getRole().getId():"";
@@ -424,7 +426,8 @@ public class SiteParticipantHelper {
 					{
 						participant = new Participant();
 					}
-					participant.name = user.getSortName();
+					//participant.name = user.getSortName();
+					participant.name = user.getDisplayName();
 					participant.regId = user.getDisplayId();
 					participant.uniqname = userId;
 					participant.role = g.getRole()!=null?g.getRole().getId():"";
@@ -662,7 +665,8 @@ public class SiteParticipantHelper {
 							{
 								participant = new Participant();
 								participant.credits = "";
-								participant.name = user.getSortName();
+								//participant.name = user.getSortName();
+								participant.name = user.getDisplayName();
 								if (member.isProvided())
 								{
 									participant.providerRole = member.getRole()!=null?member.getRole().getId():"";

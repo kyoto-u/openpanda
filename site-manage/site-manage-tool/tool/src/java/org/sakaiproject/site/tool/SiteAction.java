@@ -15,7 +15,7 @@
  */
 package org.sakaiproject.site.tool;
 
-import static org.sakaiproject.site.util.SiteConstants.STATE_TEMPLATE_INDEX;
+import static org.sakaiproject.site.util.SiteConstants.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -2107,7 +2107,8 @@ public class SiteAction extends PagedResourceActionII {
 			Date siteModifiedTime = site.getModifiedDate();
 			if( siteModifiedBy != null )
 			{
-				context.put( "siteModifiedBy", siteModifiedBy.getSortName() );
+				//context.put( "siteModifiedBy", siteModifiedBy.getSortName() );
+				context.put( "siteModifiedBy", siteModifiedBy.getDisplayName() );
 			}
 			if( siteModifiedTime != null )
 			{

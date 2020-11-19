@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package org.sakaiproject.site.util;
 
 import java.text.Collator;
@@ -29,6 +29,7 @@ import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService.SortType;
+import org.sakaiproject.site.util.Participant;
 import org.sakaiproject.user.cover.UserDirectoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -312,14 +313,16 @@ public class SiteComparator implements Comparator {
 
 			try {
 				s1 = UserDirectoryService
-						.getUser(((Member) o1).getUserId()).getSortName();
+						//.getUser(((Member) o1).getUserId()).getSortName();
+						.getUser(((Member) o1).getUserId()).getDisplayName();
 			} catch (Exception ignore) {
 
 			}
 
 			try {
 				s2 = UserDirectoryService
-						.getUser(((Member) o2).getUserId()).getSortName();
+						//.getUser(((Member) o2).getUserId()).getSortName();
+						.getUser(((Member) o2).getUserId()).getDisplayName();
 			} catch (Exception ignore) {
 
 			}

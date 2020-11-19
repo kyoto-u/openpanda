@@ -147,7 +147,8 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
         	try
         	{
         		User u = userDirectoryService.getUserByEid(userEId);
-        		userName = u.getSortName();
+        		//userName = u.getSortName();
+        		userName = u.getDisplayName();
         		displayId = u.getDisplayId();
         	}
         	catch (Exception e)
