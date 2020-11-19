@@ -407,9 +407,11 @@ public class MembershipManagerImpl implements MembershipManager{
 				MembershipItem memberItem = MembershipItem.getInstance();
 				memberItem.setType(memberItemType);
 				if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
-					memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
+					//memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
+					memberItem.setName(user.getDisplayName() + " (" + user.getDisplayId("messageForum") + ")");
 				} else {
-					memberItem.setName(user.getSortName());
+					//memberItem.setName(user.getSortName());
+					memberItem.setName(user.getDisplayName());
 				}
 				memberItem.setUser(user);
 				memberItem.setRole(userRole);
@@ -504,7 +506,8 @@ public class MembershipManagerImpl implements MembershipManager{
          {
          	MembershipItem memberItem = MembershipItem.getInstance();
          	memberItem.setType(MembershipItem.TYPE_USER);
-         	memberItem.setName(user.getSortName());
+         	//memberItem.setName(user.getSortName());
+         	memberItem.setName(user.getDisplayName());
          	memberItem.setUser(user);
          	memberItem.setRole(userRole);     
      		userMap.put(memberItem.getId(), memberItem);     

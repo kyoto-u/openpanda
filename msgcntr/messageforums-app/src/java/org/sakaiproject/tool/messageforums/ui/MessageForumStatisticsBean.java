@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -72,6 +73,7 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -2140,16 +2142,34 @@ public class MessageForumStatisticsBean {
 
 	private String getUserName(String userId) {
 		String userName="";
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 		try
 		{
 			User user=userDirectoryService.getUser(userId) ;
+			String firstName = "";
+			String lastName = "";
 			if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
 				if(user != null) {
-					userName= user.getLastName() + ", " + user.getFirstName() + " (" + user.getDisplayId("messageForum") + ")" ;
+					if(!"ja_JP".equals(locale)){
+						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
+						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
+					}else{
+						lastName = user.getLastName();
+						firstName = user.getFirstName();
+					}
+					userName= lastName + ", " + firstName + " (" + user.getDisplayId("messageForum") + ")" ;
 				}
 			} else {
 				if(user != null) {
-					userName = user.getLastName() + ", " + user.getFirstName();
+					if(!"ja_JP".equals(locale)){
+						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
+						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
+					}else{
+						lastName = user.getLastName();
+						firstName = user.getFirstName();
+					}
+					userName = lastName + ", " + firstName;
 				}
 			}
 		}

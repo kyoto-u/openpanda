@@ -806,11 +806,13 @@ public class PrivateMessagesTool {
       User user=userDirectoryService.getUser(id) ;
       if (ServerConfigurationService.getBoolean("msg.displayEid", true))
       {
-    	  userName= user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
+    	  //userName= user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
+    	  userName= user.getDisplayName() + " (" + user.getDisplayId("messageForum") + ")";
       }
       else
       {
-    	  userName= user.getSortName();
+    	  //userName= user.getSortName();
+    	  userName= user.getDisplayName();
       }
     }
     catch (UserNotDefinedException e) {
@@ -4182,11 +4184,13 @@ public void processChangeSelectView(ValueChangeEvent eve)
     	 User user = userDirectoryService.getUser(getUserId());
     	 if (ServerConfigurationService.getBoolean("msg.displayEid", true))
     	 {
-    		 authorString = user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
+    		 //authorString = user.getSortName() + " (" + user.getDisplayId("messageForum") + ")";
+    		 authorString = user.getDisplayName() + " (" + user.getDisplayId("messageForum") + ")";
     	 }
     	 else
     	 {
-    		 authorString = user.getSortName();
+    		 //authorString = user.getSortName();
+    		 authorString = user.getDisplayName();
     	 }
        }
        catch(Exception e)
