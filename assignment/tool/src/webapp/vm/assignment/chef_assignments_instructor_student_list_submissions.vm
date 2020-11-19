@@ -64,7 +64,8 @@
 						#end
 					</tr>
 					#foreach ($member in $studentMembers)
-						#set($submitterName=$!member.sortName)
+						##set($submitterName=$!member.sortName)
+						#set($submitterName=$!member.getDisplayName())
 						#set($submitterId=$!member.getDisplayId())
 						##if ($!submitterId)
 							##attach the displayId
