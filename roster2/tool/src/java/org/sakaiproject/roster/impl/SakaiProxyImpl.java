@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Observable;
@@ -78,6 +79,7 @@ import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.coursemanagement.api.Enrollment;
 import org.sakaiproject.coursemanagement.api.EnrollmentSet;
@@ -108,6 +110,7 @@ import org.sakaiproject.sitestats.api.SitePresenceTotal;
 import org.sakaiproject.sitestats.api.StatsManager;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -893,12 +896,34 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
         List<RosterMember> siteMembers = (List<RosterMember>) cache.get(key);
 
+        PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+
         if (siteMembers != null) {
             log.debug("Cache hit on '{}'.", key);
 
-            if("Student".equals(site.getMember(getCurrentUserId()).getRole().getId())){
-            	for(RosterMember rosterMember : siteMembers){
-            		rosterMember.setDisplayId("xxxx");
+            String currentRoleString = site.getMember(getCurrentUserId()).getRole().getId();
+
+            for(RosterMember rosterMember : siteMembers){
+
+            	User user = null;
+            	try{
+            		user = userDirectoryService.getUserByEid(rosterMember.getEid());
+            	}catch(Exception e){
+            	}
+            	if(currentRoleString != null){
+            		if("Instructor".equals(currentRoleString) || "Teaching Assistant".equals(currentRoleString)){
+            				rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
+            		}else{
+            			rosterMember.setDisplayId("xxxx");
+            		}
+            	}
+            	if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+            		if(user.getProperties().getProperty("displayName;lang-en") != null){
+                		rosterMember.setDisplayName(user.getProperties().getProperty("displayName;lang-en"));
+                	}
+            	}else{
+            		rosterMember.setDisplayName(user.getDisplayName());
             	}
             }
             return siteMembers;
