@@ -1,5 +1,6 @@
 package jp.ac.kyoto_u.sakai.user;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.ToolConfiguration;
@@ -15,6 +17,7 @@ import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.ContextualUserDisplayService;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 
 public class MaskingContextualUserDisplayService implements ContextualUserDisplayService {
@@ -31,6 +34,8 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 	private Map<String, Pattern> regidMaskPatterns;
 
 	private boolean unmaskForSuperUsers = false;
+
+	private PreferencesService preferencesService;
 
 	/* For Spring */
 
@@ -104,6 +109,15 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 	}
 
 	public String getUserDisplayName(User user) {
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
+		if(locale != null){
+			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+				if(user.getProperties().getProperty("displayName;lang-en") != null){
+					return user.getProperties().getProperty("displayName;lang-en");
+				}
+			}
+		}
 		return null;
 	}
 
@@ -111,9 +125,18 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		if (user == null)  {
 			return null;
 		}
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
 		if (contextReference == null)  {
 			return getUserDisplayName(user);
 		}
+
+		if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+			if(user.getProperties().getProperty("displayName;lang-en") != null){
+				return user.getProperties().getProperty("displayName;lang-en");
+			}
+		}
+
 		return user.getDisplayName();
 	}
 
