@@ -2142,8 +2142,6 @@ public class MessageForumStatisticsBean {
 
 	private String getUserName(String userId) {
 		String userName="";
-		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 		try
 		{
 			User user=userDirectoryService.getUser(userId) ;
@@ -2151,7 +2149,7 @@ public class MessageForumStatisticsBean {
 			String lastName = "";
 			if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
 				if(user != null) {
-					if(!"ja_JP".equals(locale)){
+					if(!"ja_JP".equals(getUserLocaleString())){
 						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
 						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
 					}else{
@@ -2162,7 +2160,7 @@ public class MessageForumStatisticsBean {
 				}
 			} else {
 				if(user != null) {
-					if(!"ja_JP".equals(locale)){
+					if(!"ja_JP".equals(getUserLocaleString())){
 						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
 						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
 					}else{
@@ -3124,5 +3122,14 @@ public class MessageForumStatisticsBean {
 
 		// Condenses to:
 		return topic.getPostAnonymous() && (!topic.getRevealIDsToRoles() || !uiPermissionsManager.isIdentifyAnonAuthors(topic));
+	}
+
+	private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
 	}
 }
