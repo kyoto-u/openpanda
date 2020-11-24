@@ -111,13 +111,9 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 	}
 
 	public String getUserDisplayName(User user) {
-		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
-		if(locale != null){
-			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
-				if(user.getProperties().getProperty("displayName;lang-en") != null){
-					return user.getProperties().getProperty("displayName;lang-en");
-				}
+		if(!"ja_JP".equals(getUserLocaleString())){
+			if(user.getProperties().getProperty("displayName;lang-en") != null){
+				return user.getProperties().getProperty("displayName;lang-en");
 			}
 		}
 		return null;
@@ -127,13 +123,10 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		if (user == null)  {
 			return null;
 		}
-		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
 		if (contextReference == null)  {
 			return getUserDisplayName(user);
 		}
-
-		if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+		if(!"ja_JP".equals(getUserLocaleString())){
 			if(user.getProperties().getProperty("displayName;lang-en") != null){
 				return user.getProperties().getProperty("displayName;lang-en");
 			}
@@ -281,6 +274,15 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 
 		return SiteService.getSite(siteId).getMember(userId).getRole().getId();
 
+	}
+
+	private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale= Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
 	}
 
 }
