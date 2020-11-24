@@ -883,9 +883,6 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
         List<RosterMember> siteMembers = (List<RosterMember>) cache.get(key);
 
-        PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
-
         if (siteMembers != null) {
             log.debug("Cache hit on '{}'.", key);
 
@@ -905,7 +902,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             			rosterMember.setDisplayId("xxxx");
             		}
             	}
-            	if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+            	if(!"ja_JP".equals(getUserLocaleString())){
             		if(user.getProperties().getProperty("displayName;lang-en") != null){
                 		rosterMember.setDisplayName(user.getProperties().getProperty("displayName;lang-en"));
                 	}
@@ -1453,4 +1450,13 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             }
         }
     }
+
+    private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
 }
