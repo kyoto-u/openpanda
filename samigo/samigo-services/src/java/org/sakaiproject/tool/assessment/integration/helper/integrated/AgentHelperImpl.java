@@ -205,11 +205,9 @@ log.debug("getEidById agentString s = " + s);
   public String getFirstName(String agentString)
   {
     String s="";
-    PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-	Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
     try{
       if (!agentString.startsWith("anonymous_"))
-    	  if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+    	  if(!"ja_JP".equals(getUserLocaleString())){
   			if(UserDirectoryService.getUser(agentString).getProperties().getProperty("sn;lang-en") != null){
   				return UserDirectoryService.getUser(agentString).getProperties().getProperty("sn;lang-en");
   			}
@@ -230,11 +228,9 @@ log.debug("getEidById agentString s = " + s);
   public String getLastName(String agentString)
   {
     String s="";
-    PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-	Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
     try{
       if (!agentString.startsWith("anonymous_"))
-    	  if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+    	  if(!"ja_JP".equals(getUserLocaleString())){
     		  if(UserDirectoryService.getUser(agentString).getProperties().getProperty("givenName;lang-en") != null){
     				return UserDirectoryService.getUser(agentString).getProperties().getProperty("givenName;lang-en");
     		  }
@@ -555,4 +551,12 @@ log.debug("getEidById agentString s = " + s);
         }
         return "";
     }
+    private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale= Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
 }
