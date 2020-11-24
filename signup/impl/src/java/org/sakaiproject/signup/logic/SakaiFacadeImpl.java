@@ -91,20 +91,20 @@ import lombok.extern.slf4j.Slf4j;
  * necessary methods, which are depend on the Sakai Services. This will allow
  * the separation of Signup Tool and the Sakai Tools
  * </P>
- * 
+ *
  * @author gl256
- * 
+ *
  */
 @Slf4j
 public class SakaiFacadeImpl implements SakaiFacade {
 
 	private FunctionManager functionManager;
-	
+
 	private static ResourceLoader rb=  new ResourceLoader();
 
 	/**
 	 * set a Sakai FunctionManager object
-	 * 
+	 *
 	 * @param functionManager
 	 *            a Sakai FunctionManager object
 	 */
@@ -116,7 +116,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai ToolManager object
-	 * 
+	 *
 	 * @param toolManager
 	 *            a Sakai ToolManager object
 	 */
@@ -126,7 +126,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * get the ToolManager object.
-	 * 
+	 *
 	 * @return a ToolManager object.
 	 */
 	public ToolManager getToolManager() {
@@ -137,7 +137,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai SecurityService object
-	 * 
+	 *
 	 * @param securityService
 	 *            a Sakai SecurityService object
 	 */
@@ -149,7 +149,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai SessionManager object
-	 * 
+	 *
 	 * @param sessionManager
 	 *            a Sakai SessionManager object
 	 */
@@ -161,7 +161,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai SiteService object
-	 * 
+	 *
 	 * @param siteService
 	 *            a Sakai SiteService object
 	 */
@@ -180,7 +180,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai UserDirectoryService object
-	 * 
+	 *
 	 * @param userDirectoryService
 	 *            a Sakai UserDirectoryService object
 	 */
@@ -192,7 +192,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai CalendarService object
-	 * 
+	 *
 	 * @param calendarService
 	 *            a Sakai CalendarService object
 	 */
@@ -211,14 +211,14 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * set a Sakai ServerConfigurationService object
-	 * 
+	 *
 	 * @param serverConfigurationService
 	 *            a Sakai ServerConfigurationService object
 	 */
 	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
 		this.serverConfigurationService = serverConfigurationService;
 	}
-	
+
 	private AuthzGroupService authzGroupService;
 
 	private FormattedText formattedText;
@@ -261,8 +261,8 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			}
 		}
 		return null;
-	}			
-	
+	}
+
 	/**
 	 * regist all the permission levels, which Signup Tool required. Place any
 	 * code that should run when this class is initialized by spring here
@@ -310,7 +310,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -322,7 +322,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -331,7 +331,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			User u = userDirectoryService.getUser(userId);
 			if (u != null) {
 				return true;
-			} 
+			}
 		} catch (UserNotDefinedException e) {
 			log.debug("User with id: " + userId + " does not exist : " + e.getClass() + " : " + e.getMessage());
 		}
@@ -349,20 +349,16 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			return "--------";
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String getUserDisplayLastFirstName(String userId) {
 		try {
-
-			PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-			Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
-
 			String firstName = "";
 			String lastName = "";
 
-			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+			if(!"ja_JP".equals(getUserLocaleString())){
 				firstName = userDirectoryService.getUser(userId).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(userId).getFirstName() : userDirectoryService.getUser(userId).getProperties().getProperty("sn;lang-en");
 				lastName = userDirectoryService.getUser(userId).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(userId).getLastName() : userDirectoryService.getUser(userId).getProperties().getProperty("givenName;lang-en");
 			}else{
@@ -454,7 +450,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			return "----------";
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -463,7 +459,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		/*all sites for current user*/
 		List<Site> tempL = siteService.getSites(SiteService.SelectionType.ACCESS, null, null, null,
 				SiteService.SortType.TITLE_ASC, null);
-		
+
 		for (Iterator iter = tempL.iterator(); iter.hasNext();) {
 			Site element = (Site) iter.next();
 			// exclude my workspace & admin related sites
@@ -479,7 +475,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			}
 
 		}
-		
+
 		return siteIds;
 	}
 
@@ -490,8 +486,8 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		List<SignupSite> signupSites = new ArrayList<SignupSite>();
 		List<Site> tempL = siteService.getSites(SiteService.SelectionType.ACCESS, null, null, null,
 				SiteService.SortType.TITLE_ASC, null);
-		
-		/*Case: Admin is not a member of current site and add it 
+
+		/*Case: Admin is not a member of current site and add it
 		 * in order to let Admin create meetings*/
 		if(isUserAdmin(getCurrentUserId())){
 			String currentSitId = getCurrentLocationId();
@@ -507,14 +503,14 @@ public class SakaiFacadeImpl implements SakaiFacade {
 					if(currentSitId.equals(s.getId())){
 						foundSite=true;
 						break;
-					}						
+					}
 				}
 				if(!foundSite){
 					tempL.add(curSite);
 				}
 			}
 		}
-		
+
 		for (Iterator iter = tempL.iterator(); iter.hasNext();) {
 			Site element = (Site) iter.next();
 			// exclude my workspace & admin related sites
@@ -532,13 +528,13 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				Collection tmpGroup = element.getGroups();
 				for (Iterator iterator = tmpGroup.iterator(); iterator.hasNext();) {
 					Group grp = (Group) iterator.next();
-										
+
 					//signup-51 don't show the hidden groups (if property exists, skip this group)
 					String gProp = grp.getProperties().getProperty(GROUP_PROP_SIGNUP_IGNORE);
     				if (gProp != null && gProp.equals(Boolean.TRUE.toString())) {
     					continue;
     				}
-    				    				
+
 					SignupGroup sgrp = new SignupGroup();
 					sgrp.setGroupId(grp.getId());
 					sgrp.setTitle(grp.getTitle());
@@ -600,7 +596,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return new ArrayList<SignupUser>(signupUsers);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -621,7 +617,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return new ArrayList<SignupUser>(signupUsers);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -643,15 +639,12 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return coordinators;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	public List<SignupUser> getAllPossbileCoordinatorsOnFastTrack(SignupMeeting meeting) {
-
-		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
-		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 
 		List<SignupUser> coordinators = new ArrayList<SignupUser>();
 		List<SignupSite> signupSites = meeting.getSignupSites();
@@ -662,27 +655,30 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				userIdsHasPermissionToCreate.addAll(getUserIdsHasPermissionToCreate(site));
 			}
 		}
-		
+
 		List<User> sakaiUsers = userDirectoryService.getUsers(userIdsHasPermissionToCreate);
 		for (User user : sakaiUsers) {
 
 			String firstName = "";
 			String lastName = "";
 
-			if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+			if(!"ja_JP".equals(getUserLocaleString())){
 				firstName = user.getProperties().getProperty("sn;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("sn;lang-en");
 				lastName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("givenName;lang-en");
+			}else{
+				firstName = user.getFirstName();
+				lastName = user.getLastName();
 			}
 			//SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), user.getFirstName(), user.getLastName(),
 			//		null, "", true);
 			SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), firstName, lastName,
 					null, "", true);
-	 				coordinators.add(signupUser);	
+	 				coordinators.add(signupUser);
 	 	}
 
 		return coordinators;
 	}
-	
+
 	private Set<String> getUserIdsHasPermissionToCreate(SignupSite site) {
 		Set<String> userIds = new HashSet<String>();
 		userIds.addAll(getUserIdsWithPermission(SIGNUP_CREATE_SITE, site.getSiteId()));
@@ -695,15 +691,15 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return userIds;
 	}
-	
+
 	private List<String> getUserIdsWithPermission(String permission, String siteId) {
 		return getUserIdsWithPermissionOnRealm(permission, siteService.siteReference(siteId));
 	}
-	
+
 	private List<String> getUserIdsWithPermission(String permission, String siteId, String groupId) {
 		return getUserIdsWithPermissionOnRealm(permission, siteService.siteGroupReference(siteId, groupId));
 	}
-	
+
 	private List<String> getUserIdsWithPermissionOnRealm(String permission, String realmId) {
 		List<String> rv = new ArrayList<String>();
 		for (User user: securityService.unlockUsers(permission, realmId)) {
@@ -711,8 +707,8 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return rv;
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -730,15 +726,15 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 			if (site == null)
 				continue;
-			
+
 			if(site.getId().equals(signupSite.getSiteId()))
 				currentSignupSite=signupSite;
-			
+
 			/*Case 1: User is required to be a site member*/
 			Member member = site.getMember(userId);
 			if (member ==null || !member.isActive())
 				continue;
-			
+
 			if (hasPermissionToAttend(signupSite,userId)) {
 				User user = getUser(member.getUserId());
 				if (user != null) {
@@ -757,29 +753,29 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				else
 					log.info("user is not found from 'userDirectoryService' for userId:" + member.getUserId());
 			}
-			
+
 		}//end of for
-		
+
 		/*Case 2: site has '.auth' roleId and user is not required to be a site member*/
 		if(signupUser ==null){
 			signupUser = getSignupUserForLoginRequiredOnlySite(currentSignupSite,userId);
 		}
-		
+
 		return signupUser;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public List<User> getUsersWithPermission(String permission) {
-		
+
 		try {
 			//current site
 			Site currentSite = siteService.getSite(getCurrentLocationId());
-		
+
 			//get userids with permission in this site/azg
 			Set<String> usersWithPermission = authzGroupService.getUsersIsAllowed(permission, Collections.singletonList(currentSite.getReference()));
-		
+
 			//get Users
 			return  userDirectoryService.getUsers(usersWithPermission);
 		} catch (Exception e) {
@@ -788,11 +784,11 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		return Collections.EMPTY_LIST;
 	}
 
-		
+
 	private boolean hasPermissionToAttend(SignupSite site, String userId){
 		if(isAllowedSite(userId, SIGNUP_ATTEND_ALL, site.getSiteId()))
 			return true;
-	
+
 		if (site.isSiteScope()) {
 			if (isAllowedSite(userId, SIGNUP_ATTEND, site.getSiteId()))
 				return true;
@@ -803,18 +799,18 @@ public class SakaiFacadeImpl implements SakaiFacade {
 					return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public boolean hasPermissionToCreate(SignupMeeting meeting, String userId){
-		
+
 		List<SignupSite> signupSites = meeting.getSignupSites();
 		if(signupSites !=null){
-			for (SignupSite site : signupSites) {			
+			for (SignupSite site : signupSites) {
 				if(isAllowedSite(userId, SIGNUP_CREATE_SITE, site.getSiteId()))
 					return true;
-			
+
 				if (site.isSiteScope()) {
 					if (isAllowedSite(userId, SIGNUP_CREATE_SITE, site.getSiteId()))
 						return true;
@@ -825,13 +821,13 @@ public class SakaiFacadeImpl implements SakaiFacade {
 							return true;
 					}
 				}
-			
+
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/*If site has roleId '.auth', any user is OK if logged in*/
 	private SignupUser getSignupUserForLoginRequiredOnlySite(SignupSite signupSite, String userId){
 		SignupUser signupUser=null;
@@ -844,7 +840,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 		if (site == null)
 			return null;
-		
+
 		Set siteRoles = site.getRoles();
 		if(siteRoles !=null){
 			for (Iterator iter = siteRoles.iterator(); iter.hasNext();) {
@@ -858,10 +854,10 @@ public class SakaiFacadeImpl implements SakaiFacade {
 						break;
 					}
 				}
-				
+
 			}
 		}
-		
+
 		return signupUser;
 	}
 
@@ -893,22 +889,22 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				userIds.add(member.getUserId());
 			}
 		}
-		
+
 		addAndPopulateSignupUsersInfo(signupUsers,memberRoleMap,userIds, site);
 	}
-	
+
 	private void addAndPopulateSignupUsersInfo(Set<SignupUser> signupUsers, Map<String,Role> memberRoleMap, List<String> userIds, Site site){
 		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
 		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 		//it should filter out non-existing userIds
 		List<User> sakaiUsers = userDirectoryService.getUsers(userIds);
-		
+
 		if(sakaiUsers !=null){
 			for (User user : sakaiUsers) {
 
 				String firstName = "";
 				String lastName = "";
-				if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+				if(!"ja_JP".equals(getUserLocaleString())){
 					firstName = user.getProperties().getProperty("sn;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("sn;lang-en");
 					lastName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("givenName;lang-en");
 				}else{
@@ -921,12 +917,12 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				SignupUser signupUser = new SignupUser(user.getEid(), user.getId(), firstName, lastName,
 						memberRoleMap.get(user.getId()), site.getId(), site.isPublished());
 				processAddOrUpdateSignupUsers(signupUsers, signupUser);
-				// comment: member.getUserDisplayId() not used			
+				// comment: member.getUserDisplayId() not used
 			}
 		}
-		
+
 	}
-	
+
 	/* get all users in a specific group */
 	@SuppressWarnings("unchecked")
 	private void getAttendeesForGroup(Set<SignupUser> signupUsers, SignupSite signupSite, SignupGroup signupGroup) {
@@ -954,7 +950,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				userIds.add(member.getUserId());
 			}
 		}
-		
+
 		addAndPopulateSignupUsersInfo(signupUsers,memberRoleMap,userIds, site);
 	}
 
@@ -992,11 +988,11 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				userIds.add(member.getUserId());
 			}
 		}
-		
+
 		addAndPopulateSignupUsersInfo(signupUsers,memberRoleMap,userIds, site);
 
 	}
-	
+
 	/* get all users in a site */
 	@SuppressWarnings("unchecked")
 	private void getAttendeesForSiteWithSiteScope(Set<SignupUser> signupUsers, SignupSite signupSite) {
@@ -1024,14 +1020,14 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				userIds.add(member.getUserId());
 			}
 		}
-		
+
 		addAndPopulateSignupUsersInfo(signupUsers,memberRoleMap,userIds, site);
 	}
 
 	/**
 	 * It will make sure that the user has a point to a published site and
 	 * possible with the same creator's siteId if possible
-	 * 
+	 *
 	 * @param signupUsers
 	 *            a List of SignupUser objects.
 	 * @param signupUser
@@ -1106,14 +1102,14 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
 	/**
 	 * This is a setter.
-	 * 
+	 *
 	 * @param timeService
 	 *            a TimeService object.
 	 */
 	public void setTimeService(TimeService timeService) {
 		this.timeService = timeService;
 	}
-	
+
 	private ContentHostingService contentHostingService;
 
 	/**
@@ -1131,28 +1127,28 @@ public class SakaiFacadeImpl implements SakaiFacade {
 	public void setContentHostingService(ContentHostingService contentHostingService) {
 		this.contentHostingService = contentHostingService;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Collection<User> getUsersByEmail(String email) {
 		return (Collection<User>)userDirectoryService.findUsersByEmail(email);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public User getUserByEmail(String email) {
-		
+
 		Collection<User> users =  (Collection<User>)userDirectoryService.findUsersByEmail(email);
-		
+
 		if(users.isEmpty()) {
 			return null;
 		}
-		
+
 		return users.iterator().next();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1164,7 +1160,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1190,7 +1186,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 
         return advisor;
     }
-    
+
     /**
 	 * {@inheritDoc}
 	 */
@@ -1212,12 +1208,12 @@ public class SakaiFacadeImpl implements SakaiFacade {
     public void popSecurityAdvisor(SecurityAdvisor advisor) {
         disableSecurityAdvisor(advisor);
     }
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public String createGroup(String siteId, String title, String description, List<String> userUuids) {
-				
+
 		Site site = null;
 		try {
 			site = siteService.getSite(siteId);
@@ -1225,63 +1221,63 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("createGroup failed for site: " + site.getId(), e);
             return null;
 		}
-							
+
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
 				return SecurityAdvice.ALLOWED;
 			}
 		};
 		enableSecurityAdvisor(securityAdvisor);
-				
+
 		try {
-			
+
 			//add new group
 			Group group=site.addGroup();
-			
+
 			group.setTitle(GROUP_PREFIX + title);
-	        group.setDescription(description);   
-	        
+	        group.setDescription(description);
+
 	        //set this property so the groups shows in site info
 		    group.getProperties().addProperty(GROUP_PROP_SITEINFO_VISIBLE, Boolean.TRUE.toString());
-		    
+
 		    //set this so the group does not show in the list of groups in signups
 		    //SIGNUP-182 allow groups to be normal groups, ie dont set this property
 		    //group.getProperties().addProperty(GROUP_PROP_SIGNUP_IGNORE, Boolean.TRUE.toString());
 
-		    
+
 		    if(userUuids != null) {
 		    	try {
 		    		group.deleteMembers();
 		    	} catch (IllegalStateException e) {
 		    		log.error(".createGroup: Members from group with id {} cannot be deleted because the group is locked", group.getId());
 		    	}
-		    			    	
+
 		    	for(String userUuid: userUuids) {
 		    		group = addUserToGroup(userUuid, group);
 		    	}
 		    }
-	   		    
+
 		    // save the changes
 			siteService.save(site);
-			
+
 			return group.getId();
-			
+
 		} catch (Exception e) {
         	log.error("createGroup failed for site: " + site.getId(), e);
         } finally {
         	disableSecurityAdvisor(securityAdvisor);
         }
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean addUsersToGroup(Collection<String> userIds, String siteId, String groupId, String timeslottoGroup) {
-		
+
 		log.debug("addUsersToGroup(userIds=" + Arrays.asList(userIds).toString() + ", siteId=" + siteId + ", groupId=" + groupId);
-		
+
 		Site site = null;
 		try {
 			site = siteService.getSite(siteId);
@@ -1289,39 +1285,39 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("addUserToGroup failed to retrieve site: " + siteId, e);
             return false;
 		}
-							
+
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
 				return SecurityAdvice.ALLOWED;
 			}
 		};
 		enableSecurityAdvisor(securityAdvisor);
-		
-		Group group = site.getGroup(groupId);		
-		
+
+		Group group = site.getGroup(groupId);
+
 		if(group == null) {
         	log.error("No group for id: " + groupId);
 			return false;
 		}
-			
+
 			try {
-		
+
 				for(String userId: userIds) {
 					group = addUserToGroup(userId, group);
 				}
-				
+
 				//the synchronise is from the time slot to Site group membership
 				if(timeslottoGroup.equals("toGroup")) {
-					
+
 					List<String> updateusers = getGroupMembers(siteId, groupId);
-				
+
 					//first clone a new group member
 					Set<String> tmpUsers = new HashSet<String>();
 					tmpUsers.addAll(updateusers);
-			    
+
 					//retrieve only the difference members from TimeSlot and SiteGroup
 					tmpUsers.removeAll(userIds);
-				
+
 					//remove the differences from group members
 					for (String mem: tmpUsers){
 						try {
@@ -1334,9 +1330,9 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				}
 
 				siteService.save(site);
-			
+
 				return true;
-			
+
 			} catch (Exception e) {
 				log.error("addUsersToGroup failed for users: " + Arrays.asList(userIds).toString() + " and group: " + groupId, e);
 			} finally {
@@ -1344,7 +1340,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				}
 		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -1357,25 +1353,25 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("synchronizeGroup failed to retrieve site: " + siteId, e);
             return false;
 		}
-							
+
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
 				return SecurityAdvice.ALLOWED;
 			}
 		};
 		enableSecurityAdvisor(securityAdvisor);
-		
+
 		Group group = site.getGroup(groupId);
-		
+
 		if(group == null) {
         	log.error("No group for id: " + groupId);
 			return false;
 		}
-		
+
 		try {
-			
+
 			if(group.getTitle().startsWith(GROUP_PREFIX)){
-				//it means that the group title has not been modified via Site-info, we can change it now				
+				//it means that the group title has not been modified via Site-info, we can change it now
 				group.setTitle(GROUP_PREFIX + newTitle);
 				siteService.save(site);
 				changed = true;
@@ -1385,7 +1381,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 				//Don't do anything this time.
 				changed = true;
 			}
-			
+
 		} catch (Exception e) {
         	log.error("synchGroupTitle failed for group: " + group.getTitle() + " and group: " + groupId, e);
         } finally {
@@ -1393,15 +1389,15 @@ public class SakaiFacadeImpl implements SakaiFacade {
         }
 		return changed;
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean removeUserFromGroup(String userId, String siteId, String groupId) {
-		
+
 		log.debug("removeUserFromGroup(userId=" + userId + ", siteId=" + siteId + ", groupId=" + groupId);
-		
+
 		Site site = null;
 		try {
 			site = siteService.getSite(siteId);
@@ -1409,22 +1405,22 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("removeUserFromGroup failed to retrieve site: " + siteId, e);
             return false;
 		}
-							
+
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
 				return SecurityAdvice.ALLOWED;
 			}
 		};
 		enableSecurityAdvisor(securityAdvisor);
-		
+
 		Group group = site.getGroup(groupId);
-		
+
 		try {
 			group.deleteMember(userId);
 			siteService.save(site);
-			
+
 			return true;
-			
+
 		} catch (IllegalStateException e) {
 			log.error(".removeUserFromGroup: User with id {} cannot be deleted from group with id {} because the group is locked", userId, group.getId());
 		} catch (Exception e) {
@@ -1432,17 +1428,17 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		} finally {
 			disableSecurityAdvisor(securityAdvisor);
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public List<String> getGroupMembers(String siteId, String groupId) {
-		
+
 		List<String> users = new ArrayList<String>();
-		
+
 		Site site = null;
 		try {
 			site = siteService.getSite(siteId);
@@ -1450,18 +1446,18 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("getGroupMembers failed to retrieve site: " + siteId, e);
             return users;
 		}
-							
+
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
 				return SecurityAdvice.ALLOWED;
 			}
 		};
 		enableSecurityAdvisor(securityAdvisor);
-		
+
 		try {
 			Group group = site.getGroup(groupId);
 			Set<Member> members = group.getMembers();
-		
+
 			for(Member m: members) {
 				users.add(m.getUserId());
 				log.warn("Added user: " + m.getUserId() + " to group: " + groupId);
@@ -1472,17 +1468,17 @@ public class SakaiFacadeImpl implements SakaiFacade {
         } finally {
         	disableSecurityAdvisor(securityAdvisor);
         }
-		
+
 		return users;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public boolean checkForGroup(String siteId, String groupId) {
-		
+
 		log.debug("checkForGroup: siteId=" + siteId + ", groupId=" + groupId);
-		
+
 		Site site = null;
 		try {
 			site = siteService.getSite(siteId);
@@ -1490,7 +1486,7 @@ public class SakaiFacadeImpl implements SakaiFacade {
 			log.error("checkForGroup failed to retrieve site: " + siteId, e);
             return false;
 		}
-		
+
 		/*
 		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 			public SecurityAdvice isAllowed(String userId, String function, String reference){
@@ -1499,44 +1495,44 @@ public class SakaiFacadeImpl implements SakaiFacade {
 		};
 		enableSecurityAdvisor(securityAdvisor);
 		*/
-		
+
 		Group group = site.getGroup(groupId);
-		
+
 		if(group != null) {
 			return true;
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Helper to add a user to a group. THIS DOES NOT SAVE ANYTHING. It is merely a helper to add the user to the group object and return it.
-	 * 
+	 *
 	 * @param userUuid	uuid of user
 	 * @param group		Group obj
 	 * @return
 	 */
 	private Group addUserToGroup(String userUuid, Group group) {
-		
+
 		Site site = group.getContainingSite();
-		
+
 		//same logic as in site-manage
 		Role r = site.getUserRole(userUuid);
 		Member m = site.getMember(userUuid);
 		Role memberRole = m != null ? m.getRole() : null;
-		
+
 		//Each user should be marked as non provided
-		//Get role first from site definition. 
+		//Get role first from site definition.
 		//However, if the user is inactive, getUserRole would return null; then use member role instead
 		try {
 			group.insertMember(userUuid, r != null ? r.getId() : memberRole != null? memberRole.getId() : "", m != null ? m.isActive() : true, false);
 		} catch (AuthzRealmLockException arle) {
 			log.warn("GROUP LOCK REGRESSION: {}", arle.getMessage(), arle);
 		}
-		
+
 		return group;
 	}
-		
+
 	/**
 	 * Setup the security advisor for this transaction
 	 */
@@ -1549,6 +1545,15 @@ public class SakaiFacadeImpl implements SakaiFacade {
 	 */
 	private void disableSecurityAdvisor(SecurityAdvisor securityAdvisor){
 		securityService.popAdvisor(securityAdvisor);
+	}
+
+	private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
 	}
 
 }
