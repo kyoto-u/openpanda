@@ -119,6 +119,9 @@ public class GbUser implements Serializable, Comparable<GbUser> {
 	public String getLocale(){
 		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
 		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
 		return locale.getLanguage() + "_" + locale.getCountry();
 	}
 
