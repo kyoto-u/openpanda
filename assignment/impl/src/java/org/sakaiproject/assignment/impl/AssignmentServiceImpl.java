@@ -2952,7 +2952,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
         boolean isAdditionalNotesEnabled = false;
         Site st = null;
-        Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
         try {
             st = siteService.getSite(siteId);
             isAdditionalNotesEnabled = candidateDetailProvider != null && candidateDetailProvider.isAdditionalNotesEnabled(st);
@@ -3064,7 +3063,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     //params[0] = submitters[i].getDisplayId();
                                     params[0] = getSubmissionUserId(submitters[i]);
                                     params[1] = submitters[i].getEid();
-                                    if(!"ja_JP".equals(locale.getLanguage() + "_" + locale.getCountry())){
+                                    if(!"ja_JP".equals(getUserLocaleString())){
                                     	params[2] = submitters[i].getProperties().getProperty("sn;lang-en") == null ? submitters[i].getLastName() : submitters[i].getProperties().getProperty("sn;lang-en");
                                         params[3] = submitters[i].getProperties().getProperty("givenName;lang-en") == null ? submitters[i].getFirstName() : submitters[i].getProperties().getProperty("givenName;lang-en");
                                     }else{
@@ -4574,5 +4573,13 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         }
         return id;
     }
+
+    private String getUserLocaleString(){
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
 
 }
