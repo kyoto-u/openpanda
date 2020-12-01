@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,8 @@ import javax.faces.component.UIData;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
-
 import org.sakaiproject.api.app.postem.data.Gradebook;
 import org.sakaiproject.api.app.postem.data.GradebookManager;
 import org.sakaiproject.api.app.postem.data.StudentGrades;
@@ -67,6 +66,8 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PostemTool {
@@ -1053,7 +1054,27 @@ public class PostemTool {
 		int row=1;
 		
 		List siteMembers = getSiteMembers();
-		
+		User siteUser = null;
+		Map<String,User> userMap = new HashMap<String,User>();
+
+		for(Object member : siteMembers){
+			String checkId = null;
+			try{
+				siteUser = UserDirectoryService.getUser((String)member);
+				if(siteUser != null){
+					String employeeNumber = siteUser.getProperties().getProperty("employeeNumber");
+					if("".equals(employeeNumber) || employeeNumber.isEmpty()){
+						checkId = siteUser.getEid();
+					}else{
+						checkId = employeeNumber;
+					}
+					userMap.put(checkId, siteUser);
+				}
+			}catch(Exception e){
+
+			}
+		}
+
 		List studentList = studentGrades.getStudentUsernames();
 		Iterator studentIter = studentList.iterator();
 		while (studentIter.hasNext()) {
@@ -1069,9 +1090,11 @@ public class PostemTool {
 				usersAreValid = false;
 				blankRows.add(new Integer(row));
 			} else if(siteMembers == null || (siteMembers != null && !siteMembers.contains(getUserDefined(usr)))) {
-				  usersAreValid = false;
-				  invalidUsernames.add(usr);
-			}	
+				if(userMap.get(usr) == null){
+					usersAreValid = false;
+					invalidUsernames.add(usr);
+				}
+			}
 		}
 		
 		if (blankRows.size() == 1) {
