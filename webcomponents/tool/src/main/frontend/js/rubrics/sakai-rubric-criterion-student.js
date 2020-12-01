@@ -88,7 +88,7 @@ export class SakaiRubricCriterionStudent extends RubricsElement {
       </div>
       ${!this.preview ? html`
       <div class="rubric-totals" style="margin-bottom: 5px;">
-        <div class="total-points"><sr-lang key="total">Total</sr-lang>: <strong>${this.totalPoints.toLocaleString(this.locale)}</strong></div>
+        <div class="total-points"><sr-lang key="total">Total</sr-lang>: <strong>${this.totalPoints.toLocaleString(this.locale, {maximumFractionDigits:2})}</strong></div>
       </div>
       ` : html``}
     `;
@@ -102,7 +102,7 @@ export class SakaiRubricCriterionStudent extends RubricsElement {
 
         if (ed.criterionId === c.id) {
 
-          var selectedRatingItem;
+          let selectedRatingItem = null;
           c.ratings.forEach(r => {
             if (r.id == ed.selectedRatingId) {
               r.selected = true;
@@ -115,7 +115,7 @@ export class SakaiRubricCriterionStudent extends RubricsElement {
           c.selectedRatingId = ed.selectedRatingId;
           if (ed.pointsAdjusted) {
             c.pointoverride = ed.points;
-            c.selectedvalue = selectedRatingItem.points;
+            c.selectedvalue = selectedRatingItem != null ? selectedRatingItem.points : 0; // Set selected value (points) to zero if no rating was selected
           } else {
             c.pointoverride = "";
             c.selectedvalue = ed.points;

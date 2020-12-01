@@ -21,7 +21,6 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,11 +32,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import javax.faces.model.SelectItem;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
+import org.apache.commons.lang3.math.NumberUtils;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.samigo.util.SamigoConstants;
@@ -47,7 +45,6 @@ import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ExtendedTime;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedEvaluationModel;
@@ -78,6 +75,7 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishedAssessmentSettin
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
+import org.sakaiproject.tool.assessment.util.TimeLimitValidator;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -95,7 +93,7 @@ implements ActionListener
 	private static final boolean integrated =
 		IntegrationContextFactory.getInstance().isIntegrated();
 	private CalendarServiceHelper calendarService = IntegrationContextFactory.getInstance().getCalendarServiceHelper();
-	private final ResourceLoader rb= new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
+	private static final ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 
 	public SavePublishedSettingsListener()
 	{
@@ -273,9 +271,11 @@ implements ActionListener
 		}
 		
 		Date startDate = assessmentSettings.getStartDate();
-	    Date dueDate = assessmentSettings.getDueDate();
-	    Date retractDate = assessmentSettings.getRetractDate();
-	    boolean isRetractEarlierThanAvaliable = false;
+		final Date dueDate = assessmentSettings.getDueDate();
+		final Date retractDate = assessmentSettings.getRetractDate();
+		final boolean isAcceptingLateSubmissions = assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling());
+		boolean isRetractEarlierThanAvaliable = false;
+
 	    if ((dueDate != null && startDate != null && dueDate.before(startDate)) ||
 	    	(dueDate != null && startDate == null && dueDate.before(new Date()))) {
 	    	String dateError1 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","due_earlier_than_avaliable");
@@ -283,7 +283,7 @@ implements ActionListener
 	    	error=true;
 	    	assessmentSettings.setStartDate(new Date());
 	    }
-	    if(assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling())){
+	    if (isAcceptingLateSubmissions) {
 		    if ((retractDate != null && startDate != null && retractDate.before(startDate)) ||
 		    	(retractDate != null && startDate == null && retractDate.before(new Date()))) {
 		    	String dateError2 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_avaliable");
@@ -300,109 +300,22 @@ implements ActionListener
 	    }
 
         // if due date is null we cannot have late submissions
-        if (dueDate == null && assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling()) &&
-            retractDate !=null){
+        if (dueDate == null && isAcceptingLateSubmissions && retractDate != null) {
             String noDueDate = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","due_null_with_retract_date");
             context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, noDueDate, null));
             error=true;
             
         }
 
-		List<ExtendedTime> extendedTimeList = assessmentSettings.getExtendedTimes();
-		List<String> extendedTimeUsers = new ArrayList<>(extendedTimeList.size());
-		List<String> extendedTimeGroups = new ArrayList<>(extendedTimeList.size());
-		for(ExtendedTime entry : extendedTimeList) {
-			Date entryStartDate = entry.getStartDate();
-			Date entryDueDate = entry.getDueDate();
-			Date entryRetractDate = entry.getRetractDate();
-			if(StringUtils.isNotEmpty(entry.getUser())) {
-				extendedTimeUsers.add(entry.getUser());
-			}
-
-			if(StringUtils.isNotEmpty(entry.getGroup())) {
-				extendedTimeGroups.add(entry.getGroup());
-			}
-			boolean isEntryRetractEarlierThanAvailable = false;
-
-			if(StringUtils.isBlank(entry.getUser()) && StringUtils.isBlank(entry.getGroup())) {
-				String extendedTimeError1 = getExtendedTimeErrorString("extended_time_user_and_group_set", entry, assessmentSettings);
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError1, null));
+		// if using a time limit, ensure open window is greater than or equal to time limit
+		boolean hasTimer = TimeLimitValidator.hasTimer(assessmentSettings.getTimedHours(), assessmentSettings.getTimedMinutes());
+		if(hasTimer) {
+			Date due = assessmentSettings.getRetractDate() != null && isAcceptingLateSubmissions ? assessmentSettings.getRetractDate() : assessmentSettings.getDueDate();
+			boolean availableLongerThanTimer = TimeLimitValidator.availableLongerThanTimer(startDate, due, assessmentSettings.getTimedHours(), assessmentSettings.getTimedMinutes(),
+																							"org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages", "open_window_less_than_time_limit", context);
+			if(!availableLongerThanTimer) {
 				error = true;
 			}
-			if((entryStartDate != null && entryDueDate !=null && entryDueDate.before(entryStartDate)) ||
-					(entryStartDate == null && entryDueDate != null && entryDueDate.before(new Date()))) {
-				String extendedTimeError2 = getExtendedTimeErrorString("extended_time_due_earlier_than_available", entry, assessmentSettings);
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError2, null));
-				error = true;
-				entry.setStartDate(new Date());
-			}
-			if(assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling())){
-				if( (entryRetractDate != null && entryStartDate != null && entryRetractDate.before(entryStartDate)) ||
-						(entryRetractDate !=null && entryStartDate == null && entryRetractDate.before(new Date())) ) {
-					String extendedTimeError3 = getExtendedTimeErrorString("extended_time_retract_earlier_than_available", entry, assessmentSettings);
-					context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError3, null));
-					error = true;
-					isEntryRetractEarlierThanAvailable = true;
-					entry.setStartDate(new Date());
-				}
-				if(!isEntryRetractEarlierThanAvailable && (entryRetractDate != null && entryDueDate != null && entryRetractDate.before(entryDueDate))) {
-					// Retract date should be pushed to the due date
-					entry.setRetractDate(entryDueDate);
-				}
-			}
-			if(entryDueDate != null && entryStartDate != null && entryDueDate.equals(entryStartDate)) {
-				String extendedTimeError5 = getExtendedTimeErrorString("extended_time_due_same_as_available", entry, assessmentSettings);
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError5, null));
-				error = true;
-			}
-		}
-
-		Set<String> duplicateExtendedTimeUsers = findDuplicates(extendedTimeUsers);
-		if(!duplicateExtendedTimeUsers.isEmpty()) {
-			String users = "";
-			int count = 0;
-			int end = extendedTimeUsers.size();
-			for(String entry : duplicateExtendedTimeUsers) {
-				if(count == 0) {
-					users = "'" + getUserName(entry, assessmentSettings) + "'";
-				} else if(count < (end - 1)) {
-					users = users + ", '" + getUserName(entry, assessmentSettings) + "'";
-				} else {
-					String and = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","extended_time_and");
-					users = users + ", " + and + " '" + getUserName(entry, assessmentSettings);
-				}
-
-				count++;
-			}
-
-			String extendedTimeError6 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","extended_time_duplicate_users");
-			extendedTimeError6 = extendedTimeError6.replace("{0}", users);
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError6, null));
-			error = true;
-		}
-
-		Set<String> duplicateExtendedTimeGroups = findDuplicates(extendedTimeGroups);
-		if(!duplicateExtendedTimeGroups.isEmpty()) {
-			String groups = "";
-			int count = 0;
-			int end = extendedTimeUsers.size();
-			for(String entry : duplicateExtendedTimeGroups) {
-				if(count == 0) {
-					groups = "'" + getGroupName(entry, assessmentSettings) + "'";
-				} else if(count < (end - 1)) {
-					groups = groups + ", '" + getGroupName(entry, assessmentSettings) + "'";
-				} else {
-					String and = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","extended_time_and");
-					groups = groups + ", " + and + " '" + getGroupName(entry, assessmentSettings);
-				}
-
-				count++;
-			}
-
-			String extendedTimeError7 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","extended_time_duplicate_groups");
-			extendedTimeError7 = extendedTimeError7.replace("{0}", groups);
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, extendedTimeError7, null));
-			error = true;
 		}
 
 	    // SAM-1088
@@ -491,14 +404,16 @@ implements ActionListener
 				String  date_err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","date_error");
 				context.addMessage(null,new FacesMessage(date_err));
 			}
-			else if(!assessmentSettings.getIsValidFeedbackDate()){
-				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_date");
-				context.addMessage(null,new FacesMessage(feedbackDateErr));
-				error=true;
+			else {
+				if(StringUtils.isNotBlank(assessmentSettings.getFeedbackEndDateString()) && assessmentSettings.getFeedbackDate().after(assessmentSettings.getFeedbackEndDate())){
+					String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_ranges");
+					context.addMessage(null,new FacesMessage(feedbackDateErr));
+					error=true;
+				}
 			}
 
-			if(StringUtils.isNotBlank(assessmentSettings.getFeedbackEndDateString()) && assessmentSettings.getFeedbackDate().after(assessmentSettings.getFeedbackEndDate())){
-				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_ranges");
+			if(!assessmentSettings.getIsValidFeedbackDate()){
+				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_date");
 				context.addMessage(null,new FacesMessage(feedbackDateErr));
 				error=true;
 			}
@@ -555,7 +470,10 @@ implements ActionListener
 
 	// Check if the category has changed.
 	private boolean isCategoryChanged(PublishedAssessmentSettingsBean assessmentSettings, PublishedAssessmentFacade assessment) {
-		return !StringUtils.equals(assessmentSettings.getCategorySelected(), String.valueOf(assessment.getCategoryId()));
+		Long oldCatId = assessment.getCategoryId() != null ? assessment.getCategoryId() : -1;
+		Long newCatId = NumberUtils.toLong(assessmentSettings.getCategorySelected(), -1);
+
+		return (oldCatId > 0 || newCatId > 0) && oldCatId.compareTo(newCatId) != 0;
 	}
 
 	// Check if title has been changed. If yes, update it.
@@ -978,64 +896,5 @@ implements ActionListener
 		List publishedAssessmentList = assessmentService.getBasicInfoOfAllPublishedAssessments2(
 				  PublishedAssessmentFacadeQueries.TITLE, true, AgentFacade.getCurrentSiteId());
 		authorActionListener.prepareAllPublishedAssessmentsList(author, authorization, gradingService, publishedAssessmentList);
-	}
-
-	private String getExtendedTimeErrorString(String key, ExtendedTime entry, PublishedAssessmentSettingsBean settings) {
-		String errorString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages", key);
-		errorString = errorString.replace("{0}", getUserName(entry.getUser(), settings)).replace("{1}", getGroupName(entry.getGroup(), settings));
-		return errorString;
-	}
-
-	/**
-	 * gets a user name from an id and the settings bean
-	 * @param userId
-	 * @param settings
-	 * @return
-	 */
-	private String getUserName(String userId, PublishedAssessmentSettingsBean settings) {
-		return getName(userId, settings.getUsersInSite());
-	}
-
-	/**
-	 * Gets a group name from a groupID and a settings Bean
-	 * @param groupId
-	 * @param settings
-	 * @return
-	 */
-	private String getGroupName(String groupId, PublishedAssessmentSettingsBean settings) {
-		return getName(groupId, settings.getGroupsForSite());
-	}
-
-	/**
-	 * helper function for getUserName / getGroupname
-	 * @param parameter
-	 * @param entries
-	 * @return
-	 */
-	private String getName(String parameter, SelectItem[] entries) {
-		if("".equals(parameter) || entries.length == 0) {
-			return "";
-		}
-
-		for(SelectItem item : entries) {
-			if(item.getValue().equals(parameter)) {
-				return item.getLabel();
-			}
-		}
-
-		return ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","extended_time_name_not_found");
-	}
-
-	private Set<String> findDuplicates(List<String> list) {
-		final Set<String> setToReturn = new HashSet<>();
-		final Set<String> set1 = new HashSet<>();
-
-		for (String value : list) {
-			if (!set1.add(value)) {
-				setToReturn.add(value);
-			}
-		}
-
-		return setToReturn;
 	}
 }

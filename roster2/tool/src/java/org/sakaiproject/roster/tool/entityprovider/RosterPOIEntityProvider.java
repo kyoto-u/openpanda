@@ -135,6 +135,7 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 	public final static String FILENAME_BYGROUP = "ByGroup";
 	public final static String FILENAME_UNGROUPED = "Ungrouped";
 
+	private static final ResourceLoader rl = new ResourceLoader("roster");
 	private SakaiProxy sakaiProxy;
 	private RequestGetter requestGetter;
 
@@ -330,7 +331,6 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 			}
 		}
 
-		final ResourceLoader rl = new ResourceLoader("roster");
 		final Workbook workBook = new XSSFWorkbook();
 		final Sheet rosterSheet = workBook.createSheet(rl.getString("facet_roster"));
 		addRowsToSheet(rosterSheet, rosterRows);
@@ -588,8 +588,6 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 	private List<String> createColumnHeader(final String viewType, final String siteId, boolean isGroupsSheetHeader) {
 
 		final String userId = this.developerHelperService.getCurrentUserId();
-
-		final ResourceLoader rl = new ResourceLoader("roster");
 
 		final List<String> header = new ArrayList<>();
 		header.add(rl.getString("facet_name"));

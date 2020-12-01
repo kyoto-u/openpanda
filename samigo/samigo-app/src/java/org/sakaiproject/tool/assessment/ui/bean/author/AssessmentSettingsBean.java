@@ -93,6 +93,7 @@ import org.springframework.web.context.WebApplicationContext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.sakaiproject.tool.assessment.util.ExtendedTimeValidator;
 
 /**
  * For author: Assessment Settings backing bean.
@@ -101,7 +102,6 @@ import lombok.extern.slf4j.Slf4j;
 @ManagedBean(name="assessmentSettings")
 @SessionScoped
 public class AssessmentSettingsBean implements Serializable {
-
     private static final IntegrationContextFactory integrationContextFactory =
       IntegrationContextFactory.getInstance();
     private static final GradebookServiceHelper gbsHelper =
@@ -237,7 +237,7 @@ public class AssessmentSettingsBean implements Serializable {
   
   private SimpleDateFormat displayFormat;
 
-  private ResourceLoader assessmentSettingMessages;
+  private static final ResourceLoader assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 
   @Resource(name = "org.sakaiproject.service.gradebook.GradebookService")
   private GradebookService gradebookService;
@@ -259,7 +259,6 @@ public class AssessmentSettingsBean implements Serializable {
 
   public AssessmentSettingsBean(WebApplicationContext context) {
     context.getAutowireCapableBeanFactory().autowireBean(this);
-    this.assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
   }
 
   public AssessmentFacade getAssessment() {
@@ -1937,12 +1936,8 @@ public class AssessmentSettingsBean implements Serializable {
     //Internal to be able to supress error easier
     public void addExtendedTime() {
         ExtendedTime entry = this.extendedTime;
-        if (StringUtils.isBlank(entry.getUser()) && StringUtils.isBlank(entry.getGroup())) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            String errorString = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages", "extended_time_user_and_group_set");
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, errorString, null));
-        }
-        else {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (new ExtendedTimeValidator().validateEntry(entry, context, this)) {
             AssessmentAccessControlIfc accessControl = new AssessmentAccessControl();
             accessControl.setStartDate(this.startDate);
             accessControl.setDueDate(this.dueDate);

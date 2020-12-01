@@ -29,18 +29,18 @@ import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.cover.SecurityService;
 import static org.sakaiproject.basiclti.util.SakaiBLTIUtil.LTI13_PATH;
 import static org.sakaiproject.basiclti.util.SakaiBLTIUtil.getOurServerUrl;
-import static org.sakaiproject.basiclti.util.SakaiBLTIUtil.getSignedPlacement;
+import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.lti.api.LTIService;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
-import org.tsugi.ags2.objects.LineItem;
-import org.tsugi.ags2.objects.Result;
+import org.sakaiproject.lti13.util.SakaiLineItem;
 
 /**
  * Some Sakai Utility code for IMS Basic LTI This is mostly code to support the
@@ -54,6 +54,12 @@ public class LineItemUtil {
 
 	public final static String ID_SEPARATOR = "|";
 	public final static String ID_SEPARATOR_REGEX = "\\|";
+
+	// TODO: SAK-44137 - In Sakai-22 or later switch this default
+	public static final String LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM = "lti.advantage.construct.lineitem";
+	public static final String LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_TRUE = "true";
+	public static final String LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_FALSE = "false";
+	public static final String LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_DEFAULT = LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_TRUE;
 
 	public static String URLEncode(String inp) {
 		if ( inp == null ) return null;
@@ -85,7 +91,7 @@ public class LineItemUtil {
 	 * Someday if we had a longer field I would store this as JSON.
 	 */
 	// TODO: Remember to dream that someday this will be JSON :)
-	public static String constructExternalId(Long tool_id, Map<String, Object> content, LineItem lineItem)
+	public static String constructExternalId(Long tool_id, Map<String, Object> content, SakaiLineItem lineItem)
 	{
 		String retval = tool_id.toString();
 		if ( content == null ) {
@@ -106,12 +112,16 @@ public class LineItemUtil {
 		return retval;
 	}
 
-	public static Assignment createLineItem(Site site, Long tool_id, Map<String, Object> content, LineItem lineItem) {
+	public static Assignment createLineItem(Site site, Long tool_id, Map<String, Object> content, SakaiLineItem lineItem) {
+		String context_id = site.getId();
+		return createLineItem(context_id, tool_id, content, lineItem);
+	}
+
+	public static Assignment createLineItem(String context_id, Long tool_id, Map<String, Object> content, SakaiLineItem lineItem) {
 		// Look up the assignment so we can find the max points
 		GradebookService g = (GradebookService) ComponentManager
 				.get("org.sakaiproject.service.gradebook.GradebookService");
 
-		String context_id = site.getId();
 		if (lineItem.scoreMaximum == null) {
 			lineItem.scoreMaximum = 100.0;
 		}
@@ -138,7 +148,7 @@ public class LineItemUtil {
 			Assignment gAssignment = (Assignment) i.next();
 
 			if (lineItem.label.equals(gAssignment.getName())) {
-				throw new RuntimeException("Duplicate label while adding line item {}" + lineItem.label);
+				throw new RuntimeException("Duplicate label while adding line item " + lineItem.label);
 			}
 		}
 
@@ -151,13 +161,16 @@ public class LineItemUtil {
 				try {
 					assignmentObject = new Assignment();
 					assignmentObject.setPoints(Double.valueOf(lineItem.scoreMaximum));
-					// We are using the sctual grade and points possible in the GB
+					// We are using the actual grade and points possible in the GB
 					assignmentObject.setExternallyMaintained(false);
 					assignmentObject.setExternalId(external_id);
 					assignmentObject.setExternalAppName(GB_EXTERNAL_APP_NAME);
 					assignmentObject.setName(lineItem.label);
-					assignmentObject.setReleased(true);
-					assignmentObject.setUngraded(true);
+					Boolean releaseToStudent = lineItem.releaseToStudent == null ? Boolean.TRUE : lineItem.releaseToStudent; // Default to true
+					Boolean includeInComputation = lineItem.includeInComputation == null ? Boolean.TRUE : lineItem.includeInComputation; // Default true
+					assignmentObject.setReleased(releaseToStudent); // default true
+					assignmentObject.setCounted(includeInComputation); // default true
+					assignmentObject.setUngraded(false);
 					assignmentId = g.addAssignment(context_id, assignmentObject);
 					assignmentObject.setId(assignmentId);
 					// Update sets the external values while add does not.
@@ -193,14 +206,14 @@ public class LineItemUtil {
 		return assignmentObject;
 	}
 
-	public static Assignment updateLineItem(Site site, Long tool_id, Long assignment_id, LineItem lineItem) {
+	public static Assignment updateLineItem(Site site, Long tool_id, Long assignment_id, SakaiLineItem lineItem) {
 		GradebookService g = (GradebookService) ComponentManager
 				.get("org.sakaiproject.service.gradebook.GradebookService");
 
 		String context_id = site.getId();
 
 		if ( assignment_id == null ) {
-			throw new RuntimeException("tool_id is required");
+			throw new RuntimeException("assignment_id is required");
 		}
 
 		if ( tool_id == null ) {
@@ -228,6 +241,12 @@ public class LineItemUtil {
 		if ( lineItem.label != null ) {
 			assignmentObject.setName(lineItem.label);
 		}
+
+		Boolean releaseToStudent = lineItem.releaseToStudent == null ? Boolean.TRUE : lineItem.releaseToStudent; // Default to true
+		Boolean includeInComputation = lineItem.includeInComputation == null ? Boolean.TRUE : lineItem.includeInComputation; // Default true
+		assignmentObject.setReleased(releaseToStudent); // default true
+		assignmentObject.setCounted(includeInComputation); // default true
+		assignmentObject.setUngraded(false);
 
 		pushAdvisor();
 		try {
@@ -370,7 +389,7 @@ public class LineItemUtil {
 	 * @param filter Optional line item with resourceId or tag used to filter returned results
 	 * @return A List of LineItems - an empty list is returned if none exist
 	 */
-	public static List<LineItem> getLineItemsForTool(String signed_placement, Site site, Long tool_id, LineItem filter) {
+	public static List<SakaiLineItem> getLineItemsForTool(String signed_placement, Site site, Long tool_id, SakaiLineItem filter) {
 
 		String context_id = site.getId();
 		if ( tool_id == null ) {
@@ -379,7 +398,7 @@ public class LineItemUtil {
 		GradebookService g = (GradebookService) ComponentManager
 				.get("org.sakaiproject.service.gradebook.GradebookService");
 
-		List<LineItem> retval = new ArrayList<>();
+		List<SakaiLineItem> retval = new ArrayList<>();
 
 		pushAdvisor();
 		try {
@@ -401,7 +420,10 @@ public class LineItemUtil {
 				String[] parts = external_id.split(ID_SEPARATOR_REGEX);
 				if ( parts.length < 1 || ! parts[0].equals(tool_id.toString()) ) continue;
 
-				LineItem item = getLineItem(signed_placement, gAssignment);
+				SakaiLineItem item = getLineItem(signed_placement, gAssignment);
+				if ( parts.length > 1 ) {
+					item.resourceLinkId = "content:" + parts[1];
+				}
 
 				if ( filter != null ) {
 					if ( filter.resourceLinkId != null && ! filter.resourceLinkId.equals(item.resourceLinkId)) continue;
@@ -421,8 +443,8 @@ public class LineItemUtil {
 		return retval;
 	}
 
-	public static LineItem getLineItem(String signed_placement, Assignment assignment) {
-		LineItem li = new LineItem();
+	public static SakaiLineItem getLineItem(String signed_placement, Assignment assignment) {
+		SakaiLineItem li = new SakaiLineItem();
 		li.label = assignment.getName();
 		li.scoreMaximum = assignment.getPoints();
 
@@ -431,6 +453,7 @@ public class LineItemUtil {
 		String external_id = assignment.getExternalId();
 		if ( external_id != null && external_id.length() > 0 ) {
 			String[] parts = external_id.split(ID_SEPARATOR_REGEX);
+			li.resourceLinkId = (parts.length > 1 && parts[1].trim().length() > 1) ? parts[1].trim() : null;
 			li.resourceId  = (parts.length > 2 && parts[2].trim().length() > 1) ? parts[2].trim() : null;
 			li.tag = (parts.length > 3 && parts[3].trim().length() > 1) ? parts[3].trim() : null;
 		}
@@ -442,64 +465,47 @@ public class LineItemUtil {
 		return li;
 	}
 
-	/**
-	 * Get the pre-created line items associated with content items in a site
-	 * @param site The site we are looking at
-	 * @param tool_id The tool we are scanning for
-	 * @param filter Optional line item with resourceId or tag used to filter returned results
-	 * @return A List of LineItems - an empty list is returned if none exist
+	/*
+	 * This is the statically constructed line item for a content item - if this is used, it will create
+	 * a line item when a score is first received
 	 */
-	public static List<LineItem> getPreCreatedLineItems(Site site, Long tool_id, LineItem filter) {
-		// Look up the assignment so we can find the max points
-		LTIService l = (LTIService) ComponentManager
-				.get("org.sakaiproject.lti.api.LTIService");
-
-		String context_id = site.getId();
-
-		List<Map<String,Object>> contents = null;
-		pushAdvisor();
-		try {
-			contents = l.getContents("lti_content.tool_id = "+tool_id, null,0,5000, context_id);
-		} catch (Exception e) {
-			log.error("Unexpected Exception", e.getMessage());
-		} finally {
-			popAdvisor();
-		}
-
-		List<LineItem> retval = new ArrayList<> ();
-		if ( contents == null ) return retval;  // Unlikely
-
-		for (Iterator i = contents.iterator(); i.hasNext();) {
-			Map<String, Object> content = (Map) i.next();
-			LineItem item = getLineItem(content);
-			if ( filter != null ) {
-				if ( filter.resourceLinkId != null && ! filter.resourceLinkId.equals(item.resourceLinkId)) continue;
-				if ( filter.resourceId != null && ! filter.resourceId.equals(item.resourceId)) continue;
-				if ( filter.tag != null && ! filter.tag.equals(item.tag)) continue;
-			}
-			retval.add(item);
-		}
-
-		return retval;
-	}
-
-	public static LineItem getLineItem(Map<String, Object> content) {
-		String context_id = (String) content.get(LTIService.LTI_SITE_ID);
-		String resource_link_id = "content:" + content.get(LTIService.LTI_ID);
-		String placement_secret = (String) content.get(LTIService.LTI_PLACEMENTSECRET);
-		String signed_placement = null;
-		if ( placement_secret != null ) {
-			signed_placement = getSignedPlacement(context_id, resource_link_id, placement_secret);
-		}
-		LineItem li = new LineItem();
+	public static SakaiLineItem constructLineItem(Map<String, Object> content) {
+		String signed_placement = SakaiBLTIUtil.getSignedPlacement(content);
+		SakaiLineItem li = new SakaiLineItem();
 		li.label = (String) content.get(LTIService.LTI_TITLE);
-		li.resourceLinkId = resource_link_id;
-		if ( context_id != null && signed_placement != null ) {
+		li.resourceLinkId = SakaiBLTIUtil.getResourceLinkId(content);
+		if ( signed_placement != null ) {
 			li.id = getOurServerUrl() + LTI13_PATH + "lineitem/" + signed_placement;
 		}
 		li.scoreMaximum = 100.0;
 		return li;
 	}
+
+	/*
+	 * Gets the default lineItem for a content launch - first check if a line item exists
+	 * for the tool that matches the title - if not, check a property and optionally give
+	 * the "generic" endpoint that will create the lineitem upon first receipt of a score.
+	 */
+	public static SakaiLineItem getDefaultLineItem(Site site, Map<String, Object> content) {
+		String signed_placement = SakaiBLTIUtil.getSignedPlacement(content);
+		Long tool_id = SakaiBLTIUtil.getLongKey(content.get(LTIService.LTI_TOOL_ID));
+		List<SakaiLineItem> toolItems = LineItemUtil.getLineItemsForTool(signed_placement, site, tool_id, null /* filter */);
+		String title = (String) content.get(LTIService.LTI_TITLE);
+		for (SakaiLineItem item : toolItems) {
+			if ( item.label == null) continue;
+			if ( item.label.equals(title) ) {
+				return item;
+			}
+		}
+
+		// Construct the line item if we are asked to do so
+		String autoConstruct = ServerConfigurationService.getString(LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM, LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_DEFAULT);
+		if ( LTI_ADVANTAGE_CONSTRUCT_LINE_ITEM_TRUE.equals(autoConstruct) ) {
+			return constructLineItem(content);
+		}
+		return null;
+	}
+
 
 	/**
 	 * Setup a security advisor.

@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.messagebundle.api.MessageBundleProperty;
@@ -62,22 +61,16 @@ public class CachingMessageBundleServiceImpl implements MessageBundleService {
     }
 
     @Override
-    public Map<String, String> getBundle(String baseName, String moduleName, Locale loc) {
-        if (StringUtils.isBlank(baseName) || StringUtils.isBlank(moduleName) || loc == null) {
-            return Collections.emptyMap();
-        }
-
-        Map<String, String> bundle = null;
-        String key = MessageBundleServiceImpl.getIndexKeyName(baseName, moduleName, loc.toString());
+    public Map<String, String> getBundle(String baseName, String moduleName, Locale locale) {
+        String key = MessageBundleServiceImpl.getIndexKeyName(baseName, moduleName, locale != null ? locale.toString(): null);
         log.debug("Retrieve bundle from cache with key = {}", key);
 
-        if (cache.containsKey(key)) {
-            bundle = cache.get(key);
-        } else {
-            // bundle not in cache or expired
-            bundle = dbMessageBundleService.getBundle(baseName, moduleName, loc);
-            cache.put(key, bundle);
+        Map<String, String> bundle = cache.get(key);
+        if (bundle == null) {
+            // bundle not in cache or expired, never returns null
+            bundle = dbMessageBundleService.getBundle(baseName, moduleName, locale);
             log.debug("Add bundle to cache with key = {}", key);
+            cache.put(key, bundle);
         }
 
         return bundle;
@@ -173,6 +166,8 @@ public class CachingMessageBundleServiceImpl implements MessageBundleService {
 
     @Override
     public void saveOrUpdate(String baseName, String moduleName, ResourceBundle newBundle, Locale locale) {
+        // We avoid doing invalidation here as were unable to detect where bundles were already loaded
+        // specifically when calling new ResourceLoader()
         dbMessageBundleService.saveOrUpdate(baseName, moduleName, newBundle, locale);
     }
 }

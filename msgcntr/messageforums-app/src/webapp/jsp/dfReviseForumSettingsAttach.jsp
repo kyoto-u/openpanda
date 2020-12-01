@@ -87,6 +87,18 @@
     <h:form id="revise">
 		  <script>
             $(document).ready(function(){
+				// Improve accessibility in error messages.adding the error as title
+				var errorMessages = $('#revise\\:errorMessages');
+				if (errorMessages !== undefined) {
+					errorMessages.find('td').each(function() {
+						$(this).attr('title', $(this).html());
+					});
+				}
+
+				$('#revise\\:forum_locked, #revise\\:moderated, #revise\\:postFirst').each(function() {
+					$(this).attr('aria-labelledby', 'forum_posting_head ' + $(this).attr('id') + '_label');
+				});
+
 				$('.displayMore').click(function(e){
 					e.preventDefault();
 					$('.displayMorePanel').fadeIn('slow')
@@ -130,7 +142,7 @@
 		  <h:outputText id="instruction"  value="#{msgs.cdfm_settings_instruction}"/>
 		  <h:outputText value="#{msgs.cdfm_info_required_sign}" styleClass="reqStarInline" />
 		</h:panelGroup>
-			<h:messages styleClass="messageAlert" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" /> 
+			<h:messages layout="table" styleClass="sak-banner-error" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}"/>
      
 			<h:panelGrid columns="1" styleClass="jsfFormTable" columnClasses="shorttext">
 				<h:panelGroup>
@@ -231,7 +243,7 @@
 					/>
 			</h:panelGroup>
 			<%--general posting  forum settings --%>
-			<h2>
+			<h2 id="forum_posting_head">
 				<h:outputText value="#{msgs.cdfm_forum_posting}" />
 			</h2>
 
@@ -239,19 +251,19 @@
 					<h:selectBooleanCheckbox
 						title="ForumLocked" value="#{ForumTool.selectedForum.forumLocked}"
 						id="forum_locked">
-					</h:selectBooleanCheckbox> <h:outputLabel for="forum_locked" value="#{msgs.cdfm_lock_forum}" />
+					</h:selectBooleanCheckbox> <h:outputLabel id="forum_locked_label" value="#{msgs.cdfm_lock_forum}" />
 				</p>
 				<p class="checkbox">
 					<h:selectBooleanCheckbox
 						title="Moderated" value="#{ForumTool.selectedForum.forumModerated}"
 						id="moderated">
-					</h:selectBooleanCheckbox> <h:outputLabel for="moderated" value="#{msgs.cdfm_moderate_forum}" />
+					</h:selectBooleanCheckbox> <h:outputLabel id="moderated_label" value="#{msgs.cdfm_moderate_forum}" />
 				</p>
 				<p class="checkbox">
 					<h:selectBooleanCheckbox
 						title="postFirst" value="#{ForumTool.selectedForum.forumPostFirst}"
 						id="postFirst">
-					</h:selectBooleanCheckbox> <h:outputLabel for="postFirst" value="#{msgs.cdfm_postFirst}" />
+					</h:selectBooleanCheckbox> <h:outputLabel id="postFirst_label" value="#{msgs.cdfm_postFirst}" />
 				</p>
 
 			<h2><h:outputText  value="#{msgs.cdfm_forum_availability}" /></h2>

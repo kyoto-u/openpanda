@@ -20,38 +20,10 @@
 ***********************************************************************************/
 --%>
 -->
+<%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
+
 <!-- ATTACHMENTS -->
-  <h:outputText value="#{printMessages.attachments} " escape="false" rendered="#{not empty question.itemData.itemAttachmentList && delivery.fromPrint}"/>
-
-  <h:dataTable value="#{question.itemData.itemAttachmentList}" var="attach" border="0">
-    <h:column>
-      <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
-      <h:outputText escape="false" value="
-	    <embed src=\"#{delivery.protocol}/samigo-app/servlet/ShowAttachmentMedia?resourceId=#{attach.encodedResourceId}&mimeType=#{attach.mimeType}&filename=#{attach.filename}\" volume=\"50\" height=\"350\" width=\"400\" autostart=\"false\"/>" rendered="#{attach.isInlineVideo && !delivery.fromPrint}"/>
-      <h:outputText value="#{attach.filename}" rendered="#{attach.isInlineVideo && delivery.fromPrint}"/>
-
-	  <h:outputText escape="false" value="
-	    <embed src=\"#{delivery.protocol}/samigo-app/servlet/ShowAttachmentMedia?resourceId=#{attach.encodedResourceId}&mimeType=#{attach.mimeType}&filename=#{attach.filename}\" height=\"350\" width=\"400\"/>" rendered="#{attach.isInlineFlash && !delivery.fromPrint}"/>
-  	  <h:outputText value="#{attach.filename}" rendered="#{attach.isInlineFlash && delivery.fromPrint}"/>  
-      
-	  <h:outputText escape="false" value="
-	    <img src=\"#{delivery.protocol}/samigo-app/servlet/ShowAttachmentMedia?resourceId=#{attach.encodedResourceId}&mimeType=#{attach.mimeType}&filename=#{attach.filename}\" />" rendered="#{attach.isInlineImage}"/>
-      
-	<h:panelGrid rendered="#{!attach.isMedia && !delivery.fromPrint}" border="0" columns="2">
-      <h:column>
-        <%@ include file="/jsf/shared/mimeicon.jsp" %>
-        <f:verbatim>&nbsp;&nbsp;</f:verbatim>
-	    <h:outputLink value="#{attach.location}" target="new_window" rendered="#{!attach.isMedia}">
-           <h:outputText value="#{attach.filename}" />
-        </h:outputLink> 
-      </h:column>
-      <h:column>
-        <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
-        <h:outputText escape="false" value="#{attach.fileSize} #{generalMessages.kb}" rendered="#{!attach.isLink}"/>
-      </h:column>
-    </h:panelGrid> 
-    <h:outputText value="#{attach.filename}" rendered="#{!attach.isMedia && delivery.fromPrint}"/>  
-      
-    </h:column>
-  </h:dataTable>
-  
+<%-- Expects 'question' is an instance of ItemContentsBean --%>
+<t:aliasBean alias="#{itemAttachmentList}" value="#{question.itemData.itemAttachmentList}" >
+  <%@ include file="/jsf/shared/itemAttachmentList.jsp" %>
+</t:aliasBean>
