@@ -117,12 +117,12 @@
                 <module>usermembership</module>
                 <module>velocity</module>
                 <module>web</module>
-                <module>webcomponents</module>
+                <!--<module>webcomponents</module>-->
                 <module>webjars</module>
                 <module>webservices</module>
                 <module>wicket</module>
                 <module>panda</module>
-                <module>pdfgenerationservice</module>
+                <!--<module>pdfgenerationservice</module>-->
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
                 <module>attendance</module>
@@ -214,7 +214,7 @@
                 <module>wicket</module>
                 <module>yaft</module>
                 <module>panda</module>
-                <module>pdfgenerationservice</module>
+                <!--<module>pdfgenerationservice</module>-->
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
                 <module>attendance</module>
