@@ -38,16 +38,13 @@ import java.util.zip.ZipOutputStream;
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.io.IOUtils;
-
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
-import org.sakaiproject.content.cover.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.api.ContentResourceEdit;
+import org.sakaiproject.content.cover.ContentHostingService;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
@@ -59,8 +56,12 @@ import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings({ "deprecation", "restriction" })
 @Slf4j
@@ -194,6 +195,12 @@ public class ZipContentUtil {
 			while(true){
 				try{
 					String newResourceId = resourceId;
+					User user = null;
+					try{
+						user = UserDirectoryService.getUser(resourceName);
+						newResourceId = newResourceId.replace(resourceName, user.getDisplayId());
+					}catch(Exception e){
+					}
 					String newResourceName = resourceName;
 					displayName=newResourceName;
 					count++;
@@ -209,7 +216,8 @@ public class ZipContentUtil {
 						currentEdit = (ContentCollectionEdit) ContentHostingService.getCollection(resourceId + Entity.SEPARATOR);
 						displayName = currentEdit.getProperties().getProperty(ResourcePropertiesEdit.PROP_DISPLAY_NAME);
 						if (displayName != null && displayName.length() > 0) {
-							displayName += ZIP_EXTENSION;
+							//displayName += ZIP_EXTENSION;
+							displayName = user.getDisplayId() + ZIP_EXTENSION;
 						}
 						else {
 							displayName = newResourceName;

@@ -40,8 +40,6 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -89,12 +87,15 @@ import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.comparator.GroupTitleComparator;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ListItem
@@ -624,6 +625,20 @@ public class ListItem
 
 		if(this.collection)
 		{
+
+			User user = null;
+			if(this.id != null){
+				String[] groupUser = this.id.split("/");
+				if(groupUser.length == 4){
+					try {
+						user = UserDirectoryService.getUser(groupUser[3]);
+						this.name = user.getDisplayName() + "(" + user.getDisplayId() + ")";
+					} catch (UserNotDefinedException e) {
+						log.warn("UserNotDefinedException groupUser[3] == " + groupUser[3]);
+					}
+				}
+			}
+
 			ContentCollection collection = (ContentCollection) entity;
 			String shortSizeStr = null;
 			if(typeDef != null)
