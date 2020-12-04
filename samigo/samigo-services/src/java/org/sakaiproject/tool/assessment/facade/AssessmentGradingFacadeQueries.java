@@ -2531,8 +2531,8 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                 try {
                     agentEid = getSubmissionUserId(id);
                     if(!"ja_JP".equals(getUserLocaleString())){
-                    	firstName = userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(id).getFirstName() : userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en");
-                    	lastName = userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(id).getLastName() : userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en");
+                    	firstName = userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(id).getLastName() : userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en");
+                    	lastName = userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(id).getFirstName() : userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en");
                     }else{
                     	firstName = userDirectoryService.getUser(id).getFirstName();
                         lastName = userDirectoryService.getUser(id).getLastName();
