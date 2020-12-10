@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -545,7 +546,25 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     String filename = a.getTitle() + "_" + date;
                                     res.setContentType("application/zip");
                                     //res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
-                                    res.setHeader("Content-Disposition", "attachment; filename = bulk_download.zip");
+
+                                    final String CHARCODE = "utf-8";
+                                    String userAgent = req.getHeader("User-Agent");
+                                    String escapedFilename = filename;
+                                    try{
+                                        escapedFilename =URLEncoder.encode(filename,CHARCODE);
+                                    }catch(UnsupportedEncodingException e){}
+
+                                    if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+                                        res.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".zip\"");
+                                    }else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+                                        String filename_safari = filename;
+                                        try{
+                                            filename_safari = new String(filename.getBytes(CHARCODE), "8859_1");
+                                        }catch(UnsupportedEncodingException  e){}
+                                        res.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".zip\"");
+                                    }else{
+                                        res.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".zip\"");
+                                    }
 
                                     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
                                         @Override
