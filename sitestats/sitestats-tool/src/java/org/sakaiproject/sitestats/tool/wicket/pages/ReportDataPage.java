@@ -22,11 +22,15 @@ import static org.apache.wicket.markup.html.WebPage.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
@@ -606,16 +610,39 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportXls() {
-		//String fileName = getExportFileName();
-		String fileName = "exported_stats";
+		String fileName = getExportFileName();
 		byte[] hssfWorkbookBytes = Locator.getFacade().getReportManager().getReportAsExcel(report, fileName);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("application/vnd.ms-excel");
-		response.setAttachmentHeader(fileName + ".xls");
-		response.setHeader("Cache-Control", "max-age=0");		
+		//response.setAttachmentHeader(fileName + ".xls");
+		response.setHeader("Cache-Control", "max-age=0");
 		response.setContentLength(hssfWorkbookBytes.length);
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+		try{
+			escapedFilename = URLEncoder.encode(fileName,CHARCODE);
+		}catch(UnsupportedEncodingException e){}
+
+		response.addHeader("Content-Encoding", "base64");
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".xls\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".xls\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".xls\"");
+		}
+
 		OutputStream out = null;
 		try{
 			out = response.getOutputStream();
@@ -633,16 +660,33 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportCsv() {
-		//String fileName = getExportFileName();
-		String fileName = "exported_stats";
+		String fileName = getExportFileName();
 		String csvString = Locator.getFacade().getReportManager().getReportAsCsv(report);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("text/comma-separated-values");
-		response.setAttachmentHeader(fileName + ".csv");
+		//response.setAttachmentHeader(fileName + ".csv");
 		response.setHeader("Cache-Control", "max-age=0");
 		//response.setContentLength(csvString.length());
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".csv\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".csv\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".csv\"");
+		}
+
 		OutputStream out = null;
 		try{
 
@@ -666,16 +710,33 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportPdf() {
-		//String fileName = getExportFileName();
-		String fileName = "exported_stats";
+		String fileName = getExportFileName();
 		byte[] pdf = Locator.getFacade().getReportManager().getReportAsPDF(report);
 
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("application/pdf");
-		response.setAttachmentHeader(fileName + ".pdf");
+		//response.setAttachmentHeader(fileName + ".pdf");
 		response.setHeader("Cache-Control", "max-age=0");
 		response.setContentLength(pdf.length);
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".pdf\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".pdf\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".pdf\"");
+		}
+
 		OutputStream out = null;
 		try{
 			out = response.getOutputStream();
