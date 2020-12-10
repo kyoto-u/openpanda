@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,25 +31,21 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletResponse;
 
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.integration.helper.integrated.AgentHelperImpl;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.DownloadFileSubmissionsBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.TotalScoresBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DownloadFileUtil {
@@ -76,7 +73,23 @@ public class DownloadFileUtil {
 			zipFilename.append(sectionName);
 		}
 		zipFilename.append((".zip"));
-		res.setHeader("Content-Disposition", "attachment;filename=\"" + zipFilename + "\";");
+		//res.setHeader("Content-Disposition", "attachment;filename=\"" + zipFilename + "\";");
+
+		final String CHARCODE = "utf-8";
+        String userAgent = req.getHeader("User-Agent");
+        String escapedFilename = zipFilename.toString();
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			res.addHeader("Content-Disposition", "attachment; filename=" + escapedFilename);
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = zipFilename.toString();
+			try{
+				filename_safari = new String(zipFilename.toString().getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			res.addHeader("Content-Disposition", "attachment; filename=" + filename_safari);
+		}else{
+			res.addHeader("Content-Disposition", "attachment; filename*=" + CHARCODE + "''" + escapedFilename);
+		}
 
 		String anonymous = totalScores.getAnonymous();
 		String publishedAssessmentId = totalScores.getPublishedId();
