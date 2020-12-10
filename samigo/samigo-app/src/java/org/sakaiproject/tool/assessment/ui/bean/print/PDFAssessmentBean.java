@@ -25,7 +25,9 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -37,6 +39,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -855,8 +858,31 @@ public class PDFAssessmentBean implements Serializable {
 		response.setHeader("Cache-Control", "public, must-revalidate, post-check=0, pre-check=0, max-age=0"); 
 
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment; filename=" + genName());   
-		response.setHeader("Content-disposition", "attachment; filename=exported_samigo_print.pdf");
+		//response.setHeader("Content-disposition", "attachment; filename=" + genName());
+
+		String fileName = genName();
+		final String CHARCODE = "utf-8";
+		String fileName_decode = "";
+		try{
+			fileName_decode = URLDecoder.decode(fileName,CHARCODE);
+		}catch(Exception e){}
+
+		HttpServletRequest request = (HttpServletRequest) faces.getExternalContext().getRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+		if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident"))){
+			response.addHeader("Content-Disposition", "attachment; filename=" + escapedFilename);
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName_decode;
+			try{
+				filename_safari = new String(fileName_decode.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=" + filename_safari);
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=" + CHARCODE + "''" + escapedFilename);
+		}
+
 		response.setContentLength(pdf.toByteArray().length);
 		OutputStream out = null;
 		try {
