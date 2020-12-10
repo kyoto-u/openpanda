@@ -36,6 +36,8 @@ package org.sakaiproject.roster.tool.entityprovider;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -206,11 +209,31 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 				final String enrollmentSetId = dataMap.get("enrollmentSetId");
 				final String enrollmentStatus = dataMap.get("enrollmentStatus");
 
-				//final String filename = createFilename(site, groupId, viewType, enrollmentSetId, enrollmentStatus);
+				final String filename = createFilename(site, groupId, viewType, enrollmentSetId, enrollmentStatus);
 				//response.addHeader("Content-Disposition", "attachment; filename=" + filename);
-				response.addHeader("Content-Disposition", "attachment; filename=exported_roster.xlsx");
+
+				final String CHARCODE = "utf-8";
+				HttpServletRequest request = requestGetter.getRequest();
+				String userAgent = request.getHeader("User-Agent");
+				String escapedFilename = filename;
+				try{
+					escapedFilename = URLEncoder.encode(filename,CHARCODE);
+				}catch(UnsupportedEncodingException e){}
+
 				response.addHeader("Content-Encoding", "base64");
 				response.addHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+				if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+					response.addHeader("Content-Disposition", "attachment; filename=" + escapedFilename);
+				}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+					String filename_safari = filename;
+					try{
+						filename_safari = new String(filename.getBytes(CHARCODE), "8859_1");
+					}catch(UnsupportedEncodingException  e){}
+					response.addHeader("Content-Disposition", "attachment; filename=" + filename_safari);
+				}else{
+					response.addHeader("Content-Disposition", "attachment; filename*=" + CHARCODE + "''" + escapedFilename);
+				}
 
 				final Workbook workbook = getExportData(userId, site, parameters);
 				workbook.write(response.getOutputStream());
@@ -282,7 +305,7 @@ public class RosterPOIEntityProvider extends AbstractEntityProvider implements
 		filename.append(FILENAME_SEPARATOR);
 		filename.append(isoFormat.format(date));
 
-		filename = new StringBuffer(filename.toString().replaceAll("\\W", FILENAME_SEPARATOR));
+//		filename = new StringBuffer(filename.toString().replaceAll("\\W", FILENAME_SEPARATOR));
 		filename.append(FILE_EXTENSION);
 
 		return filename.toString();
