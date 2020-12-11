@@ -32,9 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.samigo.util.SamigoConstants;
@@ -43,6 +41,8 @@ import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -114,12 +114,14 @@ public class ExportMarkupTextServlet extends HttpServlet {
 				
 				String markupText = assessmentService.exportAssessmentToMarkupText(assessment, bundle);
 				 
-				res.setContentType("text/plain");
+				res.setContentType("text/plain; charset=utf-8");
 				String filename = "exportAssessment.txt";
 				res.setHeader("Content-Disposition", "attachment;filename=\""
 						+ filename + "\";");
 
-				res.setContentLength(markupText.length());
+				final byte[] data = markupText.getBytes("UTF-8");
+				//res.setContentLength(markupText.length());
+				res.setContentLength(data.length);
 				PrintWriter out = res.getWriter();
 				out.println(markupText);
 				out.close();
