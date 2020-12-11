@@ -96,7 +96,7 @@ function getSelectedType(qtiUrl, cpUrl, emtUrl, e2mt){
      <t:selectOneRadio id="exportType" layout="spread" value="1">
        <f:selectItem itemLabel="#{authorImportExport.qti12}" itemValue="1"/>
        <f:selectItem itemLabel="#{authorImportExport.content_packaging}" itemValue="2"/>
-       <f:selectItem itemLabel="#{authorImportExport.markup_text}" itemValue="3" itemDisabled="#{assessmentBean.showMarkupOption eq 'true' }"/>
+       <f:selectItem itemLabel="#{authorImportExport.markup_text}" itemValue="3" />
      </t:selectOneRadio>
      <h:panelGrid>
      	<t:radio renderLogicalId="true" for="exportType" index="0" />
