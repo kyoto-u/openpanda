@@ -75,7 +75,15 @@ response.setContentType("text/html; charset=UTF-8");
 	                           <h:outputText value="#{msgs.event_log_source}" />
 	                       </t:commandSortHeader>
 	                   </f:facet>
-	                   <h:outputText value="#{audit.sourceText}" />
+	                   <h:outputText value="#{audit.actionUser.displayName}" />
+	               </h:column>
+	               <h:column>
+	                   <f:facet name="header">
+	                       <t:commandSortHeader columnName="employeeNumber" immediate="true" arrow="true">
+	                           <h:outputText value="#{msgs.event_log_employee_number}" />
+	                       </t:commandSortHeader>
+	                   </f:facet>
+	                   <h:outputText value="#{audit.actionUser.displayId}" />
 	               </h:column>
 	           </t:dataTable>
 	           </div>

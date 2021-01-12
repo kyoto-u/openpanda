@@ -18,20 +18,23 @@
  */
 package org.sakaiproject.sitestats.tool.wicket.pages;
 
+import static org.apache.wicket.markup.html.WebPage.*;
+
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -48,15 +51,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.EmptyRequestHandler;
-
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.sitestats.api.EventStat;
-import org.sakaiproject.sitestats.api.PrefsData;
 import org.sakaiproject.sitestats.api.LessonBuilderStat;
+import org.sakaiproject.sitestats.api.PrefsData;
 import org.sakaiproject.sitestats.api.ResourceStat;
 import org.sakaiproject.sitestats.api.SitePresence;
 import org.sakaiproject.sitestats.api.Stat;
@@ -77,6 +81,8 @@ import org.sakaiproject.sitestats.tool.wicket.models.ReportDefModel;
 import org.sakaiproject.sitestats.tool.wicket.providers.ReportsDataProvider;
 import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Nuno Fernandes
@@ -610,9 +616,33 @@ public class ReportDataPage extends BasePage {
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("application/vnd.ms-excel");
-		response.setAttachmentHeader(fileName + ".xls");
-		response.setHeader("Cache-Control", "max-age=0");		
+		//response.setAttachmentHeader(fileName + ".xls");
+		response.setHeader("Cache-Control", "max-age=0");
 		response.setContentLength(hssfWorkbookBytes.length);
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+		try{
+			escapedFilename = URLEncoder.encode(fileName,CHARCODE);
+		}catch(UnsupportedEncodingException e){}
+
+		response.addHeader("Content-Encoding", "base64");
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".xls\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".xls\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".xls\"");
+		}
+
 		OutputStream out = null;
 		try{
 			out = response.getOutputStream();
@@ -636,13 +666,37 @@ public class ReportDataPage extends BasePage {
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("text/comma-separated-values");
-		response.setAttachmentHeader(fileName + ".csv");
+		//response.setAttachmentHeader(fileName + ".csv");
 		response.setHeader("Cache-Control", "max-age=0");
-		response.setContentLength(csvString.length());
+		//response.setContentLength(csvString.length());
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".csv\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".csv\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".csv\"");
+		}
+
 		OutputStream out = null;
 		try{
+
+			final byte[] data = csvString.getBytes("UTF-8");
+			final byte[] bomData = new byte[]{(byte)0xef,(byte)0xbb,(byte)0xbf};
+			response.setContentLength(data.length + bomData.length);
 			out = response.getOutputStream();
-			out.write(csvString.getBytes());
+			//out.write(csvString.getBytes());
+			out.write(bomData);
+			out.write(data);
 			out.flush();
 		}catch(IOException e){
 			log.error(e.getMessage());
@@ -662,9 +716,27 @@ public class ReportDataPage extends BasePage {
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
 		WebResponse response = (WebResponse) getResponse();
 		response.setContentType("application/pdf");
-		response.setAttachmentHeader(fileName + ".pdf");
+		//response.setAttachmentHeader(fileName + ".pdf");
 		response.setHeader("Cache-Control", "max-age=0");
 		response.setContentLength(pdf.length);
+
+		String CHARCODE = "utf-8";
+		HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+        if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".pdf\"");
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName;
+			try{
+				filename_safari = new String(fileName.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".pdf\"");
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".pdf\"");
+		}
+
 		OutputStream out = null;
 		try{
 			out = response.getOutputStream();

@@ -28,7 +28,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.Collator;
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,19 +38,19 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.jsf.util.LocaleUtil;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.userauditservice.api.UserAuditRegistration;
-import org.sakaiproject.userauditservice.api.UserAuditService;
-import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.userauditservice.api.UserAuditRegistration;
+import org.sakaiproject.userauditservice.api.UserAuditService;
+import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UserAuditEventLog {
@@ -63,6 +62,7 @@ public class UserAuditEventLog {
 	public static final Comparator<EventLog> auditStampComparatorEL;
 	public static final Comparator<EventLog> actionTextComparatorEL;
 	public static final Comparator<EventLog> sourceTextComparatorEL;
+	public static final Comparator<EventLog> displayIdComparatorEL;
 	protected String sortColumn;
 	protected boolean sortAscending;
 	private int totalItems = -1;
@@ -120,6 +120,15 @@ public class UserAuditEventLog {
 				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
 			}
 		};
+
+		displayIdComparatorEL = new Comparator<EventLog>() {
+			public int compare(EventLog one, EventLog another) {
+				int comparison = Collator.getInstance().compare(one.getSourceText(),another.getSourceText());
+				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
+			}
+		};
+
+
 	}
 	
 	protected Comparator<EventLog> getComparatorEL()
@@ -149,6 +158,8 @@ public class UserAuditEventLog {
         else if("sourceText".equals(sortColumn))
         {
         	comparator = sourceTextComparatorEL;
+        }else if("employeeNumber".equals(sortColumn)) {
+        	comparator = displayIdComparatorEL;
         }
         else
         {
@@ -231,7 +242,8 @@ public class UserAuditEventLog {
 			{
 				if (uar.getDatabaseSourceKey().equals(source))
 				{
-					String[] params = new String[] {actionUser.getSortName(), actionUser.getEid()};	
+					//String[] params = new String[] {actionUser.getSortName(), actionUser.getEid()};
+					String[] params = new String[] {actionUser.getSortName(), actionUser.getDisplayId()};
 					sourceText = uar.getSourceText(params);
 					break;
 				}
@@ -250,7 +262,8 @@ public class UserAuditEventLog {
 		}
 		
 		public String getUserDisplayName() {
-			userDisplayName = user.getSortName();
+			//userDisplayName = user.getSortName();
+			userDisplayName = user.getDisplayName();
 			return userDisplayName;
 		}
 	
@@ -321,39 +334,35 @@ public class UserAuditEventLog {
 					String actionUserId = result.getString("action_user_id");
 					
 					User cachedUser;
-					if (userMap.containsKey(userId))
-					{
-						cachedUser = userMap.get(userId);
-					}
-					else
-					{
-						cachedUser = userDirectoryService.getUserByEid(userId);
-						userMap.put(userId, cachedUser);
-					}
-					
-					if (actionUserId!=null && !"".equals(actionUserId))
-					{
-						User cachedActionUser;
-						if (userMap.containsKey(actionUserId))
-						{
-							cachedActionUser = userMap.get(actionUserId);
+					try {
+						if (userMap.containsKey(userId)) {
+							cachedUser = userMap.get(userId);
+						} else {
+							cachedUser = userDirectoryService.getUserByEid(userId);
+							userMap.put(userId, cachedUser);
 						}
-						else
-						{
-							cachedActionUser = userDirectoryService.getUserByEid(actionUserId);
-							userMap.put(actionUserId, cachedActionUser);
+						
+						if (actionUserId!=null && !"".equals(actionUserId)) {
+							User cachedActionUser = null;
+							if (userMap.containsKey(actionUserId)) {
+								cachedActionUser = userMap.get(actionUserId);
+							} else {
+								try {
+									cachedActionUser = userDirectoryService.getUserByEid(actionUserId);
+									userMap.put(actionUserId, cachedActionUser);
+								} catch (UserNotDefinedException e) {
+									log.warn("Found removed action user while getting the audit logs: {}", actionUserId);
+									source = "";
+								}
+							}
+							eventLog.add(new EventLog(cachedUser,roleName,actionTaken,auditStamp,source,cachedActionUser));
+						} else {
+							eventLog.add(new EventLog(cachedUser,roleName,actionTaken,auditStamp,source,null));
 						}
-						eventLog.add(new EventLog(cachedUser,roleName,actionTaken,auditStamp,source,cachedActionUser));
-					}
-					else
-					{
-						eventLog.add(new EventLog(cachedUser,roleName,actionTaken,auditStamp,source,null));
+					} catch (UserNotDefinedException e) {
+						log.warn("Skipping removed user while getting the user audit logs: {}", userId);
 					}
 				}
-			}
-			catch (UserNotDefinedException e)
-			{
-				log.warn("ERROR getting the user audit logs!", e);
 			}
 			catch (SQLException e)
 			{

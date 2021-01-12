@@ -1072,11 +1072,13 @@ public class SignupMeetingsBean implements SignupBeanConstants {
 		//otherwise, put the current user at the top of the list
 		if(meeting != null && StringUtils.isNotBlank(meeting.getCreatorUserId())) {
 			User currentInstructor = sakaiFacade.getUser(meeting.getCreatorUserId());
-			instructors.add(new SelectItem(currentInstructor.getId(), currentInstructor.getDisplayName() + " (" + currentInstructor.getEid() + ")"));
+			//instructors.add(new SelectItem(currentInstructor.getId(), currentInstructor.getDisplayName() + " (" + currentInstructor.getEid() + ")"));
+			instructors.add(new SelectItem(currentInstructor.getId(), currentInstructor.getDisplayName() + " (" + currentInstructor.getDisplayId() + ")"));
 			users.remove(currentInstructor);
 		} else {
 			User currentUser = sakaiFacade.getUser(sakaiFacade.getCurrentUserId());
-			instructors.add(new SelectItem(currentUser.getId(), currentUser.getDisplayName() + " (" + currentUser.getEid() + ")"));
+			//instructors.add(new SelectItem(currentUser.getId(), currentUser.getDisplayName() + " (" + currentUser.getEid() + ")"));
+			instructors.add(new SelectItem(currentUser.getId(), currentUser.getDisplayName() + " (" + currentUser.getDisplayId() + ")"));
 			users.remove(currentUser);
 		}
 
@@ -1102,7 +1104,8 @@ public class SignupMeetingsBean implements SignupBeanConstants {
 			return null;
 		}
 		
-		return u.getDisplayName() + " (" + u.getEid() + ")";
+		//return u.getDisplayName() + " (" + u.getEid() + ")";
+		return u.getDisplayName() + " (" + u.getDisplayId() + ")";
 	}
 	
 	/**

@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.api.app.messageforums.MembershipManager;
 import org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager;
 import org.sakaiproject.api.privacy.PrivacyManager;
@@ -52,6 +50,8 @@ import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.ResourceLoader;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 public class MembershipManagerImpl implements MembershipManager{
 
@@ -64,13 +64,13 @@ public class MembershipManagerImpl implements MembershipManager{
   private PrivateMessageManager prtMsgManager;
   
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
-  private ResourceLoader rl = new ResourceLoader(MESSAGECENTER_BUNDLE);
+  private ResourceLoader rl;
   
 
   public void init() {
      log.info("init()");
-    ;
-  }    
+     rl  = new ResourceLoader(MESSAGECENTER_BUNDLE);
+  }
 
   /**
    * 
@@ -407,9 +407,11 @@ public class MembershipManagerImpl implements MembershipManager{
 				MembershipItem memberItem = MembershipItem.getInstance();
 				memberItem.setType(memberItemType);
 				if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
-					memberItem.setName(user.getSortName() + " (" + user.getDisplayId() + ")");
+					//memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
+					memberItem.setName(user.getDisplayName() + " (" + user.getDisplayId("messageForum") + ")");
 				} else {
-					memberItem.setName(user.getSortName());
+					//memberItem.setName(user.getSortName());
+					memberItem.setName(user.getDisplayName());
 				}
 				memberItem.setUser(user);
 				memberItem.setRole(userRole);
@@ -504,7 +506,8 @@ public class MembershipManagerImpl implements MembershipManager{
          {
          	MembershipItem memberItem = MembershipItem.getInstance();
          	memberItem.setType(MembershipItem.TYPE_USER);
-         	memberItem.setName(user.getSortName());
+         	//memberItem.setName(user.getSortName());
+         	memberItem.setName(user.getDisplayName());
          	memberItem.setUser(user);
          	memberItem.setRole(userRole);     
      		userMap.put(memberItem.getId(), memberItem);     

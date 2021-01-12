@@ -25,7 +25,9 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -37,10 +39,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswer;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentAttachment;
@@ -50,6 +53,7 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionAtta
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemTextIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
+import org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter;
 import org.sakaiproject.tool.assessment.pdf.HTMLWorker;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.DeliveryBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
@@ -60,7 +64,6 @@ import org.sakaiproject.tool.assessment.ui.listener.delivery.DeliveryActionListe
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
-import org.sakaiproject.component.cover.ComponentManager;
 
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -74,7 +77,8 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import org.sakaiproject.tool.assessment.jsf.convert.AnswerSurveyConverter;
+
+import lombok.extern.slf4j.Slf4j;
 
 /* Print to PDF backing bean. */
 @Slf4j
@@ -86,13 +90,13 @@ public class PDFAssessmentBean implements Serializable {
 
 	private static FormattedText formattedText = ComponentManager.get(FormattedText.class);
 	
-	private ResourceLoader printMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.PrintMessages");
+	private static final ResourceLoader printMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.PrintMessages");
 
-	private ResourceLoader authorMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+	private static final ResourceLoader authorMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
 
-	private ResourceLoader deliveryMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+	private static final ResourceLoader deliveryMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
 
-	private ResourceLoader commonMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
+	private static final ResourceLoader commonMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.CommonMessages");
 
 	private String intro = "";
 
@@ -854,7 +858,31 @@ public class PDFAssessmentBean implements Serializable {
 		response.setHeader("Cache-Control", "public, must-revalidate, post-check=0, pre-check=0, max-age=0"); 
 
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment; filename=" + genName());   
+		//response.setHeader("Content-disposition", "attachment; filename=" + genName());
+
+		String fileName = genName();
+		final String CHARCODE = "utf-8";
+		String fileName_decode = "";
+		try{
+			fileName_decode = URLDecoder.decode(fileName,CHARCODE);
+		}catch(Exception e){}
+
+		HttpServletRequest request = (HttpServletRequest) faces.getExternalContext().getRequest();
+		String userAgent = request.getHeader("User-Agent");
+		String escapedFilename = fileName;
+
+		if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident"))){
+			response.addHeader("Content-Disposition", "attachment; filename=" + escapedFilename);
+		}else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+			String filename_safari = fileName_decode;
+			try{
+				filename_safari = new String(fileName_decode.getBytes(CHARCODE), "8859_1");
+			}catch(UnsupportedEncodingException  e){}
+			response.addHeader("Content-Disposition", "attachment; filename=" + filename_safari);
+		}else{
+			response.addHeader("Content-Disposition", "attachment; filename*=" + CHARCODE + "''" + escapedFilename);
+		}
+
 		response.setContentLength(pdf.toByteArray().length);
 		OutputStream out = null;
 		try {

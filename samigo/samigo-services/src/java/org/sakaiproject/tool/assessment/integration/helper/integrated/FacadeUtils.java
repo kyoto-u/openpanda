@@ -21,10 +21,14 @@
 
 package org.sakaiproject.tool.assessment.integration.helper.integrated;
 
-import java.util.*;
 import java.text.Collator;
 import java.text.ParseException;
 import java.text.RuleBasedCollator;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 
@@ -44,9 +48,11 @@ public class FacadeUtils {
 		public int compare(Object o1, Object o2) {
 			try{
 				RuleBasedCollator r_collator= new RuleBasedCollator(((RuleBasedCollator)Collator.getInstance()).getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-				return r_collator.compare(((EnrollmentRecord)o1).getUser().getSortName(),((EnrollmentRecord)o2).getUser().getSortName());
+				//return r_collator.compare(((EnrollmentRecord)o1).getUser().getSortName(),((EnrollmentRecord)o2).getUser().getSortName());
+				return r_collator.compare(((EnrollmentRecord)o1).getUser().getDisplayName(),((EnrollmentRecord)o2).getUser().getDisplayName());
 			}catch(ParseException e){
-				  return Collator.getInstance().compare(((EnrollmentRecord)o1).getUser().getSortName(),((EnrollmentRecord)o2).getUser().getSortName());
+				  //return Collator.getInstance().compare(((EnrollmentRecord)o1).getUser().getSortName(),((EnrollmentRecord)o2).getUser().getSortName());
+				  return Collator.getInstance().compare(((EnrollmentRecord)o1).getUser().getDisplayName(),((EnrollmentRecord)o2).getUser().getDisplayName());
 			}
 		}
 	};

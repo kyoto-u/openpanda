@@ -35,7 +35,7 @@ import javax.faces.event.ActionListener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
+import org.apache.commons.lang3.math.NumberUtils;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.samigo.util.SamigoConstants;
@@ -74,7 +74,6 @@ import org.sakaiproject.tool.assessment.ui.bean.author.PublishRepublishNotificat
 import org.sakaiproject.tool.assessment.ui.bean.author.PublishedAssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.sakaiproject.tool.assessment.util.ExtendedTimeValidator;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.tool.assessment.util.TimeLimitValidator;
 import org.sakaiproject.util.ResourceLoader;
@@ -94,7 +93,7 @@ implements ActionListener
 	private static final boolean integrated =
 		IntegrationContextFactory.getInstance().isIntegrated();
 	private CalendarServiceHelper calendarService = IntegrationContextFactory.getInstance().getCalendarServiceHelper();
-	private final ResourceLoader rb= new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
+	private static final ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 
 	public SavePublishedSettingsListener()
 	{
@@ -272,9 +271,11 @@ implements ActionListener
 		}
 		
 		Date startDate = assessmentSettings.getStartDate();
-	    Date dueDate = assessmentSettings.getDueDate();
-	    Date retractDate = assessmentSettings.getRetractDate();
-	    boolean isRetractEarlierThanAvaliable = false;
+		final Date dueDate = assessmentSettings.getDueDate();
+		final Date retractDate = assessmentSettings.getRetractDate();
+		final boolean isAcceptingLateSubmissions = assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling());
+		boolean isRetractEarlierThanAvaliable = false;
+
 	    if ((dueDate != null && startDate != null && dueDate.before(startDate)) ||
 	    	(dueDate != null && startDate == null && dueDate.before(new Date()))) {
 	    	String dateError1 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","due_earlier_than_avaliable");
@@ -282,7 +283,7 @@ implements ActionListener
 	    	error=true;
 	    	assessmentSettings.setStartDate(new Date());
 	    }
-	    if(assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling())){
+	    if (isAcceptingLateSubmissions) {
 		    if ((retractDate != null && startDate != null && retractDate.before(startDate)) ||
 		    	(retractDate != null && startDate == null && retractDate.before(new Date()))) {
 		    	String dateError2 = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","retract_earlier_than_avaliable");
@@ -299,8 +300,7 @@ implements ActionListener
 	    }
 
         // if due date is null we cannot have late submissions
-        if (dueDate == null && assessmentSettings.getLateHandling() != null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(assessmentSettings.getLateHandling()) &&
-            retractDate !=null){
+        if (dueDate == null && isAcceptingLateSubmissions && retractDate != null) {
             String noDueDate = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","due_null_with_retract_date");
             context.addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN, noDueDate, null));
             error=true;
@@ -310,17 +310,12 @@ implements ActionListener
 		// if using a time limit, ensure open window is greater than or equal to time limit
 		boolean hasTimer = TimeLimitValidator.hasTimer(assessmentSettings.getTimedHours(), assessmentSettings.getTimedMinutes());
 		if(hasTimer) {
-			Date due = assessmentSettings.getRetractDate() != null ? assessmentSettings.getRetractDate() : assessmentSettings.getDueDate();
+			Date due = assessmentSettings.getRetractDate() != null && isAcceptingLateSubmissions ? assessmentSettings.getRetractDate() : assessmentSettings.getDueDate();
 			boolean availableLongerThanTimer = TimeLimitValidator.availableLongerThanTimer(startDate, due, assessmentSettings.getTimedHours(), assessmentSettings.getTimedMinutes(),
 																							"org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages", "open_window_less_than_time_limit", context);
 			if(!availableLongerThanTimer) {
 				error = true;
 			}
-		}
-
-		boolean extendedTimesValid = ExtendedTimeValidator.validateEntries( assessmentSettings.getExtendedTimes(), context, assessmentSettings );
-		if(!extendedTimesValid) {
-			error = true;
 		}
 
 	    // SAM-1088
@@ -409,14 +404,16 @@ implements ActionListener
 				String  date_err=ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","date_error");
 				context.addMessage(null,new FacesMessage(date_err));
 			}
-			else if(!assessmentSettings.getIsValidFeedbackDate()){
-				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_date");
-				context.addMessage(null,new FacesMessage(feedbackDateErr));
-				error=true;
+			else {
+				if(StringUtils.isNotBlank(assessmentSettings.getFeedbackEndDateString()) && assessmentSettings.getFeedbackDate().after(assessmentSettings.getFeedbackEndDate())){
+					String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_ranges");
+					context.addMessage(null,new FacesMessage(feedbackDateErr));
+					error=true;
+				}
 			}
 
-			if(StringUtils.isNotBlank(assessmentSettings.getFeedbackEndDateString()) && assessmentSettings.getFeedbackDate().after(assessmentSettings.getFeedbackEndDate())){
-				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_ranges");
+			if(!assessmentSettings.getIsValidFeedbackDate()){
+				String feedbackDateErr = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.GeneralMessages","invalid_feedback_date");
 				context.addMessage(null,new FacesMessage(feedbackDateErr));
 				error=true;
 			}
@@ -473,7 +470,10 @@ implements ActionListener
 
 	// Check if the category has changed.
 	private boolean isCategoryChanged(PublishedAssessmentSettingsBean assessmentSettings, PublishedAssessmentFacade assessment) {
-		return !StringUtils.equals(assessmentSettings.getCategorySelected(), String.valueOf(assessment.getCategoryId()));
+		Long oldCatId = assessment.getCategoryId() != null ? assessment.getCategoryId() : -1;
+		Long newCatId = NumberUtils.toLong(assessmentSettings.getCategorySelected(), -1);
+
+		return (oldCatId > 0 || newCatId > 0) && oldCatId.compareTo(newCatId) != 0;
 	}
 
 	// Check if title has been changed. If yes, update it.

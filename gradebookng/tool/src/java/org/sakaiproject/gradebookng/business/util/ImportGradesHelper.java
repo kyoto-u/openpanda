@@ -161,14 +161,14 @@ public class ImportGradesHelper {
 		// manually parse method so we can support arbitrary columns
 		CSVReader reader;
 		if(StringUtils.isEmpty(userDecimalSeparator)){
-			reader = new CSVReader(new InputStreamReader(is, "ISO-8859-1"));
+			reader = new CSVReader(new InputStreamReader(is, "UTF-8"));
 		}else{
 			CSVParser parser = new CSVParserBuilder()
 					//new CSVReader(new InputStreamReader(is), ".".equals(userDecimalSeparator) ? CSVParser.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR);
 					.withSeparator(".".equals(userDecimalSeparator) ? CSVParser.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR)
 					.build();
 					
-			reader = new CSVReaderBuilder(new InputStreamReader(is, "ISO-8859-1"))
+			reader = new CSVReaderBuilder(new InputStreamReader(is, "UTF-8"))
 					.withCSVParser(parser)
 					.build();
 		}

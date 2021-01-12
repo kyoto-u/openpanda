@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -47,6 +48,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -163,6 +165,7 @@ import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.CandidateDetailProvider;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
@@ -178,7 +181,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
@@ -238,9 +240,11 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     @Setter private ToolManager toolManager;
     @Setter private UserDirectoryService userDirectoryService;
     @Setter private UserTimeService userTimeService;
+    @Setter private PreferencesService preferencesService;
 
     private boolean allowSubmitByInstructor;
     private boolean exposeContentReviewErrorsToUI;
+    private boolean createGroupsOnImport;
 
     private static ResourceLoader rb = new ResourceLoader("assignment");
 
@@ -253,6 +257,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         }
 
         exposeContentReviewErrorsToUI = serverConfigurationService.getBoolean("contentreview.expose.errors.to.ui", true);
+        createGroupsOnImport = serverConfigurationService.getBoolean("assignment.create.groups.on.import", true);
 
         // register as an entity producer
         entityManager.registerEntityProducer(this, REFERENCE_ROOT);
@@ -540,7 +545,26 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                     Assignment a = getAssignment(refReckoner.getId());
                                     String filename = a.getTitle() + "_" + date;
                                     res.setContentType("application/zip");
-                                    res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+                                    //res.setHeader("Content-Disposition", "attachment; filename = \"" + filename + ".zip\"");
+
+                                    final String CHARCODE = "utf-8";
+                                    String userAgent = req.getHeader("User-Agent");
+                                    String escapedFilename = filename;
+                                    try{
+                                        escapedFilename =URLEncoder.encode(filename,CHARCODE);
+                                    }catch(UnsupportedEncodingException e){}
+
+                                    if(userAgent != null && (userAgent.contains("MSIE") || userAgent.contains("Trident") || userAgent.contains("Edge"))){
+                                        res.addHeader("Content-Disposition", "attachment; filename=\"" + escapedFilename + ".zip\"");
+                                    }else if(userAgent != null && !userAgent.contains("Edge") && userAgent.contains("Safari")){
+                                        String filename_safari = filename;
+                                        try{
+                                            filename_safari = new String(filename.getBytes(CHARCODE), "8859_1");
+                                        }catch(UnsupportedEncodingException  e){}
+                                        res.addHeader("Content-Disposition", "attachment; filename=\"" + filename_safari + ".zip\"");
+                                    }else{
+                                        res.addHeader("Content-Disposition", "attachment; filename*=\"" + CHARCODE + "''" + escapedFilename + ".zip\"");
+                                    }
 
                                     transactionTemplate.execute(new TransactionCallbackWithoutResult() {
                                         @Override
@@ -3018,7 +3042,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 if (i > 0) {
                                     submittersString = submittersString.concat("; ");
                                 }
-                                String fullName = submitters[i].getSortName();
+                                //String fullName = submitters[i].getSortName();
+                                String fullName = submitters[i].getDisplayName();
                                 // in case the user doesn't have first name or last name
                                 if (!fullName.contains(",")) {
                                     fullName = fullName.concat(",");
@@ -3026,7 +3051,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 submittersString = submittersString.concat(fullName);
                                 // add the eid to the end of it to guarantee folder name uniqness
                                 // if user Eid contains non ascii characters, the user internal id will be used
-                                final String userEid = submitters[i].getEid();
+                                //final String userEid = submitters[i].getEid();
+                                final String userEid = getSubmissionUserId(submitters[i]);
+
                                 final String candidateEid = escapeInvalidCharsEntry(userEid);
                                 if (candidateEid.equals(userEid)) {
                                     submittersString = submittersString + "(" + candidateEid + ")";
@@ -3054,10 +3081,16 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 // SAK-17606
                                 if (!isAnon) {
                                 	log.debug("Zip user: " + submitters[i].toString());
-                                    params[0] = submitters[i].getDisplayId();
+                                    //params[0] = submitters[i].getDisplayId();
+                                    params[0] = getSubmissionUserId(submitters[i]);
                                     params[1] = submitters[i].getEid();
-                                    params[2] = submitters[i].getLastName();
-                                    params[3] = submitters[i].getFirstName();
+                                    if(!"ja_JP".equals(getUserLocaleString())){
+                                    	params[2] = submitters[i].getProperties().getProperty("sn;lang-en") == null ? submitters[i].getLastName() : submitters[i].getProperties().getProperty("sn;lang-en");
+                                        params[3] = submitters[i].getProperties().getProperty("givenName;lang-en") == null ? submitters[i].getFirstName() : submitters[i].getProperties().getProperty("givenName;lang-en");
+                                    }else{
+                                    	params[2] = submitters[i].getLastName();
+                                        params[3] = submitters[i].getFirstName();
+                                    }
                                     params[4] = this.getGradeForSubmitter(s, submitters[i].getId());
                                     if (s.getDateSubmitted() != null) {
                                     	params[5] = s.getDateSubmitted().toString(); // TODO may need to be formatted
@@ -3686,33 +3719,37 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     nAssignment.setScaleFactor(oAssignment.getScaleFactor());
                     nAssignment.setReleaseGrades(oAssignment.getReleaseGrades());
 
-                    // group assignment
-                    if (oAssignment.getTypeOfAccess() == GROUP) {
-                        nAssignment.setTypeOfAccess(GROUP);
-                        Site oSite = siteService.getSite(oAssignment.getContext());
-                        Site nSite = siteService.getSite(nAssignment.getContext());
+                    if (!createGroupsOnImport) {
+                        nAssignment.setTypeOfAccess(SITE);
+                    } else {
+                        // group assignment
+                        if (oAssignment.getTypeOfAccess() == GROUP) {
+                            nAssignment.setTypeOfAccess(GROUP);
+                            Site oSite = siteService.getSite(oAssignment.getContext());
+                            Site nSite = siteService.getSite(nAssignment.getContext());
 
-                        boolean siteChanged = false;
-                        Collection<Group> nGroups = nSite.getGroups();
-                        for (String groupId : oAssignment.getGroups()) {
-                            Group oGroup = oSite.getGroup(groupId);
-                            Optional<Group> existingGroup = nGroups.stream().filter(g -> StringUtils.equals(g.getTitle(), oGroup.getTitle())).findAny();
-                            Group nGroup;
-                            if (existingGroup.isPresent()) {
-                                // found a matching group
-                                nGroup = existingGroup.get();
-                            } else {
-                                // create group
-                                nGroup = nSite.addGroup();
-                                nGroup.setTitle(oGroup.getTitle());
-                                nGroup.setDescription(oGroup.getDescription());
-                                nGroup.getProperties().addProperty("group_prop_wsetup_created", Boolean.TRUE.toString());
-                                siteChanged = true;
+                            boolean siteChanged = false;
+                            Collection<Group> nGroups = nSite.getGroups();
+                            for (String groupId : oAssignment.getGroups()) {
+                                Group oGroup = oSite.getGroup(groupId);
+                                Optional<Group> existingGroup = nGroups.stream().filter(g -> StringUtils.equals(g.getTitle(), oGroup.getTitle())).findAny();
+                                Group nGroup;
+                                if (existingGroup.isPresent()) {
+                                    // found a matching group
+                                    nGroup = existingGroup.get();
+                                } else {
+                                    // create group
+                                    nGroup = nSite.addGroup();
+                                    nGroup.setTitle(oGroup.getTitle());
+                                    nGroup.setDescription(oGroup.getDescription());
+                                    nGroup.getProperties().addProperty("group_prop_wsetup_created", Boolean.TRUE.toString());
+                                    siteChanged = true;
+                                }
+                                nAssignment.getGroups().add(nGroup.getReference());
                             }
-                            nAssignment.getGroups().add(nGroup.getReference());
+                            if (siteChanged) siteService.save(nSite);
+                            nAssignment.setIsGroup(oAssignment.getIsGroup());
                         }
-                        if (siteChanged) siteService.save(nSite);
-                        nAssignment.setIsGroup(oAssignment.getIsGroup());
                     }
 
                     // review service
@@ -3720,7 +3757,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
                     // attachments
                     Set<String> oAttachments = oAssignment.getAttachments();
-                    List<Reference> nAttachments = entityManager.newReferenceList();
                     for (String oAttachment : oAttachments) {
                         Reference oReference = entityManager.newReference(oAttachment);
                         String oAttachmentId = oReference.getId();
@@ -4552,4 +4588,22 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         dupes.sort(Comparator.comparing(r -> r.user.getDisplayName()));
         return dupes;
     }
+
+    private final String SUBMISSION_USER_ID_PROPERTY="employeeNumber";
+    public String getSubmissionUserId(User u){
+        String id = (String)u.getProperties().get(SUBMISSION_USER_ID_PROPERTY);
+        if( id == null || id.isEmpty()){
+            return u.getEid();
+        }
+        return id;
+    }
+
+    private String getUserLocaleString(){
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
+
 }

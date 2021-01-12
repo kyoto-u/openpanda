@@ -32,15 +32,12 @@ import java.util.Map.Entry;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
-import org.springframework.orm.hibernate4.HibernateCallback;
-import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
-import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
-
 import org.sakaiproject.api.app.messageforums.Area;
 import org.sakaiproject.api.app.messageforums.AreaManager;
 import org.sakaiproject.api.app.messageforums.Attachment;
@@ -71,14 +68,19 @@ import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
+import org.springframework.orm.hibernate4.HibernateCallback;
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PrivateMessageManagerImpl extends HibernateDaoSupport implements PrivateMessageManager {
@@ -88,13 +90,12 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   private static final String QUERY_MESSAGES_BY_ID_WITH_RECIPIENTS = "findPrivateMessageByIdWithRecipients";
   
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
-  
   private AreaManager areaManager;
   private MessageForumsMessageManager messageManager;
   private MessageForumsForumManager forumManager;
   private MessageForumsTypeManager typeManager;
   private IdManager idManager;
-  private SessionManager sessionManager;  
+  private SessionManager sessionManager;
   private EmailService emailService;
   private ContentHostingService contentHostingService;
   private SecurityService securityService;
@@ -102,7 +103,6 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   private SiteService siteService;
   private ToolManager toolManager;
   private UserDirectoryService userDirectoryService;
-  
   private static final String MESSAGES_TITLE = "pvt_message_nav";// Mensajes-->Messages/need to be modified to support internationalization
   
   private static final String PVT_RECEIVED = "pvt_received";     // Recibidos ( 0 mensajes )-->Received ( 8 messages - 8 unread )
@@ -116,10 +116,12 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   private static final String EMAIL_FOOTER3 = "pvt_email_footer3";
   private static final String EMAIL_FOOTER4 = "pvt_email_footer4";
 
+  private ResourceLoader rb;
+
   public void init()
   {
 	log.info("init()");
-    ;
+    rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
   }
   
 	public void setSecurityService(SecurityService securityService) {
@@ -1547,7 +1549,8 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
       
       try
       {
-        authorString = userDirectoryService.getUser(authorString).getSortName();
+        //authorString = userDirectoryService.getUser(authorString).getSortName();
+        authorString = userDirectoryService.getUser(authorString).getDisplayName();
 
       }
       catch(Exception e)
@@ -1888,10 +1891,8 @@ return topicTypeUuid;
       return areaManager.getResourceBundleString(key);
   }
   
-  private String getResourceBundleString(String key, Object[] replacementValues) 
-  {
-      final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
-      return rb.getFormattedMessage(key, replacementValues);   
+  private String getResourceBundleString(String key, Object[] replacementValues) {
+      return rb.getFormattedMessage(key, replacementValues);
   }
 
   /**

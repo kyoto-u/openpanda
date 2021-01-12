@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -44,9 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.api.app.messageforums.AnonymousManager;
 import org.sakaiproject.api.app.messageforums.Attachment;
 import org.sakaiproject.api.app.messageforums.DiscussionForum;
@@ -71,14 +70,17 @@ import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
-import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ManagedBean(name="mfStatisticsBean")
@@ -371,6 +373,7 @@ public class MessageForumStatisticsBean {
 	private static final String FORUM_TITLE = "forumTitle";
 
 	private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
+	private static final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 
 	private static final String FORUM_STATISTICS = "dfStatisticsList";
 	private static final String FORUM_STATISTICS_BY_ALL_TOPICS = "dfStatisticsListByAllTopics";
@@ -2143,13 +2146,29 @@ public class MessageForumStatisticsBean {
 		try
 		{
 			User user=userDirectoryService.getUser(userId) ;
+			String firstName = "";
+			String lastName = "";
 			if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
 				if(user != null) {
-					userName= user.getLastName() + ", " + user.getFirstName() + " (" + user.getDisplayId() + ")" ;
+					if(!"ja_JP".equals(getUserLocaleString())){
+						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
+						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
+					}else{
+						lastName = user.getLastName();
+						firstName = user.getFirstName();
+					}
+					userName= lastName + ", " + firstName + " (" + user.getDisplayId("messageForum") + ")" ;
 				}
 			} else {
 				if(user != null) {
-					userName = user.getLastName() + ", " + user.getFirstName();
+					if(!"ja_JP".equals(getUserLocaleString())){
+						lastName = user.getProperties().getProperty("sn;lang-en") == null ? user.getLastName() : user.getProperties().getProperty("sn;lang-en");
+						firstName = user.getProperties().getProperty("givenName;lang-en") == null ? user.getFirstName() : user.getProperties().getProperty("givenName;lang-en");
+					}else{
+						lastName = user.getLastName();
+						firstName = user.getFirstName();
+					}
+					userName = lastName + ", " + firstName;
 				}
 			}
 		}
@@ -2206,14 +2225,11 @@ public class MessageForumStatisticsBean {
 		this.buttonUserName = buttonUserName;
 	}
 
-	public static String getResourceBundleString(String key) 
-	{
-		final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
+	public static String getResourceBundleString(String key) {
 		return rb.getString(key);
 	}
 
 	public static String getResourceBundleString(String key, Object[] args) {
-		final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 		return rb.getFormattedMessage(key, args);
 	}
 
@@ -2594,14 +2610,17 @@ public class MessageForumStatisticsBean {
 	} 
 	
 	public void setDefaultSelectedAssign(){
-		if(!gradebookItemChosen){
-			if(selectedAllTopicsTopicId != null && !"".equals(selectedAllTopicsTopicId)){
-				String defaultAssignName = forumManager.getTopicById(Long.parseLong(selectedAllTopicsTopicId)).getDefaultAssignName();
-				setDefaultSelectedAssign(defaultAssignName);
-			}else{
-				String defaultAssignName = forumManager.getForumById(Long.parseLong(selectedAllTopicsForumId)).getDefaultAssignName();
-				setDefaultSelectedAssign(defaultAssignName);
-			}			
+		if (!gradebookItemChosen) {
+			String defaultAssignName;
+			if (StringUtils.isNotBlank(selectedAllTopicsTopicId)) {
+				defaultAssignName = forumManager.getTopicById(Long.parseLong(selectedAllTopicsTopicId)).getDefaultAssignName();
+			} else {
+				defaultAssignName = forumManager.getForumById(Long.parseLong(selectedAllTopicsForumId)).getDefaultAssignName();
+			}
+			if (StringUtils.isNotBlank(defaultAssignName)) {
+				Assignment assignment = getGradebookService().getAssignmentByNameOrId(toolManager.getCurrentPlacement().getContext(), defaultAssignName);
+				setDefaultSelectedAssign(assignment.getName());
+			}
 		}
 		gradebookItemChosen = false;
 	}
@@ -2626,18 +2645,13 @@ public class MessageForumStatisticsBean {
 		selAssignName = "";
 	}
 	
-	private void setDefaultSelectedAssign(String assign){
+	private void setDefaultSelectedAssign(final String assign){
 		selectedAssign = DEFAULT_GB_ITEM;
 		selAssignName = "";
-		if(assign != null){
-			for (SelectItem item : getAssignments()) {
-				if(assign.equals(item.getLabel())){
-					selectedAssign = item.getValue().toString();
-					selAssignName = assign;
-				}
-			}
-		}
-		
+		getAssignments().stream().filter(item -> item.getLabel().equals(assign)).findAny().ifPresent(item -> {
+			selectedAssign = item.getValue().toString();
+			selAssignName = assign;
+		});
 	}
 	
 	private Map<String, DecoratedGradebookAssignment> getGradebookAssignment(){
@@ -3104,5 +3118,14 @@ public class MessageForumStatisticsBean {
 
 		// Condenses to:
 		return topic.getPostAnonymous() && (!topic.getRevealIDsToRoles() || !uiPermissionsManager.isIdentifyAnonAuthors(topic));
+	}
+
+	private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
 	}
 }

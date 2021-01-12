@@ -56,11 +56,15 @@ public interface LTIService extends LTISubstitutionsFilter {
             "tool_id:integer:hidden=true",
             "SITE_ID:text:label=bl_content_site_id:required=true:maxlength=99:role=admin",
             "title:text:label=bl_title:required=true:allowed=true:maxlength=1024",
+			// SAK-32679 - COmented out for the future - uncomment in SAK-44019
+            // "description:textarea:label=bl_description:maxlength=4096",
             "pagetitle:text:label=bl_pagetitle:required=true:allowed=true:maxlength=1024",
             "fa_icon:text:label=bl_fa_icon:allowed=true:maxlength=1024",
             "frameheight:integer:label=bl_frameheight:allowed=true",
             "toolorder:integer:label=bl_toolorder:maxlength=2",
             "newpage:checkbox:label=bl_newpage",
+			// SAK-32679 - COmented out for the future - uncomment in SAK-44019
+            // "protect:checkbox:label=bl_protect:role=admin",
             "debug:checkbox:label=bl_debug",
             "custom:textarea:label=bl_custom:rows=5:cols=25:allowed=true:maxlength=16384",
             "launch:url:label=bl_launch:maxlength=1024:allowed=true",
@@ -126,36 +130,47 @@ public interface LTIService extends LTISubstitutionsFilter {
                         "allowlineitems:checkbox:label=bl_allowlineitems",
             "allowroster:checkbox:label=bl_allowroster",
             "allowsettings:checkbox:label=bl_allowsettings",
-            // Hide these from end users until they are working in the various Sakai tools
-            "pl_header:header:fields=pl_launch,pl_linkselection,pl_importitem,pl_fileitem,pl_contenteditor,pl_assessmentselection",
+            "pl_header:header:fields=pl_launch,pl_linkselection",
             "pl_launch:checkbox:label=bl_pl_launch",
             "pl_linkselection:checkbox:label=bl_pl_linkselection",
+            // SAK-44676 and SAK-44637 - delaying pl_lessonsselection until Sakai 21.1 for conversion staging
+            // "pl_placement:header:fields=pl_lessonsselection,pl_assessmentselection,pl_content_editor,pl_importitem,pl_fileitem",
+            // "pl_lessonsselection:checkbox:label=bl_pl_lessonsselection",
+            "pl_placement:header:fields=pl_assessmentselection,pl_content_editor,pl_importitem,pl_fileitem",
+            "pl_assessmentselection:checkbox:label=bl_pl_assessmentselection",
             "pl_contenteditor:checkbox:label=bl_pl_contenteditor",
             "pl_importitem:checkbox:label=bl_pl_importitem:role=admin",
             "pl_fileitem:checkbox:label=bl_pl_fileitem:role=admin",
-            "pl_assessmentselection:checkbox:label=bl_pl_assessmentselection:role=admin",
             "newpage:radio:label=bl_newpage:choices=off,on,content",
             "debug:radio:label=bl_debug:choices=off,on,content",
             // LTI 1.x user-entered custom
             "custom:textarea:label=bl_custom:rows=5:cols=25:maxlength=16384",
             "rolemap:textarea:label=bl_rolemap:rows=5:cols=25:maxlength=16384:role=admin",
             // Tool declared settings from web services (formerly in LTI 2.x)
-            "allowcustom:checkbox:label=bl_allowcustom",
             "splash:textarea:label=bl_splash:rows=5:cols=25:maxlength=16384",
             // LTI 1.3 expansion space (See SAK-33772)
             "lti13:radio:label=bl_lti13:choices=off,on:role=admin",
+
+            // The core values from LTI 1.3 tools (we prefer keyset over explicit key)
             "lti13_client_id:text:hide=insert:label=bl_lti13_client_id:maxlength=1024:role=admin",
-            "lti13_tool_public:textarea:hide=insert:label=bl_lti13_tool_public:maxlength=1M:role=admin",
-            // The tool keyset is a future feature - we can unhide it in the UI when Sakai supports this
-            "lti13_tool_keyset:textarea:hidden=true:label=bl_lti13_tool_keyset:maxlength=1M:role=admin",
-            // The tool kid is internal (comes through on launch and we store it and cache the public key)
-            "lti13_tool_kid:text:hidden=true:label=bl_lti13_tool_kid:maxlength=1024:role=admin",
-            "lti13_tool_private:textarea:hide=insert:label=bl_lti13_tool_private:maxlength=1M:role=admin",
-            "lti13_platform_public:textarea:hide=insert:label=bl_lti13_platform_public:maxlength=1M:role=admin",
-            "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
+            // TODO: Change this from 1M to 1024 after this is 21-only - SAK-43709
+            "lti13_tool_keyset:textarea:label=bl_lti13_tool_keyset:maxlength=1M:role=admin",
             "lti13_oidc_endpoint:text:label=bl_lti13_oidc_endpoint:maxlength=1024:role=admin",
             "lti13_oidc_redirect:text:label=bl_lti13_oidc_redirect:maxlength=1024:role=admin",
+
+            "lti13_platform_public:textarea:hide=insert:label=bl_lti13_platform_public:maxlength=1M:role=admin",
+            "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
             "lti13_settings:textarea:hidden=true:maxlength=1M:role=admin",
+
+            // These two are for situations where there is no keyset url for the tool which
+            // hopefully will happen less and less often
+            "lti13_legacy_key:header:fields=lti13_tool_public,lti13_tool_private",
+            "lti13_tool_public:textarea:hide=insert:label=bl_lti13_tool_public:maxlength=1M:role=admin",
+            "lti13_tool_private:textarea:hide=insert:label=bl_lti13_tool_private:maxlength=1M:role=admin",
+
+            // TODO: This is purely legacy and can be removed after this is 21-only - SAK-43709
+            // we don't even need to remove the column during 21-upgrade - it was never used
+            "lti13_tool_kid:text:hidden=true:label=bl_lti13_tool_kid:maxlength=1024:role=admin",
 
             // SHA256 Support (See SAK-33898)
             "sha256:radio:label=bl_sha256:hidden=true:role=admin:choices=off,on,content",
@@ -208,11 +223,11 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_SETTINGS_EXT = "settings_ext";
     String LTI_CONTENTITEM = "contentitem";
     String LTI_NEWPAGE = "newpage";
+    String LTI_PROTECT = "protect";
     String LTI_DEBUG = "debug";
     String LTI_CUSTOM = "custom";
     String LTI_ROLEMAP = "rolemap";
     String LTI_SPLASH = "splash";
-    String LTI_ALLOWCUSTOM = "allowcustom";
     String LTI_XMLIMPORT = "xmlimport";
     String LTI_CREATED_AT = "created_at";
     String LTI_UPDATED_AT = "updated_at";
@@ -247,6 +262,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_PL_IMPORTITEM = "pl_importitem";
     String LTI_PL_CONTENTEDITOR = "pl_contenteditor";
     String LTI_PL_ASSESSMENTSELECTION = "pl_assessmentselection";
+    String LTI_PL_LESSONSSELECTION = "pl_lessonsselection";
     String LTI_SEARCH_TOKEN_SEPARATOR_AND = "#&#";
     String LTI_SEARCH_TOKEN_SEPARATOR_OR = "#|#";
     String ESCAPED_LTI_SEARCH_TOKEN_SEPARATOR_AND = "\\#\\&\\#";
@@ -268,6 +284,8 @@ public interface LTIService extends LTISubstitutionsFilter {
     // LTI 1.3
     String LTI13 = "lti13";
     String LTI13_CLIENT_ID = "lti13_client_id";
+    String LTI13_TOOL_KID = "lti13_tool_kid";
+    String LTI13_TOOL_KEYSET = "lti13_tool_keyset";
     String LTI13_TOOL_PUBLIC = "lti13_tool_public";
     String LTI13_TOOL_PRIVATE = "lti13_tool_private";
     String LTI13_PLATFORM_PUBLIC = "lti13_platform_public";
@@ -396,6 +414,12 @@ public interface LTIService extends LTISubstitutionsFilter {
      */
     List<Map<String, Object>> getToolsAssessmentSelection(String siteId);
 
+    /**
+     * Get a list of tools that can be used for Lessons
+     * @param siteId
+     */
+    List<Map<String, Object>> getToolsLessonsSelection(String siteId);
+
     List<Map<String, Object>> getToolsDao(String search, String order, int first, int last, String siteId);
 
     List<Map<String, Object>> getToolsDao(String search, String order, int first, int last, String siteId, boolean isAdmin);
@@ -426,6 +450,8 @@ public interface LTIService extends LTISubstitutionsFilter {
     Object updateContent(Long key, Map<String, Object> newProps, String siteId);
 
     Object updateContent(Long key, Properties newProps, String siteId);
+
+    Object updateContentDao(Long key, Map<String, Object> newProps);
 
     Object updateContentDao(Long key, Map<String, Object> newProps, String siteId);
 

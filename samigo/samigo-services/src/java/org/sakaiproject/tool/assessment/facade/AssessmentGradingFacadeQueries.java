@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -40,7 +41,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -54,6 +54,7 @@ import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.antivirus.api.VirusFoundException;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentHostingService;
@@ -72,7 +73,7 @@ import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.spring.SpringBeanLocator;
-import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
@@ -99,12 +100,15 @@ import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceH
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.PersistenceHelper;
-import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.util.ExtendedTimeDeliveryService;
+import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implements AssessmentGradingFacadeQueriesAPI {
@@ -115,6 +119,8 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     public AssessmentGradingFacadeQueries() {
     }
 
+
+    @Setter private SessionManager sessionManager;
     /**
      * Injected Services
      */
@@ -135,6 +141,16 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 
     public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
         this.userDirectoryService = userDirectoryService;
+    }
+
+    private PreferencesService preferencesService;
+
+    public void setPreferencesService(PreferencesService preferencesService){
+    	this.preferencesService = preferencesService;
+    }
+
+    public void setSessionManager(SessionManager sessionManager){
+    	this.sessionManager = sessionManager;
     }
 
 
@@ -2016,8 +2032,14 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                     canBeExported = true;
                     try {
                         agentEid = getSubmissionUserId(assessmentGradingData.getAgentId());
-                        firstName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getFirstName();
-                        lastName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getLastName();
+                        if(!"ja_JP".equals(getUserLocaleString())){
+                        	firstName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(assessmentGradingData.getAgentId()).getFirstName() : userDirectoryService.getUser(assessmentGradingData.getAgentId()).getProperties().getProperty("sn;lang-en");
+                        	lastName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(assessmentGradingData.getAgentId()).getLastName() : userDirectoryService.getUser(assessmentGradingData.getAgentId()).getProperties().getProperty("givenName;lang-en");
+                        }else{
+                        	firstName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getFirstName();
+                            lastName = userDirectoryService.getUser(assessmentGradingData.getAgentId()).getLastName();
+                        }
+
                     } catch (Exception e) {
                         log.error("Cannot get user");
                     }
@@ -2508,8 +2530,13 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                 String id = (String) iter.next();
                 try {
                     agentEid = getSubmissionUserId(id);
-                    firstName = userDirectoryService.getUser(id).getFirstName();
-                    lastName = userDirectoryService.getUser(id).getLastName();
+                    if(!"ja_JP".equals(getUserLocaleString())){
+                    	firstName = userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en") == null ? userDirectoryService.getUser(id).getLastName() : userDirectoryService.getUser(id).getProperties().getProperty("givenName;lang-en");
+                    	lastName = userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en") == null ? userDirectoryService.getUser(id).getFirstName() : userDirectoryService.getUser(id).getProperties().getProperty("sn;lang-en");
+                    }else{
+                    	firstName = userDirectoryService.getUser(id).getFirstName();
+                        lastName = userDirectoryService.getUser(id).getLastName();
+                    }
                 } catch (Exception e) {
                     log.error("Cannot get user");
                 }
@@ -2725,7 +2752,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 			} catch (ParseException e) {
 	  			log.error("ERROR compare: ",e);
 	  		}
-			return Collator.getInstance().compare(a, b);	
+			return Collator.getInstance().compare(a, b);
 		}
 	}
 
@@ -2973,9 +3000,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						" and a.status not in (5) and (a.hasAutoSubmissionRun = 0 or a.hasAutoSubmissionRun is null) and c.autoSubmit = 1 " +
 						" and a.attemptDate is not null " +
 						" order by a.publishedAssessmentId, a.agentId, a.forGrade desc, a.assessmentGradingId");
-	    
+
 		query.setTimestamp("currentTime",currentTime);
-		
+
 		List<AssessmentGradingData> list = query.list();
 
         Iterator iter = list.iterator();
@@ -3004,7 +3031,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
         boolean autoSubmitCurrent;
         Integer scoringType;
         int failures = 0;
-        
+
         while (iter.hasNext()) {
 
             autoSubmitCurrent = false;
@@ -3024,6 +3051,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                     Date dueDate = assessment.getAssessmentAccessControl().getDueDate();
                     Date retractDate = assessment.getAssessmentAccessControl().getRetractDate();
                     Integer lateHandling = assessment.getAssessmentAccessControl().getLateHandling();
+                    boolean acceptLate = AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(lateHandling);
                     ExtendedTimeDeliveryService assessmentExtended = new ExtendedTimeDeliveryService(assessment,
                             adata.getAgentId());
 
@@ -3031,13 +3059,20 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                     if (assessmentExtended.hasExtendedTime()) {
                         //Continue on and try to submit it but it may be late, just change the due date
                         dueDate = assessmentExtended.getDueDate() != null ? assessmentExtended.getDueDate() : dueDate;
-                        retractDate = assessmentExtended.getRetractDate() != null ? assessmentExtended.getRetractDate() : retractDate;
+
+                        // If the extended time student received a retract date
+                        if (assessmentExtended.getRetractDate() != null) {
+                        	retractDate =  assessmentExtended.getRetractDate();
+                        	acceptLate = true;
+                        }
                     }
 
-                    //If the due date or retract date hasn't passed yet, go on to the next one, don't consider it yet
-                    if ((AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.toString().equals(lateHandling) && retractDate!=null && (currentTime.before(retractDate) || adata.getAttemptDate().after(retractDate)))
-                            || (dueDate != null && currentTime.before(dueDate))) {
+                    // If the due date or retract date hasn't passed yet, go on to the next one, don't consider it yet
+                    if (acceptLate && retractDate != null && (currentTime.before(retractDate) || adata.getAttemptDate().after(retractDate))) {
                         continue;
+                    }
+                    else if ( (!acceptLate || retractDate == null) && dueDate != null && currentTime.before(dueDate)) {
+                    	continue;
                     }
 
                     adata.setForGrade(Boolean.TRUE);
@@ -3070,7 +3105,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                     } else {
                         adata.setStatus(AssessmentGradingData.SUBMITTED);
                     }
-                   
+
                     completeItemGradingData(adata, sectionSetMap);
                 }
 
@@ -3081,7 +3116,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                         .toString());
                 // this call happens in a separate transaction, so a rollback only affects this iteration
                 boolean success = saveOrUpdateAssessmentGrading(adata);
-                
+
                 if (success && updateGrades && autoSubmitCurrent) {
                     GradingService gs = new GradingService();
                     gs.updateAutosubmitEventLog(adata);
@@ -3106,7 +3141,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 
         return failures;
     }
-    
+
     private String makeHeader(String section, int sectionNumber, String question, String headerType, int questionNumber, String pool, String poolName) {
         StringBuilder sb = new StringBuilder(section);
         sb.append(" ");
@@ -3633,5 +3668,13 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
        return id;
     }
 
+    private String getUserLocaleString(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
+		if(locale == null){
+			locale = Locale.US;
+		}
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
 
 }

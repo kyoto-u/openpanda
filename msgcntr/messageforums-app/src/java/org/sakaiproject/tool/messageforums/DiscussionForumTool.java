@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -89,6 +88,8 @@ import org.sakaiproject.api.app.messageforums.Topic;
 import org.sakaiproject.api.app.messageforums.UserPreferencesManager;
 import org.sakaiproject.api.app.messageforums.cover.ForumScheduleNotificationCover;
 import org.sakaiproject.api.app.messageforums.cover.SynopticMsgcntrManagerCover;
+import org.sakaiproject.api.app.messageforums.events.ForumsMessageEventParams;
+import org.sakaiproject.api.app.messageforums.events.ForumsTopicEventParams;
 import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager;
 import org.sakaiproject.authz.api.AuthzGroup;
@@ -118,6 +119,8 @@ import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VE
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.portal.util.PortalUtils;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
+import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
@@ -145,9 +148,6 @@ import org.sakaiproject.util.comparator.GroupTitleComparator;
 import org.sakaiproject.util.comparator.RoleIdComparator;
 
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
-import org.sakaiproject.rubrics.logic.model.ToolItemRubricAssociation;
-import org.sakaiproject.rubrics.logic.RubricsConstants;
-import org.sakaiproject.rubrics.logic.RubricsService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -157,8 +157,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
-import org.sakaiproject.api.app.messageforums.events.ForumsMessageEventParams;
-import org.sakaiproject.api.app.messageforums.events.ForumsTopicEventParams;
 
 /**
  * @author <a href="mailto:rshastri@iupui.edu">Rashmi Shastri</a>
@@ -241,6 +239,7 @@ public class DiscussionForumTool {
   private static final String FORUMS_TOOL_ID = "sakai.forums";
 
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
+  private static final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 
   private static final String INSUFFICIENT_PRIVILEGES_TO_EDIT_TEMPLATE_SETTINGS = "cdfm_insufficient_privileges";
   private static final String INSUFFICIENT_PRIVILEGES_TO_EDIT_TEMPLATE_ORGANIZE = "cdfm_insufficient_privileges";
@@ -6825,12 +6824,10 @@ public class DiscussionForumTool {
 		 */
 	    public static String getResourceBundleString(String key) 
 	    {
-	        final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 	        return rb.getString(key);
 	    }
 
 	    public static String getResourceBundleString(String key, Object[] args) {
-	    	final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 	    	return rb.getFormattedMessage(key, args);
 	    }
 
@@ -6869,8 +6866,9 @@ public class DiscussionForumTool {
 		  String userString = "";
 		  userString = userDirectoryService.getUser(currentUserId).getDisplayName();
 		  String userEidString = "";
-		  userEidString = userDirectoryService.getUser(currentUserId).getDisplayId();
-		  
+		  //userEidString = userDirectoryService.getUser(currentUserId).getDisplayId();
+		  userEidString = userDirectoryService.getUser(currentUserId).getDisplayId("messageForum");
+
 		  if((userString != null && userString.length() > 0) && ServerConfigurationService.getBoolean("msg.displayEid", true))
 		  {
 			  return userString + " (" + userEidString + ")";
@@ -8539,7 +8537,8 @@ public class DiscussionForumTool {
 
 		JSONObject jsonMembershipItem = new JSONObject();
 		jsonMembershipItem.element("membershipItemId", item.getId()).element("roleId", item.getRole().getId())
-				.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getEid());
+				//.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getEid());
+				.element("userDisplayName", item.getUser().getDisplayName()).element("eid", item.getUser().getDisplayId("messageForum"));
 		usersList.add(jsonMembershipItem);
 
 		JSONArray memberGroupsArray = new JSONArray();

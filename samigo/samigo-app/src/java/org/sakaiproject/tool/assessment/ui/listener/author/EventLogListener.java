@@ -28,8 +28,6 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
@@ -41,6 +39,10 @@ import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentS
 import org.sakaiproject.tool.assessment.ui.bean.author.EventLogBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.BeanSort;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EventLogListener
@@ -147,6 +149,19 @@ implements ActionListener, ValueChangeListener
       //check anonymous users setting, update user name and ip address to N/A
       List<EventLogData> updateEventLogDataList = updateData(eventLogDataList);
       
+      for(EventLogData data : updateEventLogDataList){
+    	  User u = null;
+    	  try{
+    		  u = UserDirectoryService.getUserByEid(data.getUserEid());
+    		  if(u != null){
+        		  data.setUserEid(
+        				  u.getProperties().getProperty("employeeNumber") != null ? u.getProperties().getProperty("employeeNumber") : data.getUserEid()
+        				  );
+        	  }
+    	  }catch(Exception e){}
+
+      }
+
       List<Object[]> titles = eventLogService.getTitlesFromEventLogBySite(siteId);
       eventLog.setAssessments(initAssessmentListFilter(titles, statusMap));
       
@@ -214,6 +229,7 @@ implements ActionListener, ValueChangeListener
       bs = new BeanSort(dataList, sortProperty);
       if ((sortProperty).equals("title")) bs.toStringSort();
       if ((sortProperty).equals("userDisplay")) bs.toStringSort();
+      if ((sortProperty).equals("userEid")) bs.toStringSort();
       if ((sortProperty).equals("errorMsg")) bs.toStringSort();
       if ((sortProperty).equals("startDate")) bs.toDateSort();
       if ((sortProperty).equals("endDate")) bs.toDateSort();

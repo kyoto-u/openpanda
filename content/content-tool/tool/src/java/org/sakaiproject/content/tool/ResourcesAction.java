@@ -21,8 +21,7 @@
 
 package org.sakaiproject.content.tool;
 
-import static org.sakaiproject.content.util.IdUtil.isolateContainingId;
-import static org.sakaiproject.content.util.IdUtil.isolateName;
+import static org.sakaiproject.content.util.IdUtil.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -208,7 +207,8 @@ public class ResourcesAction
 	private static final org.sakaiproject.content.copyright.api.CopyrightManager copyrightManager = (org.sakaiproject.content.copyright.api.CopyrightManager)
 			ComponentManager.get("org.sakaiproject.content.copyright.api.CopyrightManager");
 
-	
+	private static final ResourceLoader rl = new ResourceLoader("permissions");
+
 	/**
 	 * Action
 	 *
@@ -979,7 +979,7 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		context.put ("id", entityId);
 		String collectionId = (String) state.getAttribute(STATE_MORE_COLLECTION_ID);
 		context.put ("collectionId", collectionId);
-		String homeCollectionId = (String) (String) state.getAttribute (STATE_HOME_COLLECTION_ID);
+		String homeCollectionId = (String) state.getAttribute (STATE_HOME_COLLECTION_ID);
 		context.put("homeCollectionId", homeCollectionId);
 		//List cPath = getCollectionPath(state);
 		//context.put ("collectionPath", cPath);
@@ -2128,6 +2128,16 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				ResourceProperties props = contentService.getProperties(id);
 				String name = props.getPropertyFormatted(ResourceProperties.PROP_DISPLAY_NAME);
 				String containingCollectionId = contentService.getContainingCollectionId(id);
+				User user = null;
+				String[] groupUser = id.split("/");
+				if(groupUser.length == 4){
+					try {
+						user = userDirectoryService.getUser(groupUser[3]);
+						name = user.getDisplayName() + "(" + user.getDisplayId() + ")";
+					}catch(UserNotDefinedException e){
+						log.warn("UserNotDefinedException groupUser[3] == " + groupUser[3]);
+					}
+				}
 				if(ContentHostingService.COLLECTION_DROPBOX.equals(containingCollectionId))
 				{
 					Reference ref = entityManager.newReference(contentService.getReference(id));
@@ -4085,9 +4095,8 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 		log.debug("{}.buildListContext()", this);
 		// Issue SAK-19442
 		// ... pass the resource loader object
-		ResourceLoader pRb = new ResourceLoader("permissions");
 		HashMap<String, String> pRbValues = new HashMap<>();
-		for(Iterator<Entry<String, String>> mapIter = pRb.entrySet().iterator(); mapIter.hasNext();)
+		for(Iterator<Entry<String, String>> mapIter = rl.entrySet().iterator(); mapIter.hasNext();)
 		{
 			Entry<String, String> entry = mapIter.next();
 			pRbValues.put(entry.getKey(), entry.getValue());
@@ -8401,11 +8410,11 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 			if ((home == null) || (home.length() == 0))
 			{
 				home = contentHostingService.getSiteCollection(toolManager.getCurrentPlacement().getContext());
-
-				// TODO: what's the 'name' of the context? -ggolden
-				// we'll need this to create the home collection if needed
-				state.setAttribute (STATE_HOME_COLLECTION_DISPLAY_NAME, toolManager.getCurrentPlacement().getContext()
-						/*siteService.getSiteDisplay(toolManager.getCurrentPlacement().getContext()) */);
+				try {
+					state.setAttribute(STATE_HOME_COLLECTION_DISPLAY_NAME, ((Site) siteService.getSite(toolManager.getCurrentPlacement().getContext())).getTitle());
+				} catch (IdUnusedException e) {
+					log.warn("Error while trying to set {} attribute for site {}", STATE_HOME_COLLECTION_DISPLAY_NAME, toolManager.getCurrentPlacement().getContext());
+				}
 			}
 		}
 		state.setAttribute (STATE_HOME_COLLECTION_ID, home);

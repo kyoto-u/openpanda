@@ -29,9 +29,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.component.api.ComponentManager;
 import org.sakaiproject.search.api.SearchService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Serializes a search result out to the requesting service
@@ -118,7 +119,7 @@ public class RestSearchServlet extends HttpServlet
             }
 
             String[] suggestions = searchService.getSearchSuggestions(request.getParameter(REQUEST_PARAMETER_Q), currentSiteId, searchAllMySites);
-            response.setContentType("application/json");
+            response.setContentType("application/json; charset=utf-8");
             result = stringArrayAsJson(suggestions);
         // /sakai-search-tool/xmlsearch
         } else {

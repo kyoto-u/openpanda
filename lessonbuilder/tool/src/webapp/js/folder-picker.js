@@ -10,7 +10,7 @@ $(function() {
 					directory = '/' + folderCollectionId.text() + '/';
 				}
 				else {
-					var topFolder = encodeURIComponent($('#top-folder').text());
+					var topFolder = $('#top-folder').text();
 					directory = '/' + topFolder + directory;
 				}
 				updatePathInput(directory);
@@ -20,7 +20,7 @@ $(function() {
 			},
 			displayRootDirectory: true
 		});
-		updatePathInput('/' + encodeURIComponent($('#top-folder').text()) + '/');
+		updatePathInput('/' + $('#top-folder').text() + '/');
 
 	}
 });

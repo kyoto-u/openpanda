@@ -45,6 +45,9 @@
 						<th id="studentname">
 							$tlang.getString("gen.student")
 						</th>
+						<th id="employeeNumber">
+							$tlang.getString("gen.employeeNumber")
+						</th>
 						<th id="assignment">
 							$tlang.getString("gen.assig")
 						</th>
@@ -61,12 +64,13 @@
 						#end
 					</tr>
 					#foreach ($member in $studentMembers)
-						#set($submitterName=$!member.sortName)
+						##set($submitterName=$!member.sortName)
+						#set($submitterName=$!member.getDisplayName())
 						#set($submitterId=$!member.getDisplayId())
-						#if ($!submitterId)
+						##if ($!submitterId)
 							##attach the displayId
-							#set($submitterName=$submitterName.concat(" (").concat($submitterId).concat(")"))
-							#end
+							##set($submitterName=$submitterName.concat(" (").concat($submitterId).concat(")"))
+							##end
 						<tr>
 							<td headers="studentname" class="specialLink">
 									<div class="spinnerBesideContainer">
@@ -85,6 +89,7 @@
 										<div id="$userSpinnerID" class="allocatedSpinPlaceholder"></div>
 									</div>
 							</td>
+							<td headers="employeeNumber" class="specialLink">$submitterId</td>
 							<td colspan="4">
 							</td>
 						</tr>
@@ -101,6 +106,7 @@
 									#set($submissionReference=$service.submissionReference($assignment.Context, $submission.Id, $assignment.Id))
 									<tr>
 										<td headers="studentname"/>
+										<td headers="employeeNumber"/>
 										<td headers="assignment">
 											#if (!$isAnon)
 												<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$formattedText.escapeUrl($assignmentReference)&submissionId=$formattedText.escapeUrl($submissionReference)&option=lisofass2")" title="$formattedText.escapeHtml($assignment.Title)">$formattedText.escapeHtml($assignment.Title)</a>

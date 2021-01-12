@@ -111,11 +111,13 @@ public class DeliveryActionListener
 {
 
   static String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  //private static ContextUtil cu;
   private boolean resetPageContents = true;
   private long previewGradingId = (long)(Math.random() * 1000);
-  private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
-  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private static final ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
+  private static final ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+  private static final ResourceLoader ra = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+
+  private EventTrackingService eventTrackingService = ComponentManager.get(EventTrackingService.class);
 
   /**
    * ACTION.
@@ -131,7 +133,7 @@ public class DeliveryActionListener
     {
       PersonBean person = (PersonBean) ContextUtil.lookupBean("person");
       // 1. get managed bean
-      DeliveryBean delivery = (DeliveryBean) ContextUtil.lookupBean("delivery");      
+      DeliveryBean delivery = (DeliveryBean) ContextUtil.lookupBean("delivery");
       
       // set publishedId, note that id can be changed by isPreviewingMode()
       String id = getPublishedAssessmentId(delivery);
@@ -149,10 +151,13 @@ public class DeliveryActionListener
 
       if (delivery.pastDueDate() && (DeliveryBean.TAKE_ASSESSMENT == action || DeliveryBean.TAKE_ASSESSMENT_VIA_URL == action)) {
         if (delivery.isAcceptLateSubmission()) {
-          if(delivery.getTotalSubmissions() > 0 && delivery.getActualNumberRetake() == delivery.getNumberRetake()) {// Not during a Retake
+          if(delivery.getTotalSubmissions() > 0 && delivery.getActualNumberRetake() > delivery.getNumberRetake()) {// Not during a Retake
+            log.debug("processAction returning because no retakes left for this overdue, late submission");
             return;
           }
-        } else if(delivery.isRetracted(false)){
+        }
+        if(delivery.isRetracted(false)){
+            log.debug("processAction returning because assessment is retracted");
             return;
         }
       }
@@ -1337,8 +1342,6 @@ public class DeliveryActionListener
     }
 
     List myanswers = new ArrayList();
-    ResourceLoader rb = null;
-	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
 
     // Generate the answer key
     String key = "";
@@ -1396,8 +1399,17 @@ public class DeliveryActionListener
           // Randomize matching the same way for each
         }
 
+        // Show the answers in the same order that student did.
+        String agentString = "";
+        if (delivery.getActionMode() == DeliveryBean.GRADE_ASSESSMENT) {
+            StudentScoresBean studentscorebean = (StudentScoresBean) ContextUtil.lookupBean("studentScores");
+            agentString = studentscorebean.getStudentId();
+        } else {
+            agentString = getAgentString();
+        }
+
         String itemText = (item.getText() == null) ? "" : item.getText();
-        Collections.shuffle(shuffled, new Random( (long) itemText.hashCode() + (getAgentString() + "_" + item.getItemId().toString()).hashCode()));
+        Collections.shuffle(shuffled, new Random( (long) itemText.hashCode() + (agentString + "_" + item.getItemId().toString()).hashCode()));
         key2 = shuffled.iterator();
       }
       else
@@ -1463,9 +1475,6 @@ public class DeliveryActionListener
         		  pc = Double.valueOf(0d);
         	  }
         	  if(pc > 0){
-        		  if (rb == null) { 	 
-        			  rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-        		  }
         		  String correct = rb.getString("alt_correct");
         		  if(("").equals(key)){
         			  key = answer.getLabel() + "&nbsp;<span style='color: green'>(" + pc + "%&nbsp;" + correct + ")</span>";
@@ -1479,9 +1488,6 @@ public class DeliveryActionListener
               answer.getIsCorrect() != null &&
               answer.getIsCorrect().booleanValue())
           {
-        	if (rb == null) { 	 
-        		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-        	}
         	if (answer.getText().equalsIgnoreCase("true") || answer.getText().equalsIgnoreCase(rb.getString("true_msg"))) {
         		key = rb.getString("true_msg");
         	}
@@ -1583,17 +1589,11 @@ public class DeliveryActionListener
         if (item.getTypeId().equals(TypeIfc.TRUE_FALSE) && // True/False
             answer.getText().equals("true"))
         {
-          if (rb == null) { 	 
-        	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-          }
           answer.setText(rb.getString("true_msg"));
         }
         if (item.getTypeId().equals(TypeIfc.TRUE_FALSE) && // True/False
             answer.getText().equals("false"))
         {
-          if (rb == null) { 	 
-        	rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-          }
           answer.setText(rb.getString("false_msg"));
 
         }
@@ -1682,7 +1682,17 @@ public class DeliveryActionListener
 
     if (item.getTypeId().equals(TypeIfc.MATCHING)) // matching
     {
-      populateMatching(item, itemBean, publishedAnswerHash);
+        // Show the answers in the same order that student did.
+        String agentString = "";
+
+        if (delivery.getActionMode() == DeliveryBean.GRADE_ASSESSMENT) {
+            StudentScoresBean studentscorebean = (StudentScoresBean) ContextUtil.lookupBean("studentScores");
+            agentString = studentscorebean.getStudentId();
+        } else {
+            agentString = getAgentString();
+        }
+
+        populateMatching(item, itemBean, publishedAnswerHash, agentString);
     }
     else if (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS))
     {
@@ -1749,11 +1759,6 @@ public class DeliveryActionListener
 
       Iterator itemTextAnwersIter = text.getAnswerArraySorted().iterator();
      
-      ResourceLoader rb = null;
-      if (rb == null) { 	 
-  		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-  	  }
-     
       // Now add the user responses (ItemGrading)
       int responseCount = 0;
       List userResponseLabels = new ArrayList();
@@ -1789,7 +1794,7 @@ public class DeliveryActionListener
     bean.setIsMultipleItems(beans.size() > 1);
   }
 
-  public void populateMatching(ItemDataIfc item, ItemContentsBean bean, Map publishedAnswerHash)
+  public void populateMatching(ItemDataIfc item, ItemContentsBean bean, Map publishedAnswerHash, String agentString)
   {
 	  // used only for questions with distractors where the user has selected None of the Above
 	  final Long NONE_OF_THE_ABOVE = -1l;
@@ -1817,7 +1822,7 @@ public class DeliveryActionListener
       }
       Collections.shuffle(shuffled,
                           new Random( (long) item.getText().hashCode() +
-                          (getAgentString() + "_" + item.getItemId().toString()).hashCode()));
+                          (agentString + "_" + item.getItemId().toString()).hashCode()));
 
 /*
       Collections.shuffle
@@ -1826,11 +1831,9 @@ public class DeliveryActionListener
       iter2 = shuffled.iterator();
 
       int i = 0;
-      ResourceLoader rb = null;
-      if (rb == null) { 	 
-  		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-  	  }
-      choices.add(new SelectItem("0", rb.getString("matching_select"), "")); // default value for choice
+      ResourceLoader d_rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+      ResourceLoader a_rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorMessages");
+      choices.add(new SelectItem("0", d_rb.getString("matching_select"), "")); // default value for choice
       while (iter2.hasNext())
       {
         AnswerIfc answer = (AnswerIfc) iter2.next();
@@ -1844,7 +1847,7 @@ public class DeliveryActionListener
       GradingService gs = new GradingService();
       if (gs.hasDistractors(item)) {
         String noneOfTheAboveOption = Character.toString(alphabet.charAt(i++));
-        newAnswers.add(noneOfTheAboveOption + "." + " None of the Above");
+        newAnswers.add(noneOfTheAboveOption + ". " + a_rb.getString("none_above"));
         choices.add(new SelectItem(NONE_OF_THE_ABOVE.toString(), noneOfTheAboveOption, ""));
       }
 
@@ -2388,11 +2391,6 @@ public class DeliveryActionListener
       mbean.setItemContentsBean(bean);
 
       Iterator iter2 = text.getAnswerArraySorted().iterator();
-      
-      ResourceLoader rb = null;
-      if (rb == null) { 	 
-  		rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
-  	  }
       
       while (iter2.hasNext())
       {

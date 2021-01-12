@@ -34,10 +34,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.digester.Digester;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -97,6 +93,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Nuno Fernandes
  *
@@ -121,7 +121,8 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 	@Getter @Setter private boolean	lastJobRunDateVisible	= true;
 	@Getter @Setter private boolean eventContextSupported   = false;
 	@Getter @Setter private boolean	enableReportExport		= true;
-	@Getter @Setter private boolean	sortUsersByDisplayName	= false;
+	//@Getter @Setter private boolean	sortUsersByDisplayName	= false;
+	@Getter @Setter private boolean	sortUsersByDisplayName	= true;
 	@Getter @Setter private boolean	displayDetailedEvents	= false;
 
 	/** Controller fields */

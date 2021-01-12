@@ -43,16 +43,22 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.entity.cover.EntityManager;
 
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.assessment.facade.*;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.samigo.util.SamigoConstants;
+import org.sakaiproject.section.api.SectionAwareness;
+import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
+import org.sakaiproject.section.api.facade.Role;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookInformation;
@@ -61,21 +67,13 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.UserTimeService;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ExtendedTime;
 import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.api.FilePickerHelper;
-import org.sakaiproject.exception.PermissionException;
-import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.section.api.SectionAwareness;
-import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
-import org.sakaiproject.section.api.facade.Role;
-import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.cover.EntityManager;
-import org.sakaiproject.samigo.util.SamigoConstants;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
@@ -83,6 +81,10 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.RegisteredSecureDeliveryModuleIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
+import org.sakaiproject.tool.assessment.facade.ExtendedTimeFacade;
+import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.PublishingTargetHelper;
@@ -99,12 +101,16 @@ import org.sakaiproject.util.api.FormattedText;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 /* For author: Assessment Settings backing bean.*/
 @Slf4j
 @ManagedBean(name="publishedSettings")
 @SessionScoped
 public class PublishedAssessmentSettingsBean implements Serializable {
-  
+
   private static final IntegrationContextFactory integrationContextFactory =
     IntegrationContextFactory.getInstance();
   private static final PublishingTargetHelper ptHelper =
@@ -235,7 +241,7 @@ public class PublishedAssessmentSettingsBean implements Serializable {
   private final String HIDDEN_FEEDBACK_DATE_FIELD = "feedbackDateISO8601";
   private final String HIDDEN_FEEDBACK_END_DATE_FIELD = "feedbackEndDateISO8601";
 
-  private ResourceLoader assessmentSettingMessages;
+  private static final ResourceLoader assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 
   @Resource(name = "org.sakaiproject.service.gradebook.GradebookService")
   private GradebookService gradebookService;
@@ -257,7 +263,6 @@ public class PublishedAssessmentSettingsBean implements Serializable {
 
   public PublishedAssessmentSettingsBean(WebApplicationContext context) {
     context.getAutowireCapableBeanFactory().autowireBean(this);
-    this.assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
   }
 
   public PublishedAssessmentFacade getAssessment() {
@@ -412,18 +417,8 @@ public class PublishedAssessmentSettingsBean implements Serializable {
       setIpAddresses(assessment);
 
       // publishedUrl
-      FacesContext context = FacesContext.getCurrentInstance();
-      ExternalContext extContext = context.getExternalContext();
-      // get the alias to the pub assessment
-      this.alias = assessment.getAssessmentMetaDataByLabel(
-          AssessmentMetaDataIfc.ALIAS);
-      String server = ( (javax.servlet.http.HttpServletRequest) extContext.
-                       getRequest()).getRequestURL().toString();
-      int index = server.indexOf(extContext.getRequestContextPath() + "/"); // "/samigo-app/"
-      server = server.substring(0, index);
-      String url = server + extContext.getRequestContextPath();
-      this.publishedUrl = url + "/servlet/Login?id=" + this.alias;
-      
+      this.publishedUrl = generatePublishedURL(assessment);
+
       // secure delivery
       SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
       this.secureDeliveryAvailable = secureDeliveryService.isSecureDeliveryAvaliable();
@@ -1754,7 +1749,8 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 				for (Iterator iter = enrollments.iterator(); iter.hasNext();) {
 					EnrollmentRecord enrollmentRecord = (EnrollmentRecord) iter.next();
 					String userId = enrollmentRecord.getUser().getUserUid();
-					String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					//String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					String userDisplayName = enrollmentRecord.getUser().getDisplayName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
 					studentTargets.put(userId, userDisplayName);
 				}
 			}
@@ -1822,7 +1818,7 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
   public void addExtendedTime() {
       ExtendedTime entry = this.extendedTime;
       FacesContext context = FacesContext.getCurrentInstance();
-      if (ExtendedTimeValidator.validateEntry(entry, context, this)) {
+      if (new ExtendedTimeValidator().validateEntry(entry, context, this)) {
           AssessmentAccessControlIfc accessControl = new AssessmentAccessControl();
           accessControl.setStartDate(this.startDate);
           accessControl.setDueDate(this.dueDate);
@@ -1889,5 +1885,18 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 
   public void setCategorySelected(String categorySelected) {
     this.categorySelected = categorySelected;
+  }
+
+  public String generatePublishedURL(PublishedAssessmentFacade paf) {
+      FacesContext context = FacesContext.getCurrentInstance();
+      ExternalContext extContext = context.getExternalContext();
+
+      // get the alias to the pub assessment
+      this.alias = paf.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.ALIAS);
+      String server = ((javax.servlet.http.HttpServletRequest) extContext.getRequest()).getRequestURL().toString();
+      int index = server.indexOf(extContext.getRequestContextPath() + "/"); // "/samigo-app/"
+      server = server.substring(0, index);
+      String url = server + extContext.getRequestContextPath();
+      return url + "/servlet/Login?id=" + this.alias;
   }
 }

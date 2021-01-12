@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package org.sakaiproject.site.util;
 
 import java.text.Collator;
@@ -21,18 +21,17 @@ import java.text.RuleBasedCollator;
 import java.util.Comparator;
 import java.util.Locale;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.authz.api.Member;
-import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.EntityPropertyTypeException;
-import org.sakaiproject.site.api.Site;
+import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.site.api.Group;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService.SortType;
-import org.sakaiproject.site.util.Participant;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.user.cover.UserDirectoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The comparator to be used in Worksite Setup/Site Info tool
@@ -313,14 +312,16 @@ public class SiteComparator implements Comparator {
 
 			try {
 				s1 = UserDirectoryService
-						.getUser(((Member) o1).getUserId()).getSortName();
+						//.getUser(((Member) o1).getUserId()).getSortName();
+						.getUser(((Member) o1).getUserId()).getDisplayName();
 			} catch (Exception ignore) {
 
 			}
 
 			try {
 				s2 = UserDirectoryService
-						.getUser(((Member) o2).getUserId()).getSortName();
+						//.getUser(((Member) o2).getUserId()).getSortName();
+						.getUser(((Member) o2).getUserId()).getDisplayName();
 			} catch (Exception ignore) {
 
 			}

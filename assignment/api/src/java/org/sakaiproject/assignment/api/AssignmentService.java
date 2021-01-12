@@ -807,4 +807,7 @@ public interface AssignmentService extends EntityProducer {
      * @return list of submission group users with multiple group memberships and the groups they belong to
      */
     public List<MultiGroupRecord> checkSubmissionForUsersInMultipleGroups(String siteId, Group submissionGroup, Collection<Group> asnGroups);
+
+    public String getSubmissionUserId(User u);
+
 }

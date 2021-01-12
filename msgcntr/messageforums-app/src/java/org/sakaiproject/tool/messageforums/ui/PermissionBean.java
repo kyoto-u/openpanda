@@ -34,6 +34,7 @@ public class PermissionBean {
   
   /** Path to bundle messages */
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
+  private static final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
 
   /** Keys for bundle messages */
   public static final String OWN = "perm_own";
@@ -418,9 +419,7 @@ public class PermissionBean {
 	 * @return
 	 * 			String for key passed in or [missing: key] if not found
 	 */
-  public static String getResourceBundleString(String key) 
-  {
-      final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
+  public static String getResourceBundleString(String key) {
       return rb.getString(key);
   }
 

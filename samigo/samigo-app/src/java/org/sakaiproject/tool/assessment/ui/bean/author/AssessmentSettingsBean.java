@@ -102,7 +102,6 @@ import org.sakaiproject.tool.assessment.util.ExtendedTimeValidator;
 @ManagedBean(name="assessmentSettings")
 @SessionScoped
 public class AssessmentSettingsBean implements Serializable {
-
     private static final IntegrationContextFactory integrationContextFactory =
       IntegrationContextFactory.getInstance();
     private static final GradebookServiceHelper gbsHelper =
@@ -238,7 +237,7 @@ public class AssessmentSettingsBean implements Serializable {
   
   private SimpleDateFormat displayFormat;
 
-  private ResourceLoader assessmentSettingMessages;
+  private static final ResourceLoader assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
 
   @Resource(name = "org.sakaiproject.service.gradebook.GradebookService")
   private GradebookService gradebookService;
@@ -260,7 +259,6 @@ public class AssessmentSettingsBean implements Serializable {
 
   public AssessmentSettingsBean(WebApplicationContext context) {
     context.getAutowireCapableBeanFactory().autowireBean(this);
-    this.assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
   }
 
   public AssessmentFacade getAssessment() {
@@ -1870,7 +1868,8 @@ public class AssessmentSettingsBean implements Serializable {
 				for (Iterator iter = enrollments.iterator(); iter.hasNext();) {
 					EnrollmentRecord enrollmentRecord = (EnrollmentRecord) iter.next();
 					String userId = enrollmentRecord.getUser().getUserUid();
-					String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					//String userDisplayName = enrollmentRecord.getUser().getSortName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
+					String userDisplayName = enrollmentRecord.getUser().getDisplayName() + " (" + enrollmentRecord.getUser().getDisplayId() + ")";
 					studentTargets.put(userId, userDisplayName);
 				}
 			}
@@ -1938,7 +1937,7 @@ public class AssessmentSettingsBean implements Serializable {
     public void addExtendedTime() {
         ExtendedTime entry = this.extendedTime;
         FacesContext context = FacesContext.getCurrentInstance();
-        if (ExtendedTimeValidator.validateEntry(entry, context, this)) {
+        if (new ExtendedTimeValidator().validateEntry(entry, context, this)) {
             AssessmentAccessControlIfc accessControl = new AssessmentAccessControl();
             accessControl.setStartDate(this.startDate);
             accessControl.setDueDate(this.dueDate);

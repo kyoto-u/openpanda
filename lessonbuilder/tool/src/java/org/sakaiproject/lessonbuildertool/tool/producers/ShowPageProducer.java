@@ -70,11 +70,14 @@ import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.event.api.UsageSession;
 import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.lessonbuildertool.ChecklistItemStatus;
 import org.sakaiproject.lessonbuildertool.ChecklistItemStatusImpl;
 import org.sakaiproject.lessonbuildertool.SimpleChecklistItem;
@@ -172,6 +175,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 	private AuthzGroupService authzGroupService;
 	private SecurityService securityService;
 	private SiteService siteService;
+	@Setter ContentHostingService contentHostingService;
 	private FormatAwareDateInputEvolver dateevolver;
 	@Setter private UserTimeService userTimeService;
 	private HttpServletRequest httpServletRequest;
@@ -1285,6 +1289,13 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		
 			for (SimplePageItem i : itemList) {
 
+				//If the content MULTIMEDIA, type 7, is not released or is hidden will not be rendered on the view
+				if (i.getType() == SimplePageItem.MULTIMEDIA) {
+				    if (!contentHostingService.isAvailable(String.valueOf(i.getSakaiId()))) {
+				        continue;
+				    }
+				}
+				
 				// break is not a normal item. handle it first
 			        // this will work whether first item is break or not. Might be a section
 			        // break or a normal item
@@ -1915,16 +1926,16 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 					if (mmDisplayType == null && simplePageBean.isImageType(i)) {
 						// a wide default for images would produce completely wrong effect
-					    	if (widthSt != null && !widthSt.equals("")) 
+					    	if (StringUtils.isNotBlank(widthSt))
 						    width = new Length(widthSt);
-					} else if (widthSt == null || widthSt.equals("")) {
+					} else if (StringUtils.isBlank(widthSt)) {
 						width = new Length(DEFAULT_WIDTH);
 					} else {
 						width = new Length(widthSt);
 					}
 
 					Length height = null;
-					if (i.getHeight() != null) {
+					if (StringUtils.isNotBlank(i.getHeight())) {
 						height = new Length(i.getHeight());
 					}
 
@@ -3092,9 +3103,18 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					if(canSeeAll || simplePageBean.isItemAvailable(i)) {
 						//get directory path from item's attribute
 						String dataDirectory = i.getAttribute("dataDirectory") != null ? i.getAttribute("dataDirectory") : "";
-						String[] folderPath = dataDirectory.split("/");
-						String folderName = folderPath[folderPath.length-1];
-						if (dataDirectory.endsWith("//")){
+						String collectionId = dataDirectory.replace("//", "/");
+						String[] folderPath = collectionId.split("/");
+						String folderName = folderPath[folderPath.length -1];
+						try {
+							// collection name should always be preferred
+							ContentCollection collection = contentHostingService.getCollection(collectionId);
+							folderName = collection.getProperties().getProperty(ResourceProperties.PROP_DISPLAY_NAME);
+						} catch (PermissionException | IdUnusedException | TypeException e) {
+							log.debug("Could not discern folder name from collection {}", collectionId, e);
+						}
+						if (StringUtils.isBlank(folderName)) {
+							// if by chance it is still empty use the sites title
 							folderName = simplePageBean.getCurrentSite().getTitle();
 						}
 						String html = "<p><b>" + folderName + "</b></p><div data-copyright=\"true\" class=\"no-highlight\" data-description=\"true\" data-directory='" +dataDirectory+ "' data-files=\"true\" data-folder-listing=\"true\"></div>";
@@ -3177,6 +3197,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					UIOutput.make(tableRow, "questionDiv");
 					
 					UIOutput.make(tableRow, "questionText", i.getAttribute("questionText"));
+					UIInput.make(tableRow, "raw-question-text", "#{simplePageBean.questionText}", i.getAttribute("questionText"));
 					
 					List<SimplePageQuestionAnswer> answers = new ArrayList<SimplePageQuestionAnswer>();
 					if("multipleChoice".equals(i.getAttribute("questionType"))) {
@@ -4205,18 +4226,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 		    // add website.
 		    // Are we running a kernel with KNL-273?
-		    Class contentHostingInterface = ContentHostingService.class;
-		    try {
-			Method expandMethod = contentHostingInterface.getMethod("expandZippedResource", new Class[] { String.class });
-			
 			UIOutput.make(tofill, "addwebsite-li");
 			createFilePickerToolBarLink(ResourcePickerProducer.VIEW_ID, tofill, "add-website", "simplepage.website", false, true, currentPage, "simplepage.website.tooltip");
-		    } catch (NoSuchMethodException nsme) {
-			// A: No
-		    } catch (Exception e) {
-			// A: Not sure
-			log.warn("SecurityException thrown by expandZippedResource method lookup", e);
-		    }
+
 		    //Adding 'Embed Announcements' component
 		    UIOutput.make(tofill, "announcements-li");
 		    UILink announcementsLink = UIInternalLink.makeURL(tofill, "announcements-link", "#");
@@ -5060,6 +5072,11 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIInput.make(form, "commentsEditId", "#{simplePageBean.itemId}");
 
 		UIBoundBoolean.make(form, "comments-anonymous", "#{simplePageBean.anonymous}");
+
+		UIOutput gradeBook = UIOutput.make(form, "gradeBookCommentsDiv");
+		if(simplePageBean.getCurrentTool(simplePageBean.GRADEBOOK_TOOL_ID) == null) {
+			gradeBook.decorate(new UIStyleDecorator("noDisplay"));
+		}
 		UIBoundBoolean.make(form, "comments-graded", "#{simplePageBean.graded}");
 		UIInput.make(form, "comments-max", "#{simplePageBean.maxPoints}");
 		
@@ -5104,10 +5121,16 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIOutput.make(form, "due_date_dummy");
         
 		UIBoundBoolean.make(form, "peer-eval-allow-selfgrade", "#{simplePageBean.peerEvalAllowSelfGrade}");
-        
+
 		UIBoundBoolean.make(form, "student-graded", "#{simplePageBean.graded}");
 		UIInput.make(form, "student-max", "#{simplePageBean.maxPoints}");
 
+		UIOutput gradeBook = UIOutput.make(form, "gradeBookStudentsDiv");
+		UIOutput gradeBook2 = UIOutput.make(form, "gradeBookStudentCommentsDiv");
+		if(simplePageBean.getCurrentTool(simplePageBean.GRADEBOOK_TOOL_ID) == null) {
+			gradeBook.decorate(new UIStyleDecorator("noDisplay"));
+			gradeBook2.decorate(new UIStyleDecorator("noDisplay"));
+		}
 		UIBoundBoolean.make(form, "student-comments-graded", "#{simplePageBean.sGraded}");
 		UIInput.make(form, "student-comments-max", "#{simplePageBean.sMaxPoints}");
 
@@ -5143,7 +5166,11 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIBoundBoolean.make(form, "question-prerequisite", "#{simplePageBean.prerequisite}");
 		UIInput.make(form, "question-text-input", "#{simplePageBean.questionText}");
 		UIInput.make(form, "question-answer-full-shortanswer", "#{simplePageBean.questionAnswer}");
-		
+
+		UIOutput gradeBook = UIOutput.make(form, "gradeBookQuestionsDiv");
+		if(simplePageBean.getCurrentTool(simplePageBean.GRADEBOOK_TOOL_ID) == null) {
+			gradeBook.decorate(new UIStyleDecorator("noDisplay"));
+		}
 		UIBoundBoolean.make(form, "question-graded", "#{simplePageBean.graded}");
 		UIInput.make(form, "question-gradebook-title", "#{simplePageBean.gradebookTitle}");
 		UIInput.make(form, "question-max", "#{simplePageBean.maxPoints}");

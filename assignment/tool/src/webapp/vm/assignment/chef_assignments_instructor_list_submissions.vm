@@ -6,32 +6,6 @@
 <script type="module" src="/webcomponents/grader/grader-toggle.js" />
 
 <script>
-	$(document).ready(function(){
-		$('#submissionList input:checkbox').click(function()
-		{
-			var feedbackPanel = document.getElementById("sendFeedbackPanelContent");
-			var resubPanel = document.getElementById("allowResubmissionPanelContent");
-			var checkedCount = $("#submissionList input:checked").length;
-
-			if ( (checkedCount === 0 && feedbackPanel.style.display !== "none")
-				|| (checkedCount !== 0 && feedbackPanel.style.display === "none") )
-			{
-				ASN.toggleSendFeedbackPanel();
-			}
-
-			if ( resubPanel != null && ((checkedCount === 0 && resubPanel.style.display !== "none")
-				|| (checkedCount !== 0 && resubPanel.style.display === "none") ))
-			{
-				ASN.toggleAllowResubmissionPanel();
-			}
-		});
-
-		ASN.enableLinks();
-	});
-	var escapeList = [ 'toggleModel' ];
-</script>
-
-<script>
 function printView(url) {
     var i = url.indexOf("/site/");
     if (i < 0)
@@ -325,6 +299,24 @@ function printView(url) {
 							#end 
 						</a>
 					</th>
+					#if(!$assignment.IsGroup)
+					<th id="employeenumber">
+						<a href="javascript:void(0)" onclick="location='#toolLinkParam("AssignmentAction" "doSort_grade_submission" "criteria=$!sort_employeeNumber")'; return false;"   title="$tlang.getString("gen.sorbyemp")">
+							#if ($assignment.IsGroup)
+								$tlang.getString("gen.group")
+							#else
+								$tlang.getString("gen.employeeNumber")
+							#end
+							#if ($sortedBy.equals($!sort_employeeNumber))
+								#if ($sortedAsc.equals("true"))
+									<img id="sort_ascending_employeenumber" src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString("gen.sorasc")" />
+								#else
+									<img id="sort_descending_employeenumber" src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString("gen.sordes")" />
+								#end
+							#end
+						</a>
+					</th>
+					#end
 					#if($!isAdditionalNotesEnabled && !$assignment.IsGroup)
 					<th id="notes">
 						$tlang.getString("gen.notes")
@@ -417,15 +409,16 @@ function printView(url) {
 						#set($gusers = $submission.getSubmitters())
 					#else
 						#set($siteUser = $userSubmission.User)
-						#set($submitterSortName=$!siteUser.sortName) 
-						#set($submitterName=$!submitterSortName) 
+						##set($submitterSortName=$!siteUser.sortName)
+						#set($submitterSortName=$!siteUser.getDisplayName())
+						#set($submitterName=$!submitterSortName)
 						#set($submitterDisplayId=$!siteUser.getDisplayId())
 					#end
 					#set($submitterId = $!siteUser.getId())
-					#if ($!submitterDisplayId)
+					##if ($!submitterDisplayId)
 						##attach the displayId
-						#set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))
-					#end
+						##set($submitterName=$submitterName.concat(" (").concat($submitterDisplayId).concat(")"))
+					##end
 					#if ($!submission)## && $submission.submitted)
 						## SAK-17606
 						#set($anonymousSubmissionId = $submission.getId() + ' ' + ($tlang.getString("grading.anonymous.title")))
@@ -438,7 +431,7 @@ function printView(url) {
 							</td>
 							<td headers="attachment" class="attach">
 								#set ($size = $submission.Attachments.size())
-								#if ($size > 0)
+								#if ($size > 0 && $submission.submitted)
 									<img src="#imageLink("sakai/attachments.gif")" border="0" alt="$tlang.getString("gen.att")" width="15" height="15" class="attachmentsIcon" />
 								#end
 							</td>
@@ -448,7 +441,6 @@ function printView(url) {
 										#set($submittedText = $!submission.submittedText)
 										#set($submittedAttachments = $submission.Attachments)
 										#if ($!submittedText.length() > 0 || $!submittedAttachments.size() > 0 )
-										<span class="highlight">$tlang.getString("gen.dra2") </span>
 										#end
 									#end
 									
@@ -497,7 +489,6 @@ function printView(url) {
 												#set($submittedText = $!submission.submittedText)
 												#set($submittedAttachments = $submission.Attachments)
 												#if ($submittedText && !$submittedText.isEmpty() || $!submittedAttachments.size() > 0 )
-												<span class="highlight">$tlang.getString("gen.dra2") </span>
 												#end
 											#end
 											
@@ -517,6 +508,13 @@ function printView(url) {
 								#end
 								#end
 							</td>
+							#if(!$assignment.IsGroup)
+							<td headers="employeenumber">
+								<a href="#toolLinkParam("AssignmentAction" "doGrade_submission" "assignmentId=$formattedText.escapeUrl($assignmentReference)&submissionId=$formattedText.escapeUrl($userSubmission.Reference)")" title="$tlang.getString("listsub.grasub")">
+									$submitterDisplayId
+								</a>
+							</td>
+							#end
 							#if($!isAdditionalNotesEnabled && !$assignment.IsGroup)
 							<td headers="notes">
 								#set($notes = [])
@@ -529,20 +527,22 @@ function printView(url) {
 							</td>
 							#end
 							<td headers="submitted">
-									#if ($!submission && $submission.DateSubmitted)
+									#if ($!submission && $submission.DateSubmitted && $submission.submitted)
 										#set($submitTime = $submission.DateSubmitted)
 										#if ($!submitTime) $!service.getUsersLocalDateTimeString($submitTime) #end
 										#if ($!submitTime && $submitTime.isAfter($assignment.DueDate))
 											<span class="highlight">$tlang.getString("gen.late2")</span> 
 										#end
 									#end
-									#if ($!submittedBy) 
+									#if ($!submittedBy && $submission.submitted)
 									<br /> $tlang.getString("listsub.submitted.by") $!submittedBy.sortName ($tlang.getString("listsub.submitted.on.behalf") $formattedText.escapeHtml($submitterSortName))
 									#end
 							</td>
 							<td headers="status">
-								#if ($!submission)
+								#if ($!submission && $submission.submitted)
 									$!service.getSubmissionStatus($submission.Id)
+								#elseif (!$!submission.submitted)
+										$tlang.getString("listsub.nosub")
 								#end
 							</td>
 							#if ($assignment.AllowPeerAssessment)
@@ -597,6 +597,7 @@ function printView(url) {
 										$!service.getGradeForSubmitter($submission, $userSubmission.User.Id)
 									#end
 									<sakai-rubric-student-button
+										 dont-check-association
 										 token="$!rbcs-token"
 										 tool-id="sakai.assignment"
 										 evaluated-item-id="$submission.Id"
@@ -627,6 +628,9 @@ function printView(url) {
 								&nbsp;
 							</td>
 							<td headers="studentname">
+								$!siteUser.sortName
+							</td>
+							<td headers="employeenumber">
 								$!siteUser.sortName
 							</td>
 							<td headers="submitted">
@@ -787,4 +791,54 @@ function printView(url) {
 	#end
 	</div>	
 </div>
+<script>
+	var escapeList = [ 'toggleModel' ];
+	$(document).ready(function () {
+
+		$('#submissionList input:checkbox').click(function () {
+
+			var feedbackPanel = document.getElementById("sendFeedbackPanelContent");
+			var resubPanel = document.getElementById("allowResubmissionPanelContent");
+			var checkedCount = $("#submissionList input:checked").length;
+
+			if ( (checkedCount === 0 && feedbackPanel.style.display !== "none")
+				|| (checkedCount !== 0 && feedbackPanel.style.display === "none") ) {
+				ASN.toggleSendFeedbackPanel();
+			}
+
+			if ( resubPanel != null && ((checkedCount === 0 && resubPanel.style.display !== "none")
+				|| (checkedCount !== 0 && resubPanel.style.display === "none") )) {
+				ASN.toggleAllowResubmissionPanel();
+			}
+		});
+
+		ASN.enableLinks();
+
+		var assignmentId ="$assignment.Id";
+		var rubricsToken = "$!rbcs-token";
+
+		if (assignmentId && rubricsToken) {
+			const options = {
+				method: "GET",
+				headers: {
+				  "Authorization": `Bearer ${rubricsToken}`,
+				  "Accept": "application/json",
+				  "Content-Type": "application/json"
+				}
+			};
+
+			fetch(`/rubrics-service/rest/rubric-associations/search/by-tool-item-ids?toolId=sakai.assignment&itemId=${assignmentId}`, options)
+			.then(r => r.json())
+			.then(data => {
+
+				const association = data._embedded["rubric-associations"][0];
+
+				if (association) {
+					[...document.getElementsByTagName("sakai-rubric-student-button")].forEach(b => b.hidden = false);
+				}
+			});
+		}
+	}); // document.ready
+</script>
+
 <!-- end: chef_assignments_instructor_list_submissions.vm  -->

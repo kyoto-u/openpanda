@@ -341,7 +341,8 @@ public class RosterBean extends CourseDependentBean implements Serializable {
         for (EnrollmentDecorator enrollment : unpagedEnrollments ) {
             List<Object> row = new ArrayList<Object>();
             
-            row.add(enrollment.getUser().getSortName());
+            //row.add(enrollment.getUser().getSortName());
+            row.add(enrollment.getUser().getDisplayName());
             row.add(enrollment.getUser().getDisplayId());
 
             for (Iterator iter = getUsedCategories().iterator(); iter.hasNext();){

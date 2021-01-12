@@ -62,25 +62,14 @@ public class CachingMessageBundleServiceImpl implements MessageBundleService {
 
     @Override
     public Map<String, String> getBundle(String baseName, String moduleName, Locale locale) {
-        Map<String, String> bundle = null;
         String key = MessageBundleServiceImpl.getIndexKeyName(baseName, moduleName, locale != null ? locale.toString(): null);
         log.debug("Retrieve bundle from cache with key = {}", key);
 
-        if (cache.containsKey(key)) {
-            log.debug("Cache contains the key = {}", key);
-            bundle = cache.get(key);
-        } else {
-            // bundle not in cache or expired
+        Map<String, String> bundle = cache.get(key);
+        if (bundle == null) {
+            // bundle not in cache or expired, never returns null
             bundle = dbMessageBundleService.getBundle(baseName, moduleName, locale);
             log.debug("Add bundle to cache with key = {}", key);
-            cache.put(key, bundle);
-        }
-
-        // ensure we always return a valid collection
-        if (bundle == null) {
-            log.debug("Null bundle found with key = {}", key);
-            bundle = Collections.emptyMap();
-            // cache the empty for negative lookups this prevents repeated db lookups for this key
             cache.put(key, bundle);
         }
 
@@ -177,8 +166,8 @@ public class CachingMessageBundleServiceImpl implements MessageBundleService {
 
     @Override
     public void saveOrUpdate(String baseName, String moduleName, ResourceBundle newBundle, Locale locale) {
-        String key = MessageBundleServiceImpl.getIndexKeyName(baseName, moduleName, locale.toString());
+        // We avoid doing invalidation here as were unable to detect where bundles were already loaded
+        // specifically when calling new ResourceLoader()
         dbMessageBundleService.saveOrUpdate(baseName, moduleName, newBundle, locale);
-        cache.remove(key);
     }
 }
