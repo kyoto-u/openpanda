@@ -60,7 +60,7 @@
 
                 <fo:static-content flow-name="xsl-region-before">
                     <fo:block font-size="18pt"
-                              font-family="DejaVuSans"
+                              font-family="IPAMincho"
                               font-weight="bold"
                               line-height="1cm"
                               space-after.optimum="1pt"
