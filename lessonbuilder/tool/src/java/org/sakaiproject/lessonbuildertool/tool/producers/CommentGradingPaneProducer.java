@@ -18,35 +18,34 @@ package org.sakaiproject.lessonbuildertool.tool.producers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.lessonbuildertool.SimplePage;
-import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
+import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.SimpleStudentPage;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
+import org.sakaiproject.lessonbuildertool.tool.view.CommentsGradingPaneViewParameters;
 import org.sakaiproject.lessonbuildertool.tool.view.CommentsViewParameters;
 import org.sakaiproject.lessonbuildertool.tool.view.GeneralViewParameters;
-import org.sakaiproject.lessonbuildertool.tool.view.CommentsGradingPaneViewParameters;
-import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.authz.api.Member;
-import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
 
+import uk.org.ponder.localeutil.LocaleGetter;
 import uk.org.ponder.messageutil.MessageLocator;
-import uk.org.ponder.localeutil.LocaleGetter;                                                                                          
 import uk.org.ponder.rsf.builtin.UVBProducer;
 import uk.org.ponder.rsf.components.UIBranchContainer;
+import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIContainer;
 import uk.org.ponder.rsf.components.UIForm;
-import uk.org.ponder.rsf.components.UICommand;
 import uk.org.ponder.rsf.components.UIInitBlock;
 import uk.org.ponder.rsf.components.UIInput;
 import uk.org.ponder.rsf.components.UIInternalLink;
@@ -218,7 +217,8 @@ public class CommentGradingPaneProducer implements ViewComponentProducer, ViewPa
 		    UIOutput.make(tofill, "missing-div");
 		    for (User user : missing) {
 		        UIBranchContainer branch = UIBranchContainer.make(tofill, "missing:");
-		        UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		        //UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		        UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getDisplayId()));
 		    }
 		}
 		    
