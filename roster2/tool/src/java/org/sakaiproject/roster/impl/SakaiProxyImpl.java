@@ -1317,8 +1317,14 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
             if (MapUtils.isEmpty(index)) {
                 final List<RosterMember> membership = getMembership(userId, siteId, groupId, roleId, enrollmentSetId, enrollmentStatus);
+
                 index = Optional.ofNullable(membership).map(Collection::stream).orElseGet(Stream::empty)
                         .collect(Collectors.toMap(RosterMember::getUserId, RosterMember::getDisplayName));
+                for(String key : index.keySet()){
+                	String employeeNumber = userDirectoryService.getUser(key).getProperties().getProperty("employeeNumber") != null ? userDirectoryService.getUser(key).getProperties().getProperty("employeeNumber") : userDirectoryService.getUser(key).getEid();
+                	String value = index.get(key) + "(" + employeeNumber + ")";
+                	index.replace(key, value);
+                }
                 cache.put(siteId+groupId, index);
             }
 
