@@ -305,7 +305,11 @@ public class UserListBean {
 		log.debug("Refreshing query...");
 		selectedUserType = newUserType;
 		selectedAuthority = newAuthority;
-		searchKeyword = searchKeyword.trim();
+		if(msgs.getString("bar_input_search_inst").equals(searchKeyword)){
+			searchKeyword = "";
+		}else{
+			searchKeyword = searchKeyword.trim();
+		}
 		userRows = new ArrayList<UserRow>();
 		
 		if(log.isDebugEnabled()){
