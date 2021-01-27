@@ -39,15 +39,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
-import com.sun.faces.util.MessageFactory;
-import lombok.extern.slf4j.Slf4j;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.api.app.syllabus.SyllabusAttachment;
 import org.sakaiproject.api.app.syllabus.SyllabusData;
 import org.sakaiproject.api.app.syllabus.SyllabusItem;
@@ -57,6 +51,7 @@ import org.sakaiproject.calendar.api.CalendarService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
@@ -69,14 +64,20 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.api.Placement;
+import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
-import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.DateFormatterUtil;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+
+import com.sun.faces.util.MessageFactory;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 //sakai2 - no need to import org.sakaiproject.jsf.ToolBean here as sakai does.
 
@@ -417,6 +418,14 @@ public class SyllabusTool
 	
   public void setAlertMessage(String alertMessage) {
 	  this.alertMessage = alertMessage;
+  }
+
+  private String localeString = null;
+  public String getLocaleString(){
+	  return localeString;
+  }
+  public void setLocaleString(String localeString){
+	  this.localeString = localeString;
   }
 
   protected String mobileSession = "false";
@@ -1413,6 +1422,7 @@ public class SyllabusTool
       else
       {
         bulkEntry = new BulkSyllabusEntry();
+        setLocaleString(rb.getLocale().toString());
 
         return "edit_bulk";
       }
@@ -2843,7 +2853,7 @@ public class SyllabusTool
   }
   
   public class BulkSyllabusEntry{
-	  public final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+	  public final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a",rb.getLocale());
 	  private String title = "";
 	  private Date startDate = null;
 	  private Date endDate = null;

@@ -40,15 +40,37 @@
 
 		});
 		$(function() {
+
+			var amString = "<h:outputText value="#{msgs.am}"/>";
+			var am2String = "<h:outputText value="#{msgs.am2}"/>";
+			var pmString = "<h:outputText value="#{msgs.pm}"/>";
+			var pm2String = "<h:outputText value="#{msgs.pm2}"/>";
+
+			if("ja_JP" == "<h:outputText value="#{SyllabusTool.localeString}"/>"){
+				var compareString = "&#";
+				if("<h:outputText value="#{msgs.am}"/>".indexOf(compareString) === 0){
+					amString = decode("<h:outputText value="#{msgs.am}"/>");
+				}
+				if("<h:outputText value="#{msgs.am2}"/>".indexOf(compareString) === 0){
+					am2String = decode("<h:outputText value="#{msgs.am2}"/>");
+				}
+				if("<h:outputText value="#{msgs.pm}"/>".indexOf(compareString) === 0){
+					pmString = decode("<h:outputText value="#{msgs.pm}"/>");
+				}
+				if("<h:outputText value="#{msgs.pm2}"/>".indexOf(compareString) === 0){
+					pm2String = decode("<h:outputText value="#{msgs.pm2}"/>");
+				}
+			}
+
 			$('.timeInput').timepicker({
 		    	hour: 8,
-		    	defaultValue: "08:00 <h:outputText value="#{msgs.am}"/>",
+		    	defaultValue: "08:00 " + amString,
 		    	timeOnlyTitle: "<h:outputText value="#{msgs.choose_time}"/>",
 				timeFormat: "hh:mm tt",
 				currentText: "<h:outputText value="#{msgs.now}"/>",
 				closeText: "<h:outputText value="#{msgs.done}"/>",
-				amNames: ['<h:outputText value="#{msgs.am}"/>', '<h:outputText value="#{msgs.am2}"/>'],
-				pmNames: ['<h:outputText value="#{msgs.pm}"/>', '<h:outputText value="#{msgs.pm2}"/>'],
+				amNames: [amString, am2String],
+				pmNames: [pmString, pm2String],
 				timeText: "<h:outputText value="#{msgs.time}"/>",
 				hourText: "<h:outputText value="#{msgs.hour}"/>",
 				minuteText: "<h:outputText value="#{msgs.minute}"/>",
@@ -131,6 +153,23 @@
 		        throw ("resizeFrame did not get the frame (using name=" + window.name + ")");
 		    }
 		}
+
+		function decode(encodeString){
+			var result = "";
+			var tmpStr = "";
+
+			tmpStr = encodeString.replace(/(<br>|<br \/>)/gi, '');
+			tmpStr = tmpStr.replace(/(\(|（)/gi, '(');
+			tmpStr = tmpStr.replace(/(\)|）)/gi, ')');
+			tmpStr = tmpStr.replace(/\s+/gi, " ");
+			tmpStr = tmpStr.replace(/&#/g, "");
+			tmpStr = tmpStr.substr(0 , (tmpStr.length-1));
+			decArray = tmpStr.split(";");
+			result = String.fromCharCode.apply(null, decArray);
+			return result;
+		}
+
+
 	</script>
 	<style>
 		.radioOption{
