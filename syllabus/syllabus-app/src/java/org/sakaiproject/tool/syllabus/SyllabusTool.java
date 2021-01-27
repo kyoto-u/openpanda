@@ -80,6 +80,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import com.sun.faces.util.MessageFactory;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+
 //sakai2 - no need to import org.sakaiproject.jsf.ToolBean here as sakai does.
 
 /**
@@ -421,6 +427,14 @@ public class SyllabusTool
 	
   public void setAlertMessage(String alertMessage) {
 	  this.alertMessage = alertMessage;
+  }
+
+  private String localeString = null;
+  public String getLocaleString(){
+	  return localeString;
+  }
+  public void setLocaleString(String localeString){
+	  this.localeString = localeString;
   }
 
   protected String mobileSession = "false";
@@ -1418,6 +1432,7 @@ public class SyllabusTool
       else
       {
         bulkEntry = new BulkSyllabusEntry();
+        setLocaleString(rb.getLocale().toString());
 
         return "edit_bulk";
       }
@@ -2848,7 +2863,7 @@ public class SyllabusTool
   }
   
   public class BulkSyllabusEntry{
-	  public final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+	  public final SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a",rb.getLocale());
 	  private String title = "";
 	  private Date startDate = null;
 	  private Date endDate = null;
