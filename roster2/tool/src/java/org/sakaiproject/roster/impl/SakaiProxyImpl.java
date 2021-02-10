@@ -788,7 +788,21 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			throw new UserNotDefinedException(userId);
 		}
 
-		String employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+		String currentRoleString = site.getMember(getCurrentUserId()).getRole().getId();
+		String employeeNumber = null;
+		if(currentRoleString != null){
+			if(securityService.isSuperUser()){
+				employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+			}else if("Instructor".equals(currentRoleString)){
+				if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
+					employeeNumber ="xxxx";
+    			}else{
+    				employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+    			}
+			}else{
+				employeeNumber ="xxxx";
+			}
+		}
 		RosterMember rosterMember = new RosterMember(userId);
 		rosterMember.setEid(user.getEid());
 		rosterMember.setDisplayId(employeeNumber);
@@ -909,8 +923,14 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             	}catch(Exception e){
             	}
             	if(currentRoleString != null){
-            		if("Instructor".equals(currentRoleString) || "Teaching Assistant".equals(currentRoleString)){
+            		if(securityService.isSuperUser()){
+            			rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
+            		}else if("Instructor".equals(currentRoleString)){
+            			if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
+            				rosterMember.setDisplayId("xxxx");
+            			}else{
             				rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
+            			}
             		}else{
             			rosterMember.setDisplayId("xxxx");
             		}
