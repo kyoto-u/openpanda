@@ -37,8 +37,6 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 
 	private boolean unmaskForSuperUsers = false;
 
-	private PreferencesService preferencesService;
-
 	/* For Spring */
 
 	public void init() {
@@ -237,9 +235,19 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		if(SecurityService.isSuperUser()){
 			checkMask = false;
 		}else{
-			if("Instructor".equals(loginUserType) || "TA".equals(loginUserType) || "Teaching Assistant".equals(loginUserType)){
-				checkMask = false;
-			}else if("Student".equals(loginUserType)){
+			if("Instructor".equals(loginUserType)){
+				String siteUserType = null;
+				try{
+					siteUserType = getSiteRoleId(user.getId());
+					if("Instructor".equals(siteUserType)){
+						checkMask = true;
+					}else{
+						checkMask = false;
+					}
+				}catch(IdUnusedException e){
+					e.printStackTrace();
+				}
+			}else if("Student".equals(loginUserType) || "TA".equals(loginUserType) || "Teaching Assistant".equals(loginUserType)){
 				checkMask = true;
 			}else{
 				checkMask = true;
