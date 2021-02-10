@@ -148,7 +148,7 @@
                             </th>
                             <td headers="id">
                                 #set($displayId = "")
-                                #set($displayId = $participant.getDisplayId())
+                                #set($displayId = $participant.getRegId())
                                 $!displayId
                             </td>
                             #if ($hasProviderSet)
