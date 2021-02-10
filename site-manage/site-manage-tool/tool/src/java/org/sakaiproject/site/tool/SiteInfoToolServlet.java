@@ -274,12 +274,13 @@ public class SiteInfoToolServlet extends HttpServlet
 		Element root = doc.createElement(PARTICIPANTS_NODE_NAME);
 
 		String siteTitle;
-		
+		Site site = null;
+
 		if (siteId != null)
 		{
 			try
 			{
-				Site site = SiteService.getSite(siteId);
+				site = SiteService.getSite(siteId);
 				siteTitle = site.getTitle();
 	    		
 				// site title
@@ -297,7 +298,8 @@ public class SiteInfoToolServlet extends HttpServlet
 
 		if (participants != null)
 		{
-		
+			String currentRoleString = site.getMember(SessionManager.getCurrentSessionUserId()).getRole().getId();
+
 			// Go through all the participants
 			for (Participant participant : participants)
 			{
@@ -307,8 +309,22 @@ public class SiteInfoToolServlet extends HttpServlet
 				// participant name
 				writeStringNodeToDom(doc, participantNode, PARTICIPANT_NAME_NODE_NAME, StringUtils.trimToEmpty(participant.getName()));
 
+				String displayId = null;
+
+				if(SecurityService.isSuperUser()){
+					displayId = participant.getDisplayId();
+				}else if("Instructor".equals(currentRoleString)){
+					if("Instructor".equals(participant.role)){
+						displayId = "xxxx";
+					}else{
+						displayId = participant.getDisplayId();
+					}
+				}else{
+					displayId = "xxxx";
+				}
+
 				// display id
-				writeStringNodeToDom(doc, participantNode, PARTICIPANT_ID_NODE_NAME, StringUtils.trimToEmpty(participant.getDisplayId()));
+				writeStringNodeToDom(doc, participantNode, PARTICIPANT_ID_NODE_NAME, StringUtils.trimToEmpty(displayId));
 
 				// sections
 				Element sectionsNode = doc.createElement(PARTICIPANT_SECTIONS_NODE_NAME);
