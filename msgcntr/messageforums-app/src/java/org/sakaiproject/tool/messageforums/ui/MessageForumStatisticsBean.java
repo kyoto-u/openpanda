@@ -2592,6 +2592,7 @@ public class MessageForumStatisticsBean {
 		else 
 		{ 
 			selectedGroup = changeAssign; 
+			FacesContext.getCurrentInstance().renderResponse();
 			return null;
 		} 
 	}
@@ -2913,7 +2914,7 @@ public class MessageForumStatisticsBean {
 		}
 		catch (NumberFormatException e) 
 		{
-			log.error(e.getMessage(), e);
+			log.warn("Could not parse grade [{}] as a Double, {}", validateString, e.getMessage());
 			return false;
 		}
 	}

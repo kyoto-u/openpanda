@@ -443,6 +443,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
     public class GraderUser {
 
         private String displayName;
+        private String sortName;
         private String id;
 
         public GraderUser(User sakaiUser) {
@@ -450,8 +451,15 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             super();
 
             this.displayName = sakaiUser.getDisplayName();
+            this.sortName = sakaiUser.getSortName();
             this.id = sakaiUser.getId();
         }
+    }
+
+    private Map<String, GraderUser> getGraderUsersForSite(Site site) {
+
+        return userDirectoryService.getUsers(site.getUsersIsAllowed(SECURE_ADD_ASSIGNMENT_SUBMISSION))
+            .stream().collect(Collectors.toMap(User::getId, GraderUser::new));
     }
 
     @EntityCustomAction(action = "gradable", viewKey = EntityView.VIEW_LIST)
@@ -481,28 +489,18 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             throw new EntityNotFoundException("No site found", siteId, e);
         }
 
-        Map<String, GraderUser> students = new HashMap<>();
-        try {
-            for (String studentId : site.getUsersIsAllowed(SECURE_ADD_ASSIGNMENT_SUBMISSION)) {
-                students.put(studentId, new GraderUser(userDirectoryService.getUser(studentId)));
-            }
-        } catch (UserNotDefinedException e) {
-            throw new EntityException("Failed to setup user", siteId);
-        }
-
         SimpleAssignment simpleAssignment = new SimpleAssignment(assignment);
 
         // A list of mappings of submission id to student id list
         List<SimpleSubmission> submissions
             = assignment.getSubmissions().stream().map(as -> new SimpleSubmission(as, simpleAssignment)).collect(Collectors.toList());
 
-        Map<String, Object> data = new HashMap<>();
-
         List<SimpleGroup> groups = site.getGroups().stream().map(SimpleGroup::new).collect(Collectors.toList());
 
+        Map<String, Object> data = new HashMap<>();
         data.put("gradable", simpleAssignment);
         data.put("submissions", submissions);
-        data.put("students", students);
+        data.put("students", getGraderUsersForSite(site));
         data.put("groups", groups);
         data.put("showOfficialPhoto", serverConfigurationService.getBoolean("assignment.show.official.photo", true));
         String lOptions = serverConfigurationService.getString("assignment.letterGradeOptions", "A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,E,F");
@@ -565,17 +563,8 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             }
         }));
 
-        Map<String, GraderUser> students = new HashMap<>();
-        try {
-            for (String studentId : site.getUsersIsAllowed(SECURE_ADD_ASSIGNMENT_SUBMISSION)) {
-                students.put(studentId, new GraderUser(userDirectoryService.getUser(studentId)));
-            }
-        } catch (UserNotDefinedException e) {
-            throw new EntityException("Failed to setup user", courseId);
-        }
-
         Map<String, Object> data = new HashMap<>();
-        data.put("students", students);
+        data.put("students", getGraderUsersForSite(site));
         data.put("grades", grades);
 
         return new ActionReturn(data);
@@ -1240,6 +1229,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 
         private String id;
         private String displayName;
+        private String sortName;
 
         public SimpleSubmitter(AssignmentSubmissionSubmitter ass, boolean anonymousGrading) {
 
@@ -1248,9 +1238,12 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             this.id = ass.getSubmitter();
             try {
                 if (!anonymousGrading) {
-                    this.displayName = userDirectoryService.getUser(this.id).getDisplayName();
+                    User user = userDirectoryService.getUser(this.id);
+                    this.displayName = user.getDisplayName();
+                    this.sortName = user.getSortName();
                 } else {
                     this.displayName = ass.getSubmission().getId() + " " + rb.getString("grading.anonymous.title");
+                    this.sortName = this.displayName;
                 }
             } catch (UserNotDefinedException e) {
                 this.displayName = this.id;
