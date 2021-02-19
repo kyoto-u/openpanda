@@ -788,20 +788,18 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 			throw new UserNotDefinedException(userId);
 		}
 
-		String currentRoleString = site.getMember(getCurrentUserId()).getRole().getId();
+		String currentRoleString = site.getMember(getCurrentUserId()) != null ? site.getMember(getCurrentUserId()).getRole().getId() : null;
 		String employeeNumber = null;
-		if(currentRoleString != null){
-			if(securityService.isSuperUser()){
-				employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
-			}else if("Instructor".equals(currentRoleString)){
-				if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
-					employeeNumber ="xxxx";
-    			}else{
-    				employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
-    			}
-			}else{
+		if(securityService.isSuperUser()){
+			employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+		}else if(currentRoleString != null && "Instructor".equals(currentRoleString)){
+			if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
 				employeeNumber ="xxxx";
-			}
+    		}else{
+    			employeeNumber = user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+    		}
+		}else{
+			employeeNumber ="xxxx";
 		}
 		RosterMember rosterMember = new RosterMember(userId);
 		rosterMember.setEid(user.getEid());
@@ -913,7 +911,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
         if (siteMembers != null) {
             log.debug("Cache hit on '{}'.", key);
 
-            String currentRoleString = site.getMember(getCurrentUserId()).getRole().getId();
+            String currentRoleString = site.getMember(getCurrentUserId()) != null ? site.getMember(getCurrentUserId()).getRole().getId() : null;
 
             for(RosterMember rosterMember : siteMembers){
 
@@ -922,18 +920,16 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             		user = userDirectoryService.getUserByEid(rosterMember.getEid());
             	}catch(Exception e){
             	}
-            	if(currentRoleString != null){
-            		if(securityService.isSuperUser()){
-            			rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
-            		}else if("Instructor".equals(currentRoleString)){
-            			if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
-            				rosterMember.setDisplayId("xxxx");
-            			}else{
-            				rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
-            			}
-            		}else{
+            	if(securityService.isSuperUser()){
+            		rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
+            	}else if(currentRoleString != null && "Instructor".equals(currentRoleString)){
+            		if("Instructor".equals(site.getMember(user.getId()).getRole().getId())){
             			rosterMember.setDisplayId("xxxx");
+            		}else{
+            			rosterMember.setDisplayId(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid());
             		}
+            	}else{
+            		rosterMember.setDisplayId("xxxx");
             	}
             	if(!"ja_JP".equals(getUserLocaleString())){
             		if(user.getProperties().getProperty("displayName;lang-en") != null){

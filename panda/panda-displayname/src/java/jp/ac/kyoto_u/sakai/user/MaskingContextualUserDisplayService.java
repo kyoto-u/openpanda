@@ -278,7 +278,7 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 			siteId = placement.getContext();
 		}
 
-		return SiteService.getSite(siteId).getMember(userId).getRole().getId();
+		return SiteService.getSite(siteId).getMember(userId) != null ? SiteService.getSite(siteId).getMember(userId).getRole().getId() : null;
 
 	}
 
