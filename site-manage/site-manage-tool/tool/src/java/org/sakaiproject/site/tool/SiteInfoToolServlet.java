@@ -298,7 +298,7 @@ public class SiteInfoToolServlet extends HttpServlet
 
 		if (participants != null)
 		{
-			String currentRoleString = site.getMember(SessionManager.getCurrentSessionUserId()).getRole().getId();
+			String currentRoleString = site.getMember(SessionManager.getCurrentSessionUserId()) != null ? site.getMember(SessionManager.getCurrentSessionUserId()).getRole().getId() : null;
 
 			// Go through all the participants
 			for (Participant participant : participants)
@@ -313,7 +313,7 @@ public class SiteInfoToolServlet extends HttpServlet
 
 				if(SecurityService.isSuperUser()){
 					displayId = participant.getDisplayId();
-				}else if("Instructor".equals(currentRoleString)){
+				}else if(currentRoleString != null && "Instructor".equals(currentRoleString)){
 					if("Instructor".equals(participant.role)){
 						displayId = "xxxx";
 					}else{
