@@ -118,17 +118,21 @@
                                         <div class="Mrphs-userNav__submenuitem--fullname">
                                             ${loginUserDispName}
                                         </div>
+                                        #if (false) 
                                         <div class="Mrphs-userNav__submenuitem--displayid">
                                             ${loginUserDispId}
                                         </div>
+                                        #end
                                     </div>
                                 </li>
 
+                                #if (false)
                                 <li class="Mrphs-userNav__submenuitem Mrphs-userNav__submenuitem-indented">
                                     <a role="menuitem" href="javascript:;" id="Mrphs-userNav__submenuitem--connections" aria-haspopup="dialog">
                                         <span>${rloader.sit_connections}</span>
                                     </a>
                                 </li>
+                                #end
 
                                     #if (${tabsSites.calendarToolUrl})
             
