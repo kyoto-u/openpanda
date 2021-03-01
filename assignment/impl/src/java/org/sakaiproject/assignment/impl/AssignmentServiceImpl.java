@@ -3129,9 +3129,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 }
                                 String fullName = submitters[i].getSortName();
                                 // in case the user doesn't have first name or last name
-                                if (!fullName.contains(",")) {
+                                /*if (!fullName.contains(",")) {
                                     fullName = fullName.concat(",");
-                                }
+                                }*/
                                 submittersString = submittersString.concat(fullName);
                                 // add the eid to the end of it to guarantee folder name uniqness
                                 // if user Eid contains non ascii characters, the user internal id will be used
