@@ -15,14 +15,18 @@
  */
 package org.sakaiproject.webservices;
 
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.cxf.transport.http.AbstractHTTPDestination;
-import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
+import org.sakaiproject.api.app.messageforums.AreaManager;
 import org.sakaiproject.api.app.messageforums.MessageForumsForumManager;
 import org.sakaiproject.api.app.messageforums.MessageForumsMessageManager;
 import org.sakaiproject.api.app.messageforums.MessageForumsTypeManager;
-import org.sakaiproject.api.app.messageforums.AreaManager;
+import org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager;
 import org.sakaiproject.api.app.scheduler.SchedulerManager;
 import org.sakaiproject.assignment.api.AssignmentService;
 import org.sakaiproject.authz.api.AuthzGroupService;
@@ -31,13 +35,17 @@ import org.sakaiproject.calendar.api.CalendarService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.db.api.SqlService;
+import org.sakaiproject.coursemanagement.api.CourseManagementService;
 import org.sakaiproject.entity.api.EntityManager;
+import org.sakaiproject.event.api.ActivityService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.UsageSessionService;
-import org.sakaiproject.event.api.ActivityService;
+import org.sakaiproject.id.api.IdManager;
+import org.sakaiproject.lessonbuildertool.LessonBuilderAccessAPI;
 import org.sakaiproject.messagebundle.api.MessageBundleService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.shortenedurl.api.ShortenedUrlService;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.thread_local.api.ThreadLocalManager;
 import org.sakaiproject.time.api.TimeService;
@@ -50,13 +58,10 @@ import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.shortenedurl.api.ShortenedUrlService;
 import org.sakaiproject.tool.assessment.samlite.api.SamLiteService;
-import org.sakaiproject.id.api.IdManager;
-import org.sakaiproject.lessonbuildertool.LessonBuilderAccessAPI;
 import org.sakaiproject.tool.assessment.shared.api.questionpool.QuestionPoolServiceAPI;
-
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.servlet.http.HttpServletRequest;
+import org.sakaiproject.user.api.AuthenticationManager;
+import org.sakaiproject.user.api.PreferencesService;
+import org.sakaiproject.user.api.UserDirectoryService;
 
 /**
  * Created by jbush on 2/11/14.
@@ -98,6 +103,7 @@ public class AbstractWebService {
     protected LessonBuilderAccessAPI lessonBuilderAccessAPI;
     protected FormattedText formattedText;
     protected SqlService sqlService;
+    protected CourseManagementService cmService;
 
     /**
      * Get the Session related to the given sessionid
@@ -296,6 +302,11 @@ public class AbstractWebService {
     @WebMethod(exclude = true)
     public void setSqlService(SqlService sqlService) {
         this.sqlService = sqlService;
+    }
+
+    @WebMethod(exclude = true)
+    public void setCmService(CourseManagementService cmService) {
+        this.cmService = cmService;
     }
 
 }
