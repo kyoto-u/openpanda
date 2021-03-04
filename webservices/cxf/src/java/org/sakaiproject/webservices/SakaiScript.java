@@ -53,6 +53,7 @@ import org.sakaiproject.calendar.api.CalendarEdit;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendar.api.CalendarEventEdit;
 import org.sakaiproject.calendar.api.RecurrenceRule;
+import org.sakaiproject.coursemanagement.api.Section;
 import org.sakaiproject.entity.api.EntityProducer;
 import org.sakaiproject.entity.api.EntityTransferrer;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -68,6 +69,8 @@ import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.api.SiteService.SelectionType;
 import org.sakaiproject.site.api.SiteService.SortType;
 import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.site.util.Participant;
+import org.sakaiproject.site.util.SiteParticipantHelper;
 import org.sakaiproject.time.api.TimeRange;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.Tool;
@@ -101,6 +104,7 @@ public class SakaiScript extends AbstractWebService {
     private static final String ADMIN_SITE_REALM = "/site/!admin";
     private static final String SESSION_ATTR_NAME_ORIGIN = "origin";
     private static final String SESSION_ATTR_VALUE_ORIGIN_WS = "sakai-axis";
+    private static final String CSV_HEADER="SiteId,SiteTitle,CourseId,CourseTitle,CourseDesc,UserId,EmployeeNumber,UserName,Email\n";
 
     /**
      * Check if a session is active
@@ -1888,7 +1892,7 @@ public class SakaiScript extends AbstractWebService {
             allSites.addAll(moreSites);
 
             return getSiteListXml(allSites);
-            
+
         } catch (Exception e) {
             log.error("WS getSitesCurrentUserCanAccess(): " + e.getClass().getName() + " : " + e.getMessage());
             return "<exception/>";
@@ -4374,7 +4378,7 @@ public class SakaiScript extends AbstractWebService {
     		{
     			entityMap = transferCopyEntities(toolid, contentHostingService.getSiteCollection(sourcesiteid), contentHostingService.getSiteCollection(destinationsiteid));
     		}
-    		
+
     		if(entityMap != null)
     		{
     			transversalMap.putAll(entityMap);
@@ -5280,5 +5284,119 @@ public class SakaiScript extends AbstractWebService {
             return "failure";
         }
         return "success";
+    }
+
+    /**
+     * Get Site Contact Info
+     *
+     * @param   sessionid       the id of a valid session
+     * @param   siteType        the type of sites
+     * @return                  csv
+     * @throws  AxisFault
+     *
+     * This is the preferred method of adding user accounts whereby their internal ID is automatically assigned a UUID.
+     *
+     */
+    @WebMethod
+    @Path("/getSiteContactInfo")
+    @Produces("text/plain")
+    @GET
+    public String getSiteContactInfo(
+            @WebParam(name = "sessionid", partName = "sessionid") @QueryParam("sessionid") String sessionid,
+            @WebParam(name = "siteType", partName = "siteType") @QueryParam("siteType") String siteType) {
+
+        try
+        {
+            String csvData = CSV_HEADER;
+            String[] siteTypes = new String[]{siteType};
+            if( siteType == null || siteType.isEmpty()) {
+                siteTypes = null;
+            }
+            List allSites = siteService.getSites(SelectionType.ANY, siteTypes, null,null, SortType.TITLE_ASC, null);
+            if (allSites == null || allSites.size() == 0 ) {
+                return csvData;
+            }
+            for (Iterator i = allSites.iterator(); i.hasNext();)
+            {
+               Site site = (Site)i.next();
+                List<User> users = getMaintainMembers(site);
+                Map<String,User> userMap = new HashMap<String, User>();
+                Map<String,Boolean> userCheckMap = new HashMap<String, Boolean>();
+                for(User user:users){
+                    String email = user.getEmail();
+                    userMap.put(user.getId(), user);
+                    userCheckMap.put(user.getId(), Boolean.FALSE);
+                }
+                List<String> providerCourseEids = SiteParticipantHelper.getProviderCourseList(site.getId());
+                for(String providerCourseEid:providerCourseEids){
+                    Section section = cmService.getSection(providerCourseEid);
+                    Collection participants = SiteParticipantHelper.prepareParticipants(site.getId(), Arrays.asList(section.getEid()));
+                    for(Iterator it = participants.iterator(); it.hasNext();){
+                        Participant participant = (Participant)it.next();
+                        User user = userMap.get(participant.getUniqname());
+                        if (user == null){
+                            continue;
+                        }
+                        if(participant.getSectionEidList().isEmpty()){
+                            continue;
+                        }else{
+                            String[] dataArray =
+                            {site.getId(), site.getTitle(),
+                                    section.getEid(), section.getTitle(), section.getDescription(),
+                                    user.getEid(), getEmployeeNumber(user), user.getDisplayName(), user.getEmail()};
+                            csvData += joinCsv(dataArray);
+                            userCheckMap.put(user.getId(),Boolean.TRUE);
+                        }
+                    }
+                }
+                for(Iterator it = userCheckMap.keySet().iterator();it.hasNext();){
+                    String userId = (String)it.next();
+                    if( userCheckMap.get(userId) ){
+                        continue;
+                    }
+                    // user not from roster
+                    User user = userMap.get(userId);
+                    String[] dataArray =
+                        {site.getId(), site.getTitle(), "","","",user.getEid(),getEmployeeNumber(user),user.getDisplayName(), user.getEmail()};
+                    csvData += joinCsv(dataArray);
+                }
+            }
+
+            return csvData;
+        }
+        catch (Exception e)
+        {
+        	log.error("WS getSitesUserCanAccess(): " + e.getClass().getName() + " : " + e.getMessage());
+            return e.getMessage();
+        }
+    }
+    private List<User> getMaintainMembers(Site site){
+        String role = site.getMaintainRole();
+        Set sakaiUserIds = site.getUsersHasRole(role);
+        return userDirectoryService.getUsers(sakaiUserIds);
+    }
+    private String getEmployeeNumber(User user){
+        String employeeNumber = (String)user.getProperties().get("employeeNumber");
+        if( employeeNumber == null ){
+            return "";
+        }
+        return employeeNumber;
+    }
+    private String joinCsv(String[] dataArray){
+        String seperator = ",";
+        if(dataArray == null || dataArray.length < 1){
+            return "";
+        }
+        String result = "";
+        for( String data: dataArray){
+            if(result.length() > 0){
+                result += seperator;
+            }
+            if(data==null){
+                data = "";
+            }
+            result += "\"" + data + "\"";
+        }
+        return result + "\n";
     }
 }
