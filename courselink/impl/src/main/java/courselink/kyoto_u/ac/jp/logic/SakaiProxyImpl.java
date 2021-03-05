@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.log4j.Logger;
 import org.sakaiproject.alias.api.Alias;
 import org.sakaiproject.alias.api.AliasService;
@@ -41,6 +38,9 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.StringUtil;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Implementation of {@link SakaiProxy}
@@ -216,8 +216,16 @@ public class SakaiProxyImpl implements SakaiProxy {
  				site.setDescription(course.getDescription());
  				ResourcePropertiesEdit rp = site.getPropertiesEdit();
  				AcademicSession term = course.getAcademicSession();
- 				rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
- 				rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+ 				if(term != null){
+ 					rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
+ 					rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+ 				}else{
+ 					term = cmService.getAcademicSession(siteId.split("-")[0]);
+ 					if(term != null){
+ 						rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
+ 	 	 				rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+ 					}
+ 				}
  				return;
  			}catch (Exception e2){
  				e2.printStackTrace();
