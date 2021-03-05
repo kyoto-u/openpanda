@@ -205,6 +205,12 @@ public class SakaiProxyImpl implements SakaiProxy {
  			//Set members = cmService.getSectionMemberships(siteId);
  			site.setTitle(course.getTitle());
  			site.setDescription(course.getDescription());
+ 			AcademicSession term = cmService.getAcademicSession(siteId.split("-")[0]);
+ 			ResourcePropertiesEdit rp = site.getPropertiesEdit();
+ 			if(term != null){
+				rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
+				rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+			}
  			return;
  		}catch (Exception e1){
  			try{
