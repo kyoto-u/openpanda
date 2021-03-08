@@ -63,6 +63,7 @@ table{
 		@include flex-direction(column);
 		margin: 0 auto 10px 0;
 		padding-right: 10px;
+		white-space: nowrap;
 
 		label
 		{
