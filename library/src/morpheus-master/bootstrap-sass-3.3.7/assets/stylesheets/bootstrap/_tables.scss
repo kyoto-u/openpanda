@@ -87,6 +87,7 @@ th {
 
 .table-bordered {
   border: 1px solid $table-border-color;
+  white-space: nowrap;
   > thead,
   > tbody,
   > tfoot {
