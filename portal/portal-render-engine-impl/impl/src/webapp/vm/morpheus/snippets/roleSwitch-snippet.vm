@@ -16,7 +16,11 @@
                 <select id="roleSwitchSelect" class="Mrphs-roleSwitch__dropdown" aria-label="${rloader.rs_menuExplanation}">
                     <option value="" selected="selected">${rloader.rs_viewSiteAs}</option>
                 #foreach ( $role in $siteRoles )
-                    <option value="$switchRoleUrl$role$panelString">$role</option>
+                	##<option value="$switchRoleUrl$role$panelString">$role</option>
+                	<option value="$switchRoleUrl$role$panelString">
+                		#set($role = $role.replaceAll(" ",""))
+                		$rloader.getFormattedMessage("role.$role")
+                	</option>
                 #end ## END of FOREACH ( $role in $siteRoles )
                 </select>
             </div>
