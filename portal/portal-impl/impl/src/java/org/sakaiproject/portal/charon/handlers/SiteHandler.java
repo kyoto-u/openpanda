@@ -969,12 +969,14 @@ public class SiteHandler extends WorksiteHandler
 			}
 
 			boolean allowAddSite = false;
-			if(SiteService.allowAddCourseSite()) {
-				allowAddSite = true;
-			} else if (SiteService.allowAddPortfolioSite()) {
-				allowAddSite = true;
-			} else if (SiteService.allowAddProjectSite()) {
-				allowAddSite = true;
+			if (ServerConfigurationService.getBoolean("portal.allowAddSite", true))  {
+				if(SiteService.allowAddCourseSite()) {
+					allowAddSite = true;
+				} else if (SiteService.allowAddPortfolioSite()) {
+					allowAddSite = true;
+				} else if (SiteService.allowAddProjectSite()) {
+					allowAddSite = true;
+				}
 			}
 
 			rcontext.put("allowAddSite",allowAddSite);
