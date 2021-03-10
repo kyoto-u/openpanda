@@ -1834,6 +1834,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			String loginUserDispId = null;
 			String loginUserId = null;
 			String loginUserFirstName = null;
+			String loginUserLastName = null;
 			boolean displayUserloginInfo = ServerConfigurationService.
 			getBoolean("display.userlogin.info", true);
 
@@ -1898,6 +1899,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 					loginUserId = Validator.escapeHtml(thisUser.getId());
 					loginUserDispName = Validator.escapeHtml(thisUser.getDisplayName());
 					loginUserFirstName = Validator.escapeHtml(thisUser.getFirstName());
+					loginUserLastName = Validator.escapeHtml(thisUser.getLastName());
 				}
 				
 				// check if current user is being impersonated (by become user/sutool)
@@ -1976,6 +1978,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			{
 				rcontext.put("loginUserDispName", loginUserDispName);
 				rcontext.put("loginUserFirstName", loginUserFirstName);
+				rcontext.put("loginUserLastName", loginUserLastName);
 				rcontext.put("loginUserDispId", loginUserDispId);
 				rcontext.put("loginUserId", loginUserId);
 			}
