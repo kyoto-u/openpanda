@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<td nowrap="nowrap">$tlang.getString("presence.session.name")</td>
-					<td><h6>$formattedText.escapeHtml($currSession.UserDisplayId)</h6></td>
+					<td><h6>$formattedText.escapeHtml($currSession.UserEid)</h6></td>
 				</tr>
 				<tr>
 					<td>$tlang.getString("presence.session.adress")</td>
