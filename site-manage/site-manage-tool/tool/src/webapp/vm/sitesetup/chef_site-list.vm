@@ -228,7 +228,7 @@
 								</td>
 								<td headers="createdBy" class="hidden-xs">
 									#if ($site.CreatedBy)
-										$formattedText.escapeHtml($site.CreatedBy.DisplayId)
+										$formattedText.escapeHtml($site.CreatedBy.Eid)
 									#end
 								</td>
 								<td headers="term" class="hidden-xs">
