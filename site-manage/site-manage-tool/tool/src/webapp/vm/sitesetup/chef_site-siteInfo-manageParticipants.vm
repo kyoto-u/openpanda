@@ -187,14 +187,17 @@
                                             #end
                                         #end
                                             #foreach( $r in $allowedRoles )
+                                                #set($RoleId = $r.Id)
                                                 #if( $r.Id == $uRole )
                                                     <option value="$r.Id" selected>
-                                                        $r.Id
+                                                    #set($RoleId = $RoleId.replaceAll(" ",""))
+                                                    $tlang.getString( "sitegen.role.$RoleId" )
                                                     </option>
                                                 #else
                                                     #if( !($r.isProviderOnly() || ($hasRestrictedRole == "true")) )
                                                         <option value="$r.Id">
-                                                            $r.Id
+                                                        #set($RoleId = $RoleId.replaceAll(" ",""))
+                                                        $tlang.getString( "sitegen.role.$RoleId" )
                                                         </option>
                                                     #end
                                                 #end
@@ -261,7 +264,9 @@
     <dl>
         #foreach( $role in $allRoles )
             <dt>
-                $role.Id
+                #set($RoleId = $role.Id)
+                #set($RoleId = $RoleId.replaceAll(" ",""))
+                $tlang.getString( "sitegen.role.$RoleId" )
             </dt>
             <dd class="indnt3">
                 #set($description = "")
