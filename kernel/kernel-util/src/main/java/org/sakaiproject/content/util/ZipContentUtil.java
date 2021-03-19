@@ -216,8 +216,11 @@ public class ZipContentUtil {
 						currentEdit = (ContentCollectionEdit) ContentHostingService.getCollection(resourceId + Entity.SEPARATOR);
 						displayName = currentEdit.getProperties().getProperty(ResourcePropertiesEdit.PROP_DISPLAY_NAME);
 						if (displayName != null && displayName.length() > 0) {
-							//displayName += ZIP_EXTENSION;
-							displayName = user.getDisplayId() + ZIP_EXTENSION;
+							if(user == null){
+								displayName += ZIP_EXTENSION;
+							}else{
+								displayName = user.getDisplayId() + ZIP_EXTENSION;
+							}
 						}
 						else {
 							displayName = newResourceName;
