@@ -180,15 +180,16 @@ public class ImportController {
             List<String> importedGroupUsers = importedGroup.getValue();
 
             //For every imported user, check if exists, if is member of the site, if already a member or is new. 
-            for (String userEid : importedGroupUsers) {
-                Optional<User> userOptional = sakaiService.getUserByEid(userEid);
-                
+            //for (String userEid : importedGroupUsers) {
+            for (String employeeNumber : importedGroupUsers) {
+
+                //Optional<User> userOptional = sakaiService.getUserByEid(userEid);
+                Optional<User> userOptional = sakaiService.getUserByEmployeeNumber(employeeNumber);
+
                 // The user doesn't exist in Sakai.
                 if (!userOptional.isPresent()) {
-                	if(!userOptional.get().getProperties().getProperty("employeeNumber").isEmpty()){
-                		userEid = userOptional.get().getProperties().getProperty("employeeNumber");
-                	}
-                    nonExistingUsers.add(userEid);
+                    //nonExistingUsers.add(userEid);
+                    nonExistingUsers.add(employeeNumber);
                     membershipErrors = true;
                     continue;
                 }
@@ -278,19 +279,23 @@ public class ImportController {
                 group.getProperties().addProperty(Group.GROUP_PROP_WSETUP_CREATED, Boolean.TRUE.toString());
             }
 
-            for (String userEid : groupUserList) {
+            //for (String userEid : groupUserList) {
+            for (String employeeNumber : groupUserList) {
 
                 //Get the Sakai user...despite the fact the user has been validated in the confirmation.
-                Optional<User> userOptional = sakaiService.getUserByEid(userEid);
+                //Optional<User> userOptional = sakaiService.getUserByEid(userEid);
+                Optional<User> userOptional = sakaiService.getUserByEmployeeNumber(employeeNumber);
                 if (!userOptional.isPresent()) {
-                    log.error("Fatal error adding user {} in bulk, the user does not exist.", userEid);
+                    //log.error("Fatal error adding user {} in bulk, the user does not exist.", userEid);
+                    log.error("Fatal error adding user {} in bulk, the user does not exist.", employeeNumber);
                     continue;
                 }
 
                 //Get the Site member...despite the fact the member has been validated in the confirmation.
                 Member member = site.getMember(userOptional.get().getId());
                 if (member == null) {
-                    log.error("Fatal error adding user {} in bulk, the member does not belong to the site.", userEid);
+                    //log.error("Fatal error adding user {} in bulk, the member does not belong to the site.", userEid);
+                    log.error("Fatal error adding user {} in bulk, the member does not belong to the site.", employeeNumber);
                     continue;
                 }
 

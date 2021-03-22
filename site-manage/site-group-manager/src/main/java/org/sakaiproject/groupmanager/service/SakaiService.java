@@ -24,13 +24,11 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import org.springframework.stereotype.Service;
-
-import org.sakaiproject.assignment.api.model.Assignment;
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.assignment.api.AssignmentReferenceReckoner;
 import org.sakaiproject.assignment.api.AssignmentService;
 import org.sakaiproject.assignment.api.AssignmentServiceConstants;
+import org.sakaiproject.assignment.api.model.Assignment;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
@@ -38,13 +36,14 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -178,5 +177,21 @@ public class SakaiService  {
         return lockingEntitiesMap;
         
     }
+
+
+    public Optional<User> getUserByEmployeeNumber(String employeeNumber){
+    	try {
+            return Optional.of(userDirectoryService.findUserByAlternativeId(employeeNumber,"employeeNumber"));
+        } catch (Exception e) {
+            log.error("Unable to get user by employeeNumber {}.", employeeNumber);
+            try{
+            	return Optional.of(userDirectoryService.getUserByEid(employeeNumber));
+            }catch(Exception ex){
+            	log.error("Unable to get user by eid {}.", employeeNumber);
+            }
+        }
+    	return Optional.empty();
+    }
+
 
 }
