@@ -3184,7 +3184,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 if (withFeedbackComment) {
                                     // the comments.txt file to show instructor's comments
                                 	final String zipEntryName = submittersName + "comments" + AssignmentConstants.ZIP_COMMENT_FILE_TYPE;
-                                    final String textEntryString = formattedText.encodeUnicode(s.getFeedbackComment());
+                                    //final String textEntryString = formattedText.encodeUnicode(s.getFeedbackComment());
+                                	final String textEntryString = s.getFeedbackComment();
                                     createTextZipEntry(out, zipEntryName, textEntryString);
                                 }
 
@@ -3398,7 +3399,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             if (withFeedbackComment) {
                                 // the comments.txt file to show instructor's comments
                             	final String zipEntryName = submittersName + "comments" + AssignmentConstants.ZIP_COMMENT_FILE_TYPE;
-                            	final String textEntryString = formattedText.encodeUnicode(s.getFeedbackComment());
+                            	//final String textEntryString = formattedText.encodeUnicode(s.getFeedbackComment());
+                            	final String textEntryString = s.getFeedbackComment();
                             	createTextZipEntry(out, zipEntryName, textEntryString);
                             }
 
@@ -3415,7 +3417,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             if (!submittersString.toString().trim().isEmpty()) {
                                 // the comments.txt file to show instructor's comments
                             	final String zipEntryName = submittersName + "members" + AssignmentConstants.ZIP_COMMENT_FILE_TYPE;
-                            	final String textEntryString = formattedText.encodeUnicode(submittersString.toString());
+                            	//final String textEntryString = formattedText.encodeUnicode(submittersString.toString());
+                            	final String textEntryString = submittersString.toString();
                             	createTextZipEntry(out, zipEntryName, textEntryString);
                             }
 
@@ -3471,7 +3474,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 		final ZipEntry textEntry = new ZipEntry(zipEntryName);
 		out.putNextEntry(textEntry);
 		if(textEntryString != null) {
-			final byte[] text = textEntryString.getBytes();
+			final byte[] text = textEntryString.getBytes("UTF-8");
 			out.write(text);
 			textEntry.setSize(text.length);
 		}

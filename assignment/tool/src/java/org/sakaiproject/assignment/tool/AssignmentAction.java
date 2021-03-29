@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -80,6 +81,7 @@ import java.util.zip.ZipFile;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -1078,6 +1080,8 @@ public class AssignmentAction extends PagedResourceActionII {
     private UserDirectoryService userDirectoryService;
     private UserTimeService userTimeService;
     private RangeAndGroupsDelegate rangeAndGroups;
+
+    protected HttpServletRequest p_req = null;
 
     public AssignmentAction() {
         super();
@@ -12613,6 +12617,9 @@ public class AssignmentAction extends PagedResourceActionII {
         }
 
         SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+        p_req = data.getRequest();
+
         ParameterParser params = data.getParameters();
         // see if the user uploaded a file
         FileItem fileFromUpload = null;
@@ -12791,7 +12798,16 @@ public class AssignmentAction extends PagedResourceActionII {
             final Path destination = Paths.get(tempFile.getCanonicalPath());
             Files.copy(fileContentStream, destination, StandardCopyOption.REPLACE_EXISTING);
 
-            ZipFile zipFile = new ZipFile(tempFile, StandardCharsets.UTF_8);
+            //String userAgent = (String)state.getAttribute(UPLOAD_ALL_USER_AGENT);
+            String userAgent = p_req.getHeader("User-Agent");
+            //ZipFile zipFile = new ZipFile(tempFile, StandardCharsets.UTF_8);
+            //ZipFile zipFile = new ZipFile(tempFile, getEncode(p_req));
+            ZipFile zipFile = null;
+            if(userAgent.contains("Windows")){
+            	zipFile = new ZipFile(tempFile, Charset.forName("MS932"));
+            }else{
+            	zipFile = new ZipFile(tempFile, StandardCharsets.UTF_8);
+            }
             Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
             ZipEntry entry;
             // SAK-17606
