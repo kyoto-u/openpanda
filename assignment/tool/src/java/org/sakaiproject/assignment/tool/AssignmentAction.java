@@ -111,6 +111,7 @@ import java.util.zip.ZipFile;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -1107,6 +1108,8 @@ public class AssignmentAction extends PagedResourceActionII {
     private UserTimeService userTimeService;
     private RangeAndGroupsDelegate rangeAndGroups;
     private LTIService ltiService;
+
+    protected HttpServletRequest p_req = null;
 
     public AssignmentAction() {
         super();
@@ -12757,6 +12760,9 @@ public class AssignmentAction extends PagedResourceActionII {
         }
 
         SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+
+        p_req = data.getRequest();
+
         ParameterParser params = data.getParameters();
         // see if the user uploaded a file
         FileItem fileFromUpload = null;
@@ -12936,7 +12942,13 @@ public class AssignmentAction extends PagedResourceActionII {
             Files.copy(fileContentStream, destination, StandardCopyOption.REPLACE_EXISTING);
             final Charset tempFileCharset = getZipFileCharset(tempFile);
 
-            ZipFile zipFile = new ZipFile(tempFile, tempFileCharset);
+            String userAgent = p_req.getHeader("User-Agent");
+            ZipFile zipFile = null;
+            if  (userAgent.contains("Windows"))  {
+            	zipFile = new ZipFile(tempFile, Charset.forName("MS932"));
+            }  else  {
+            	zipFile = new ZipFile(tempFile, StandardCharsets.UTF_8);
+            }
             Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
             ZipEntry entry;
             // SAK-17606
