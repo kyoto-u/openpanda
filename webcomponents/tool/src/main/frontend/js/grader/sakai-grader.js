@@ -213,7 +213,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
             <button id="show-inline-feedback-button" class="inline-feedback-button" @click=${this.toggleInlineFeedback} aria-haspopup="true" style="display: none;">${this.assignmentsI18n["gen.don"]}</button>
           ` : html`
             ${this.selectedAttachment ? html`
-              <div class="preview"><sakai-document-viewer preview="${JSON.stringify(this.selectedPreview)}" content="${JSON.stringify(this.selectedAttachment)}"></sakai-document-viewer></div>
+              <div class="preview"><sakai-document-viewer preview="${JSON.stringify(this.selectedPreview)}" content="${JSON.stringify(this.selectedAttachment)}" pdfAnnotateEnable="${this.pdfAnnotateViewerEnable}"></sakai-document-viewer></div>
             ` : ""}
           `}
         ` : ""}
@@ -713,6 +713,14 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
       // Display the key/value pairs
       for (const pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
+      }
+    }
+    for (let i = 0; i < this._submission.submittedAttachments.length; i++) {
+      var annotationKey = `${this._submission.submittedAttachments[i]}` + "/annotations";
+      var annotations = localStorage.getItem("/access" + annotationKey);
+      if(annotations != null){
+        formData.set(annotationKey, annotations);
+        localStorage.removeItem("/access" + annotationKey);
       }
     }
 

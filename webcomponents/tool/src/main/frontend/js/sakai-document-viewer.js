@@ -47,6 +47,7 @@ class SakaiDocumentViewer extends SakaiElement {
       documentMarkup: String,
       i18n: Object,
       nomargins: Boolean,
+      pdfAnnotateEnable: Boolean,
     };
   }
 
@@ -57,6 +58,10 @@ class SakaiDocumentViewer extends SakaiElement {
   }
 
   get preview() { return this._preview; }
+
+  set pdfAnnotateEnable(newValue) {
+    this._pdfAnnotateEnable = newValue;
+  }
 
   shouldUpdate() {
     return this.i18n;
@@ -102,7 +107,11 @@ class SakaiDocumentViewer extends SakaiElement {
     if (type === "application/pdf") {
       this.nomargins = true;
       // Let PDFJS handle this. We can just literally use the viewer, like Firefox and Chrome do.
-      this.documentMarkup = `<iframe src="/library/webjars/pdf-js/2.3.200/web/viewer.html?file=/access/${encodeURIComponent(ref)}" width="100%" height="${this.height}" />`;
+      if  (this._pdfAnnotateEnable == 'true')  {
+        this.documentMarkup = `<iframe src="/library/pdf-annotate/viewer.html?file=/access${encodeURIComponent(documentRef)}" width="100%" height="${this.height}" />`;
+      }  else  {
+        this.documentMarkup = `<iframe src="/library/webjars/pdf-js/2.3.200/web/viewer.html?file=/access/${encodeURIComponent(ref)}" width="100%" height="${this.height}" />`;
+      }
     } else if (type === "application/vnd.oasis.opendocument.presentation") {
       this.nomargins = true;
       this.documentMarkup = `<iframe src="/library/webjars/viewerjs/0.5.8/ViewerJS#/access${ref}" width="100%" height="${this.height}" />`;

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>PDFJSAnnotate</title>
+  <link href="/library/pdf-annotate/css/toolbar.css" rel="stylesheet" />
+  <link href="/library/pdf-annotate/css/pdf_viewer.css" rel="stylesheet" /> 
+  <link href="/library/pdf-annotate/css/viewer.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+</head>
+<body>
+  <div class="toolbar">
+      <button class="cursor" type="button" title="Cursor" data-tooltype="cursor">➚</button>
+      <div class="spacer"></div>
+      <button class="rectangle" type="button" title="Rectangle" data-tooltype="area">&nbsp;</button>
+      <div class="spacer"></div>
+      <button class="text" type="button" title="Text Tool" data-tooltype="text"></button>
+      <select class="text-size"></select>
+      <div class="text-color"></div>
+      <div class="spacer"></div>
+      <button class="pen" type="button" title="Pen Tool" data-tooltype="draw">✎</button>
+      <select class="pen-size"></select>
+      <div class="pen-color"></div>
+      <div class="spacer"></div>
+      <button class="comment" type="button" title="Comment" data-tooltype="point">🗨</button>
+      <div class="spacer"></div>
+      <select class="scale">
+        <option value=".5">50%</option>
+        <option value="1">100%</option>
+        <option value="1.33">133%</option>
+        <option value="1.5">150%</option>
+        <option value="2">200%</option>
+      </select>
+      <div class="spacer"></div>
+      <a href="javascript://" class="clear" title="Clear">×</a>
+  </div>
+  <div id="content-wrapper">
+      <div id="viewer" class="pdfViewer"></div>
+  </div>
+  <div id="comment-wrapper">
+    <div>
+      <form id="commentForm" name="commentForm"  class="comment-list-form"  style="display:none;">
+        <input type="text" placeholder="Add a Comment"/>
+      </form>
+    </div>
+    <div style="padding: 10px;">
+      <h5>Comments</h5>
+      <div class="comment-list">
+          <div class="comment-list-container">
+              <div class="comment-list-item">No comments</div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <script src="/library/pdf-annotate/shared/pdf.js"></script>
+  <script src="/library/pdf-annotate/shared/pdf_viewer.js"></script>
+  <script src="/library/pdf-annotate/viewer.js"></script>
+</body>
+</html>
