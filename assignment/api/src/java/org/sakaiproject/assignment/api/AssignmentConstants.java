@@ -284,4 +284,6 @@ public final class AssignmentConstants {
     public static final String PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT = "prop_new_assignment_add_to_gradebook";
 
     public static final String NEW_ASSIGNMENT_ADD_TO_GRADEBOOK = "new_assignment_add_to_gradebook";
+
+    public static final String ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE = "assignment.pdf.annotate.viewer.enable";
 }

@@ -46,6 +46,7 @@ class SakaiDocumentViewer extends SakaiElement {
       documentMarkup: String,
       i18n: Object,
       nomargins: Boolean,
+      pdfAnnotateEnable: Boolean,
     };
   }
 
@@ -56,6 +57,10 @@ class SakaiDocumentViewer extends SakaiElement {
   }
 
   get ref() { return this._ref; }
+  
+  set pdfAnnotateEnable(newValue) {
+    this._pdfAnnotateEnable = newValue;
+  }
 
   shouldUpdate(changed) {
     return this.i18n;
@@ -84,7 +89,11 @@ class SakaiDocumentViewer extends SakaiElement {
     if (documentRef.endsWith("\.pdf") || documentRef.endsWith("\.PDF")) {
       this.nomargins = true;
       // Let PDFJS handle this. We can just literally use the viewer, like Firefox and Chrome do.
-      this.documentMarkup = `<iframe src="/library/webjars/pdf-js/2.3.200/web/viewer.html?file=/access/${encodeURIComponent(documentRef)}" width="100%" height="${this.height}" />`;
+      if(this._pdfAnnotateEnable == 'true'){
+        this.documentMarkup = `<iframe src="/library/pdf-annotate/viewer.html?file=/access${encodeURIComponent(documentRef)}" width="100%" height="${this.height}" />`;
+      }else{
+        this.documentMarkup = `<iframe src="/library/webjars/pdf-js/2.3.200/web/viewer.html?file=/access/${encodeURIComponent(documentRef)}" width="100%" height="${this.height}" />`;      
+      }
     } else if (documentRef.endsWith("\.odp") || documentRef.endsWith("\.ODP")) {
       this.nomargins = true;
       this.documentMarkup = `<iframe src="/library/webjars/viewerjs/0.5.8/ViewerJS#/access${documentRef}" width="100%" height="${this.height}" />`;

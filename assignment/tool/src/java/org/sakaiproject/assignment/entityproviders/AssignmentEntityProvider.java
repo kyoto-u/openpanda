@@ -15,31 +15,57 @@
  */
 package org.sakaiproject.assignment.entityproviders;
 
+import static org.sakaiproject.assignment.api.AssignmentConstants.*;
+import static org.sakaiproject.assignment.api.AssignmentServiceConstants.*;
+
+import java.awt.Color;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
-import static org.sakaiproject.assignment.api.AssignmentConstants.*;
-import static org.sakaiproject.assignment.api.AssignmentServiceConstants.*;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.fileupload.FileItem;
-
+import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.cos.COSArray;
+import org.apache.pdfbox.cos.COSFloat;
+import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
+import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationMarkup;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationSquareCircle;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationText;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.sakaiproject.assignment.api.AssignmentReferenceReckoner;
 import org.sakaiproject.assignment.api.AssignmentService;
 import org.sakaiproject.assignment.api.MultiGroupRecord;
+import org.sakaiproject.assignment.api.model.Assignment;
+import org.sakaiproject.assignment.api.model.AssignmentAllPurposeItem;
+import org.sakaiproject.assignment.api.model.AssignmentModelAnswerItem;
+import org.sakaiproject.assignment.api.model.AssignmentNoteItem;
+import org.sakaiproject.assignment.api.model.AssignmentSubmission;
+import org.sakaiproject.assignment.api.model.AssignmentSubmissionSubmitter;
+import org.sakaiproject.assignment.api.model.AssignmentSupplementItemService;
 import org.sakaiproject.assignment.tool.AssignmentToolUtils;
-import org.sakaiproject.assignment.api.model.*;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -56,7 +82,13 @@ import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.EntityProvider;
 import org.sakaiproject.entitybroker.entityprovider.annotations.EntityCustomAction;
-import org.sakaiproject.entitybroker.entityprovider.capabilities.*;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.ActionsExecutable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.AutoRegisterEntityProvider;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Describeable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Inputable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Outputable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.PropertyProvideable;
+import org.sakaiproject.entitybroker.entityprovider.capabilities.Resolvable;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
 import org.sakaiproject.entitybroker.entityprovider.extension.Formats;
 import org.sakaiproject.entitybroker.exception.EntityException;
@@ -76,6 +108,12 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Setter
@@ -506,6 +544,12 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         String lOptions = serverConfigurationService.getString("assignment.letterGradeOptions", "A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,E,F");
         data.put("letterGradeOptions", lOptions);
 
+        boolean pdfAnnotateViewerEnable = false;
+        try {
+            pdfAnnotateViewerEnable = site.getPropertiesEdit().getBooleanProperty(ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE);
+        } catch (Exception e) {}
+        data.put("pdfAnnotateViewerEnable", pdfAnnotateViewerEnable);
+
         return new ActionReturn(data);
     }
 
@@ -651,6 +695,80 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             }
         }).collect(Collectors.toList());
 
+        boolean pdfAnnotateViewerEnable = false;
+        try {
+            Site site = siteService.getSite(assignment.getContext());
+            pdfAnnotateViewerEnable = site.getPropertiesEdit().getBooleanProperty(ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE);
+        } catch (Exception e) {
+            throw new EntityNotFoundException("No site found", assignment.getContext(), e);
+        }
+        if(pdfAnnotateViewerEnable) {
+            for (String k : submission.getAttachments()) {
+                String annotations = (String) params.get(k + "/annotations");
+                if(StringUtils.isNotEmpty(annotations)) {
+                    ByteArrayOutputStream bout = null;
+                    PDDocument document =  null;
+                    try {
+                        ContentResource c =  contentHostingService.getResource(k.replace("/content", ""));
+                        document = PDDocument.load(new ByteArrayInputStream(c.getContent()), "", MemoryUsageSetting.setupMainMemoryOnly());
+                        Map<String,String> commentMap = new HashMap<String,String>();
+                        JSONArray jsonArray = new JSONArray(annotations);
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(jsonObject.has("class") && jsonObject.getString("class").equals("Comment")) {
+                                commentMap.put(jsonObject.getString("annotation"), jsonObject.getString("content"));
+                            }
+                        }
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            if(!jsonObject.has("type")) continue;
+
+                            PDPage page = document.getPage(jsonObject.getInt("page") -1);
+                            float ph = page.getMediaBox().getUpperRightY();
+                            switch (jsonObject.getString("type")){
+                                case "drawing":
+                                    page.getAnnotations().add(createPDAnnotationDrawing(document,jsonObject,ph));
+                                    break;
+                                case "area":
+                                    page.getAnnotations().add(createPDAnnotationArea(document,jsonObject,ph,commentMap));
+                                    break;
+                                case "highlight":
+                                    page.getAnnotations().add(createPDAnnotationHighlight(document,jsonObject,ph,commentMap));
+                                    break;
+                                case "textbox":
+                                    page.getAnnotations().add(createPDAnnotationTextbox(document,jsonObject,ph));
+                                    break;
+                                case "strikeout":
+                                    page.getAnnotations().add(createPDAnnotationStrikeout(document,jsonObject,ph));
+                                    break;
+                                case "point":
+                                    page.getAnnotations().add(createPDAnnotationPoint(document,jsonObject,ph,commentMap));
+                                    break;
+                            }
+                        }
+                        bout = new ByteArrayOutputStream();
+                        document.save(bout);
+                        // make a set of properties to add for the new resource
+                        ContentResource cr = contentHostingService.addAttachmentResource(c.getProperties().getProperty(ResourceProperties.PROP_DISPLAY_NAME),
+                            courseId, "Assignments", c.getContentType(), new ByteArrayInputStream(bout.toByteArray()), c.getProperties());
+                        attachmentRefs.add(entityManager.newReference(cr.getReference()));
+                        document.close();
+                        bout.close();
+
+                    } catch (Exception e) {
+                        throw new EntityException("Error while storing annotations", "", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    }finally {
+                        try {
+                            if(bout != null) bout.close();
+                            if(document != null)document.close();
+                        } catch (IOException e) {
+                            throw new EntityException("Error while storing annotations", "", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        }
+                    }
+                }
+            }
+        }
         options.put(GRADE_SUBMISSION_FEEDBACK_ATTACHMENT,  attachmentRefs);
 
         options.put(GRADE_SUBMISSION_DONT_CLEAR_CURRENT_ATTACHMENTS, Boolean.TRUE);
@@ -1320,5 +1438,205 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             this.title = g.getTitle();
             this.users = g.getUsers();
         }
+    }
+    private PDAnnotationMarkup createPDAnnotationDrawing(PDDocument document,JSONObject jsonObject,float ph) throws JSONException {
+        PDAnnotationMarkup annotation = new PDAnnotationMarkup();
+        annotation.getCOSObject().setName(COSName.SUBTYPE, PDAnnotationMarkup.SUB_TYPE_INK);
+        if(jsonObject.has("color")) {
+            annotation.setColor(new PDColor(Color.decode(jsonObject.getString("color")).getColorComponents(null), PDDeviceRGB.INSTANCE));
+        }else {
+            annotation.setColor(new PDColor(Color.BLACK.getColorComponents(null), PDDeviceRGB.INSTANCE));
+        }
+        PDBorderStyleDictionary thickness = new PDBorderStyleDictionary();
+        float borderWidth = (float)jsonObject.getInt("width");
+        thickness.setWidth(borderWidth);
+        annotation.setBorderStyle(thickness);
+
+        JSONArray lines = jsonObject.getJSONArray("lines");
+        COSArray verticesArrayArray = new COSArray();
+        COSArray verticesArray = new COSArray();
+        float minX = 0;
+        float maxX = 0;
+        float minY = 0;
+        float maxY = 0;
+        float pointX = 0;
+        float pointY = 0;
+        for (int p = 0; p < lines.length(); p++) {
+        	pointX = (float)lines.getJSONArray(p).getDouble(0);
+            if(minX == 0 || pointX < minX) {
+                minX = pointX;
+            }
+            if(maxX == 0 || pointX > maxX) {
+                maxX = pointX;
+            }
+            pointY = ph - (float)lines.getJSONArray(p).getDouble(1);
+            if(minY == 0 || pointY < minY) {
+                minY = pointY;
+            }
+            if(maxY == 0 || pointY > maxY) {
+                maxY = pointY;
+            }
+            verticesArray.add(new COSFloat(pointX));
+            verticesArray.add(new COSFloat(pointY));
+        }
+        verticesArrayArray.add(verticesArray);
+        annotation.getCOSObject().setItem(COSName.INKLIST, verticesArrayArray);
+        PDRectangle points = new PDRectangle();
+        points.setLowerLeftX(maxX + borderWidth);
+        points.setLowerLeftY(minY - borderWidth);
+        points.setUpperRightX(minX - borderWidth);
+        points.setUpperRightY(maxY + borderWidth);
+        annotation.setRectangle(points);
+        annotation.constructAppearances(document);
+        return annotation;
+    }
+    private PDAnnotation createPDAnnotationArea(PDDocument document,JSONObject jsonObject,float ph,Map<String,String> commentMap) throws JSONException {
+        PDAnnotationSquareCircle annotation = new PDAnnotationSquareCircle(PDAnnotationSquareCircle.SUB_TYPE_SQUARE);
+        annotation.setColor(new PDColor(Color.RED.getColorComponents(null), PDDeviceRGB.INSTANCE));
+        PDBorderStyleDictionary thickness = new PDBorderStyleDictionary();
+        thickness.setWidth((float)1);
+        annotation.setBorderStyle(thickness);
+
+        float x = (float)jsonObject.getDouble("x");
+        float y = (float)jsonObject.getDouble("y");
+        float width = (float)jsonObject.getDouble("width");
+        float height = (float)jsonObject.getDouble("height");
+        PDRectangle points = new PDRectangle();
+        points.setLowerLeftX(x);
+        points.setLowerLeftY(ph -y);
+        points.setUpperRightX(x + width);
+        points.setUpperRightY(ph -y - height);
+        annotation.setRectangle(points);
+        if(commentMap.containsKey(jsonObject.getString("uuid"))) {
+            annotation.setContents(commentMap.get(jsonObject.getString("uuid")));
+        }
+        annotation.constructAppearances(document);
+        return annotation;
+    }
+    private PDAnnotation createPDAnnotationHighlight(PDDocument document,JSONObject jsonObject,float ph,Map<String,String> commentMap) throws JSONException {
+        PDAnnotationTextMarkup annotation = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_HIGHLIGHT);
+        annotation.setColor(new PDColor(Color.YELLOW.getColorComponents(null), PDDeviceRGB.INSTANCE));
+        annotation.setTitlePopup("Important word found");
+
+        JSONArray rectangles = jsonObject.getJSONArray("rectangles");
+        float quadPoints[] = new float[rectangles.length() * 8];
+        PDRectangle position = new PDRectangle();
+        for (int r = 0; r < rectangles.length(); r++) {
+            JSONObject rectangle = rectangles.getJSONObject(r);
+            float x = (float)rectangle.getDouble("x");
+            float y = (float)rectangle.getDouble("y");
+            float width = (float)rectangle.getDouble("width");
+            float height = (float)rectangle.getDouble("height");
+            quadPoints[(r * 8)] = x-5;
+            quadPoints[(r * 8) + 1] = ph -y- height;
+            quadPoints[(r * 8) + 2] = x + width + 5;
+            quadPoints[(r * 8) + 3] = ph -y- height;
+            quadPoints[(r * 8) + 4] = x -5;
+            quadPoints[(r * 8) + 5] = ph -y;
+            quadPoints[(r * 8) + 6] = x + width + 5;
+            quadPoints[(r * 8) + 7] = ph -y;
+            if( r == 0) {
+                position.setLowerLeftX(x);
+            }
+            if( r == rectangles.length() -1) {
+                position.setUpperRightX(x + width);
+                position.setLowerLeftY(ph - y - height);
+                position.setUpperRightY(ph - y - height);
+            }
+        }
+        annotation.setRectangle(position);
+        annotation.setQuadPoints(quadPoints);
+        annotation.setConstantOpacity((float) 0.5);
+        if(commentMap.containsKey(jsonObject.getString("uuid"))) {
+            annotation.setContents(commentMap.get(jsonObject.getString("uuid")));
+        }
+        annotation.constructAppearances(document);
+        return annotation;
+    }
+    private PDAnnotation createPDAnnotationTextbox(PDDocument document,JSONObject jsonObject,float ph) throws JSONException {
+        PDAnnotationMarkup annotation = new PDAnnotationMarkup();
+        annotation.getCOSObject().setName(COSName.SUBTYPE, PDAnnotationMarkup.SUB_TYPE_FREETEXT);
+
+        PDBorderStyleDictionary thickness = new PDBorderStyleDictionary();
+        thickness.setWidth(0);
+        annotation.setBorderStyle(thickness);
+
+        PDRectangle points = new PDRectangle();
+        float x = (float)jsonObject.getDouble("x");
+        float y = (float)jsonObject.getDouble("y");
+        float height = (float)jsonObject.getDouble("height");
+        float size = (float)jsonObject.getDouble("size");
+        String content = jsonObject.getString("content");
+        points.setLowerLeftX(x);
+        points.setLowerLeftY(ph -y);
+        points.setUpperRightX(x + (size * content.length()));
+        points.setUpperRightY(ph -y - height);
+        annotation.setRectangle(points);
+        annotation.setContents(content);
+        float[] rgb = Color.decode(jsonObject.getString("color")).getColorComponents(null);
+        annotation.getCOSObject().setString(COSName.DA, rgb[0] + " " + rgb[1] + " " + rgb[2] +  " rg /Helv " + size + " Tf");
+        annotation.constructAppearances(document);
+        return annotation;
+    }
+    private PDAnnotation createPDAnnotationStrikeout(PDDocument document,JSONObject jsonObject,float ph) throws JSONException {
+        PDAnnotationTextMarkup annotation = new PDAnnotationTextMarkup(PDAnnotationTextMarkup.SUB_TYPE_STRIKEOUT);
+        annotation.setColor(new PDColor(Color.RED.getColorComponents(null), PDDeviceRGB.INSTANCE));
+
+        JSONArray rectangles = jsonObject.getJSONArray("rectangles");
+        float quadPoints[] = new float[rectangles.length() * 8];
+        PDRectangle position = new PDRectangle();
+        for (int r = 0; r < rectangles.length(); r++) {
+            JSONObject rectangle = rectangles.getJSONObject(r);
+            float x = (float)rectangle.getDouble("x");
+            float y = (float)rectangle.getDouble("y");
+            float width = (float)rectangle.getDouble("width");
+            float height = (float)rectangle.getDouble("height");
+            y = y - (height / 2) + 1;
+            quadPoints[(r * 8)] = x;
+            quadPoints[(r * 8) + 1] = ph -y- height ;
+            quadPoints[(r * 8) + 2] = x + width;
+            quadPoints[(r * 8) + 3] = ph -y- height;
+            quadPoints[(r * 8) + 4] = x;
+            quadPoints[(r * 8) + 5] = ph -y;
+            quadPoints[(r * 8) + 6] = x + width;
+            quadPoints[(r * 8) + 7] = ph -y;
+            if( r == 0) {
+                position.setLowerLeftX(x);
+            }
+            if( r == rectangles.length() -1) {
+                position.setUpperRightX(x + width);
+                position.setLowerLeftY(ph - y - height);
+                position.setUpperRightY(ph - y - height);
+            }
+        }
+
+        annotation.setRectangle(position);
+        annotation.setQuadPoints(quadPoints);
+        annotation.constructAppearances(document);
+        return annotation;
+    }
+    private PDAnnotation createPDAnnotationPoint(PDDocument document,JSONObject jsonObject,float ph,Map<String,String> commentMap) throws JSONException {
+        PDAnnotationText annotation = new PDAnnotationText();
+
+        annotation.setColor(new PDColor(Color.YELLOW.getColorComponents(null), PDDeviceRGB.INSTANCE));
+        PDBorderStyleDictionary thickness = new PDBorderStyleDictionary();
+        thickness.setWidth((float)0.5);
+        annotation.setBorderStyle(thickness);
+        float x = (float)jsonObject.getDouble("x");
+        float y = (float)jsonObject.getDouble("y");
+        float width = 0;
+        float height = 0;
+        PDRectangle points = new PDRectangle();
+        points.setLowerLeftX(x);
+        points.setLowerLeftY(ph -y);
+        points.setUpperRightX(x + width);
+        points.setUpperRightY(ph -y - height);
+        annotation.setRectangle(points);
+        annotation.setConstantOpacity(50f);
+        annotation.setContents(commentMap.get(jsonObject.getString("uuid")));
+        annotation.setLocked(true);
+        annotation.setReadOnly(true);
+        annotation.constructAppearances(document);
+        return annotation;
     }
 }

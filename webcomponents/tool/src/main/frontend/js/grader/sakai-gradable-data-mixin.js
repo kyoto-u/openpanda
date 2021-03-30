@@ -33,6 +33,8 @@ let gradableDataMixin = Base => class extends Base {
           this.hasUnsubmitted = this.submissions.some(s => s.submittedTime == "");
 
           this.groups = gradableData.groups;
+          
+          this.pdfAnnotateViewerEnable = gradableData.pdfAnnotateViewerEnable;
 
           // Load up the graded status for each submission. We need that for the next/prev ungraded type of navigations.
           fetch(`/direct/assignment/grades.json?gradableId=${gradableId}&courseId=${courseId}`, {cache: "no-cache", credentials: "same-origin"})
