@@ -38,6 +38,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.RuleBasedCollator;
@@ -12815,7 +12816,8 @@ public class AssignmentAction extends PagedResourceActionII {
             boolean isAnon = assignmentService.assignmentUsesAnonymousGrading(assignment);
             while (zipEntries.hasMoreElements() && validZipFormat) {
                 entry = zipEntries.nextElement();
-                String entryName = entry.getName();
+                //String entryName = entry.getName();
+                String entryName = Normalizer.normalize(entry.getName(), Normalizer.Form.NFC);
                 if (!entry.isDirectory() && !entryName.contains("/.")) {
                     if (entryName.endsWith("grades.csv") || entryName.endsWith("grades.xls")) {
                         if (hasGradeFile && entryName.endsWith("grades.csv") && "csv".equals(gradeFileFormat)) {
