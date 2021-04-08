@@ -124,15 +124,8 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
 	            }
 	            
 	            roleItems.add(r.getId());
-	            String label = r.getId();
-	            if(label != null){
-	            	String labelKey = "";
-	            	label = label.replace(" ", "");
-	            	labelKey = "role." + label;
-	            	if(messageLocator.getMessage(labelKey) != null){
-	            		label = messageLocator.getMessage(labelKey);
-	            	}
-	            }
+	            //String label = r.getId();
+	            String label = messageLocator.getMessage("sitegen.roleid." + r.getId().replaceAll(" ",""));
 	            roleDescriptions.add(label);
 				j++;
 	    	}
