@@ -112,7 +112,8 @@ public class ProjectLogicImpl extends Constant implements ProjectLogic {
 
 	   public List<CourselinkSiteBean> getAllOwnersSites(User user) {
 		      log.debug("Fetching owners sites for " + user.getEid() );
-		      List<CourselinkSite> courselinkSiteList = dao.findAll(CourselinkSite.class);
+		      //List<CourselinkSite> courselinkSiteList = dao.findAll(CourselinkSite.class);
+		      List<CourselinkSite> courselinkSiteList = dao.getAllCourselinkSite();
 		      List<CourselinkSite> result = new ArrayList<CourselinkSite>();
 		      boolean isAdmin = sakaiProxy.isUserAdmin(user.getEid());
 		      for( int i =0; i < courselinkSiteList.size(); i++){
