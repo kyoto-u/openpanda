@@ -44,7 +44,9 @@
 		where courselinkRequest = null]]>
   	</query>
   	<query name="findAll">
-  	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite]]>
+  	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite
+  		left join fetch courselinkSite.courselinkRequests courselinkRequest
+  	]]>
   	</query>
   	<query name="findAllBySiteId">
   	<![CDATA[from courselink.kyoto_u.ac.jp.model.CourselinkSite courselinkSite

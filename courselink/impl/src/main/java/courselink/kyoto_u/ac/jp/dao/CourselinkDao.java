@@ -17,4 +17,5 @@ public interface CourselinkDao  extends GeneralGenericDao {
 	public Integer removeRequestsByDate(final Date insertDate);
 	public Integer removeSitesNoRequest();
 	public Long getMaxStatus(final long courselinkSiteId);
+	public List<CourselinkSite> getAllCourselinkSite();
 }

@@ -168,4 +168,15 @@ implements CourselinkDao {
 		   return (Long)getHibernateTemplate().execute(hc);
 	   }
 
+	   public List<CourselinkSite> getAllCourselinkSite(){
+		   HibernateCallback hc = new HibernateCallback(){
+			   public Object doInHibernate(Session session) throws HibernateException {
+				   Query query = session.getNamedQuery("findAll");
+				   List<CourselinkSite> courselinkSiteList = query.list();
+				   return courselinkSiteList;
+			   }
+		   };
+		   return (List<CourselinkSite>)getHibernateTemplate().execute(hc);
+		}
+
 }
