@@ -21,7 +21,7 @@
 
 package org.sakaiproject.content.tool;
 
-import static org.sakaiproject.content.util.IdUtil.isolateName;
+import static org.sakaiproject.content.util.IdUtil.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -1363,6 +1363,8 @@ public class FilePickerAction extends PagedResourceHelperAction
 					String siteId = toolManager.getCurrentPlacement().getContext();
 
 					String toolName = (String) toolSession.getAttribute(STATE_ATTACH_TOOL_NAME);
+					String toolId = toolManager.getCurrentPlacement().getId();
+
 					if(toolName == null)
 					{
 						toolName = toolManager.getCurrentPlacement().getTitle();
@@ -1370,8 +1372,9 @@ public class FilePickerAction extends PagedResourceHelperAction
 					}
 
 					enableSecurityAdvisor();
-					ContentResource attachment = contentService.addAttachmentResource(resourceId, siteId, toolName, contentType, fileContentStream, props);
-					
+					//ContentResource attachment = contentService.addAttachmentResource(resourceId, siteId, toolName, contentType, fileContentStream, props);
+					ContentResource attachment = contentService.addAttachmentResource(resourceId, siteId, toolId, contentType, fileContentStream, props);
+
 					ContentResourceFilter filter = (ContentResourceFilter) state.getAttribute(STATE_ATTACHMENT_FILTER);
 					if(filter == null || filter.allowSelect(attachment))
 					{
@@ -1503,6 +1506,7 @@ public class FilePickerAction extends PagedResourceHelperAction
 
 			String siteId = toolManager.getCurrentPlacement().getContext();
 			String toolName = (String) (String) toolSession.getAttribute(STATE_ATTACH_TOOL_NAME);
+			String toolId = toolManager.getCurrentPlacement().getId();
 			if(toolName == null)
 			{
 				toolName = toolManager.getCurrentPlacement().getTitle();
@@ -1510,7 +1514,8 @@ public class FilePickerAction extends PagedResourceHelperAction
 			}
 
 			enableSecurityAdvisor();
-			ContentResource attachment = contentService.addAttachmentResource(newResourceId, siteId, toolName, ResourceProperties.TYPE_URL, newUrl, resourceProperties);
+			//ContentResource attachment = contentService.addAttachmentResource(newResourceId, siteId, toolName, ResourceProperties.TYPE_URL, newUrl, resourceProperties);
+			ContentResource attachment = contentService.addAttachmentResource(newResourceId, siteId, toolId, ResourceProperties.TYPE_URL, newUrl, resourceProperties);
 
 			List<AttachItem> new_items = (List<AttachItem>) toolSession.getAttribute(STATE_ADDED_ITEMS);
 			if(new_items == null)
@@ -1997,14 +2002,16 @@ public class FilePickerAction extends PagedResourceHelperAction
 				String resourceId = Validator.escapeResourceName(filename);
 
 				String siteId = toolManager.getCurrentPlacement().getContext();
+				String toolId = (String) toolManager.getCurrentTool().getId();
 				String toolName = (String) toolSession.getAttribute(STATE_ATTACH_TOOL_NAME);
 				if(toolName == null)
 				{
 					toolName = toolManager.getCurrentPlacement().getTitle();
 				}
-			
+
 				enableSecurityAdvisor();
-				attachment = contentService.addAttachmentResource(resourceId, siteId, toolName, contentType, contentStream, props);
+				//attachment = contentService.addAttachmentResource(resourceId, siteId, toolName, contentType, contentStream, props);
+				attachment = contentService.addAttachmentResource(resourceId, siteId, toolId, contentType, contentStream, props);
 
 				String displayName = newprops.getPropertyFormatted(ResourceProperties.PROP_DISPLAY_NAME);
 				String containerId = contentService.getContainingCollectionId (attachment.getId());
