@@ -44,7 +44,7 @@
     <h:panelGroup rendered="#{!(ForumTool.selectedForum.restrictPermissionsForGroups || ForumTool.selectedTopic.restrictPermissionsForGroups) || permission.item.type != 3}" styleClass="permissionRow">
         
         <h:panelGroup styleClass="permissionRoleLabel">
-          <h:outputLabel for="level"><h:outputText value="#{permission.roleid}" /></h:outputLabel>
+          <h:outputLabel for="level"><h:outputText value="#{permission.name}" /></h:outputLabel>
         </h:panelGroup> 
           <h:panelGroup style="padding-left:5px">
           <h:selectOneMenu id="level" value="#{permission.selectedLevel}" onchange="javascript:setCorrespondingCheckboxes(this.id);"  disabled="#{not ForumTool.editMode}">
