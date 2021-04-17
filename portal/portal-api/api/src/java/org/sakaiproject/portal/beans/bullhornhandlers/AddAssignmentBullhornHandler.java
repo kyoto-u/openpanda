@@ -44,8 +44,6 @@ import org.sakaiproject.site.api.SiteService;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +87,7 @@ public class AddAssignmentBullhornHandler extends AbstractBullhornHandler {
             Assignment assignment = assignmentService.getAssignment(assignmentId);
             switch (e.getEvent()) {
                 case EVENT_ADD_ASSIGNMENT:
-                    return Optional.of(handleAdd(from, siteId, assignmentId, assignment, countCache));
+                    return bhAlreadyExists(ref) ? Optional.empty() : Optional.of(handleAdd(from, siteId, assignmentId, assignment, countCache));
                 case EVENT_UPDATE_ASSIGNMENT_ACCESS:
                     return Optional.of(handleUpdateAccess(from, ref, siteId, assignmentId, assignment, countCache));
                 default:
@@ -138,15 +136,13 @@ public class AddAssignmentBullhornHandler extends AbstractBullhornHandler {
 
         // Clean out all the alerts for the site assignments users. We'll be generating new ones shortly.
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+        transactionTemplate.execute(status -> {
 
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-
-                sessionFactory.getCurrentSession().createQuery("delete BullhornAlert where EVENT in :events and REF = :ref and TO_USER in :toUsers")
-                    .setParameterList("events", new String[] {EVENT_ADD_ASSIGNMENT, EVENT_UPDATE_ASSIGNMENT_ACCESS})
-                    .setString("ref", ref)
-                    .setParameterList("toUsers", users).executeUpdate();
-            }
+            sessionFactory.getCurrentSession().createQuery("delete BullhornAlert where EVENT in :events and REF = :ref and TO_USER in :toUsers")
+                .setParameterList("events", new String[] {EVENT_ADD_ASSIGNMENT, EVENT_UPDATE_ASSIGNMENT_ACCESS})
+                .setString("ref", ref)
+                .setParameterList("toUsers", users).executeUpdate();
+            return null;
         });
 
         users.forEach(u -> countCache.remove(u));
@@ -182,5 +178,17 @@ public class AddAssignmentBullhornHandler extends AbstractBullhornHandler {
         }
 
         return bhEvents;
+    }
+
+    private boolean bhAlreadyExists(String ref) {
+
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        return transactionTemplate.execute(status -> {
+
+                Long bhWithRef = (Long) sessionFactory.getCurrentSession()
+                    .createQuery("select count(*) from BullhornAlert where ref = :ref and event = :event")
+                    .setString("ref", ref).setString("event", EVENT_UPDATE_ASSIGNMENT_ACCESS).uniqueResult();
+                return bhWithRef > 0;
+            });
     }
 }

@@ -642,9 +642,11 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
   save() {
 
     let formData = this.getFormData();
-    formData.set("gradeOption", "retract");
     if (formData.valid) {
+      formData.set("gradeOption", "retract");
       this.submitGradingData(formData);
+      const rubricGrading = document.getElementsByTagName("sakai-rubric-grading").item(0);
+      rubricGrading && rubricGrading.save();
     }
   }
 
@@ -658,7 +660,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
       formData.set("gradeOption", "return");
       this.submitGradingData(formData);
       const rubricGrading = document.getElementsByTagName("sakai-rubric-grading").item(0);
-      rubricGrading && rubricGrading.save();
+      rubricGrading && rubricGrading.release();
     }
   }
 

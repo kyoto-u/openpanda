@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -77,6 +78,7 @@ import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Web;
 import org.sakaiproject.lti13.util.SakaiLineItem;
+import org.sakaiproject.lti13.util.SakaiDeepLink;
 import org.tsugi.basiclti.BasicLTIConstants;
 import org.tsugi.basiclti.BasicLTIUtil;
 import org.tsugi.jackson.JacksonUtil;
@@ -444,6 +446,9 @@ public class SakaiBLTIUtil {
 			setProperty(lti13subst, LTICustomVars.COURSESECTION_SOURCEDID, site.getId());
 			setProperty(lti13subst, LTICustomVars.CONTEXT_ID, site.getId());
 
+			String context_id_history = site.getProperties().getProperty(LTICustomVars.CONTEXT_ID_HISTORY);
+			setProperty(lti13subst, LTICustomVars.CONTEXT_ID_HISTORY, context_id_history);
+
 			setProperty(props, BasicLTIConstants.CONTEXT_LABEL, site.getTitle());
 			setProperty(lti13subst, LTICustomVars.COURSESECTION_LABEL, site.getTitle());
 			setProperty(lti13subst, LTICustomVars.CONTEXT_LABEL, site.getTitle());
@@ -705,7 +710,7 @@ public class SakaiBLTIUtil {
 			}
 
 			String allowRoster = (String) normalProps.get(LTIService.LTI_ALLOWROSTER);
-			String allowSettings = (String) normalProps.get(LTIService.LTI_ALLOWSETTINGS);
+			String allowSettings = (String) normalProps.get(LTIService.LTI_ALLOWSETTINGS_EXT);
 
 			String result_sourcedid = getSourceDID(user, placement, config);
 
@@ -1030,29 +1035,38 @@ public class SakaiBLTIUtil {
 			String description = (String) content.get(LTIService.LTI_DESCRIPTION);
 
 			// SAK-40044 - If there is no description, we fall back to the pre-21 description in JSON
-			if (description == null) {
-				String content_settings = (String) content.get(LTIService.LTI_SETTINGS);
-				JSONObject content_json = org.tsugi.basiclti.BasicLTIUtil.parseJSONObject(content_settings);
+			String content_settings = (String) content.get(LTIService.LTI_SETTINGS);
+			JSONObject content_json = org.tsugi.basiclti.BasicLTIUtil.parseJSONObject(content_settings);
+			if (StringUtils.isBlank(description) ) {
 				description = (String) content_json.get(LTIService.LTI_DESCRIPTION);
 			}
 
 			// All else fails, use pre-SAK-40044 title as description
-			if (description == null) {
+			if (StringUtils.isBlank(description)) {
 				description = title;
 			}
 
-			if (title != null) {
+			if (StringUtils.isNotBlank(title)) {
 				setProperty(ltiProps, BasicLTIConstants.RESOURCE_LINK_TITLE, title);
-				setProperty(ltiProps, BasicLTIConstants.RESOURCE_LINK_DESCRIPTION, description);
 				setProperty(lti13subst, LTICustomVars.RESOURCELINK_TITLE, title);
-				setProperty(lti13subst, LTICustomVars.RESOURCELINK_DESCRIPTION, title);
+			}
+
+			if ( StringUtils.isNotBlank(description) ) {
+				setProperty(ltiProps, BasicLTIConstants.RESOURCE_LINK_DESCRIPTION, description);
+				setProperty(lti13subst, LTICustomVars.RESOURCELINK_DESCRIPTION, description);
+			}
+
+			// Pull in the ResouceLink.id.history value from JSON
+			String content_id_history = (String) content_json.get(LTIService.LTI_ID_HISTORY);
+			if ( StringUtils.isNotBlank(content_id_history) ) {
+				setProperty(lti13subst, LTICustomVars.RESOURCELINK_ID_HISTORY, content_id_history);
 			}
 
 			User user = UserDirectoryService.getCurrentUser();
 
 			int allowoutcomes = getInt(tool.get(LTIService.LTI_ALLOWOUTCOMES));
 			int allowroster = getInt(tool.get(LTIService.LTI_ALLOWROSTER));
-			int allowsettings = getInt(tool.get(LTIService.LTI_ALLOWSETTINGS));
+			int allowsettings = getInt(tool.get(LTIService.LTI_ALLOWSETTINGS_EXT));
 			String placement_secret = (String) content.get(LTIService.LTI_PLACEMENTSECRET);
 
 			String result_sourcedid = getSourceDID(user, resource_link_id, placement_secret);
@@ -1449,6 +1463,8 @@ public class SakaiBLTIUtil {
 			if ( StringUtils.isNotEmpty(relaunch_url) ) setProperty(ltiProps, "relaunch_url", relaunch_url);
 
 			Map<String, String> extra = new HashMap<>();
+			extra.put(BasicLTIUtil.EXTRA_ERROR_TIMEOUT, rb.getString("error.submit.timeout"));
+			extra.put(BasicLTIUtil.EXTRA_HTTP_POPUP, BasicLTIUtil.EXTRA_HTTP_POPUP_FALSE);  // Don't bother oening in new window in protocol mismatch
 			ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST",
 					consumerkey, secret, extra);
 
@@ -1558,6 +1574,7 @@ public class SakaiBLTIUtil {
 			addConsumerData(ltiProps, null);
 
 			Map<String, String> extra = new HashMap<>();
+			extra.put(BasicLTIUtil.EXTRA_ERROR_TIMEOUT, rb.getString("error.submit.timeout"));
 			ltiProps = BasicLTIUtil.signProperties(ltiProps, launch_url, "POST", key, secret, extra);
 
 			if (ltiProps == null) {
@@ -1628,6 +1645,8 @@ public class SakaiBLTIUtil {
 			if (launch_url == null) {
 				return postError("<p>" + getRB(rb, "error.missing", "Not configured") + "</p>");
 			}
+
+			HttpServletRequest req = ToolUtils.getRequestFromThreadLocal();
 
 			String orig_site_id_null = (String) tool.get("orig_site_id_null");
 			String site_id = null;
@@ -1702,9 +1721,14 @@ public class SakaiBLTIUtil {
 			lj.audience = client_id;
 			lj.issuer = getIssuer(site_id);
 			lj.subject = getSubject(user_id, context_id);
+
+			// The name and email info have been checked for release value in addUserInfo
 			lj.name = ltiProps.getProperty(BasicLTIConstants.LIS_PERSON_NAME_FULL);
-			lj.nonce = toolProps.getProperty("nonce");
+			lj.given_name = ltiProps.getProperty(BasicLTIConstants.LIS_PERSON_NAME_GIVEN);
+			lj.family_name = ltiProps.getProperty(BasicLTIConstants.LIS_PERSON_NAME_FAMILY);
 			lj.email = ltiProps.getProperty(BasicLTIConstants.LIS_PERSON_CONTACT_EMAIL_PRIMARY);
+
+			lj.nonce = toolProps.getProperty("nonce");
 			lj.issued = new Long(System.currentTimeMillis() / 1000L);
 			lj.expires = lj.issued + 3600L;
 			lj.deployment_id = getDeploymentId(context_id);
@@ -1778,7 +1802,7 @@ public class SakaiBLTIUtil {
 
 			int allowOutcomes = getInt(tool.get(LTIService.LTI_ALLOWOUTCOMES));
 			int allowRoster = getInt(tool.get(LTIService.LTI_ALLOWROSTER));
-			int allowSettings = getInt(tool.get(LTIService.LTI_ALLOWSETTINGS));
+			int allowSettings = getInt(tool.get(LTIService.LTI_ALLOWSETTINGS_EXT));
 			int allowLineItems = getInt(tool.get(LTIService.LTI_ALLOWLINEITEMS));
 
 			String sourcedid = ltiProps.getProperty("lis_result_sourcedid");
@@ -1845,7 +1869,7 @@ public class SakaiBLTIUtil {
 			*/
 
 			if ( deepLink ) {
-				DeepLink ci = new DeepLink();
+				SakaiDeepLink ci = new SakaiDeepLink();
 				// accept_copy_advice is not in deep linking - files are to be copied - images maybe
 				String accept_media_types = ltiProps.getProperty("accept_media_types");
 				if ( ContentItem.MEDIA_LTILINKITEM.equals(accept_media_types) ) {
@@ -1864,6 +1888,24 @@ public class SakaiBLTIUtil {
 					String [] pieces = target.split(",");
 					for (String piece : pieces) {
 						ci.accept_presentation_document_targets.add(piece);
+					}
+				}
+
+				String flow = req.getParameter("flow");
+				if ( flow != null ) {
+					ci.sakai_placement = flow;
+					if ( SakaiDeepLink.PLACEMENT_LESSONS.equals(flow) ) {
+						ci.sakai_accept_lineitem = Boolean.TRUE;
+						ci.sakai_accept_available = Boolean.FALSE;
+						ci.sakai_accept_submission = Boolean.FALSE;
+					} else if ( SakaiDeepLink.PLACEMENT_ASSIGNMENT.equals(flow) ) {
+						ci.sakai_accept_lineitem = Boolean.TRUE;
+						ci.sakai_accept_available = Boolean.TRUE;
+						ci.sakai_accept_submission = Boolean.TRUE;
+					} else if ( SakaiDeepLink.PLACEMENT_EDITOR.equals(flow) ) {
+						ci.sakai_accept_lineitem = Boolean.FALSE;
+						ci.sakai_accept_available = Boolean.FALSE;
+						ci.sakai_accept_submission = Boolean.FALSE;
 					}
 				}
 
@@ -1905,7 +1947,6 @@ public class SakaiBLTIUtil {
 			String lti13_oidc_redirect = toNull((String) tool.get(LTIService.LTI13_OIDC_REDIRECT));
 
 			// If we have been told to send this to a redirect_uri instead of a launch...
-			HttpServletRequest req = ToolUtils.getRequestFromThreadLocal();
 			String redirect_uri = req.getParameter("redirect_uri");
 			if ( redirect_uri != null && lti13_oidc_redirect != null ) {
 				if ( lti13_oidc_redirect.indexOf(redirect_uri) >= 0 ) {
@@ -1913,8 +1954,8 @@ public class SakaiBLTIUtil {
 				}
 			}
 
-			String form_id = java.util.UUID.randomUUID().toString();
-			String html = "<form action=\"" + launch_url + "\" id=\""+ form_id + "\" method=\"POST\">\n"
+			Integer form_id = jws.hashCode();
+			String html = "<form action=\"" + launch_url + "\" id=\"jwt-launch-"+ form_id + "\" method=\"POST\">\n"
 					+ "    <input type=\"hidden\" name=\"id_token\" value=\"" + BasicLTIUtil.htmlspecialchars(jws) + "\" />\n";
 
 			if ( state != null ) {
@@ -1927,7 +1968,11 @@ public class SakaiBLTIUtil {
 			html += "    </form>\n";
 
 			if ( ! dodebug ) {
-				html += "<script>\n document.getElementById(\"" + form_id + "\").submit();\n</script>\n";
+				String launch_error = rb.getString("error.submit.timeout")+" "+launch_url;
+				html += "<script>\n";
+				html += "setTimeout(function() { document.getElementById(\"jwt-launch-" + form_id + "\").submit(); }, 200 );\n";
+				html += "setTimeout(function() { alert(\""+BasicLTIUtil.htmlspecialchars(launch_error)+"\"); }, 4000);\n";
+				html += "</script>\n";
 			} else {
 				html += "<p>\n--- Unencoded JWT:<br/>"
 						+ BasicLTIUtil.htmlspecialchars(ljs)
@@ -1989,6 +2034,40 @@ public class SakaiBLTIUtil {
 				signed_placement = getSignedPlacement(context_id, resource_link_id, placement_secret);
 			}
 			return signed_placement;
+		}
+
+		public static String trackResourceLinkID(Map<String, Object> oldContent) {
+			boolean retval = false;
+
+			String old_settings = (String) oldContent.get(LTIService.LTI_SETTINGS);
+			JSONObject old_json = BasicLTIUtil.parseJSONObject(old_settings);
+			String old_id_history = (String) old_json.get(LTIService.LTI_ID_HISTORY);
+
+			String old_resource_link_id = getResourceLinkId(oldContent);
+
+			String id_history = BasicLTIUtil.mergeCSV(old_id_history, null, old_resource_link_id);
+			return id_history;
+		}
+
+		public static boolean trackResourceLinkID(Map<String, Object> newContent, Map<String, Object> oldContent) {
+			boolean retval = false;
+
+			String old_settings = (String) oldContent.get(LTIService.LTI_SETTINGS);
+			JSONObject old_json = BasicLTIUtil.parseJSONObject(old_settings);
+			String old_id_history = (String) old_json.get(LTIService.LTI_ID_HISTORY);
+
+			String new_settings = (String) newContent.get(LTIService.LTI_SETTINGS);
+			JSONObject new_json = BasicLTIUtil.parseJSONObject(new_settings);
+			String new_id_history = (String) new_json.get(LTIService.LTI_ID_HISTORY);
+
+			String old_resource_link_id = getResourceLinkId(oldContent);
+
+			String id_history = BasicLTIUtil.mergeCSV(old_id_history, new_id_history, old_resource_link_id);
+			if ( id_history.equals(new_id_history) ) return false;
+
+			new_json.put(LTIService.LTI_ID_HISTORY, id_history);
+			newContent.put(LTIService.LTI_SETTINGS, new_json.toString());
+			return true;
 		}
 
 		public static String[] postError(String str) {
@@ -2480,9 +2559,8 @@ public class SakaiBLTIUtil {
 			retval.setProperty(LTIService.LTI_SITE_ID, siteId);
 			for (String field : fieldList) {
 				String value = toNull(getCorrectProperty(config, field, placement));
-				// YYY
 				if (field.equals(BASICLTI_PORTLET_ALLOWSETTINGS)) {
-					field = LTIService.LTI_ALLOWSETTINGS;
+					field = LTIService.LTI_ALLOWSETTINGS_EXT;
 				}
 				if (field.equals(BASICLTI_PORTLET_ALLOWROSTER)) {
 					field = LTIService.LTI_ALLOWROSTER;

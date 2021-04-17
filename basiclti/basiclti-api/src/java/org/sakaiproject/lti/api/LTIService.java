@@ -113,11 +113,11 @@ public interface LTIService extends LTISubstitutionsFilter {
             "visible:radio:label=bl_visible:choices=visible,stealth:role=admin",
             "deployment_id:integer:hidden=true",
             "launch:url:label=bl_launch:maxlength=1024:required=true",
-            "allowlaunch:radio:label=bl_allowlaunch:choices=disallow,allow:only=lti1",
+            "allowlaunch:radio:label=bl_allowlaunch:choices=disallow,allow",
             "consumerkey:text:label=bl_consumerkey:maxlength=1024",
-            "allowconsumerkey:radio:label=bl_allowconsumerkey:choices=disallow,allow:only=lti1",
+            "allowconsumerkey:radio:label=bl_allowconsumerkey:choices=disallow,allow",
             "secret:text:label=bl_secret:maxlength=1024",
-            "allowsecret:radio:label=bl_allowsecret:choices=disallow,allow:only=lti1",
+            "allowsecret:radio:label=bl_allowsecret:choices=disallow,allow",
             "frameheight:integer:label=bl_frameheight",
             "toolorder:integer:label=bl_toolorder:maxlength=2",
             "allowframeheight:radio:label=bl_allowframeheight:choices=disallow,allow",
@@ -125,11 +125,13 @@ public interface LTIService extends LTISubstitutionsFilter {
             "privacy:header:fields=sendname,sendemailaddr",
             "sendname:checkbox:label=bl_sendname",
             "sendemailaddr:checkbox:label=bl_sendemailaddr",
-            "services:header:fields=allowoutcomes,allowlineitems,allowroster,allowsettings",
+            "services:header:fields=allowoutcomes,allowlineitems,allowroster",
             "allowoutcomes:checkbox:label=bl_allowoutcomes",
-                        "allowlineitems:checkbox:label=bl_allowlineitems",
+            "allowlineitems:checkbox:label=bl_allowlineitems",
             "allowroster:checkbox:label=bl_allowroster",
-            "allowsettings:checkbox:label=bl_allowsettings",
+            // SAK-44810 changed this from allowsettings to allowsettings_ext
+            // because settings is used internally
+            "allowsettings_ext:checkbox:label=bl_allowsettings_ext",
             "pl_header:header:fields=pl_launch,pl_linkselection",
             "pl_launch:checkbox:label=bl_pl_launch",
             "pl_linkselection:checkbox:label=bl_pl_linkselection",
@@ -199,6 +201,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_FA_ICON = "fa_icon";
     String LTI_PLACEMENT = "placement";
     String LTI_DESCRIPTION = "description";
+    String LTI_ID_HISTORY = "id_history";
     String LTI_STATUS = "status";
     String LTI_VISIBLE = "visible";
     String LTI_LAUNCH = "launch";
@@ -217,7 +220,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_ALLOWOUTCOMES = "allowoutcomes";
     String LTI_ALLOWLINEITEMS = "allowlineitems";
     String LTI_ALLOWROSTER = "allowroster";
-    String LTI_ALLOWSETTINGS = "allowsettings";
+    String LTI_ALLOWSETTINGS_EXT = "allowsettings_ext";
     String LTI_ALLOWCONTENTITEM = "allowcontentitem";
     String LTI_SETTINGS = "settings";
     String LTI_SETTINGS_EXT = "settings_ext";

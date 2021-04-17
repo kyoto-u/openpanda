@@ -178,6 +178,7 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.LinkMigrationHelper;
+import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.sakaiproject.util.comparator.GroupTitleComparator;
 import org.sakaiproject.util.comparator.ToolTitleComparator;
 
@@ -1472,7 +1473,7 @@ public class SiteAction extends PagedResourceActionII {
 		
 		//SAK-29525 Open Template list by default when creating site
 		context.put("isExpandTemplates", ServerConfigurationService.getBoolean("site.setup.creation.expand.template", false));
-		
+
 		// the last visited template index
 		if (preIndex != null)
 			context.put("backIndex", preIndex);
@@ -1481,7 +1482,6 @@ public class SiteAction extends PagedResourceActionII {
 		if (index==3) 
 			index = 4;
 		context.put("templateIndex", String.valueOf(index));
-		
 		
 		// If cleanState() has removed SiteInfo, get a new instance into state
 		SiteInfo siteInfo = new SiteInfo();
@@ -2352,9 +2352,9 @@ public class SiteAction extends PagedResourceActionII {
 						}
 					}
 					if(joinableGroups.size() > 0){
-						Collections.sort(joinableGroups, new Comparator<JoinableGroup>(){
+						Collections.sort(joinableGroups, new Comparator<JoinableGroup>() {
 							public int compare(JoinableGroup g1, JoinableGroup g2){
-								return g1.getTitle().compareToIgnoreCase(g2.getTitle());
+								return new AlphaNumericComparator().compare(g1.getTitle(), g2.getTitle());
 							}
 						});
 					}
@@ -3829,6 +3829,10 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("page", page);
 			context.put("site", site);
 			context.put("layouts", layoutsList());
+			boolean fromHome = state.getAttribute("fromHome") != null ? (boolean) state.getAttribute("fromHome") : false;
+			if(fromHome) {
+				context.put("back", page.getId());
+			}
 
 			return (String) getContext(data).get("template") + TEMPLATE[65];
 		}
@@ -4482,14 +4486,20 @@ public class SiteAction extends PagedResourceActionII {
 	}
 
 	/**
+	 * Launch the Manage Overview helper from home
+	 */
+	public void doManageOverviewFromHome(RunData data) {
+		SessionState state = ((JetspeedRunData) data).getPortletSessionState(((JetspeedRunData) data).getJs_peid());
+		state.setAttribute("fromHome", true);
+		doManageOverview(data);
+	}
+		
+	/**
 	 * Launch the Manage Overview helper -- for managing overview layout
 	 */
 	public void doManageOverview(RunData data) {
 		SessionState state = ((JetspeedRunData) data)
 				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-
-		// Clean up state on our first entry from a shortcut
-		String panel = data.getParameters().getString("panel");
 
 		siteToolsIntoState(state);
 
@@ -6793,7 +6803,12 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 			if (index == 36 && ("add").equals(option)) {
 				// this is the Add extra Roster(s) case after a site is created
 				state.setAttribute(STATE_TEMPLATE_INDEX, "44");
-			} else if(index == 65) { //after manage overview, go back to main site info page.
+			} else if(index == 65) { //after manage overview, go back to where the call was made
+				String pageId = params.getString("back");
+				if(StringUtils.isNotEmpty(pageId) && !"12".equals(pageId)) {
+					String redirectionUrl = getDefaultSiteUrl(ToolManager.getCurrentPlacement().getContext()) + "/" + SiteService.PAGE_SUBTYPE + "/" + pageId;
+					sendParentRedirect((HttpServletResponse) ThreadLocalManager.get(RequestFilter.CURRENT_HTTP_RESPONSE), redirectionUrl);
+				}
 				state.setAttribute(STATE_TEMPLATE_INDEX, "12");
 			}else if (params.getString("continue") != null) {
 				state.setAttribute(STATE_TEMPLATE_INDEX, params
@@ -7670,6 +7685,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		state.removeAttribute("overview");
 		state.removeAttribute("site");
 		state.removeAttribute("allWidgets");
+		state.removeAttribute("fromHome");
 
 		doCancel(data);
 	}
@@ -7763,6 +7779,14 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 			state.removeAttribute(SITE_USER_SEARCH);
 			state.removeAttribute(STATE_SITE_PARTICIPANT_FILTER);
 			state.setAttribute(STATE_TEMPLATE_INDEX, SiteConstants.SITE_INFO_TEMPLATE_INDEX);
+		}
+		else if ("65".equals(currentIndex)) { //after manage overview, go back to where the call was made
+			String pageId = params.getString("back");
+			if(StringUtils.isNotEmpty(pageId) && !"12".equals(pageId)) {
+				String redirectionUrl = getDefaultSiteUrl(ToolManager.getCurrentPlacement().getContext()) + "/" + SiteService.PAGE_SUBTYPE + "/" + pageId;
+				sendParentRedirect((HttpServletResponse) ThreadLocalManager.get(RequestFilter.CURRENT_HTTP_RESPONSE), redirectionUrl);
+			}
+			state.setAttribute(STATE_TEMPLATE_INDEX, "12");
 		}
 		// if all fails to match
 		else if (isTemplateVisited(state, SiteConstants.SITE_INFO_TEMPLATE_INDEX)) {
@@ -11922,6 +11946,11 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 
 			if (!ltiSelectedTools.isEmpty())
 			{
+				// add in existing lti tools where visibility is stealth
+				existingLtiIds.keySet().stream()
+						.map(k -> m_ltiService.getTool(Long.valueOf(k), Objects.toString(state.getAttribute(STATE_SITE_INSTANCE_ID), "")))
+						.filter(m -> StringUtils.equals("1", Objects.toString(m.get(m_ltiService.LTI_VISIBLE), null)))
+						.forEach(o -> ltiSelectedTools.put(Objects.toString(o.get(m_ltiService.LTI_ID), ""), o));
 				state.setAttribute(STATE_LTITOOL_SELECTED_LIST, ltiSelectedTools);
 			}
 			else
@@ -16095,6 +16124,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		state.removeAttribute("overview");
 		state.removeAttribute("site");
 		state.removeAttribute("allWidgets");
+		state.removeAttribute("fromHome");
 
 		// make sure auto-updates are enabled
 		enableObserver(state);

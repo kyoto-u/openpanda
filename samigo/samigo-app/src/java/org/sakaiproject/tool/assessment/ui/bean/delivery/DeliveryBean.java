@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
@@ -720,7 +721,11 @@ public class DeliveryBean implements Serializable {
 	  
 	  SessionUtil.setSessionTimeout(FacesContext.getCurrentInstance(), this, false);
 
+	  // Sync time and write it to the DB
 	  syncTimeElapsedWithServer();
+	  GradingService gradingService = new GradingService();
+	  gradingService.saveOrUpdateAssessmentGradingOnly(adata);
+	  log.debug("submitForGrade: aid={}, timeElapsed={}, forGrade={}", adata.getAssessmentGradingId(), adata.getTimeElapsed(), adata.getForGrade());
 	  
 	  SubmitToGradingActionListener listener = new SubmitToGradingActionListener();
 	  // submission remaining and totalSubmissionPerAssessmentHash is updated inside 
@@ -738,7 +743,6 @@ public class DeliveryBean implements Serializable {
 	  // We don't need to call completeItemGradingData to create new ItemGradingData for linear access
 	  // because each ItemGradingData is created when it is viewed/answered 
 	  if (!"1".equals(navigation)) {
-		  GradingService gradingService = new GradingService();
 		  gradingService.completeItemGradingData(adata);
 	  }
 
@@ -793,12 +797,16 @@ public class DeliveryBean implements Serializable {
  	  List eventLogDataList = eventService.getEventLogData(adata.getAssessmentGradingId());
 	  if(eventLogDataList != null && eventLogDataList.size() > 0) {
 	 	  EventLogData eventLogData= (EventLogData) eventLogDataList.get(0);
-	 	  eventLogData.setErrorMsg(eventLogMessages.getString("no_error"));
+	 	  if (submitFromTimeoutPopup) {
+	 	    eventLogData.setErrorMsg(eventLogMessages.getString("timer_submit"));
+	 	  } else {
+	 	    eventLogData.setErrorMsg(eventLogMessages.getString("no_error"));
+	 	  }
 	 	  Date endDate = new Date();
 	 	  eventLogData.setEndDate(endDate);
 	 	  if(eventLogData.getStartDate() != null) {
 	 	      double minute= 1000*60;
-	 	      int eclipseTime = (int)Math.ceil(((endDate.getTime() - eventLogData.getStartDate().getTime())/minute));
+	 	      int eclipseTime = (int)Math.round(((endDate.getTime() - eventLogData.getStartDate().getTime())/minute));
 	 	      eventLogData.setEclipseTime(eclipseTime);
 	 	  } else {
 	 	      eventLogData.setEclipseTime(null);
@@ -1828,14 +1836,12 @@ public class DeliveryBean implements Serializable {
 	         }
 	         return;
 	      }
-	      TimedAssessmentQueue queue = TimedAssessmentQueue.getInstance();
-	      TimedAssessmentGradingModel timedAG = queue.get(adata.getAssessmentGradingId());
-	      if (timedAG != null){
 	        int timeElapsed  = Math.round((new Date().getTime() - adata.getAttemptDate().getTime())/1000.0f);
-	        log.debug("***setTimeElapsed={}", timeElapsed);
-	        adata.setTimeElapsed(timeElapsed);
-	        setTimeElapse(adata.getTimeElapsed().toString());
-	      }
+	        log.debug("***setTimeElapsed={}, aid={}", timeElapsed, adata.getAssessmentGradingId());
+	        // If timer submit exceeds timeLimit by one second, set the elapsed time to the time limit
+	        setTimeElapse(String.valueOf(timeElapsed));
+	        adata.setTimeElapsed(Integer.valueOf(getTimeElapse()));
+
 	    }
 	  }
 	  
@@ -1847,15 +1853,11 @@ public class DeliveryBean implements Serializable {
 		          }
 		          return;
 		      }
-		      TimedAssessmentQueue queue = TimedAssessmentQueue.getInstance();
-		      TimedAssessmentGradingModel timedAG = queue.get(adata.getAssessmentGradingId());
-		      if (timedAG != null){
 		    	int timeElapsed  = Math.round((new Date().getTime() - adata.getAttemptDate().getTime())/1000.0f);
 		        adata.setTimeElapsed(timeElapsed);
 		        GradingService gradingService = new GradingService();
 		        gradingService.saveOrUpdateAssessmentGradingOnly(adata);
 		        setTimeElapse(adata.getTimeElapsed().toString());
-		      }
 		    }
 	  }
 
@@ -2113,6 +2115,7 @@ public class DeliveryBean implements Serializable {
 	  boolean isAvailable = true;
 	  Date currentDate = new Date();
 		Date startDate;
+		verifyExtendedTimeDeliveryService();
 		if (extendedTimeDeliveryService.hasExtendedTime()) {
 			startDate = extendedTimeDeliveryService.getStartDate();
 		} else {
@@ -2127,6 +2130,7 @@ public class DeliveryBean implements Serializable {
   public boolean pastDueDate(){
     boolean pastDueDate = true;
     Date currentDate = new Date();
+    verifyExtendedTimeDeliveryService();
     Date due = extendedTimeDeliveryService.hasExtendedTime() ? extendedTimeDeliveryService.getDueDate() : publishedAssessment.getAssessmentAccessControl().getDueDate();
 
     if (due == null && AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling())) {
@@ -2145,6 +2149,7 @@ public class DeliveryBean implements Serializable {
   public boolean isAcceptLateSubmission() {
 	  boolean acceptLateSubmission = AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling());
 	  //If using extended Time Delivery, the late submission setting is based on retracted
+	  verifyExtendedTimeDeliveryService();
 	  if (extendedTimeDeliveryService.hasExtendedTime()) {
 		  //Accept it if it's not retracted on the extended time entry
 		  acceptLateSubmission = (extendedTimeDeliveryService.getRetractDate() != null) ? !isRetracted(false) : false;
@@ -2166,6 +2171,7 @@ public class DeliveryBean implements Serializable {
   {
     Date retractDate = null;
     boolean acceptLateSubmission = AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling());
+    verifyExtendedTimeDeliveryService();
     if (extendedTimeDeliveryService.hasExtendedTime()) {
     	retractDate = extendedTimeDeliveryService.getRetractDate();
     } else if (acceptLateSubmission) {
@@ -2603,5 +2609,14 @@ public class DeliveryBean implements Serializable {
     public String getPublishedURL() {
         PublishedAssessmentSettingsBean pasBean = (PublishedAssessmentSettingsBean) ContextUtil.lookupBean("publishedSettings");
         return pasBean.generatePublishedURL(publishedAssessment);
+    }
+
+    /**
+     * Ensure that the ExtendedTimeDeliveryService instance is making reference to the correct assessment.
+     */
+    private void verifyExtendedTimeDeliveryService() {
+        if(!Objects.equals(extendedTimeDeliveryService.getPublishedAssessmentId(), publishedAssessment.getPublishedAssessmentId())) {
+            extendedTimeDeliveryService = new ExtendedTimeDeliveryService(publishedAssessment);
+        }
     }
 }
