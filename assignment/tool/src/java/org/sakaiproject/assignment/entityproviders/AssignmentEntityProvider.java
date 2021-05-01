@@ -418,6 +418,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
                                          Map<String, Object> params) {
 
         List<SimpleAssignment> rv = new ArrayList<>();
+        List<SimpleAssignment> tmp = new ArrayList<>();
         String siteId = view.getPathSegment(2);
 
         // check user can access this site
@@ -430,7 +431,17 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             throw new EntityNotFoundException("No access to site: " + siteId, siteId);
         }
 
-        assignmentService.getAssignmentsForContext(siteId).stream().map(SimpleAssignment::new).forEach(rv::add);
+        assignmentService.getAssignmentsForContext(siteId).stream().map(SimpleAssignment::new).forEach(tmp::add);
+
+        Instant currentTime = Instant.now();
+        for (SimpleAssignment a : tmp) {
+            if (!a.draft
+                && ((a.openTime != null && currentTime.isAfter(a.openTime))
+                && (a.closeTime != null && currentTime.isBefore(a.closeTime)))) {
+                // an available assignment
+                rv.add(a);
+            }
+        }
         return rv;
     }
 
@@ -449,8 +460,19 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 
         // get all assignments from each site
         for (Site site : sites) {
+            List<SimpleAssignment> tmp = new ArrayList<>();
             String siteId = site.getId();
-            assignmentService.getAssignmentsForContext(siteId).stream().map(SimpleAssignment::new).forEach(rv::add);
+            assignmentService.getAssignmentsForContext(siteId).stream().map(SimpleAssignment::new).forEach(tmp::add);
+
+            Instant currentTime = Instant.now();
+            for (SimpleAssignment a : tmp) {
+                if (!a.draft
+                    && ((a.openTime != null && currentTime.isAfter(a.openTime))
+                    && (a.closeTime != null && currentTime.isBefore(a.closeTime)))) {
+                    // an available assignment
+                    rv.add(a);
+                }
+            }
         }
 
         return rv;
@@ -1238,13 +1260,13 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             }
             this.id = a.getId();
             this.openTime = a.getOpenDate();
-            this.openTimeString = a.getOpenDate().toString();
+            this.openTimeString = (a.getOpenDate() != null) ? a.getOpenDate().toString() : null;
             this.dueTime = a.getDueDate();
-            this.dueTimeString = a.getDueDate().toString();
+            this.dueTimeString = (a.getDueDate() != null) ? a.getDueDate().toString() : null;
             this.dropDeadTime = a.getDropDeadDate();
-            this.dropDeadTimeString = a.getDropDeadDate().toString();
+            this.dropDeadTimeString = (a.getDropDeadDate() != null) ? a.getDropDeadDate().toString() : null;
             this.closeTime = a.getCloseDate();
-            this.closeTimeString = a.getCloseDate().toString();
+            this.closeTimeString = (a.getCloseDate() != null) ? a.getCloseDate().toString() : null;
             this.section = a.getSection();
             this.context = a.getContext();
             this.draft = a.getDraft();
@@ -1310,7 +1332,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
                 }
             }
             // Translate grade scale from its numeric value to its description.
-            this.gradeScale = a.getTypeOfGrade().toString();
+            this.gradeScale = (a.getTypeOfGrade() != null) ? a.getTypeOfGrade().toString() : null;
 
             // If grade scale is "points" we also capture the maximum points allowed.
             if (a.getTypeOfGrade() == Assignment.GradeType.SCORE_GRADE_TYPE) {
@@ -1322,7 +1344,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
             if (a.getProperties().get(ALLOW_RESUBMIT_NUMBER) != null && a.getTypeOfSubmission() != Assignment.SubmissionType.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) {
                 this.allowResubmission = true;
             }
-            this.submissionType = a.getTypeOfSubmission().toString();
+            this.submissionType = (a.getTypeOfSubmission() != null) ? a.getTypeOfSubmission().toString() : null;
 
             // Supplement Items
             AssignmentModelAnswerItem assignmentModelAnswerItem = assignmentSupplementItemService.getModelAnswer(a.getId());
