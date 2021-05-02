@@ -75,19 +75,20 @@
   -o-transition: background-color 0.2s, color 0.2s;
   transition: background-color 0.2s, color 0.2s;
 
-  background-color: #f7e084;
-  color: #000 !important;
+  /* background-color: #f7e084; */
+  /* color: #000 !important; */
+  color: #f7e084 !important;
   text-align: center;
   padding: 6px 8px;
   border-radius: 3px;
   text-decoration: none;
 }
 .pasystem-banner-alert-toggle-list-item {
-  position: absolute;
-  left: 50%;
+  /* position: absolute; */
+  /* left: 50%; */
   transform: translateX(-50%);
   top: 13px;
-  border: 1px solid #E0E0E0;
+  /* border: 1px solid #E0E0E0; */
   z-index: 1000;
   display: inline-block;
 
@@ -97,7 +98,7 @@
   -o-transition: background-color 0.2s, color 0.2s;
   transition: background-color 0.2s, color 0.2s;
 
-  background-color: #f7e084;
+  /* background-color: #f7e084; */
   color: #000 !important;
   text-align: center;
   padding: 6px 8px;
@@ -107,6 +108,7 @@
 .pasystem-banner-alert-toggle:before {
   font-family: 'pasystem-icons';
   content: '\f071';
+  text-decoration: none;
 }
 .pasystem-banner-alert-toggle:hover {
   -webkit-transition: background-color 0.2s, color 0.2s;
