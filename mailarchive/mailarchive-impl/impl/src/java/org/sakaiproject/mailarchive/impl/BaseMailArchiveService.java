@@ -827,11 +827,10 @@ public abstract class BaseMailArchiveService extends BaseMessage implements Mail
 		{
 			StringBuilder alertMsg = new StringBuilder();
 			final String cleanedHtml = FormattedText.processFormattedText(body[1], alertMsg);
-			final String cleanedText = FormattedText.encodeUnicode(body[0]);
 
 			MailArchiveMessageEdit edit = (MailArchiveMessageEdit) addMessage();
 			MailArchiveMessageHeaderEdit archiveHeaders = edit.getMailArchiveHeaderEdit();
-			edit.setBody(cleanedText);
+			edit.setBody(body[0]);
 			edit.setHtmlBody(cleanedHtml);
 			archiveHeaders.replaceAttachments(attachments);
 			archiveHeaders.setSubject(subject);
