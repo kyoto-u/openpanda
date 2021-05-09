@@ -142,6 +142,10 @@
                       timerBlock.css("border-radius", "10px");
                   }
               }
+              newTop = "10px";
+              timerBlock.css({
+                  "top": newTop,
+              });
           }
       }
 
