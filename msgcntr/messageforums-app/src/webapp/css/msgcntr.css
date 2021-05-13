@@ -188,6 +188,7 @@
 .messagesThreaded tbody tr td div.hierItemBlock .textPanel{
 	clear: both;
 	overflow-x: auto;
+	white-space: normal;
 }
 .messagesFlat div.textPanel {
 	overflow-x: auto;
