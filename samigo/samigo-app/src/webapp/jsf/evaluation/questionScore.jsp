@@ -36,6 +36,14 @@ $Id$
       <title><h:outputText value="#{evaluationMessages.title_question}" /></title>
       <script src="/webcomponents/rubrics/sakai-rubrics-utils.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
       <script type="module" src="/webcomponents/rubrics/rubric-association-requirements.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
+      <style type="text/css">
+      .questionScoreTable  {
+          white-space: normal !important;
+      }
+      .questionScoresAnswer  {
+        width: 400px;
+      }
+      </style>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
 
@@ -450,7 +458,7 @@ $Id$
   <!-- STUDENT RESPONSES AND GRADING -->
   <!-- note that we will have to hook up with the back end to get N at a time -->
 <div class="table-responsive">
-  <h:dataTable id="questionScoreTable" value="#{questionScores.agents}" var="description" styleClass="table table-bordered table-striped" columnClasses="textTable">
+  <h:dataTable id="questionScoreTable" value="#{questionScores.agents}" var="description" styleClass="table table-bordered table-striped questionScoreTable" columnClasses="textTable">
 
     <!-- NAME/SUBMISSION ID -->
     <h:column rendered="#{questionScores.anonymous eq 'false' && questionScores.sortType ne 'lastName'}">
@@ -871,7 +879,7 @@ $Id$
     </h:column>
 
     <!-- ANSWER -->
-    <h:column rendered="#{questionScores.sortType!='answer'}">
+    <h:column rendered="#{questionScores.sortType!='answer'}" headerClass="questionScoresAnswer">
       <f:facet name="header">
         <h:panelGroup>
 		  <h:outputText value="#{commonMessages.student_response}" 
@@ -943,7 +951,7 @@ $Id$
       
     </h:column>
 
-    <h:column rendered="#{questionScores.sortType eq 'answer' && questionScores.sortAscending}">
+    <h:column rendered="#{questionScores.sortType eq 'answer' && questionScores.sortAscending}" headerClass="questionScoresAnswer">
       <f:facet name="header">
       <h:panelGroup>
 		  <h:outputText value="#{commonMessages.student_response}" 
@@ -1014,7 +1022,7 @@ $Id$
       </h:panelGroup>
     </h:column>    
     
-    <h:column rendered="#{questionScores.sortType eq 'answer' && !questionScores.sortAscending}">
+    <h:column rendered="#{questionScores.sortType eq 'answer' && !questionScores.sortAscending}" headerClass="questionScoresAnswer">
       <f:facet name="header">
 		  <h:panelGroup>
 		  <h:outputText value="#{commonMessages.student_response}" 
