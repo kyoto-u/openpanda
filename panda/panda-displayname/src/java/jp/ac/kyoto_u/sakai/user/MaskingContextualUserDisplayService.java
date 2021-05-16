@@ -226,6 +226,12 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		String loginUserType = null;
 		SiteContext siteContext = null;
 
+		// no mask for userself
+		if (SessionManager.getCurrentSessionUserId().equals(user.getId()))  {
+		    return(false);
+		}
+
+		// no mask for Administrator
 		if (SecurityService.isSuperUser()) {
 		    return(false);
 		}
@@ -237,10 +243,12 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		    return(true);
 		}
 
+		// mask for School and Graduate School for Law
 		if (siteContext != null && (StringUtil.containsIgnoreCase(siteContext.siteId, "2021-276-") || StringUtil.containsIgnoreCase(siteContext.siteId, "2021-103-")))  {
 		    return(true);
 		}
 
+		// mask for Student, TA/Teaching Assistant
 		if (siteContext != null && ("Student".equals(siteContext.userType) || "TA".equals(siteContext.userType) || "Teaching Assistant".equals(siteContext.userType)))  {
 		    return(true);
 		}
