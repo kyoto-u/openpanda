@@ -19,6 +19,7 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.util.StringUtil;
 
 public class MaskingContextualUserDisplayService implements ContextualUserDisplayService {
 	private static Log M_log = LogFactory.getLog(MaskingContextualUserDisplayService.class);
@@ -223,42 +224,51 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		assert user != null;
 		boolean checkMask = true;
 		String loginUserType = null;
+		SiteContext siteContext = null;
+
+		if (SecurityService.isSuperUser()) {
+		    return(false);
+		}
+	
 		try {
-			loginUserType = getSiteRoleId(SessionManager.getCurrentSessionUserId());
+		    siteContext = getSiteRoleId(SessionManager.getCurrentSessionUserId());
 		} catch (IdUnusedException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+		    e.printStackTrace();
+		    return(true);
 		}
 
-		if(SecurityService.isSuperUser()){
-			checkMask = false;
-		}else{
-			if("Instructor".equals(loginUserType)){
-				String siteUserType = null;
-				try{
-					siteUserType = getSiteRoleId(user.getId());
-					if("Instructor".equals(siteUserType)){
-						checkMask = true;
-					}else{
-						checkMask = false;
-					}
-				}catch(IdUnusedException e){
-					e.printStackTrace();
-				}
-			}else if("Student".equals(loginUserType) || "TA".equals(loginUserType) || "Teaching Assistant".equals(loginUserType)){
-				checkMask = true;
-			}else{
-				checkMask = true;
+		if (siteContext != null && (StringUtil.containsIgnoreCase(siteContext.siteId, "2021-276-") || StringUtil.containsIgnoreCase(siteContext.siteId, "2021-103-")))  {
+		    return(true);
+		}
+
+		if (siteContext != null && ("Student".equals(siteContext.userType) || "TA".equals(siteContext.userType) || "Teaching Assistant".equals(siteContext.userType)))  {
+		    return(true);
+		}
+
+		if (siteContext != null && "Instructor".equals(siteContext.userType)) {
+		    SiteContext siteContextForUser = null;
+		    try {
+			siteContextForUser = getSiteRoleId(user.getId());
+			if (siteContextForUser != null && "Instructor".equals(siteContextForUser.userType)) {
+			    checkMask = true;
+			} else {
+			    checkMask = false;
 			}
+		    } catch(IdUnusedException e) {
+			e.printStackTrace();
+		    }
+		} else {
+		    checkMask = true;
 		}
 		return checkMask;
 	}
 
 	@SuppressWarnings({ "deprecation", "static-access" })
-	private String getSiteRoleId(String userId) throws IdUnusedException{
+	private SiteContext getSiteRoleId(String userId) throws IdUnusedException{
 
 		String siteId = "";
 		Placement placement = org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement();
+		SiteContext siteContext = new SiteContext();
 		if(placement == null){
 			if(SessionManager.getCurrentSession() != null){
 
@@ -278,7 +288,10 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 			siteId = placement.getContext();
 		}
 
-		return SiteService.getSite(siteId).getMember(userId) != null ? SiteService.getSite(siteId).getMember(userId).getRole().getId() : null;
+		siteContext.setSiteId(siteId);
+		siteContext.setUserType(SiteService.getSite(siteId).getMember(userId) != null ? SiteService.getSite(siteId).getMember(userId).getRole().getId() : null);
+
+		return siteContext;
 
 	}
 
@@ -290,5 +303,25 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		}
 		return locale.getLanguage() + "_" + locale.getCountry();
 	}
+
+}
+
+class SiteContext  {
+    String userType;
+    String siteId;
+
+    void setUserType(String userType)  {
+	this.userType = userType;
+    }
+    String getUserType()  {
+	return userType;
+    }
+    void setSiteId(String siteId)  {
+	this.siteId = siteId;
+    }
+    String getSiteId()  {
+	return siteId;
+    }
+
 
 }
