@@ -229,8 +229,12 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		SiteContext siteContext = null;
 
 		// no mask for userself
-		if (SessionManager.getCurrentSessionUserId().equals(user.getId()))  {
-		    return(false);
+		try {
+			if (SessionManager.getCurrentSessionUserId().equals(user.getId()))  {
+			    return(false);
+			}
+		} catch (NullPointerException e) {
+			return(false);
 		}
 
 		// no mask for Administrator
