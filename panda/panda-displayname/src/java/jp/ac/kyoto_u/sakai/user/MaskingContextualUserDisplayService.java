@@ -226,13 +226,6 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		String loginUserType = null;
 		SiteContext siteContext = null;
 
-		try {
-		   user.getId();
-		} catch (NullPointerException e) {
-		    e.printStackTrace();
-		    return(false);
-		}
-
 		// no mask for userself
 		if (SessionManager.getCurrentSessionUserId().equals(user.getId()))  {
 		    return(false);
