@@ -1,22 +1,15 @@
 package org.sakaiproject.pdfgenerationservice.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.util.List;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletResponse;
-
-import lombok.Setter;
 
 import org.apache.log4j.Logger;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -28,20 +21,9 @@ import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.HeaderFooter;
-import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPageLabels;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfDocument;
-import com.lowagie.text.pdf.ColumnText;
-import java.util.logging.Level;
+
+import lombok.Setter;
 
 /**
  * Implementation of {@link PDFGenerationService}
@@ -54,8 +36,6 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
     private EmailTemplateService emailTemplateService;
     @Setter
     private ServerConfigurationService serverConfigurationService;
-
-    private List<String> htmlList = new ArrayList<String>();
 
     /**
      * init - perform any actions required here for when this bean starts up
@@ -103,6 +83,7 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
                 return false;
             }
 
+            List<String> htmlList = new ArrayList<String>();
             htmlList = getRenderedHtmlMessageValiable(matrix, pages, htmlMessage);
             if (htmlList == null || htmlList.size() < 0) {
                 log.warn("data not correct");
@@ -141,6 +122,7 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
         String pageNumber = "1/1";
         String pageNumber_template = "\\{\\$pageNumber\\}";
         htmlMessage = htmlMessage.replaceFirst(pageNumber_template, pageNumber);
+        List<String> htmlList = new ArrayList<String>();
         htmlList.add(htmlMessage);
 
         if (createPdf(response, htmlList)) {
@@ -159,6 +141,7 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
      */
     private boolean existsTemplate(String templatePath) {
         Locale locale = new ResourceLoader().getLocale();
+        log.info("looking for " + templatePath + " " + locale);
         return emailTemplateService.templateExists(templatePath, locale);
     }
 
@@ -175,7 +158,6 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
         Matcher matcher = pattern.matcher(htmlMessage);
         List<List<String>> matrixList = new ArrayList<List<String>>();
         List<String> matrixData = new ArrayList<String>();
-        int containsCount = 0;
         while (matcher.find()) {
 
             String findMessage = matcher.group();
@@ -289,6 +271,7 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
         int pageNo = 0;
         int nextpage = 0;
 
+        List<String> htmlList = new ArrayList<String>();
         String htmlMessage_change = htmlMessage;
         for (int i = 0; i < pages.size(); i++) {
             List<String> replaceData = pages.get(i);
@@ -321,7 +304,6 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
             }
         }
 
-        List<String> matrix_mes = matrix.get(0);
         for (int j = 0; j < htmlList.size(); j++) {
             String html = htmlList.get(j);
             String regex = "\\{\\$data-\\d\\}";
@@ -353,8 +335,8 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
             ITextRenderer renderer = new ITextRenderer();
             setAdditionalFonts(renderer);
 
-            for (int i = 0; i < htmlList.size(); i++) {
-                renderer.setDocumentFromString(htmlList.get(i));
+            for (int i = 0; i < htmllist.size(); i++) {
+                renderer.setDocumentFromString(htmllist.get(i));
                 renderer.layout();
                 if (i == 0) {
                     renderer.createPDF(response.getOutputStream(), false, 0);
@@ -363,7 +345,7 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
                 }
             }
             renderer.finishPDF();
-            htmlList.clear();
+            htmllist.clear();
             response.getOutputStream().close();
             return true;
         } catch (DocumentException e) {

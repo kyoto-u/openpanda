@@ -27,8 +27,7 @@
 
             <dependency>
               <groupId>javax.servlet</groupId>
-              <artifactId>servlet-api</artifactId>
-              <version>${sakai.servletapi.version}</version>
+              <artifactId>javax.servlet-api</artifactId>
             </dependency>
 
     </dependencies>

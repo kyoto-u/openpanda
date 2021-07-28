@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+* {
+  font-family: 'MS Gothic'
+}
+
+p {
+  word-wrap: break-word;  
+}
+
+div .sectionName {
+  word-wrap: break-word;
+}
+
+div .title {
+  font-size: 24px;
+  padding: 50px 0 50px 0;
+  text-align: center;
+}
+
+div .signature {
+  float: right;
+  padding-top: 50px;
+  font-size: 16px;
+  page-break-after: always;
+}
+</style>
+</head>
+<body>
+<div style="width:650px; height:800px; margin: 0 auto;">
+
+<div align="right" style="padding-right:50px;">{$0}</div>
+
+  <div class="title">トレーニング記録</div>
+  
+  <div>
+    <table style="width:500px; margin: 0 auto;">
+      <tr>
+        <td style="width:20%;">所属・部</td>
+        <td class="sectionName" style="width:70%;">{$1}</td>
+        <td style="width:10%;"></td>
+      </tr>
+      <tr>
+        <td style="width:100px;">受講者名</td>
+        <td>{$2}</td>
+        <td style="text-align:right;">殿</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div style="padding-top:20px; margin: 0 auto;" align="center">
+    <font size="3">貴殿は、下記研修を受講・終了されましたことを証します。</font>
+  </div>
+  
+  <div style="padding-top:20px; margin: 0 auto; width:600px;">
+    <div>
+    <table style="width:580px; margin: 0 auto;" border="1" cellspacing="0" cellpadding="0">
+      <tr><td style="width:60%; text-align:center;">研修名</td><td style="width:40%; text-align:center;">研修修了日</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+      <tr><td>{$data-1}</td><td>{$data-2}</td></tr>
+    </table>
+    </div>
+    <div style="padding-top:10px;">
+    <div style="float:left; padding-left:100px;font-size: 20px;">
+      {$3}
+    </div>
+    <div class="signature">
+    <p>京都大学医学部付属病院</p>
+    <p>臨床研究総合センター</p>
+    <p>センター長    髙橋 良輔</p>
+  </div>
+    <div style="clear:both;"></div>
+    </div>
+  </div>
+
+
+
+  <div class="signature">
+    受講者署名<br/><br/>
+    <div>
+      <div style="border-bottom: 1px solid #000000; float:left;">
+        </div><div style="float:left;">年</div><div style="border-bottom: 1px solid #000000; float:left;">
+        </div><div style="float:left;">月</div><div style="border-bottom: 1px solid #000000; float:left;">
+        </div><div style="float:left;">日</div><br/><br/>
+    </div>
+    <div style="border-bottom: 1px solid #000000">署名</div>
+  </div>
+  <div style="clear:both;"></div>
+</div>
+
+</body>
+</html>
