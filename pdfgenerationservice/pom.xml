@@ -35,14 +35,14 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>0.11.0</version>
+                <version>${sakai.lombok.version}</version>
                 <type>jar</type>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.14</version>
+                <version>${sakai.log4j.version}</version>
             </dependency>
 
         </dependencies>
@@ -50,32 +50,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>sakai-maven</id>
-            <name>Sakai Maven Repo</name>
-            <layout>default</layout>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Sakai Plugin Repo</id>
-            <url>http://source.sakaiproject.org/maven2</url>
-            <releases>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
   <modules>
     <module>api</module>
