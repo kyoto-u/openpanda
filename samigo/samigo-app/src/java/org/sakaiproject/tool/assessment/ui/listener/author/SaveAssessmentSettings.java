@@ -32,9 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.samigo.util.SamigoConstants;
@@ -42,10 +40,14 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
-import org.sakaiproject.tool.assessment.data.dao.assessment.*;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
+import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
+import org.sakaiproject.tool.assessment.data.dao.assessment.SecuredIPAddress;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
@@ -56,11 +58,13 @@ import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
-import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentSettingsBean;
-import org.sakaiproject.tool.cover.ToolManager;
+import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
 import org.sakaiproject.tool.assessment.util.TextFormat;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Title: Samigo</p>2
@@ -371,6 +375,34 @@ public class SaveAssessmentSettings
         log.warn(ex.getMessage(), ex);
         control.setInstructorNotification( SamigoConstants.NOTI_PREF_INSTRUCTOR_EMAIL_DEFAULT );
     }
+
+    // g. set Caliper
+    Caliper caliper = (Caliper) assessment.getCaliper();
+    if (caliper == null){
+        caliper = new Caliper();
+        caliper.setAssessmentBase(assessment.getData());
+    }
+    if ((EvaluationModel.TO_DEFAULT_GRADEBOOK.toString()).equals(evaluation.getToGradeBook())
+            && assessmentSettings.isSendCaliper()){
+      caliper.setSend(assessmentSettings.isSendCaliper());
+      caliper.setEndPoint(assessmentSettings.getEndPoint());
+      caliper.setApiKey(assessmentSettings.getApiKey());
+      caliper.setThreshold(new Double(assessmentSettings.getThreshold()));
+      caliper.setMail(assessmentSettings.getMail());
+      if(assessmentSettings.isRetry()){
+          caliper.setRetry(true);
+      }else{
+          caliper.setRetry(false);
+      }
+    }else{
+      caliper.setSend(assessmentSettings.isSendCaliper());
+      caliper.setEndPoint(null);
+      caliper.setApiKey(null);
+      caliper.setThreshold(null);
+      caliper.setMail(null);
+      caliper.setRetry(false);
+    }
+    assessment.setCaliper(caliper);
 
     // l. FINALLY: save the assessment
     assessmentService.saveAssessment(assessment);

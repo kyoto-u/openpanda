@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -325,6 +324,17 @@ public class XMLImportBean implements Serializable {
    // gradebook options, don't know how this is supposed to work, leave alone for now
    if (!hasGradebook && assessment!=null){
    	assessment.getEvaluationModel().setToGradeBook(EvaluationModelIfc.NOT_TO_GRADEBOOK.toString());
+
+    //caliper
+    if(assessment.getCaliper() != null){
+       assessment.getCaliper().setSend(false);
+       assessment.getCaliper().setEndPoint(null);
+       assessment.getCaliper().setApiKey(null);
+       assessment.getCaliper().setThreshold(null);
+       assessment.getCaliper().setMail(null);
+       assessment.getCaliper().setRetry(false);
+    }
+
    }
    assessmentService.saveAssessment(assessment);
    

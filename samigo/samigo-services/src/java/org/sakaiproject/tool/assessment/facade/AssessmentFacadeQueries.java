@@ -35,21 +35,18 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
-
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.rubrics.logic.model.ToolItemRubricAssociation;
 import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.rubrics.logic.RubricsService;
+import org.sakaiproject.rubrics.logic.model.ToolItemRubricAssociation;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.site.api.Group;
@@ -66,6 +63,7 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentTemplateData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AttachmentData;
+import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemAttachment;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
@@ -112,6 +110,8 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateQueryException;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.web.client.HttpClientErrorException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AssessmentFacadeQueries extends HibernateDaoSupport implements AssessmentFacadeQueriesAPI {
@@ -444,6 +444,15 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 				feedback.setAssessmentBase(assessment);
 				assessment.setAssessmentFeedback(feedback);
 			}
+
+			// deal with caliper
+            Caliper caliperOrig = (Caliper) t.getCaliper();
+            if (caliperOrig != null) {
+                Caliper caliper = (Caliper) caliperOrig.clone();
+                caliper.setAssessmentBase(assessment);
+                assessment.setCaliper(caliper);
+            }
+
 			// deal with evaluation
 			EvaluationModel evalOrig = (EvaluationModel) t.getEvaluationModel();
 			if (evalOrig != null) {
@@ -1825,6 +1834,11 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 		EvaluationModel newEvaluationModel = prepareEvaluationModel(
 				newAssessment, (EvaluationModel) a.getEvaluationModel());
 		newAssessment.setEvaluationModel(newEvaluationModel);
+
+		// caliper
+        Caliper newCaliper = prepareCaliper(newAssessment, (Caliper) a.getCaliper());
+        newAssessment.setCaliper(newCaliper);
+
 		// feedback
 		AssessmentFeedback newFeedback = prepareAssessmentFeedback(
 				newAssessment, (AssessmentFeedback) a.getAssessmentFeedback());
@@ -1945,6 +1959,15 @@ public class AssessmentFacadeQueries extends HibernateDaoSupport implements Asse
 		newEvaluationModel.setAssessmentBase(p);
 		return newEvaluationModel;
 	}
+
+	public Caliper prepareCaliper(AssessmentData p,Caliper e) {
+        if (e == null) {
+            return null;
+        }
+        Caliper newCaliper = new Caliper(e.getSend(), e.getEndPoint(), e.getApiKey(), e.getThreshold(), e.getMail(), e.getRetry());
+        newCaliper.setAssessmentBase(p);
+        return newCaliper;
+    }
 
 	public Set prepareAssessmentMetaDataSet(AssessmentData p, Set metaDataSet) {
 		HashSet h = new HashSet();

@@ -44,16 +44,18 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
-
-import org.sakaiproject.tool.api.SessionManager;
-import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.tool.assessment.facade.*;
+import org.sakaiproject.content.api.ContentResource;
+import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.entity.api.Reference;
+import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.samigo.util.SamigoConstants;
+import org.sakaiproject.section.api.SectionAwareness;
+import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
+import org.sakaiproject.section.api.facade.Role;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookInformation;
@@ -62,28 +64,25 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.UserTimeService;
+import org.sakaiproject.tool.api.SessionManager;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
+import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ExtendedTime;
 import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
-import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.content.api.FilePickerHelper;
-import org.sakaiproject.exception.PermissionException;
-import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.section.api.SectionAwareness;
-import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
-import org.sakaiproject.section.api.facade.Role;
-import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.entity.api.Reference;
-import org.sakaiproject.entity.cover.EntityManager;
-import org.sakaiproject.samigo.util.SamigoConstants;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.RegisteredSecureDeliveryModuleIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.AuthzQueriesFacadeAPI;
+import org.sakaiproject.tool.assessment.facade.ExtendedTimeFacade;
+import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.PublishingTargetHelper;
@@ -100,6 +99,10 @@ import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /* For author: Assessment Settings backing bean.*/
 @Slf4j
@@ -223,7 +226,14 @@ public class PublishedAssessmentSettingsBean implements Serializable {
   
   private String bgColorSelect;
   private String bgImageSelect;
-  
+
+  private boolean sendCaliper = false;
+  private String endPoint;
+  private String apiKey;
+  private String threshold;
+  private String mail;
+  private boolean retry = false;
+
   private List<ExtendedTime> extendedTimes;
   private ExtendedTime extendedTime;
   private ExtendedTime transitoryExtendedTime;
@@ -406,6 +416,26 @@ public class PublishedAssessmentSettingsBean implements Serializable {
 
         this.categoriesSelectList = populateCategoriesSelectList();
         this.categorySelected = getCategoryForAssessmentName(assessment.getTitle());
+
+        // properties of Caliper
+        CaliperIfc caliper = assessment.getCaliper();
+        if (toDefaultGradebook && caliper != null && caliper.getSend()) {
+            this.sendCaliper = caliper.getSend();
+            this.endPoint = caliper.getEndPoint();
+            this.apiKey = caliper.getApiKey();
+            if(caliper.getThreshold() != null){
+                this.threshold = caliper.getThreshold().toString();
+            }
+            this.mail = caliper.getMail();
+            this.retry = caliper.getRetry();
+        }else{
+            this.sendCaliper = false;
+            this.endPoint = null;
+            this.apiKey = null;
+            this.threshold = null;
+            this.mail = null;
+            this.retry = false;
+        }
 
       }
 
@@ -1882,5 +1912,42 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
       server = server.substring(0, index);
       String url = server + extContext.getRequestContextPath();
       return url + "/servlet/Login?id=" + this.alias;
+  }
+
+  public boolean isSendCaliper() {
+    return this.sendCaliper;
+  }
+  public void setSendCaliper(boolean sendCaliper) {
+    this.sendCaliper = sendCaliper;
+  }
+  public String getEndPoint() {
+    return this.endPoint;
+  }
+  public void setEndPoint(String endPoint) {
+    this.endPoint = endPoint;
+  }
+  public String getApiKey() {
+    return this.apiKey;
+  }
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
+  public String getThreshold() {
+    return this.threshold;
+  }
+  public void setThreshold(String threshold) {
+    this.threshold = threshold;
+  }
+  public String getMail() {
+    return this.mail;
+  }
+  public void setMail(String mail) {
+    this.mail = mail;
+  }
+  public boolean isRetry() {
+    return this.retry;
+  }
+  public void setRetry(boolean retry) {
+    this.retry = retry;
   }
 }

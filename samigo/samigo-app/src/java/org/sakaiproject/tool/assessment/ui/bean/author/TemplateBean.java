@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
@@ -40,6 +39,8 @@ import org.sakaiproject.tool.assessment.business.entity.RecordingData;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p> For author: Template editor backing bean
@@ -90,7 +91,15 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
   private String lastModifiedBy;
   private Date modifiedDate;
   private String outcome;
-  
+
+  private boolean sendCaliper = false;
+  private String endPoint;
+  private String apiKey;
+  private String threshold;
+  private String mail;
+  private boolean retry = false;
+
+
   /**
    * This just sets some defaults.
    */
@@ -1011,5 +1020,42 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
   public boolean isSecureDeliveryAvailable() {
 	  SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
 	  return secureDeliveryService.isSecureDeliveryAvaliable();
+  }
+
+  public boolean isSendCaliper() {
+	  return this.sendCaliper;
+  }
+  public void setSendCaliper(boolean sendCaliper) {
+	  this.sendCaliper = sendCaliper;
+  }
+  public String getEndPoint() {
+	  return endPoint;
+  }
+  public void setEndPoint(String endPoint) {
+	  this.endPoint = endPoint;
+  }
+  public String getApiKey() {
+	  return apiKey;
+  }
+  public void setApiKey(String apiKey) {
+	  this.apiKey = apiKey;
+  }
+  public String getThreshold() {
+	  return threshold;
+  }
+  public void setThreshold(String threshold) {
+	  this.threshold = threshold;
+  }
+  public String getMail() {
+	  return mail;
+  }
+  public void setMail(String mail) {
+	  this.mail = mail;
+  }
+  public boolean isRetry() {
+	  return this.retry;
+  }
+  public void setRetry(boolean retry) {
+	  this.retry = retry;
   }
 }

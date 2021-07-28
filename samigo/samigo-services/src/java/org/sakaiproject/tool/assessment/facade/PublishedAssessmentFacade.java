@@ -31,22 +31,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PublishedAssessmentFacade
@@ -112,6 +113,9 @@ public class PublishedAssessmentFacade
   private boolean selected;
   private Long categoryId;
   private boolean pastDue = false;
+
+  private CaliperIfc publishedCaliper;
+  private Boolean sendCaliperSuccess = true;
 
   public PublishedAssessmentFacade() {
   }
@@ -283,6 +287,7 @@ public class PublishedAssessmentFacade
         this.publishedMetaDataSet);
     this.publishedSecuredIPAddressSet = data.getSecuredIPAddressSet();
     this.publishedAssessmentAttachmentSet = data.getAssessmentAttachmentSet();
+    this.publishedCaliper = data.getCaliper();
   }
 
   public Long getPublishedAssessmentId(){
@@ -908,6 +913,20 @@ public class PublishedAssessmentFacade
 
   public void setPastDue(boolean pastDue) {
     this.pastDue = pastDue;
+  }
+
+  public CaliperIfc getCaliper() {
+    return publishedCaliper;
+  }
+  public void setCaliper(CaliperIfc publishedCaliper) {
+    this.publishedCaliper = publishedCaliper;
+    this.data.setCaliper(publishedCaliper);
+  }
+  public Boolean isSendCaliperSuccess() {
+    return sendCaliperSuccess;
+  }
+  public void setSendCaliperSuccess(Boolean sendCaliperSuccess) {
+    this.sendCaliperSuccess = sendCaliperSuccess;
   }
 
 }

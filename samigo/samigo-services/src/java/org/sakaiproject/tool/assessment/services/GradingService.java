@@ -26,6 +26,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,20 +48,31 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.time.Instant;
 
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.complex.ComplexFormat;
 import org.apache.commons.math3.exception.MathParseException;
 import org.apache.commons.math3.util.Precision;
+import org.apache.commons.text.StringEscapeUtils;
 import org.mariuszgromada.math.mxparser.parsertokens.ParserSymbol;
+import org.quartz.DateBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.sakaiproject.api.app.scheduler.SchedulerManager;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
+import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.spring.SpringBeanLocator;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingAttachment;
@@ -72,6 +84,7 @@ import org.sakaiproject.tool.assessment.data.dao.grading.StudentGradingSummaryDa
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemMetaDataIfc;
@@ -89,10 +102,14 @@ import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFa
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.assessment.EventLogService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
+import org.sakaiproject.tool.assessment.services.caliper.CaliperGradeSession;
+import org.sakaiproject.tool.assessment.services.caliper.RetryCaliperSendJob;
 import org.sakaiproject.tool.assessment.util.ExtendedTimeDeliveryService;
 import org.sakaiproject.tool.assessment.util.SamigoExpressionError;
 import org.sakaiproject.tool.assessment.util.SamigoExpressionParser;
 import org.sakaiproject.tool.assessment.util.comparator.ImageMapGradingItemComparator;
+import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.user.cover.UserDirectoryService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -144,7 +161,10 @@ public class GradingService
   public static final Pattern CALCQ_FORMULA_ALLOW_NUMBER_POINT = Pattern.compile("([\\d])([\\.])([^\\d]|$)");
   
   private static final int WRONG_IMAGE_MAP_ANSWER_NON_PARCIAL = -123456789;
-	  
+
+  private UserDirectoryService userDirectoryService = ComponentManager.get(UserDirectoryService.class);
+  private SiteService siteService = ComponentManager.get(SiteService.class);
+
   /**
    * Get all scores for a published assessment from the back end.
    */
@@ -1640,6 +1660,8 @@ public class GradingService
     while (retryCount > 0){
     	try {
     		gbsHelper.updateExternalAssessmentScore(data, g);
+    		//send caliper
+            pub.setSendCaliperSuccess(sendCaliper(currentSiteId,data,pub));
     		retryCount = 0;
     	}
       catch (org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException ante) {
@@ -3650,6 +3672,65 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
   public List getUnSubmittedAssessmentGradingDataList(Long publishedAssessmentId, String agentIdString)  {
 	  return PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
 			  getUnSubmittedAssessmentGradingDataList(publishedAssessmentId, agentIdString);
+  }
+
+  private boolean sendCaliper(String currentSiteId,AssessmentGradingData data, PublishedAssessmentIfc pub) {
+      boolean result = true;
+      CaliperIfc caliper = pub.getCaliper();
+      if((EvaluationModel.TO_DEFAULT_GRADEBOOK.toString()).equals(pub.getEvaluationModel().getToGradeBook())
+           && caliper != null && caliper.getSend()){
+          try {
+              // caliper submit
+              Double threshold = caliper.getThreshold();
+              if(threshold.compareTo(data.getFinalScore()) == 0 || threshold.compareTo(data.getFinalScore()) == -1) {
+                  String siteName = null;
+                  try {
+                      siteName = siteService.getSite(currentSiteId).getTitle();
+                  } catch (IdUnusedException e) {}
+                  String userEid = null;
+                  try {
+                     userEid = userDirectoryService.getUserEid(data.getAgentId());
+                  } catch (UserNotDefinedException e) {}
+                  CaliperGradeSession caliperSession = new CaliperGradeSession(currentSiteId,data,siteName,userEid);
+                  caliperSession.generate(caliper.getEndPoint(),caliper.getApiKey(),data,pub);
+              }
+          }catch(Exception e) {
+              result = false;
+              log.warn("Error sending caliper event to endpoint:" + e.getMessage());
+              //send caliper retry
+              if(caliper.getRetry()){
+                try {
+                   long executeTime = DateBuilder.nextGivenSecondDate(null, 10).getTime();
+                   SchedulerManager schedulerManager = (SchedulerManager) ComponentManager.get(SchedulerManager.class);
+                   Scheduler scheduler = schedulerManager.getScheduler();
+                   JobKey key = new JobKey("retryCaliperSendJob" + executeTime, Scheduler.DEFAULT_GROUP);
+                   JobDetail job = JobBuilder.newJob(RetryCaliperSendJob.class)
+                                                      .withIdentity(key)
+                                                      .storeDurably()
+                                                      .build();
+                   job.getJobDataMap().put("currentSiteId", currentSiteId);
+                   job.getJobDataMap().put("agentId", data.getAgentId());
+                   job.getJobDataMap().put("publishedAssessmentId", data.getPublishedAssessmentId().toString());
+                   job.getJobDataMap().put("attemptDate", String.valueOf(data.getAttemptDate().getTime()));
+                   job.getJobDataMap().put("comments", data.getComments());
+                   job.getJobDataMap().put("finalScore", data.getFinalScore().toString());
+                   job.getJobDataMap().put("title", pub.getTitle());
+                   job.getJobDataMap().put("endPoint", caliper.getEndPoint());
+                   job.getJobDataMap().put("apiKey", caliper.getApiKey());
+                   job.getJobDataMap().put("mail", caliper.getMail());
+                   Trigger trigger = TriggerBuilder.newTrigger()
+                                       .withIdentity("retryCaliperSendJobTrigger", Scheduler.DEFAULT_GROUP)
+                                       .startAt(new Date(executeTime))
+                                       .forJob(key)
+                                       .build();
+                   scheduler.scheduleJob(job, trigger);
+                }catch(Exception e1) {
+                   e1.printStackTrace();
+                }
+              }
+          }
+      }
+      return result;
   }
 }
 

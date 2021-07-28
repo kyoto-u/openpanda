@@ -70,6 +70,7 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIf
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentTemplateIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.RegisteredSecureDeliveryModuleIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
@@ -86,6 +87,7 @@ import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServ
 import org.sakaiproject.tool.assessment.ui.listener.author.SaveAssessmentAttachmentListener;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
+import org.sakaiproject.tool.assessment.util.ExtendedTimeValidator;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.comparator.AlphaNumericComparator;
@@ -95,7 +97,6 @@ import org.springframework.web.context.WebApplicationContext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.sakaiproject.tool.assessment.util.ExtendedTimeValidator;
 
 /**
  * For author: Assessment Settings backing bean.
@@ -219,6 +220,13 @@ public class AssessmentSettingsBean implements Serializable {
   private boolean honorPledge;
   private String releaseToGroupsAsString;
   private String blockDivs;
+
+  private boolean sendCaliper = false;
+  private String endPoint;
+  private String apiKey;
+  private String threshold;
+  private String mail;
+  private boolean retry = false;
 
   private boolean categoriesEnabled;
   private List<SelectItem> categoriesSelectList;
@@ -430,6 +438,26 @@ public class AssessmentSettingsBean implements Serializable {
 
         this.categoriesSelectList = populateCategoriesSelectList();
         this.categorySelected = initializeCategorySelected(assessment.getData().getCategoryId());
+
+        // properties of Caliper
+        CaliperIfc caliper = assessment.getCaliper();
+        if (toDefaultGradebook && caliper != null && caliper.getSend()) {
+            this.sendCaliper = caliper.getSend();
+            this.endPoint = caliper.getEndPoint();
+            this.apiKey = caliper.getApiKey();
+            if(caliper.getThreshold() != null){
+                this.threshold = caliper.getThreshold().toString();
+            }
+            this.mail = caliper.getMail();
+            this.retry = caliper.getRetry();
+        }else{
+            this.sendCaliper = false;
+            this.endPoint = null;
+            this.apiKey = null;
+            this.threshold = null;
+            this.mail = null;
+            this.retry = false;
+        }
 
       }
 
@@ -1971,5 +1999,42 @@ public class AssessmentSettingsBean implements Serializable {
         this.extendedTime = new ExtendedTime(this.getAssessment().getData());
         this.transitoryExtendedTime = null;
         this.editingExtendedTime = false;
+    }
+
+    public boolean isSendCaliper() {
+      return this.sendCaliper;
+    }
+    public void setSendCaliper(boolean sendCaliper) {
+      this.sendCaliper = sendCaliper;
+    }
+    public String getEndPoint() {
+      return this.endPoint;
+    }
+    public void setEndPoint(String endPoint) {
+      this.endPoint = endPoint;
+    }
+    public String getApiKey() {
+      return this.apiKey;
+    }
+    public void setApiKey(String apiKey) {
+      this.apiKey = apiKey;
+    }
+    public String getThreshold() {
+      return this.threshold;
+    }
+    public void setThreshold(String threshold) {
+      this.threshold = threshold;
+    }
+    public String getMail() {
+      return this.mail;
+    }
+    public void setMail(String mail) {
+      this.mail = mail;
+    }
+    public boolean isRetry() {
+      return this.retry;
+    }
+    public void setRetry(boolean retry) {
+      this.retry = retry;
     }
 }

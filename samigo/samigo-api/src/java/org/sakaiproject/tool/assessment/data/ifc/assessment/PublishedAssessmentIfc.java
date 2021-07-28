@@ -53,5 +53,7 @@ public interface PublishedAssessmentIfc
   Long getCategoryId();
 
   void setCategoryId(Long categoryId);
-  
+
+  void setSendCaliperSuccess(Boolean sendCaliperSuccess);
+
 }

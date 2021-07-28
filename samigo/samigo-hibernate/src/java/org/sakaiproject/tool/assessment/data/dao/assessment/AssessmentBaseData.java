@@ -28,10 +28,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-
-import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 
@@ -69,6 +68,7 @@ public class AssessmentBaseData
   private Set securedIPAddressSet;
   private Integer questionSize;
   private Long categoryId;
+  private CaliperIfc caliper;
 
   public AssessmentBaseData() {}
 
@@ -415,4 +415,12 @@ public class AssessmentBaseData
   public void setCategoryId(Long categoryId) {
     this.categoryId = categoryId;
   }
+
+  public CaliperIfc getCaliper() {
+    return this.caliper;
+  }
+  public void setCaliper(CaliperIfc caliper) {
+    this.caliper = caliper;
+  }
+
 }
