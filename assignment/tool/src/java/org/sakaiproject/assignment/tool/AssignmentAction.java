@@ -6061,11 +6061,6 @@ public class AssignmentAction extends PagedResourceActionII {
 
                 if (submission != null) {
                     // the submission already exists, change the text and honor pledge value, post it
-                    submission.setUserSubmission(true);
-                    submission.setSubmittedText(text);
-                    submission.setDateSubmitted(Instant.now());
-                    submission.setSubmitted(post);
-
                     Map<String, String> properties = submission.getProperties();
 
                     if (a.getIsGroup()) {
