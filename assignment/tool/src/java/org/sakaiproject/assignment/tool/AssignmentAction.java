@@ -6094,6 +6094,13 @@ public class AssignmentAction extends PagedResourceActionII {
                         setResubmissionProperties(a, submission);
                     }
 
+                    // update submission info after resubmission which prevents updating resubmission count for the first submission
+                    submission.setUserSubmission(true);
+                    submission.setSubmittedText(text);
+                    submission.setSubmitted(post);
+                    // post differentiates a submission from saving a draft
+                    if (post) submission.setDateSubmitted(Instant.now());
+
                     String currentUser = sessionManager.getCurrentSessionUserId();
                     // identify who the submittee is using the session
                     submission.getSubmitters().stream().filter(s -> s.getSubmitter().equals(currentUser)).findFirst().ifPresent(s -> s.setSubmittee(true));
@@ -6210,8 +6217,8 @@ public class AssignmentAction extends PagedResourceActionII {
 
                         submission.setUserSubmission(true);
                         submission.setSubmittedText(text);
-                        submission.setDateSubmitted(Instant.now());
                         submission.setSubmitted(post);
+                        if (post) submission.setDateSubmitted(Instant.now());
 
                         // set the resubmission properties
                         setResubmissionProperties(a, submission);
