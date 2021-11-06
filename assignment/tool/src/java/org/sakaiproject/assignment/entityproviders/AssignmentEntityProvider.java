@@ -73,6 +73,7 @@ import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityManager;
+import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
@@ -569,6 +570,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         boolean pdfAnnotateViewerEnable = false;
         try {
             pdfAnnotateViewerEnable = site.getPropertiesEdit().getBooleanProperty(ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE);
+        } catch (EntityPropertyNotDefinedException ep) {
         } catch (Exception e) {}
         data.put("pdfAnnotateViewerEnable", pdfAnnotateViewerEnable);
 
@@ -721,6 +723,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
         try {
             Site site = siteService.getSite(assignment.getContext());
             pdfAnnotateViewerEnable = site.getPropertiesEdit().getBooleanProperty(ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE);
+        } catch (EntityPropertyNotDefinedException ep) {
         } catch (Exception e) {
             throw new EntityNotFoundException("No site found", assignment.getContext(), e);
         }
