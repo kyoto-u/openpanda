@@ -254,16 +254,16 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		    return(true);
 		}
 
-		// mask for Student, TA/Teaching Assistant
-		if (siteContext != null && ("Student".equals(siteContext.userType) || "TA".equals(siteContext.userType) || "Teaching Assistant".equals(siteContext.userType)))  {
+		// mask for Student
+		if (siteContext != null && "Student".equals(siteContext.userType))  {
 		    return(true);
 		}
 
-		if (siteContext != null && "Instructor".equals(siteContext.userType)) {
+		if (siteContext != null && ("Instructor".equals(siteContext.userType) || "TA".equals(siteContext.userType) || "Teaching Assistant".equals(siteContext.userType))) {
 		    SiteContext siteContextForUser = null;
 		    try {
 			siteContextForUser = getSiteRoleId(user.getId());
-			if (siteContextForUser != null && "Instructor".equals(siteContextForUser.userType)) {
+			if (siteContextForUser != null && ("Instructor".equals(siteContextForUser.userType) || "TA".equals(siteContextForUser.userType) || "Teaching Assistant".equals(siteContextForUser.userType))) {
 			    checkMask = true;
 			} else {
 			    checkMask = false;
