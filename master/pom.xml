@@ -77,7 +77,7 @@
     <!-- Retain this for backward compatibility -->
     <sakai.kernel.version>${sakai.version}</sakai.kernel.version>
     <kernel.spring.version>${sakai.spring.version}</kernel.spring.version>
-    <kernel.hibernate.version>3.6.10.Final</kernel.hibernate.version>
+    <kernel.hibernate.version>5.4.24.Final</kernel.hibernate.version>
     <kernel.hibernate.annotations.version>3.2.0.Final</kernel.hibernate.annotations.version>
     <kernel.hibernate.jpa.version>1.0.1.Final</kernel.hibernate.jpa.version>
     <!-- Standard dependency versions -->
