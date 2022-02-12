@@ -58,6 +58,7 @@ public class UserAuditEventLog {
 	public static final Comparator<EventLog> auditStampComparatorEL;
 	public static final Comparator<EventLog> actionTextComparatorEL;
 	public static final Comparator<EventLog> sourceTextComparatorEL;
+        public static final Comparator<EventLog> displayIdComparatorEL;
 	public static final String GET_EVENTS_SQL = "select user_id, role_name, action_taken, audit_stamp, source, action_user_id from user_audits_log where site_id=? order by audit_stamp desc";
 	@Setter protected String sortColumn;
 	@Getter @Setter protected boolean sortAscending;
