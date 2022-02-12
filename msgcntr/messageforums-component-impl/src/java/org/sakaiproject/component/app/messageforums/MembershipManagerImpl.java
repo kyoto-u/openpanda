@@ -358,17 +358,9 @@ public class MembershipManagerImpl implements MembershipManager {
 					returnMap.put(memberItem.getId(), memberItem);
 				} catch (UserNotDefinedException e) {
 					log.warn("User {} not defined", userId);
-			// Don't want admin as part of the list
-			if (user != null && !"admin".equals(userId)) {
-				MembershipItem memberItem = MembershipItem.getInstance();
-				memberItem.setType(memberItemType);
-				if (ServerConfigurationService.getBoolean("msg.displayEid", true)) {
-					memberItem.setName(user.getSortName() + " (" + user.getDisplayId("messageForum") + ")");
-				} else {
-					memberItem.setName(user.getSortName());
-				}
-			}
 		}
+	}
+	}
 	}
 
 	private boolean isGroupAlreadyInMap(Map<String, MembershipItem> returnMap, MembershipItem membershipItem) {
