@@ -760,7 +760,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 
         boolean pdfAnnotateViewerEnable = false;
         try {
-            Site site = siteService.getSite(assignment.getContext());
+            site = siteService.getSite(assignment.getContext());
             pdfAnnotateViewerEnable = site.getPropertiesEdit().getBooleanProperty(ASSIGNMENT_PDF_ANNOTATE_VIEWER_ENABLE);
         } catch (EntityPropertyNotDefinedException ep) {
         } catch (Exception e) {
