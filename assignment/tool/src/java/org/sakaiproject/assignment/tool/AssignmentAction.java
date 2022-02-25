@@ -2896,7 +2896,7 @@ public class AssignmentAction extends PagedResourceActionII {
         // information related to gradebook categories
         putGradebookCategoryInfoIntoContext(state, context);
 
-        context.put("value_totalSubmissionTypes", Assignment.SubmissionType.values().length - 1);
+        context.put("value_totalSubmissionTypes", Assignment.SubmissionType.values().length - 2);  // exclude "External Tool (LTI)"
 
         Integer scaleFactor;
         Boolean anonGrading;
