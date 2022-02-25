@@ -17,8 +17,8 @@ package org.sakaiproject.assignment.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.NumberFormat;
 import java.text.Collator;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.RuleBasedCollator;
 import java.time.Instant;
@@ -53,6 +53,7 @@ import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.user.api.CandidateDetailProvider;
+import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
@@ -74,6 +75,7 @@ public class GradeSheetExporter {
     @Setter private SiteService siteService;
     @Setter private UserDirectoryService userDirectoryService;
     @Setter private FormattedText formattedText;
+    @Setter private ContextualUserDisplayService contextualUserDisplayService;
 
     private ResourceLoader rb = new ResourceLoader("assignment");
     
@@ -154,7 +156,8 @@ public class GradeSheetExporter {
                 // put user displayid and sortname in the first two cells
                 //Submitter submitter = new Submitter(user.getDisplayId(), user.getSortName());
                 //Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getSortName());
-                Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getDisplayName());
+                //Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getDisplayName());
+                Submitter submitter = new Submitter(contextualUserDisplayService.getUserDisplayId(user, "employeeNumber"), user.getDisplayName());
                 submitterMap.put(user.getId(), submitter);
                 if (isNotesEnabled) {
                     Optional<List<String>> additionalNotes = candidateDetailProvider.getAdditionalNotes(user, site);

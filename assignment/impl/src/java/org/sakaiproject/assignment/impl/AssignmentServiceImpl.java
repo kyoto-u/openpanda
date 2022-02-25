@@ -27,8 +27,8 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DateFormat;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.text.NumberFormat;
@@ -106,6 +106,7 @@ import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.sakaiproject.calendar.api.Calendar;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendar.api.CalendarService;
@@ -169,6 +170,7 @@ import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.CandidateDetailProvider;
+import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -180,7 +182,6 @@ import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.api.LinkMigrationHelper;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
-import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -247,6 +248,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     @Setter private UserDirectoryService userDirectoryService;
     @Setter private UserTimeService userTimeService;
     @Setter private PreferencesService preferencesService;
+    @Setter private ContextualUserDisplayService contextualUserDisplayService;
 
     private boolean allowSubmitByInstructor;
     private boolean exposeContentReviewErrorsToUI;
@@ -3275,7 +3277,13 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 // add the eid to the end of it to guarantee folder name uniqness
                                 // if user Eid contains non ascii characters, the user internal id will be used
                                 //final String userEid = submitters[i].getEid();
-                                final String userEid = getSubmissionUserId(submitters[i]);
+                                // -------------------------------------------------------------------------
+                                //final String userEid = getSubmissionUserId(submitters[i]);
+                                String userEid = submitters[i].getProperties().getProperty("employeeNumber");
+                                if (userEid == null) {
+                                	userEid = submitters[i].getEid();
+                                }
+                                // -------------------------------------------------------------------------
 
                                 final String candidateEid = escapeInvalidCharsEntry(userEid);
                                 if (candidateEid.equals(userEid)) {
@@ -3305,8 +3313,14 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                 if (!isAnon) {
                                 	log.debug("Zip user: " + submitters[i].toString());
                                     //params[0] = submitters[i].getDisplayId();
-                                    params[0] = getSubmissionUserId(submitters[i]);
-                                    params[1] = submitters[i].getEid();
+                                    // -------------------------------------------------------------------------
+                                    //params[0] = getSubmissionUserId(submitters[i]);                       
+                                    //params[1] = submitters[i].getEid();
+                                    String maskedUserEid = contextualUserDisplayService.getUserDisplayId(u, "eid");
+                                    if (maskedUserEid == null) maskedUserEid = submitters[i].getEid();
+                                    params[0] = maskedUserEid;                                    
+                                    params[1] = userEid;
+                                    // -------------------------------------------------------------------------
                                     if(!"ja_JP".equals(getUserLocaleString())){
                                     	params[2] = submitters[i].getProperties().getProperty("sn;lang-en") == null ? submitters[i].getLastName() : submitters[i].getProperties().getProperty("sn;lang-en");
                                         params[3] = submitters[i].getProperties().getProperty("givenName;lang-en") == null ? submitters[i].getFirstName() : submitters[i].getProperties().getProperty("givenName;lang-en");
@@ -4902,7 +4916,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         dupes.sort(Comparator.comparing(r -> r.user.getDisplayName()));
         return dupes;
     }
-
+/*
     private final String SUBMISSION_USER_ID_PROPERTY="employeeNumber";
     public String getSubmissionUserId(User u){
         String id = (String)u.getProperties().get(SUBMISSION_USER_ID_PROPERTY);
@@ -4911,7 +4925,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         }
         return id;
     }
-
+*/
     private String getUserLocaleString(){
 		Locale locale = preferencesService.getLocale(sessionManager.getCurrentSessionUserId());
 		if(locale == null){
