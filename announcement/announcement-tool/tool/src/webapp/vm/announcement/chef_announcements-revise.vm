@@ -422,6 +422,13 @@ function resizeFrame(){
 					</div>
 				</div>	
 			#end
+			<div class="checkbox">
+				<label for="readCheck">
+					<input type="checkbox" name="readCheck" id="readCheck"  
+						value="true" #if($!readCheck)checked="checked"#end />
+						$tlang.getString("announcement.read.check")
+				  </label>
+			</div>
 		
 		#if ($notiHistory)
 			<div class="specialLink act act-outer"><a href="#" class="indnt2 specialLink" id="notiHistoryToggle">$tlang.getString("revise.notify.ver_link")</a></div>

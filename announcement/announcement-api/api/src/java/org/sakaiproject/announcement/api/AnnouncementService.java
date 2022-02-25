@@ -200,4 +200,10 @@ public interface AnnouncementService extends MessageService
 	public List getMessages(String channelReference, Filter filter, boolean order, boolean merged) throws IdUnusedException, PermissionException, NullPointerException;
 
 	public Map<String, List<AnnouncementMessage>> getAllViewableAnnouncementsForCurrentUser();
+	
+	public boolean saveAnnouncementBrowsingHistory(String channelId, String messageId, String userId);
+	
+	public List getAnnouncementBrowsingHistories(String channelId, String messageId);
+	
+	public void deleteAnnouncementBrowsingHistories(String channelId, String messageId);
 }

@@ -1,0 +1,195 @@
+	## this is showing the list view of all announcement, and the home view of this tool
+
+##(gsilver - remaining issues: trimming body, <p> in body when produced with WYS, the fact that how thing look in the synopsys is still undefined - and finally - the permissions nightmare as well as the ling to Remove...
+
+############################################# Check if message hidden macro begin
+#macro(rowTRconstruct $props $displayOptions $hidden $reorder)
+
+	#set($now = $timeservice.newTime())
+	#set($reldateset = false)
+	#set($retdateset = false)
+
+	#if (!$props.isEmpty() && $props.getProperty("releaseDate"))
+		#set($releasedate = $props.getTimeProperty("releaseDate"))
+		#set($reldateset = $now.before($releasedate))
+	#end
+
+	#if (!$props.isEmpty() && $props.getProperty("retractDate"))
+		#set($retractdate = $props.getTimeProperty("retractDate"))
+		#set($retdateset = $now.after($retractdate))
+	#end
+
+	#if ($reorder)
+		#set($rowClass = "row reorder-element")
+	#end 
+	
+	## message marked as hidden, current date is before release date, or current date is after retract date
+	#if ($hidden || $reldateset || $retdateset)
+		#if ($displayOptions.isShowAnnouncementBody())
+			class="lightHighLightRow inactive $rowClass"
+		#else
+			class="inactive $rowClass"
+		#end
+	#else
+		#if ($displayOptions.isShowAnnouncementBody())
+			class="lightHighLightRow $rowClass"
+		#elseif ($reorder)
+			class="$rowClass"
+		#end	
+	#end
+
+#end
+############################################# Check if message hidden macro end
+		
+
+
+<script type="text/javascript" src="/library/js/spinner.js$!{portalCdnQuery}"></script>
+<script type="text/javascript">includeLatestJQuery('announcements');</script>
+<script type="text/javascript">
+var delbutton;
+var insist = false;
+$(document).ready(function() {
+	$('#delete-confirm').dialog({
+		autoOpen: false,
+		resizable: false,
+		modal: true,
+        width: 450,
+		dialogClass:"no-close",
+		buttons: [{text:'$tlang.getString("gen.delete")',
+					click: function() {
+						insist = true;
+		           		delbutton.click();}
+		           },{text:'$tlang.getString("gen.cancel")',
+		             click: function() {
+		             $( this ).dialog("close");}}]
+	}).parent('.ui-dialog').css({'zIndex':'900'});
+
+	$('#delHistory').click(function(event) {
+		delbutton = $('#delete-item-button');
+		return delete_confirm(event, '$tlang.getString("announcement.delete.browsing.history.confirm")');
+	});
+	
+	function delete_confirm(event, message) {
+		if (insist) {
+		    insist = false;
+		    $("#delete-confirm").dialog('close');
+		    return true;
+		}
+		insist = false;
+		$("#delete-confirm-message").text(message);
+	    $("#delete-confirm").dialog('option', 'title', '$tlang.getString("announcement.delete.browsing.history")');
+		$("#delete-confirm").dialog('open');
+		return false;
+	 };
+});
+</script>
+<div class="portletBody container-fluid">
+	#if($menu && $EnabledMenuItemExists)
+		#toolbar($menu)
+	#end
+	
+	<div class="page-header">
+		<h1>$tlang.getString("announcement.browsing.history")</h1>
+	</div>
+
+	#if ($alertMessage)<div class="sak-banner-error">$tlang.getFormattedMessage("gen.alert.message", $alertMessage)</div>#end
+    <div class="sakai-table-toolBar">
+		<b>$subject</b>
+	</div>
+	<div class="sakai-table-toolBar">
+		#if ($historiesVector.iterator().hasNext())
+			<div class="sakai-table-pagerContainer">
+				#pagerPanel("pager2")
+			</div>
+		#end
+	</div> ##end sakai-table-toolBar
+
+	#if ($historiesVector.iterator().hasNext())
+		<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered" summary="$tlang.getString('gen.tablecaptionsite')">
+					<tr>
+						<th id="historyId" scope="col">
+							#if (!$currentSortedBy.equals("historyId"))
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryd')">$tlang.getString('announcement.browsing.history.id')</a>
+							#else
+								#if ($currentSortAsc.equals("true"))
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryidasc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString('gen.sortbyasc')" /></a>
+								#else
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryiddesc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString('gen.sortbydesc')"/></a>
+								#end
+							#end
+						</th>
+						<th id="historyName" scope="col">
+							#if (!$currentSortedBy.equals("historyName"))
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynameasc')">$tlang.getString("announcement.browsing.history.name")</a>
+							#else
+								#if ($currentSortAsc.equals("true"))
+									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynameasc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbydateasc')" /></a>
+								#else
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynamedesc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbydatedesc')" /></a>
+								#end
+							#end
+						</th>
+						<th id="historyDate" scope="col">
+							#if (!$currentSortedBy.equals("historyDate"))
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydateasc')">$tlang.getString("announcement.browsing.history.date")</a>
+							#else
+								#if ($currentSortAsc.equals("true"))
+									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydateasc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbydateasc')" /></a>
+								#else
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydatedesc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbydatedesc')" /></a>
+								#end
+							#end
+						</th>
+					</tr>
+					#foreach ($ann_item in $showHistories)
+						<tr>
+
+							<td headers="userId" scope="row">
+							    #if ($ann_item.DisplayUserId )
+									$ann_item.DisplayUserId
+								#else
+									&nbsp;
+								#end                                                                                                                                                       
+							</td>
+							<td headers="userName" scope="row">
+							    #if ($ann_item.DisplayUserName )      
+									$ann_item.DisplayUserName
+								#else
+									&nbsp;
+								#end                                                                                                                                                     
+							</td>
+
+							<td headers="readDate" scope="row">
+							    #if ($ann_item.ReadDate )
+									$ann_item.ReadDate  
+								#else
+									&nbsp;
+								#end
+							</td>
+						</tr>
+					#end
+				</table>
+			</div>
+	#else
+		<form name="announcementListForm" action="#toolForm("AnnouncementAction")" method="post">
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		</form>
+	#end
+
+	#if ($historiesVector.iterator().hasNext())
+		#if ($historyCount > 0)
+			<p class="act">
+				<input type="button" id="delHistory" class="button_color active" value="$tlang.getString("announcement.delete.browsing.history")"  accesskey="s" />
+                 <input type="submit" id="delete-item-button" name="eventSubmit_doDeleteBrowsingHistory" style="display:none;" accesskey="s"  />
+			</p>
+			<div id="delete-confirm" class="controlsPanel" style="display:none;" >
+			  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 0 0;"></span>
+			  <p id="delete-confirm-message">Delete ok?</p></p>
+		    </div>
+		#end
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		</form>
+	#end
+</div>

@@ -42,6 +42,7 @@
  		<property name="locksInDb"><value>false</value></property>
  		<property name="autoDdl"><value>${auto.ddl}</value></property>
  		<property name="formattedText" ref="org.sakaiproject.util.api.FormattedText" />
+		<property name="announcementBrowsingHisDao"><ref bean="org.sakaiproject.announcement.api.AnnouncementBrowsingHisDao"/></property>
 	</bean>
 
 	<bean id="org.sakaiproject.announcement.impl.SiteEmailNotificationAnnc"
@@ -78,5 +79,24 @@
      <property name="overrideBySite"><value>false</value></property>
      <property name="expandByDefault"><value>true</value></property>
    </bean>
+   
+	<bean id="org.sakaiproject.announcement.api.AnnouncementBrowsingHisDao" 
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
+		</property>
+		<property name="target">
+			<bean class="org.sakaiproject.announcement.impl.AnnouncementBrowsingHisDaoHbm">
+				<property name="sessionFactory"
+					ref="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
+			</bean>
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<import resource="hibernate-hbms.xml"/>
 	
 </beans>

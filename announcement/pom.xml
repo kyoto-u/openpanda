@@ -15,6 +15,7 @@
 
   <modules>
     <module>announcement-api/api</module>
+    <module>announcement-hbm/hbm</module>
     <module>announcement-impl/impl</module>
     <module>announcement-tool/tool</module>
   </modules>

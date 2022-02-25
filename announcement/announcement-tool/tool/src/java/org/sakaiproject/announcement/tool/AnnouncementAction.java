@@ -28,27 +28,30 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
-import lombok.extern.slf4j.Slf4j;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.alias.api.Alias;
+import org.sakaiproject.alias.api.AliasService;
+import org.sakaiproject.announcement.api.AnnouncementBrowsingHis;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementChannelEdit;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
 import org.sakaiproject.announcement.api.AnnouncementMessageEdit;
 import org.sakaiproject.announcement.api.AnnouncementMessageHeaderEdit;
 import org.sakaiproject.announcement.cover.AnnouncementService;
-import org.sakaiproject.alias.api.AliasService;
-import org.sakaiproject.alias.api.Alias;
+import org.sakaiproject.announcement.dao.hbm.AnnouncementBrowsingHisHbm;
 import org.sakaiproject.announcement.tool.MenuBuilder.ActiveTab;
-import org.sakaiproject.announcement.tool.AnnouncementActionState;
+import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.cheftool.Context;
@@ -57,21 +60,21 @@ import org.sakaiproject.cheftool.JetspeedRunData;
 import org.sakaiproject.cheftool.PagedResourceActionII;
 import org.sakaiproject.cheftool.RunData;
 import org.sakaiproject.cheftool.VelocityPortlet;
-import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.content.api.FilePickerHelper;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.content.cover.ContentTypeImageService;
+import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.cover.EntityManager;
 import org.sakaiproject.entitybroker.EntityBroker;
-import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
 import org.sakaiproject.entitybroker.entityprovider.extension.ActionReturn;
+import org.sakaiproject.entitybroker.exception.EntityNotFoundException;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.api.SessionState;
-import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
@@ -94,6 +97,7 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.PreferencesService;
+import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.util.MergedList;
 import org.sakaiproject.util.MergedListEntryProviderBase;
@@ -103,6 +107,8 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.api.FormattedText;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * AnnouncementAction is an implementation of Announcement service, which provides the complete function of announcements. User could check the announcements, create own new and manage all the announcement items, under certain permission check.
@@ -144,6 +150,8 @@ public class AnnouncementAction extends PagedResourceActionII
 	private static final String EDIT_STATUS = "goToReviseAnnouncement";
 
 	private static final String DELETE_STATUS = "deleteAnnouncement";
+	
+	private static final String VIEW_BROWSING_HISTORY_STATUS = "showBrowsingHistory";	
 
 	private static final String SSTATE_NOTI_VALUE = "noti_value";
 
@@ -166,6 +174,12 @@ public class AnnouncementAction extends PagedResourceActionII
 	public static final String SORT_CHANNEL = "channel";
 
 	public static final String SORT_FOR = "for";
+
+	public static final String SORT_HISTORY_ID = "historyId";
+
+	public static final String SORT_HISTORY_NAME = "historyName";
+
+	public static final String SORT_HISTORY_DATE = "historyDate";
 
 
 	private static final String CONTEXT_VAR_DISPLAY_OPTIONS = "displayOptions";
@@ -843,6 +857,9 @@ public class AnnouncementAction extends PagedResourceActionII
 			case DELETE_STATUS:
 				activeTab = ActiveTab.DELETE;
 				break;
+			case VIEW_BROWSING_HISTORY_STATUS:
+				activeTab = ActiveTab.LIST;
+				break;
 		}
 		
 		// So, when reload after save/cancel permission actions, default page will be shown
@@ -860,7 +877,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		context.put("allow_delete", Boolean.valueOf(menu_delete));
 		context.put("allow_revise", Boolean.valueOf(menu_revise));
 
-		if (channel != null)
+		if (channel != null && !VIEW_BROWSING_HISTORY_STATUS.equals(statusName))
 		{
 			// ********* for sorting *********
 			if (channel.allowGetMessages() && isOkayToDisplayMessageMenu(state))
@@ -895,7 +912,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		final String toolId = tool.getId();
 		context.put("toolId", toolId);
 
-		if (channel != null)
+		if (channel != null && !VIEW_BROWSING_HISTORY_STATUS.equals(statusName))
 		{
 			// show all the groups in this channal that user has get message in
 			Collection<Group> groups = channel.getGroupsAllowGetMessage();
@@ -1042,6 +1059,10 @@ public class AnnouncementAction extends PagedResourceActionII
 		else if (statusName.equals(MODE_PERMISSIONS))
 		{
 			template = build_permissions_context(portlet, context, rundata, sstate);
+		}
+		else if (statusName.equals(VIEW_BROWSING_HISTORY_STATUS))
+		{
+			template = buildShowBrowsingHistoryContext(portlet, context, rundata, state, sstate);
 		}
 		
 		return template;
@@ -1865,6 +1886,8 @@ public class AnnouncementAction extends PagedResourceActionII
 				}
 			}
 			
+			context.put("readCheck",edit.getAnnouncementHeader().getReadCheck());	
+			
 
 		}
 		else
@@ -1951,6 +1974,7 @@ public class AnnouncementAction extends PagedResourceActionII
 					context.put("notiHistory", noti_history);
 				}
 			}
+			context.put("readCheck",state.getReadCheck());
 
 		}
 
@@ -2148,6 +2172,16 @@ public class AnnouncementAction extends PagedResourceActionII
 					}
 				}
 			}
+			if (message.getAnnouncementHeader().getReadCheck()) {
+				// If read check is on and the user is a site member, register their browsing history.
+				Site site = SiteService.getSite(channel.getContext());
+				User currentUser = userDirectoryService.getCurrentUser();
+				Member member = site.getMember(currentUser.getId());
+				if (member != null) {
+					AnnouncementService.saveAnnouncementBrowsingHistory(channel.getReference(), message.getId(), currentUser.getId());
+				}				
+			}
+			
 			// SAK-23566 indicate the announcement was viewed
 			eventTrackingService.post(eventTrackingService.newEvent(AnnouncementService.SECURE_ANNC_READ, message.getReference(), false));
 		}
@@ -2538,6 +2572,10 @@ public class AnnouncementAction extends PagedResourceActionII
 		// read the notification options & save it in session state
 		String notification = rundata.getParameters().getString("notify");
 		sstate.setAttribute(AnnouncementAction.SSTATE_NOTI_VALUE, notification);
+		
+		String readCheck = params.getString("readCheck");
+		if (readCheck == null) readCheck = "false";
+		state.setReadCheck(new Boolean (readCheck));
 
 	} // readAnnouncementForm
 
@@ -2589,6 +2627,7 @@ public class AnnouncementAction extends PagedResourceActionII
 		final Time tempReleaseDate = state.getTempReleaseDate();
 		final Time tempRetractDate = state.getTempRetractDate();
 		final Boolean tempHidden = state.getTempHidden();
+		final Boolean readCheck = state.getReadCheck();
 		
 		// announce to public?
 		final String announceTo = state.getTempAnnounceTo();
@@ -2657,6 +2696,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				header.setDraft(tempHidden);
 				header.replaceAttachments(state.getAttachments());
 				header.setFrom(userDirectoryService.getCurrentUser());
+				header.setReadCheck(readCheck);
 
 				// values stored here if saving from Add/Revise page
 				ParameterParser params = rundata.getParameters();
@@ -2959,6 +2999,9 @@ public class AnnouncementAction extends PagedResourceActionII
 					//AnnouncementMessageEdit edit = channel.editAnnouncementMessage(message.getId());
 					//channel.removeMessage(edit); 
 					channel.removeAnnouncementMessage(message.getId());
+					
+					// delete announcement browsing history
+					AnnouncementService.deleteAnnouncementBrowsingHistories(channel.getReference(), message.getId());
 				}
 				else
 				{
@@ -4358,5 +4401,509 @@ public class AnnouncementAction extends PagedResourceActionII
 	private boolean isMotd(String channelId) {
 		return channelId.endsWith("motd");
 	}
+	
+	/**
+	 * corresponding to chef_announcements doShowBrowsingHistory
+	 * 
+	 * @param itemId
+	 *        The string used to record the announcement id
+	 */
+	public void doShowBrowsingHistory(RunData rundata, Context context)
+	{
+		// retrieve the state from state object
+		AnnouncementActionState state = (AnnouncementActionState) getState(context, rundata, AnnouncementActionState.class);
+
+		String itemReference = rundata.getParameters().getString("itemReference");
+		state.setMessageReference(itemReference);
+		state.setIsListVM(false);
+		state.setIsNewAnnouncement(false);
+		state.setStatus(VIEW_BROWSING_HISTORY_STATUS);
+		state.setCurrentSortedBy(SORT_HISTORY_ID);
+		state.setCurrentSortAsc(true);
+
+		String peid = ((JetspeedRunData) rundata).getJs_peid();
+		SessionState sstate = ((JetspeedRunData) rundata).getPortletSessionState(peid);
+		sstate.removeAttribute(STATE_TOP_PAGE_MESSAGE);
+		sstate.removeAttribute(STATE_NUM_MESSAGES);
+		sstate.removeAttribute(STATE_CURRENT_SORTED_BY);
+		sstate.removeAttribute(STATE_CURRENT_SORT_ASC);
+	} 
+	
+	// doShowBrowsingHistory
+	/**
+	 * Build the context for viewing announcement browsing history
+	 */
+	protected String buildShowBrowsingHistoryContext(VelocityPortlet portlet, Context context, RunData rundata,
+			AnnouncementActionState state, SessionState sstate)
+	{
+		context.put("conService", contentHostingService);
+
+		// to get the content Type Image Service
+		context.put("contentTypeImageService", ContentTypeImageService.getInstance());
+
+		// get the channel and message id information from state object
+		String messageReference = state.getMessageReference();
+
+		// get the message object through service
+		List<AnnouncementBrowsingHis> showHistories = new ArrayList<AnnouncementBrowsingHis>();
+		try
+		{
+			// get the channel id throught announcement service
+			AnnouncementChannel channel = AnnouncementService.getAnnouncementChannel(this
+					.getChannelIdFromReference(messageReference));
+
+			// get the message object through service
+			AnnouncementMessage message = channel.getAnnouncementMessage(this.getMessageIDFromReference(messageReference));
+			context.put("subject", message.getAnnouncementHeader().getSubject());
+			
+			Site site = SiteService.getSite(channel.getContext());
+			Set<Member> members = site.getMembers();
+			int historyCount = 0;
+			List<AnnouncementBrowsingHis> browsingHistories = AnnouncementService.getAnnouncementBrowsingHistories(channel.getReference(), message.getId());
+			if (CollectionUtils.isNotEmpty(browsingHistories)) {
+				historyCount = browsingHistories.size();
+			}
+			for (Member member : members) {
+				Date readDate = null;
+				if (CollectionUtils.isNotEmpty(browsingHistories)) {
+					for (AnnouncementBrowsingHis browsingHistory : browsingHistories) {
+						if (member.getUserId().equals(browsingHistory.getUserId())) {
+							readDate = browsingHistory.getReadDate();
+							break;
+						}
+					}
+				}
+				AnnouncementBrowsingHis browsingHistory = new AnnouncementBrowsingHisHbm(channel.getReference(), message.getId(), member.getUserId(), readDate);
+				browsingHistory.setDisplayUserId(member.getUserDisplayId());
+				browsingHistory.setDisplayUserName(getUserDisplayName(member.getUserId()));
+				showHistories.add(browsingHistory);
+			}
+			context.put("historyCount", historyCount);
+			
+			showHistories = prepPageForBrowingHistory(showHistories, sstate);
+
+			if (showHistories != null)
+			{
+				for (int i = 0; i < showHistories.size(); i++)
+				{
+					boolean goPT = false;
+					boolean goNT = false;
+					if ((i - 1) >= 0)
+					{
+						goPT = true;
+						context.put("prevMsg", showHistories.get(i - 1));
+					}
+					if ((i + 1) < showHistories.size())
+					{
+						goNT = true;
+						context.put("nextMsg", showHistories.get(i + 1));
+					}
+					context.put("goPTButton", new Boolean(goPT));
+					context.put("goNTButton", new Boolean(goNT));
+				}
+			}
+		}
+		catch (IdUnusedException e)
+		{
+			if (log.isDebugEnabled()) log.debug("{}.buildShowMetadataContext()", this, e);
+		}
+		catch (PermissionException e)
+		{
+			if (log.isDebugEnabled()) log.debug("{}.buildShowMetadataContext()", this, e);
+			addAlert(sstate, rb.getFormattedMessage("java.youmess.pes", e.toString()));
+		}
+
+		String currentSortedBy = state.getCurrentSortedBy();
+		context.put("currentSortedBy", currentSortedBy);
+
+		if (StringUtils.isNotBlank(currentSortedBy))
+		{
+			if (state.getCurrentSortAsc())
+				context.put("currentSortAsc", "true");
+			else
+				context.put("currentSortAsc", "false");
+		}
+
+		context.put("showHistories", showHistories.iterator());
+		context.put("historiesVector", showHistories);
+		context.put("totalPageNumber", sstate.getAttribute(STATE_TOTAL_PAGENUMBER));
+		context.put("formPageNumber", FORM_PAGE_NUMBER);
+		context.put("prev_page_exists", sstate.getAttribute(STATE_PREV_PAGE_EXISTS));
+		context.put("next_page_exists", sstate.getAttribute(STATE_NEXT_PAGE_EXISTS));
+		context.put("current_page", sstate.getAttribute(STATE_CURRENT_PAGE));
+		pagingInfoToContext(sstate, context);
+
+		// find the position of the message that is the top first on the page
+		if ((sstate.getAttribute(STATE_TOP_PAGE_MESSAGE) != null) && (sstate.getAttribute(STATE_PAGESIZE) != null))
+		{
+			int topHisPos = ((Integer) sstate.getAttribute(STATE_TOP_PAGE_MESSAGE)).intValue() + 1;
+			int btmHisPos = topHisPos + ((Integer) sstate.getAttribute(STATE_PAGESIZE)).intValue() - 1;
+			int allHisNumber = btmHisPos;
+			if (sstate.getAttribute(STATE_NUM_MESSAGES) != null)
+			{
+				allHisNumber = ((Integer) sstate.getAttribute(STATE_NUM_MESSAGES)).intValue();
+				if (btmHisPos > allHisNumber) btmHisPos = allHisNumber;
+			}
+
+			String [] viewValues = { (new Integer(topHisPos)).toString(),
+									(new Integer(btmHisPos)).toString(),
+									(new Integer(allHisNumber)).toString() };
+
+			context.put("announcementItemRangeArray", viewValues);
+		}
+
+		String template = (String) getContext(rundata).get("template");
+		return template + "-browsing-history";
+	}
+
+	/**
+	 * Prepare the current page of browsing history to display.
+	 * 
+	 * @return List of MailArchiveMessage to display on this page.
+	 */
+	protected List prepPageForBrowingHistory(List<AnnouncementBrowsingHis> browsingHistories, SessionState state)
+	{
+		// access the page size
+		int pageSize = state.getAttribute(STATE_PAGESIZE) != null ?
+				((Integer) state.getAttribute(STATE_PAGESIZE)).intValue() : DEFAULT_PAGE_SIZE;
+		
+		// cleanup prior prep
+		state.removeAttribute(STATE_NUM_MESSAGES);
+
+		// are we going next or prev, first or last page?
+		boolean goNextPage = state.getAttribute(STATE_GO_NEXT_PAGE) != null;
+		boolean goPrevPage = state.getAttribute(STATE_GO_PREV_PAGE) != null;
+		boolean goFirstPage = state.getAttribute(STATE_GO_FIRST_PAGE) != null;
+		boolean goLastPage = state.getAttribute(STATE_GO_LAST_PAGE) != null;
+		state.removeAttribute(STATE_GO_NEXT_PAGE);
+		state.removeAttribute(STATE_GO_PREV_PAGE);
+		state.removeAttribute(STATE_GO_FIRST_PAGE);
+		state.removeAttribute(STATE_GO_LAST_PAGE);
+
+		// are we going next or prev history?
+		boolean goNext = state.getAttribute(STATE_GO_NEXT) != null;
+		boolean goPrev = state.getAttribute(STATE_GO_PREV) != null;
+		state.removeAttribute(STATE_GO_NEXT);
+		state.removeAttribute(STATE_GO_PREV);
+
+		boolean goViewPage = state.getAttribute(STATE_GOTO_PAGE) != null;
+
+		// if we have no prev page and do have a top history, then we will stay "pined" to the top
+		boolean pinToTop = ((state.getAttribute(STATE_TOP_PAGE_MESSAGE) != null)
+				&& (state.getAttribute(STATE_PREV_PAGE_EXISTS) == null) && !goNextPage && !goPrevPage && !goNext && !goPrev
+				&& !goFirstPage && !goLastPage && !goViewPage);
+
+		
+		int numHistories = browsingHistories.size();
+
+		if (numHistories == 0)
+		{
+			return new Vector();
+		}
+
+		// set the total page number
+		int totalPageNumber = 1;
+		if ((numHistories % pageSize) > 0)
+		{
+			totalPageNumber = numHistories / pageSize + 1;
+		}
+		else
+		{
+			totalPageNumber = numHistories / pageSize;
+		}
+		state.setAttribute(STATE_TOTAL_PAGENUMBER, new Integer(totalPageNumber));
+
+		// save the number of history
+		state.setAttribute(STATE_NUM_MESSAGES, new Integer(numHistories));
+
+		// find the position of the history that is the top first on the page
+		int posStart = 0;
+		Integer topPageHistory = (Integer) state.getAttribute(STATE_TOP_PAGE_MESSAGE);
+		if (topPageHistory != null)
+		{
+			posStart = topPageHistory.intValue();
+		}
+
+		// if going to a certain page
+		if (state.getAttribute(STATE_GOTO_PAGE) != null)
+		{
+			int gotoPage = ((Integer) state.getAttribute(STATE_GOTO_PAGE)).intValue();
+			int currentPage = state.getAttribute(STATE_CURRENT_PAGE) != null ?
+					((Integer) state.getAttribute(STATE_CURRENT_PAGE)).intValue() : 0;
+			posStart += pageSize * (gotoPage - currentPage);
+		}
+
+		// if going to the next page, adjust
+		else if (goNextPage)
+		{
+			posStart += pageSize;
+		}
+
+		// if going to the prev page, adjust
+		else if (goPrevPage)
+		{
+			posStart -= pageSize;
+			if (posStart < 0) posStart = 0;
+		}
+
+		// if going to the first page, adjust
+		else if (goFirstPage)
+		{
+			posStart = 0;
+		}
+
+		// if going to the last page, adjust
+		else if (goLastPage)
+		{
+			posStart = numHistories - pageSize;
+			if (posStart < 0) posStart = 0;
+		}
+
+		// pinning
+		if (pinToTop)
+		{
+			posStart = 0;
+		}
+
+		// compute the end to a page size, adjusted for the number of histories available
+		int posEnd = posStart + (pageSize - 1);
+		PagingPosition page = new PagingPosition(posStart, posEnd);
+		page.validate(numHistories);
+		if (page.getFirst() >= numHistories)
+		{
+			posStart = 0;
+		}
+		else
+		{
+			posStart = page.getFirst();
+		}
+		posEnd = page.getLast();
+
+		// select the histories on this page
+		List historyPage = readResourcesPageForBrowsingHistory(browsingHistories, state, posStart + 1, posEnd + 1);
+
+		// save which history is at the top of the page
+		state.setAttribute(STATE_TOP_PAGE_MESSAGE, new Integer(posStart));
+
+		// which history starts the next page (if any)
+		int next = posStart + pageSize;
+		if (next < numHistories)
+		{
+			state.setAttribute(STATE_NEXT_PAGE_EXISTS, "");
+		}
+		else
+		{
+			state.removeAttribute(STATE_NEXT_PAGE_EXISTS);
+		}
+
+		// which history ends the prior page (if any)
+		int prev = posStart - 1;
+		if (prev >= 0)
+		{
+			state.setAttribute(STATE_PREV_PAGE_EXISTS, "");
+		}
+		else
+		{
+			state.removeAttribute(STATE_PREV_PAGE_EXISTS);
+		}
+
+		state.removeAttribute(STATE_FIRST_PAGE_EXISTS);
+		state.removeAttribute(STATE_LAST_PAGE_EXISTS);
+		if (totalPageNumber != 1)
+		{
+			if (posStart > 0)
+			{
+				state.setAttribute(STATE_FIRST_PAGE_EXISTS, "");
+			}
+			if (posStart + pageSize < numHistories)
+			{
+				state.setAttribute(STATE_LAST_PAGE_EXISTS, "");
+			}
+		}
+
+		if (state.getAttribute(STATE_VIEW_ID) != null)
+		{
+			int viewPos = ((Integer) state.getAttribute(STATE_VIEW_ID)).intValue();
+
+			// are we moving to the next history
+			if (goNext)
+			{
+				// advance
+				viewPos++;
+				if (viewPos >= numHistories) viewPos = numHistories - 1;
+			}
+
+			// are we moving to the prev history
+			if (goPrev)
+			{
+				// retreat
+				viewPos--;
+				if (viewPos < 0) viewPos = 0;
+			}
+
+			// update the view history
+			state.setAttribute(STATE_VIEW_ID, new Integer(viewPos));
+
+			// if the view history is no longer on the current page, adjust the page
+			// Note: next time through this will get processed
+			if (viewPos < posStart)
+			{
+				state.setAttribute(STATE_GO_PREV_PAGE, "");
+			}
+			else if (viewPos > posEnd)
+			{
+				state.setAttribute(STATE_GO_NEXT_PAGE, "");
+			}
+
+			if (viewPos > 0)
+			{
+				state.setAttribute(STATE_PREV_EXISTS, "");
+			}
+			else
+			{
+				state.removeAttribute(STATE_PREV_EXISTS);
+			}
+
+			if (viewPos < numHistories - 1)
+			{
+				state.setAttribute(STATE_NEXT_EXISTS, "");
+			}
+			else
+			{
+				state.removeAttribute(STATE_NEXT_EXISTS);
+			}
+		}
+
+		if (state.getAttribute(STATE_GOTO_PAGE) != null)
+		{
+			state.setAttribute(STATE_CURRENT_PAGE, state.getAttribute(STATE_GOTO_PAGE));
+			state.removeAttribute(STATE_GOTO_PAGE);
+		}
+
+		return historyPage;
+
+	} // prepPageForBrowingHistory
+	
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.sakaiproject.cheftool.PagedResourceActionII#readResourcesPage(org.sakaiproject.service.framework.session.SessionState, int, int)
+	 */
+	protected List<AnnouncementBrowsingHis> readResourcesPageForBrowsingHistory(List<AnnouncementBrowsingHis> browsingHistories, SessionState state, int first, int last)
+	{
+		if (browsingHistories == null) return new Vector<>();
+
+		String sortedBy = "";
+		if (state.getAttribute(STATE_CURRENT_SORTED_BY) != null) sortedBy = state.getAttribute(STATE_CURRENT_SORTED_BY).toString();
+
+		boolean asc = false;
+		if (state.getAttribute(STATE_CURRENT_SORT_ASC) != null)
+			asc = ((Boolean) state.getAttribute(STATE_CURRENT_SORT_ASC)).booleanValue();
+
+		if ((sortedBy == null) || sortedBy.equals(""))
+		{
+			sortedBy = SORT_HISTORY_ID;
+			asc = true;
+		}
+		SortedIterator<AnnouncementBrowsingHis> rvSorted = new SortedIterator<>(browsingHistories.iterator(), new AnnouncementBrowsingHisComparator(sortedBy, asc));
+
+		PagingPosition page = new PagingPosition(first, last);
+		page.validate(browsingHistories.size());
+
+		Vector subrv = new Vector();
+		for (int index = 0; index < browsingHistories.size(); index++)
+		{
+			if ((index >= (page.getFirst() - 1)) && index < page.getLast())
+				subrv.add(rvSorted.next());
+			else
+				rvSorted.next();
+		}
+		return subrv;
+	}	
+	
+	/**
+	 * Action is to use when doDeleteBrowsingHistory requested, to perform deletion corresponding to chef_announcements-browsing-history "eventSubmit_doDeleteBrowsingHistory"
+	 */
+	public void doDeleteBrowsingHistory(RunData rundata, Context context)
+	{
+
+		// retrieve the state from state object
+		AnnouncementActionState state = (AnnouncementActionState) getState(context, rundata, AnnouncementActionState.class);
+		try
+		{
+			String messageReference = state.getMessageReference();
+			// get the channel id throught announcement service
+			AnnouncementChannel channel = AnnouncementService.getAnnouncementChannel(this
+					.getChannelIdFromReference(messageReference));
+
+			// get the message object through service
+			AnnouncementMessage message = channel.getAnnouncementMessage(this.getMessageIDFromReference(messageReference));
+            
+			// delete announcement browsing history
+			AnnouncementService.deleteAnnouncementBrowsingHistories(channel.getReference(), message.getId());
+		}
+		catch (IdUnusedException e)
+		{
+			if (log.isDebugEnabled()) log.debug("{}.doDeleteBrowsingHistory()", this, e);
+		}
+		catch (PermissionException e)
+		{
+			if (log.isDebugEnabled()) log.debug("{}.doDeleteBrowsingHistory()", this, e);
+		}
+		catch (NoSuchElementException e)
+		{
+			if (log.isDebugEnabled()) log.debug("{}.doDeleteBrowsingHistory()", this, e);
+		}
+
+		state.setIsListVM(true);
+		state.setStatus("FinishDeleting");
+
+	} // doDeleteBrowsingHistory
+	
+	private String getUserDisplayName(String userId) {
+        String userDisplayName = "";
+        try {
+
+			userDisplayName = userDirectoryService.getUser(userId).getDisplayName();
+        } catch (Exception e) {
+            log.debug("Could not get user " + userId + e);
+        }
+        return userDisplayName;
+    }
+
+	/**
+	 * Do sort by for - browsing history / id
+	 */
+	public void doSortbyhistoryId(RunData rundata, Context context)
+	{
+		setupSort(rundata, context, SORT_HISTORY_ID);
+	} // doSortbyuserId
+
+	// ********* ending for sorting *********
+
+
+	/**
+	 * Do sort by for - browsing history / name
+	 */
+	public void doSortbyhistoryName(RunData rundata, Context context)
+	{
+		setupSort(rundata, context, SORT_HISTORY_NAME);
+	} // doSortbyuserName
+
+	// ********* ending for sorting *********
+
+
+	/**
+	 * Do sort by for - browsing history / date
+	 */
+	public void doSortbyhistoryDate(RunData rundata, Context context)
+	{
+		setupSort(rundata, context, SORT_HISTORY_DATE);
+	} // doSortbyreadDate
+
+	// ********* ending for sorting *********
+	
 
 }

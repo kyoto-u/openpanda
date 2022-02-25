@@ -36,6 +36,13 @@ public interface AnnouncementMessageHeader extends MessageHeader
 	 * @return The subject of the announcement.
 	 */
 	public String getSubject();
+	
+	/**
+	 * Access the readCheck of the announcement.
+	 * 
+	 * @return The readCheck of the announcement.
+	 */
+	public Boolean getReadCheck();
 
 } // AnnouncementMessageHeader
 
