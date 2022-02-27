@@ -527,6 +527,11 @@
 											#end
 										#end
 									</th>
+									#if ($allow_revise)
+										<th class="screenOnly" id="readCheck">
+											$tlang.getString("announcement.read")
+										</th>
+									#end
 									
 									##if ($!view != "view.bygroup") ## SAK-13850 The delete option must be there even when it is viewed by groups
 										#if ($allow_delete)
@@ -611,6 +616,15 @@
 										&nbsp;
 									#end
 									</td>
+									#if ($allow_revise)
+										<td headers="readCheck" class="screenOnly">    
+											#if ($ann_item.Header.readCheck)
+												<a href="#toolLinkParam("AnnouncementAction" "doShowBrowsingHistory" "itemReference=$formattedText.escapeUrl($ann_item.reference)")">$ann_item.NumberOfReadUser / $ann_item.NumberOfSiteMember</a>
+											#else
+												&nbsp;
+											#end
+										</td>
+									#end
 
 									#set ($ref = $entityManager.newReference($ann_item.Reference))
 									#set ($origChannelRef = $service.channelReference($ref.Context,$ref.Container))

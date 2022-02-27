@@ -100,7 +100,7 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 			return getRegid(user, checkMask(user));
 		}
 
-		if (contextReference.equals("messageForum")) {
+		if (contextReference.equals("messageForum") || contextReference.equals("eid")) {
 			return getEid(user, !SecurityService.isSuperUser());
 		}
 

@@ -43,7 +43,6 @@ import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.component.cover.ServerConfigurationService;
 
 /**
  * <p>
@@ -630,6 +629,9 @@ public class AnnouncementActionState extends ControllerState implements SessionB
 	// ********* for sorting *********
 
 	private DisplayOptions m_displayOptions;
+	
+	// temporary storage for announcement readCheck
+	private Boolean m_readCheck = null;
 
 	/**
 	 * Get
@@ -1267,6 +1269,18 @@ public class AnnouncementActionState extends ControllerState implements SessionB
 		if ((m_edit != null) && (m_edit instanceof SessionBindingListener))
 		{
 			((SessionBindingListener) m_edit).valueUnbound(event);
+		}
+	}
+	public Boolean getReadCheck() 
+	{
+		return m_readCheck;
+	}
+	
+	public void setReadCheck(Boolean readCheck) 
+	{
+		if (readCheck != m_readCheck)
+		{
+			m_readCheck = readCheck;
 		}
 	}
 }

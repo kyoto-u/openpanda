@@ -37,4 +37,12 @@ public interface AnnouncementMessageHeaderEdit extends AnnouncementMessageHeader
 	 *        The subject of the announcement.
 	 */
 	public void setSubject(String subject);
+	
+	/**
+	 * Set the readCheck of the announcement.
+	 * 
+	 * @param readCheck
+	 *        The readCheck of the announcement.
+	 */
+	public void setReadCheck(Boolean readCheck);
 }

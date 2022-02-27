@@ -58,6 +58,7 @@
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
         <property name="userTimeService" ref="org.sakaiproject.time.api.UserTimeService"/>
         <property name="preferencesService" ref="org.sakaiproject.user.api.PreferencesService" />
+        <property name="contextualUserDisplayService" ref="org.sakaiproject.user.api.ContextualUserDisplayService" />
     </bean>
 
     <bean id="org.sakaiproject.assignment.impl.AssignmentContentProducer"
@@ -109,6 +110,7 @@
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
         <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
         <property name="formattedText" ref="org.sakaiproject.util.api.FormattedText"/>
+        <property name="contextualUserDisplayService" ref="org.sakaiproject.user.api.ContextualUserDisplayService" />
     </bean>
 
     <bean id="org.sakaiproject.assignment.taggable.api.AssignmentActivityProducer"

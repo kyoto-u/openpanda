@@ -549,4 +549,28 @@ public class AnnouncementService
 		return service.getMessages(channelReference,filter, order, merged);	
 	}
 	
+	public static  boolean saveAnnouncementBrowsingHistory(String channelId, String messageId, String userId)
+	{
+		org.sakaiproject.announcement.api.AnnouncementService service = getInstance();
+		if (service == null) return false;
+		
+		return service.saveAnnouncementBrowsingHistory(channelId, messageId, userId);	
+	}
+	
+	public static  java.util.List getAnnouncementBrowsingHistories(String channelId, String messageId)
+	{
+		org.sakaiproject.announcement.api.AnnouncementService service = getInstance();
+		if (service == null) return null;
+		
+		return service.getAnnouncementBrowsingHistories(channelId, messageId);	
+	}
+	
+	public static void deleteAnnouncementBrowsingHistories(String channelId, String messageId)
+	{
+		org.sakaiproject.announcement.api.AnnouncementService service = getInstance();
+		if (service == null) return;
+		
+		service.deleteAnnouncementBrowsingHistories(channelId, messageId);	
+	}
+	
 }

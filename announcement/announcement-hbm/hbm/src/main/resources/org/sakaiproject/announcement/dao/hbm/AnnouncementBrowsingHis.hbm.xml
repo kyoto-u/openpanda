@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.sakaiproject.announcement.dao.hbm">
+
+	<class name="org.sakaiproject.announcement.dao.hbm.AnnouncementBrowsingHisHbm" table="ANNOUNCEMENT_BROWSING_HIS">
+		<!-- create the primary key id -->
+		<id name="id"  column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">announcement_BROWSING_HIS_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="channelId" column="CHANNEL_ID" type="string" length="255" index="announcement_browsing_his_idx" />
+		<property name="messageId" column="MESSAGE_ID" type="string" length="36" index="announcement_browsing_his_idx" />
+		<property name="userId"    column="USER_ID"    type="string" length="99" />
+		<property name="readDate"  column="READ_DATE"  type="java.util.Date"  />
+	</class>
+</hibernate-mapping>

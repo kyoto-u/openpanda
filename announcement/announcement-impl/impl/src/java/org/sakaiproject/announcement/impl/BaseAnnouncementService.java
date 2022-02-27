@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.Vector;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -36,8 +35,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Stack;
 import java.util.Set;
+import java.util.Stack;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -49,13 +49,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.alias.api.Alias;
 import org.sakaiproject.alias.api.AliasService;
+import org.sakaiproject.announcement.api.AnnouncementBrowsingHis;
+import org.sakaiproject.announcement.api.AnnouncementBrowsingHisDao;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementChannelEdit;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
@@ -97,13 +95,16 @@ import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.util.api.LinkMigrationHelper;
 import org.sakaiproject.util.MergedList;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.api.LinkMigrationHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -131,6 +132,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 	@Setter private FunctionManager functionManager;
 	@Setter private AliasService aliasService;
 	@Setter private ToolManager toolManager;
+	@Setter private AnnouncementBrowsingHisDao announcementBrowsingHisDao;
 	@Resource(name="org.sakaiproject.util.api.LinkMigrationHelper")
 	private LinkMigrationHelper linkMigrationHelper;
 
@@ -1737,6 +1739,8 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 	{
 		/** The subject for the announcement. */
 		protected String m_subject = null;
+		/** The readCheck for the announcement. */
+		protected Boolean m_readCheck = false;
 
 		/**
 		 * Construct.
@@ -1766,6 +1770,8 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 
 			// extract the subject
 			m_subject = el.getAttribute("subject");
+			// extract the readCheck
+			m_readCheck = new Boolean(el.getAttribute("readCheck"));
 
 		} // BaseAnnouncementMessageHeaderEdit
 
@@ -1780,6 +1786,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 			super(msg, other);
 
 			m_subject = ((AnnouncementMessageHeader) other).getSubject();
+			m_readCheck = ((AnnouncementMessageHeader) other).getReadCheck();
 
 		} // BaseAnnouncementMessageHeaderEdit
 
@@ -1808,6 +1815,27 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 			}
 
 		} // setSubject
+		
+		/**
+		 * Access the subject of the announcement.
+		 * 
+		 * @return The subject of the announcement.
+		 */
+		public Boolean getReadCheck()
+		{
+			return m_readCheck;
+		} // getReadCheck
+		
+		/**
+		 * Set the subject of the announcement.
+		 * 
+		 * @param subject
+		 *        The subject of the announcement.
+		 */
+		public void setReadCheck(Boolean readCheck)
+		{
+			m_readCheck = readCheck;
+		} // setReadCheck
 
 
 		/**
@@ -1827,6 +1855,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 			// add draft, subject
 			header.setAttribute("subject", getSubject());
 			header.setAttribute("draft", new Boolean(getDraft()).toString());
+			header.setAttribute("readCheck", new Boolean(getReadCheck()).toString());
 
 			return header;
 
@@ -1972,5 +2001,20 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 		}
 
 		return Optional.of(super.getEntityUrl(r));
+	}
+	
+	public boolean saveAnnouncementBrowsingHistory(String channelId, String messageId, String userId)
+	{
+		return announcementBrowsingHisDao.save(channelId, messageId, userId);
+	}
+	
+	public List<AnnouncementBrowsingHis> getAnnouncementBrowsingHistories(String channelId, String messageId)
+	{
+		return announcementBrowsingHisDao.getHistories(channelId, messageId);
+	}
+	
+	public void deleteAnnouncementBrowsingHistories(String channelId, String messageId)
+	{
+		announcementBrowsingHisDao.deleteAll(channelId, messageId);
 	}
 }

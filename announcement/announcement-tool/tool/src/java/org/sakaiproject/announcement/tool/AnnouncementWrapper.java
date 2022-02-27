@@ -22,9 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.sakaiproject.announcement.api.AnnouncementBrowsingHis;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
 import org.sakaiproject.announcement.api.AnnouncementMessageHeader;
+import org.sakaiproject.announcement.cover.AnnouncementService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
@@ -55,6 +58,10 @@ public class AnnouncementWrapper implements AnnouncementMessage
 	private String range;
 	
 	private String authorDisplayName;
+	
+	private int numberOfReadUser;
+	
+	private int numberOfSiteMember;
 	
 	public AnnouncementMessage getMessage()
 	{
@@ -127,6 +134,16 @@ public class AnnouncementWrapper implements AnnouncementMessage
 		if (range != null)
 		{
 			this.range = range;
+		}
+		
+		this.numberOfSiteMember = 0;
+		this.numberOfReadUser = 0;
+		if (message.getAnnouncementHeader().getReadCheck()) {
+			List<AnnouncementBrowsingHis> browsingHistories = AnnouncementService.getAnnouncementBrowsingHistories(currentChannel.getReference(), message.getId());
+			if (CollectionUtils.isNotEmpty(browsingHistories)) {
+				this.numberOfReadUser = browsingHistories.size();
+			}
+			this.numberOfSiteMember = site.getMembers().size();
 		}
 	}
 
@@ -332,6 +349,47 @@ public class AnnouncementWrapper implements AnnouncementMessage
 	public String getAuthorDisplayName()
 	{
 		return authorDisplayName;
+	}
+	
+	/**
+	 * returns the numberOfReadUser
+	 * 
+	 * @return
+	 */
+	public int getNumberOfReadUser()
+	{
+		return numberOfReadUser;
+	}
+
+	/**
+	 * Set the numberOfReadUser
+	 * 
+	 * @return
+	 */
+	public void setNumberOfReadUser(int numberOfReadUser)
+	{
+		this.numberOfReadUser = numberOfReadUser;
+	}
+		
+	
+	/**
+	 * returns the numberOfSiteMember
+	 * 
+	 * @return
+	 */
+	public int getNumberOfSiteMember()
+	{
+		return numberOfSiteMember;
+	}
+
+	/**
+	 * Set the numberOfSiteMember
+	 * 
+	 * @return
+	 */
+	public void setNumberOfSiteMember(int numberOfSiteMember)
+	{
+		this.numberOfSiteMember = numberOfSiteMember;
 	}
 
 	/**
