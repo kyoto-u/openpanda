@@ -32,6 +32,7 @@
     // purple, and red palettes available for you to use.
     // More info about defineColorHSL in sass/themes/_base.scss
     @include defineColorHSL(--sakai-brand, 203, 76%, 25%);
+    @include defineColorHSL(--panda-black, 0, 0%, 13%); // PandA
     /////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////
@@ -42,38 +43,38 @@
     /////////////////////////////////////////////////////////////
 
     // Logo
-    --logo: url(#{$skin-path}images/logo-jewel.png);
-    --logo-height: 36px;
-    --logo-width: 126px;
+    --logo: url(#{$skin-path}images/logo-panda.png); // PandA
+    --logo-height: 27px; // PandA
+    --logo-width: 114px; // PandA
     --logo-opacity: 1;
 
     // Primary branding color. 
     // Suggested: Your institution's main branding color.
     // Used in the top header, action buttons, etc. Commonly used as the background
     // color with white text color.
-    --sakai-primary-color-1: var(--sakai-brand);
+    --sakai-primary-color-1: var(--panda-black); // PandA
 
     // Default: A slightly darker shade of --sakai-primary-color-1
     // Used for hover effects and higher contrast with white text color
-    --sakai-primary-color-2: var(--sakai-brand--darker-2);
+    --sakai-primary-color-2: var(--panda-black--darker-2); // PandA
 
     // Default: A slightly darker shade of --sakai-primary-color-2
     // Used for active, focus, selected effects
-    --sakai-primary-color-3: var(--sakai-brand--darker-3);
+    --sakai-primary-color-3: var(--panda-black--darker-3); // PandA
 
     // Default: A very light tint of --sakai-primary-color-1. 
     // Suggested: A light tint of your institution's main branding color.
     // Used to highlight active/current site in favorites and active/current tool in toolmenu
     // Commonly used with white background color with white text color.
-    --sakai-active-color-1: var(--sakai-brand--lighter-6);
+    --sakai-active-color-1: var(--panda-black--lighter-6); // PandA
 
     // Default: A slightly darker shade of --sakai-active-color-1
     // Used for hover effects and higher contrast with --sakai-text-color-3
-    --sakai-active-color-2: var(--sakai-brand--lighter-5);
+    --sakai-active-color-2: var(--panda-black--lighter-5); // PandA
 
     // Default: A slightly darker shade of --sakai-active-color-2
     // Used for active, focus, selected effects with --sakai-text-color-3
-    --sakai-active-color-3: var(--sakai-brand--lighter-4);
+    --sakai-active-color-3: var(--panda-black--lighter-4); // PandA
 
     // Default: A very light tint of gray. 
     // Suggested: --sakai-color-gray--lighter-6.
@@ -134,7 +135,7 @@
 
     // Default: A much darker shade of --sakai-primary-color-1
     // Used as text color of active site in favorites, active tool in toolmenu
-    --sakai-text-color-3: var(--sakai-brand--darker-3);
+    --sakai-text-color-3: var(--panda-black--darker-3); // PandA
 
     // Default: A slightly lighter shade of --sakai-text-color-1
     // Used to reduce attention of text
@@ -228,12 +229,12 @@
     // Primary action button design:
     --button-primary-text-color: var(--sakai-text-color-inverted);
     --button-primary-background: var(--sakai-primary-color-1);
-    --button-primary-border-color: var(--button-primary-background);
+    --button-primary-border-color: rgba(102, 102, 102, 1); // PandA
     --button-primary-shadow: var(--elevation-2dp);
     // hover and focus states for primary action button:
     --button-primary-hover-text-color: var(--button-primary-text-color);
-    --button-primary-hover-background: var(--sakai-primary-color-2);
-    --button-primary-hover-border-color: var(--button-primary-hover-background);
+    --button-primary-hover-background: rgba(55, 55, 55, 1); // PandA
+    --button-primary-hover-border-color: rgba(0, 0, 0, 1); // PandA
     --button-primary-hover-shadow: var(--elevation-4dp);
     // active state for primary action button:
     --button-primary-active-text-color: var(--button-primary-text-color);
