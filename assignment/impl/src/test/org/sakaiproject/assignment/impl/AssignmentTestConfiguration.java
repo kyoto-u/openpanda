@@ -64,6 +64,7 @@ import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotificationPreferencesRegistration;
@@ -332,5 +333,10 @@ public class AssignmentTestConfiguration {
     @Bean(name = "org.sakaiproject.tasks.api.TaskService")
     public TaskService taskService() {
         return mock(TaskService.class);
+    }
+
+    @Bean(name = "org.sakaiproject.user.api.ContextualUserDisplayService")
+    public ContextualUserDisplayService contextualUserDisplayService() {
+        return mock(ContextualUserDisplayService.class);
     }
 }

@@ -111,34 +111,34 @@ $(document).ready(function() {
 					<tr>
 						<th id="historyId" scope="col">
 							#if (!$currentSortedBy.equals("historyId"))
-								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryd')">$tlang.getString('announcement.browsing.history.id')</a>
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyuseridasc')">$tlang.getString('announcement.browsing.history.id')</a>
 							#else
 								#if ($currentSortAsc.equals("true"))
-									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryidasc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString('gen.sortbyasc')" /></a>
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyuseriddesc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortascending.gif")" border="0" alt="$tlang.getString('gen.sortbyuseriddesc')" /></a>
 								#else
-									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyhistoryiddesc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString('gen.sortbydesc')"/></a>
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryId")';return false;"  title ="$tlang.getString('gen.sortbyuseridasc')">$tlang.getString('announcement.browsing.history.id') <img src = "#imageLink("sakai/sortdescending.gif")" border="0" alt="$tlang.getString('gen.sortbyuseridasc')"/></a>
 								#end
 							#end
 						</th>
 						<th id="historyName" scope="col">
 							#if (!$currentSortedBy.equals("historyName"))
-								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynameasc')">$tlang.getString("announcement.browsing.history.name")</a>
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyusernameasc')">$tlang.getString("announcement.browsing.history.name")</a>
 							#else
 								#if ($currentSortAsc.equals("true"))
-									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynameasc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbydateasc')" /></a>
+									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyusernamedesc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbyusernamedesc')" /></a>
 								#else
-									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyhistorynamedesc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbydatedesc')" /></a>
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryName")';return false;"  title="$tlang.getString('gen.sortbyusernameasc')">$tlang.getString("announcement.browsing.history.name") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbyusernameasc')" /></a>
 								#end
 							#end
 						</th>
 						<th id="historyDate" scope="col">
 							#if (!$currentSortedBy.equals("historyDate"))
-								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydateasc')">$tlang.getString("announcement.browsing.history.date")</a>
+								<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyreaddateasc')">$tlang.getString("announcement.browsing.history.date")</a>
 							#else
 								#if ($currentSortAsc.equals("true"))
-									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydateasc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbydateasc')" /></a>
+									 <a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyreaddatedesc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortascending.gif')" border="0" alt="$tlang.getString('gen.sortbyreaddatedesc')" /></a>
 								#else
-									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyhistorydatedesc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbydatedesc')" /></a>
+									<a href="#" onclick="location='#toolLink("AnnouncementAction" "doSortbyhistoryDate")';return false;"  title="$tlang.getString('gen.sortbyreaddateasc')">$tlang.getString("announcement.browsing.history.date") <img src = "#imageLink('sakai/sortdescending.gif')" border="0" alt ="$tlang.getString('gen.sortbyreaddatedasc')" /></a>
 								#end
 							#end
 						</th>
