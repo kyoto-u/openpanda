@@ -122,9 +122,12 @@
                 <module>webservices</module>
                 <module>wicket</module>
                 <module>panda</module>
+		<!--
                 <module>pdfgenerationservice</module>
+		-->
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
+                <module>courselink</module>
             </modules>
         </profile>
         <profile>
@@ -215,9 +218,12 @@
                 <module>wicket</module>
                 <module>yaft</module>
                 <module>panda</module>
+		<!--
                 <module>pdfgenerationservice</module>
+		-->
                 <module>sakora-csv</module>
                 <module>sakai-extension</module>
+                <module>courselink</module>
             </modules>
         </profile>
 
