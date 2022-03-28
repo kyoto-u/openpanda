@@ -156,7 +156,8 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
 		   }*/
 		   if (sectionId == null || sectionId.length()<1 || sectionId.equals("myworkspace")){
 			   // Redirect to Dashboard in myworkspace.
-			   String url = openMyworkspacePage(DASHBOARD_ID);
+			   //String url = openMyworkspacePage(DASHBOARD_ID);
+			   String url = getMyworkspaceUrl(user.getEid());
 			   doRedirect(res, url);
 			   return;
 		   }
@@ -173,7 +174,7 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
 				   doRedirect(res,nextUrl);
 				   return;
 			   }
-			   doRedirectDashboard(site, res);
+			   doRedirectTool(site, res);
 			   return;
 		   }
 		   //end
@@ -212,18 +213,26 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
 			   doRedirect(res, SETUP_CONFIRM_URL  + "?" + ATTR_SITEID + "=" + site.getId());
 			   return;
 		   }
-		   // Redirect to Dashboard in course site.
-		   doRedirectDashboard(site, res);
+		   // Redirect to Selected Tool in course site.
+		   doRedirectTool(site, res);
 		   return;
 	  }
 
-	  private void doRedirectDashboard(Site site, HttpServletResponse res){
+	  /*private void doRedirectDashboard(Site site, HttpServletResponse res){
 		   String url = openCourseSiteDashboard(site);
 		   if ( url == null){
 			   url = openMyworkspacePage(COURSELINKTOOL_ID);
 		   }
 		   doRedirect(res, url);
-	  }
+	  }*/
+
+	  private void doRedirectTool(Site site, HttpServletResponse res) {
+		   String url = openCourseSiteDefaultTool(site);
+		   if (url == null) {
+			   url = openMyworkspacePage(COURSELINKTOOL_ID);
+		   }
+		   doRedirect(res, url);
+      }
 
    private boolean requestCheck(String requestFrom ){
 	   if (REQUEST_FROM_ID.equals(requestFrom)){
@@ -326,7 +335,7 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
    /**
     * Return URL of Dashboard page in Site .
     */
-   private String openCourseSiteDashboard(Site site){
+   /*private String openCourseSiteDashboard(Site site){
 	   if ( site == null){
 		   return null;
 	   }
@@ -334,6 +343,18 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
 	   String url = getSiteUrl(site.getId());
 	   if(dashboardPageId != null){
 		   url += getPageParts(dashboardPageId);
+	   }
+	   return url;
+	}*/
+
+   private String openCourseSiteDefaultTool(Site site) {
+	   if (site == null) {
+		   return null;
+	   }
+	   String defaultViewPageId = getFirstViewPageId(site, sakaiProxy.getServerProperty(FIRSTVIEWTOOLID));
+	   String url = getSiteUrl(site.getId());
+	   if (defaultViewPageId != null) {
+		   url += getPageParts(defaultViewPageId);
 	   }
 	   return url;
    }
@@ -414,6 +435,38 @@ public class CourselinkEntityProvider extends Constant implements RESTful, AutoR
 			try{
 				pageId = sakaiProxy.createPage(site, toolId);
 			}catch (Exception e){}
+		}
+		return pageId;
+   }
+
+   private String getFirstViewPageId(Site site, String toolId) {
+	   List pages = site.getOrderedPages();
+	   String pageId = null;
+	   String defaultPageId = null;
+		for (Iterator i = pages.iterator(); i.hasNext();)
+		{
+			// check if current user has permission to see page
+			SitePage p = (SitePage) i.next();
+			List pTools = p.getTools();
+			Iterator iPt = pTools.iterator();
+
+			while (iPt.hasNext())
+			{
+				ToolConfiguration placement = (ToolConfiguration) iPt.next();
+				if (toolId.length() > 1 && placement.getToolId().equals(toolId)) {
+					pageId = p.getId();
+					break;
+				}else if(placement.getToolId().equals(SITEINFO_ID)) {
+					defaultPageId = p.getId();
+				}
+			}
+			if (pageId != null) {
+				break;
+			}
+		}
+		// default tool siteinfo
+		if (pageId == null) {
+			pageId = defaultPageId;
 		}
 		return pageId;
    }

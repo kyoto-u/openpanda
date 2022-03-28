@@ -44,3 +44,12 @@ courselink.templatesite.beginner=!courselink.template.beginner
 courselink.templatesite.beginner.status=9999
 
 部局ごとのテンプレート指定の時と同じように、初心者用のテンプレートサイトも別途作成必要。
+
+##### API経由で作成済みサイトにアクセスした場合の初期表示ツール指定
+
+API経由でアクセスした際に、どのツールを初期表示するかをsakai.propertiesで指定する。
+
+courselink.access.first.view.tool=sakai.siteinfo
+
+このpropertyが設定されていない、もしくは、ツールがサイトに存在しない、もしくは指定したツールIDが存在しない場合、
+デフォルト表示ツールはサイト情報ツールを初期表示させる。

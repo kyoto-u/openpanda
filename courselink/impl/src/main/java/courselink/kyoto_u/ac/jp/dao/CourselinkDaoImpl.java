@@ -158,9 +158,10 @@ implements CourselinkDao {
 	   public Long getMaxStatus(final long courselinkSiteId){
 		   HibernateCallback hc = new HibernateCallback(){
 			   public Object doInHibernate(Session session) throws HibernateException {
-				   String queryString = "select max(status) from courselink_request where courselink_site_id = ?";
+				   String queryString = "select max(status) from courselink_request where courselink_site_id = :courselinkSiteId";
 				   Query query = session.createSQLQuery(queryString);
-				   query.setLong(0, courselinkSiteId);
+				/*query.setLong(0, courselinkSiteId);*/
+				   query.setParameter("courselinkSiteId", courselinkSiteId);
 				   long n = ((Number)query.uniqueResult()).longValue();
 				   return n;
 			   }
