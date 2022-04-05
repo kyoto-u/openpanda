@@ -824,7 +824,7 @@ public abstract class BaseMailArchiveService extends BaseMessage implements Mail
 
 			MailArchiveMessageEdit edit = (MailArchiveMessageEdit) addMessage();
 			MailArchiveMessageHeaderEdit archiveHeaders = edit.getMailArchiveHeaderEdit();
-			edit.setBody(cleanedText);
+			edit.setBody(body[0]);
 			edit.setHtmlBody(cleanedHtml);
 			archiveHeaders.replaceAttachments(attachments);
 			archiveHeaders.setSubject(subject);
