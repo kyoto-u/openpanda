@@ -49,7 +49,7 @@ courselink.templatesite.beginner.status=9999
 
 API経由でアクセスした際に、どのツールを初期表示するかをsakai.propertiesで指定する。
 
-courselink.access.first.view.tool=sakai.siteinfo
+courselink.access.first.view.tool.id=sakai.siteinfo
 
 このpropertyが設定されていない、もしくは、ツールがサイトに存在しない、もしくは指定したツールIDが存在しない場合、
 デフォルト表示ツールはサイト情報ツールを初期表示させる。
