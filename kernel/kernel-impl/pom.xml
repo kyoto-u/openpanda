@@ -287,7 +287,7 @@
     <dependency>
       <groupId>org.owasp.antisamy</groupId>
       <artifactId>antisamy</artifactId>
-      <version>1.5.3</version>
+      <version>1.6.7</version>
       <type>jar</type>
     </dependency>
     <!-- KNL-1253 -->
