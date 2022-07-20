@@ -157,7 +157,8 @@ public class GradeSheetExporter {
                 //Submitter submitter = new Submitter(user.getDisplayId(), user.getSortName());
                 //Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getSortName());
                 //Submitter submitter = new Submitter(assignmentService.getSubmissionUserId(user), user.getDisplayName());
-                Submitter submitter = new Submitter(contextualUserDisplayService.getUserDisplayId(user, "employeeNumber"), user.getDisplayName());
+                //Submitter submitter = new Submitter(contextualUserDisplayService.getUserDisplayId(user, "employeeNumber"), user.getDisplayName());
+                Submitter submitter = new Submitter(user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid(), user.getDisplayName());
                 submitterMap.put(user.getId(), submitter);
                 if (isNotesEnabled) {
                     Optional<List<String>> additionalNotes = candidateDetailProvider.getAdditionalNotes(user, site);
