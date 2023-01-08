@@ -52,22 +52,10 @@
           <!-- we are running a webapp in a servlet container so we need the servlet API -->
           <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
           </dependency>
-
-	  <!-- We need this special package to run the jsps in Sakai -->
-	  <dependency>
-	    <groupId>org.sakaiproject</groupId>
-	    <artifactId>sakai-jsp-adapter</artifactId>
-	    <version>0.10-K1</version>
-	    <scope>runtime</scope>
-	    <exclusions>
-	      <exclusion>
-		<groupId>org.sakaiproject</groupId>
-		<artifactId>sakai-kernel-api</artifactId>
-	      </exclusion>
-	    </exclusions>
-	  </dependency>
 
 	  <!-- JSF2 -->
 	  <!-- remove the default api/imp 1.1_02 version from JSF prject with new 1.2 version  -->

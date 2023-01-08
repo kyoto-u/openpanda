@@ -11,7 +11,7 @@
         <parent>
                 <groupId>org.sakaiproject</groupId>
                 <artifactId>master</artifactId>
-                <version>10.6</version>
+                <version>22.2</version>
                 <relativePath>../master/pom.xml</relativePath>
         </parent>
 

@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
 import org.sakaiproject.alert.dao.EmergencyInfoDao;
 import org.sakaiproject.alert.model.EmergencyInfo;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -30,7 +30,7 @@ public class EmergencyDaoImpl extends HibernateGeneralGenericDao implements Emer
 
         HibernateCallback hc = new HibernateCallback() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException  {
                 Query query = session.getNamedQuery("getEmergencyInfoByUserId");
                 query.setParameter("userId", userId);
                 query.setMaxResults(1);
@@ -47,7 +47,7 @@ public class EmergencyDaoImpl extends HibernateGeneralGenericDao implements Emer
 
         HibernateCallback hc = new HibernateCallback() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.getNamedQuery("getEmergencyInfoByUserId");
                 query.setParameter("userId", userId);
                 return query.list();
@@ -63,7 +63,7 @@ public class EmergencyDaoImpl extends HibernateGeneralGenericDao implements Emer
 
         HibernateCallback hc = new HibernateCallback() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.getNamedQuery("getEmergencyInfoByUserIdSince");
                 query.setParameter("userId", userId);
                 query.setParameter("sinceDate", sinceDate);
@@ -81,7 +81,7 @@ public class EmergencyDaoImpl extends HibernateGeneralGenericDao implements Emer
 
         HibernateCallback hc = new HibernateCallback() {
             @Override
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            public Object doInHibernate(Session session) throws HibernateException {
                 Query query = session.getNamedQuery("getEmergencyInfoByUserIdSince");
                 query.setParameter("userId", userId);
                 query.setParameter("sinceDate", sinceDate);

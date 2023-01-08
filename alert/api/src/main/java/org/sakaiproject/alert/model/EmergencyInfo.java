@@ -22,6 +22,11 @@ public class EmergencyInfo {
     private String userAgent;
     private String delegatedUserId;
 
+    public EmergencyInfo() {
+        this.userId = null;
+        this.touchedDate = null;
+    }
+
     public EmergencyInfo(String userId, Date touchedDate) {
         this.userId = userId;
         this.touchedDate = touchedDate;
