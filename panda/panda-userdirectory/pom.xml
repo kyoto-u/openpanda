@@ -6,7 +6,7 @@
   <parent>
     <artifactId>panda</artifactId>
     <groupId>jp.ac.kyoto_u.sakai</groupId>
-    <version>21-SNAPSHOT</version>
+    <version>22.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <name>PandA UserDirectory</name>
@@ -22,12 +22,16 @@
     <deploy.target />
   </properties>
   <dependencies>
-		<dependency>
+    <dependency>
       <groupId>org.sakaiproject</groupId>
-      <artifactId>sakai-jldap-provider</artifactId>
-      <version>10.7</version>
-		</dependency>
-
+      <artifactId>sakai-openldap-provider</artifactId>
+      <version>${sakai.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sakaiproject</groupId>
+      <artifactId>sakai-unboundid-provider</artifactId>
+      <version>${sakai.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.sakaiproject.kernel</groupId>
       <artifactId>sakai-kernel-util</artifactId>

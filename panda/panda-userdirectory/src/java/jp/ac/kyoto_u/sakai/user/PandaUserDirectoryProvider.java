@@ -10,13 +10,13 @@ import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.api.UserFactory;
 import org.sakaiproject.user.api.AlternativeIdUDP;
 
-import edu.amc.sakai.user.JLDAPDirectoryProvider;
-import edu.amc.sakai.user.LdapUserData;
-import edu.amc.sakai.user.LdapAttributeMapper;
+import org.sakaiproject.unboundid.UnboundidDirectoryProvider;
+import org.sakaiproject.unboundid.LdapUserData;
+import org.sakaiproject.unboundid.LdapAttributeMapper;
 
-import com.novell.ldap.LDAPException;
+import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPException;
 
-public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implements AlternativeIdUDP {
+public class PandaUserDirectoryProvider extends UnboundidDirectoryProvider implements AlternativeIdUDP {
 
 	private static Log M_log = LogFactory.getLog(PandaUserDirectoryProvider.class);
 
@@ -131,8 +131,7 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 		}
 
 		try {
-			LdapUserData ldapUserData = (LdapUserData)searchDirectoryForSingleEntry(filter, null, null, null, null);
-
+			LdapUserData ldapUserData = (LdapUserData)searchDirectoryForSingleEntry(filter, null, null, null);
 			if (ldapUserData == null) {
 				return null;
 			}
@@ -142,10 +141,11 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 			mapUserDataOntoUserEdit(ldapUserData, user);
 			return user;
 
-		} catch (LDAPException e) {
-			M_log.warn("An error occurred searching for users: " + e.getClass().getName() + ": (" + e.getResultCode() + ") " + e.getMessage());
-			return null;
-		}
+                } catch (LDAPException e)       {
+                        throw new RuntimeException("findUserByAlternativeId(): LDAPException during search [alternativeId = " + alternativeId +
+                                        "][result code = " + e.errorCodeToString() +
+                                        "][error message = " + e.getLDAPErrorMessage() + "]", e);
+                }
 	}
 
 	public List<UserEdit> findUsersByAlternativeId(String alternativeId, UserFactory factory, String contextReference) {
@@ -163,7 +163,7 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 		try {
 
 		    //no limit to the number of search results, use the LDAP server's settings.
-		    List<LdapUserData> ldapUsers = searchDirectory(filter, null, null, null, null, 5000);
+		    List<LdapUserData> ldapUsers = searchDirectory(filter, null, null, null, 5000);
 
 		    if (ldapUsers == null) {
 			return null;
@@ -179,10 +179,11 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 			users.add(user);
 		    }
 
-		} catch (LDAPException e) {
-			M_log.warn("An error occurred searching for users: " + e.getClass().getName() + ": (" + e.getResultCode() + ") " + e.getMessage());
-			return null;
-		}
+                } catch (LDAPException e)       {
+                        throw new RuntimeException("findUserByAlternativeId(): LDAPException during search [alternativeId = " + alternativeId +
+                                        "][result code = " + e.errorCodeToString() +
+                                        "][error message = " + e.getLDAPErrorMessage() + "]", e);
+                }
 
 		return users;
 
@@ -204,7 +205,7 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 		try {
 
 		    //no limit to the number of search results, use the LDAP server's settings.
-		    List<LdapUserData> ldapUsers = searchDirectory(filter, null, null, null, null, 5000);
+		    List<LdapUserData> ldapUsers = searchDirectory(filter, null, null, null, 5000);
 
 		    if (ldapUsers == null) {
 			return null;
@@ -220,10 +221,11 @@ public class PandaUserDirectoryProvider extends JLDAPDirectoryProvider implement
 			users.add(user);
 		    }
 
-		} catch (LDAPException e) {
-			M_log.warn("An error occurred searching for users: " + e.getClass().getName() + ": (" + e.getResultCode() + ") " + e.getMessage());
-			return null;
-		}
+                } catch (LDAPException e)       {
+                        throw new RuntimeException("findUsersByTitle(): LDAPException during search [title = " + title +
+                                        "][result code = " + e.errorCodeToString() +
+                                        "][error message = " + e.getLDAPErrorMessage() + "]", e);
+                }
 
 		return users;
 
