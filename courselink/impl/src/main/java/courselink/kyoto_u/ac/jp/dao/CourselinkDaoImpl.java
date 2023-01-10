@@ -10,7 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.sakaiproject.genericdao.hibernate.HibernateGeneralGenericDao;
-import org.springframework.orm.hibernate4.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import courselink.kyoto_u.ac.jp.model.CourselinkRequest;
 import courselink.kyoto_u.ac.jp.model.CourselinkSite;

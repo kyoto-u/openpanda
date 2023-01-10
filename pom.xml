@@ -126,6 +126,7 @@
                 <module>sakai-extension</module>
                 <!-- module>attendance</module -->
                 <module>pdfgenerationservice</module>
+                <module>courselink</module>
             </modules>
         </profile>
         <profile>
@@ -219,6 +220,7 @@
                 <module>sakai-extension</module>
                 <!-- module>attendance</module -->
                 <module>pdfgenerationservice</module>
+                <module>courselink</module>
             </modules>
         </profile>
 
