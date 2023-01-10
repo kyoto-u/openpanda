@@ -6,7 +6,7 @@
     <bean id="org.sakaiproject.pdfgenerationservice.api.PDFGenerationService"
         class="org.sakaiproject.pdfgenerationservice.impl.PDFGenerationServiceImpl"
         init-method="init">
-        <property name="emailTemplateService" ref="org.sakaiproject.emailtemplateservice.service.EmailTemplateService"/>
+        <property name="emailTemplateService" ref="org.sakaiproject.emailtemplateservice.api.EmailTemplateService"/>
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 </beans>

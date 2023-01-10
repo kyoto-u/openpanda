@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.sakaiproject.component.api.ServerConfigurationService;
-import org.sakaiproject.emailtemplateservice.model.EmailTemplate;
-import org.sakaiproject.emailtemplateservice.service.EmailTemplateService;
+import org.sakaiproject.emailtemplateservice.api.model.EmailTemplate;
+import org.sakaiproject.emailtemplateservice.api.EmailTemplateService;
 import org.sakaiproject.pdfgenerationservice.api.PDFGenerationService;
 import org.sakaiproject.util.ResourceLoader;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
@@ -24,17 +24,17 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Implementation of {@link PDFGenerationService}
  */
+@Slf4j
 public class PDFGenerationServiceImpl implements PDFGenerationService {
 
     private static final Logger log = Logger.getLogger(PDFGenerationServiceImpl.class);
 
-    @Setter
     private EmailTemplateService emailTemplateService;
-    @Setter
     private ServerConfigurationService serverConfigurationService;
 
     /**
@@ -379,6 +379,14 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
                 log.warn(e.getMessage(), e);
             }
         }
+    }
+
+    public void setEmailTemplateService(EmailTemplateService emailTemplateService)  {
+        this.emailTemplateService = emailTemplateService;
+    }
+
+    public void setServerConfigurationService(ServerConfigurationService serverConfigurationService)  {
+        this.serverConfigurationService = serverConfigurationService;
     }
 
 }
