@@ -73,6 +73,7 @@ public class AssessmentBean  implements Serializable {
   private boolean hasGradingData = false;
   private boolean hasSubmission = false;
   private Boolean showPrintAssessment = null;
+  private Boolean showMarkupOption = null;
 
   /*
    * Creates a new AssessmentBean object.
@@ -347,4 +348,18 @@ public class AssessmentBean  implements Serializable {
   public String getCDNQuery() {
 		return PortalUtils.getCDNQuery();
   }
+
+  public boolean getShowMarkupOption() {
+	  if(showMarkupOption == null){
+		  String markupViewOption = ServerConfigurationService.getString("samigo.showMarkupOption", "false");
+		  return Boolean.parseBoolean(markupViewOption);
+	  }
+	  return showMarkupOption;
+  }
+
+  public void setShowMarkupOption(Boolean showMarkupOption) {
+	  this.showMarkupOption= showMarkupOption;
+  }
+
+
 }
