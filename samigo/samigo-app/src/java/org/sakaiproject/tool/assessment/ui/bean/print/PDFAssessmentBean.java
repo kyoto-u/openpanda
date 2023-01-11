@@ -854,7 +854,8 @@ public class PDFAssessmentBean implements Serializable {
 		response.setHeader("Cache-Control", "public, must-revalidate, post-check=0, pre-check=0, max-age=0"); 
 
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment; filename=" + genName());   
+		// response.setHeader("Content-disposition", "attachment; filename=" + genName());   
+		response.setHeader("Content-disposition", "attachment; filename=exported_samigo_print.pdf");
 		response.setContentLength(pdf.toByteArray().length);
 		OutputStream out = null;
 		try {
