@@ -603,7 +603,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportXls() {
-		String fileName = getExportFileName();
+		// String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		byte[] hssfWorkbookBytes = Locator.getFacade().getReportManager().getReportAsExcel(report, fileName);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
@@ -629,7 +630,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportCsv() {
-		String fileName = getExportFileName();
+		// String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		String csvString = Locator.getFacade().getReportManager().getReportAsCsv(report);
 		
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
@@ -655,7 +657,8 @@ public class ReportDataPage extends BasePage {
 	}
 
 	protected void exportPdf() {
-		String fileName = getExportFileName();
+		// String fileName = getExportFileName();
+		String fileName = "exported_stats";
 		byte[] pdf = Locator.getFacade().getReportManager().getReportAsPDF(report);
 
 		RequestCycle.get().scheduleRequestHandlerAfterCurrent(new EmptyRequestHandler());
