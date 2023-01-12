@@ -8,6 +8,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.entity.api.ResourceProperties;
+import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.site.api.ToolConfiguration;
+import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.api.Placement;
+import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.User;
 
@@ -76,7 +81,7 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 			return null;
 		}
 
-		return getEid(user, !SecurityService.isSuperUser());
+		return getEmployeeNumber(user, checkMask(user));
 	}
 
 	public String getUserDisplayId(User user, String contextReference) {
@@ -89,7 +94,11 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 		}
 
 		if (contextReference.equals("employeeNumber") || contextReference.equals("Site Info") || contextReference.equals("course") || contextReference.equals("training")) {
-			return getRegid(user, !SecurityService.isSuperUser());
+			return getRegid(user, checkMask(user));
+		}
+
+		if (contextReference.equals("messageForum")) {
+			return getEid(user, !SecurityService.isSuperUser());
 		}
 
 		return null;
@@ -186,4 +195,68 @@ public class MaskingContextualUserDisplayService implements ContextualUserDispla
 
 		return buffer.toString();
 	}
+
+	private String getEmployeeNumber(User user,boolean masked){
+		assert user != null;
+		String employeeNumber = (String)user.getProperties().get(userRegidProperty);
+		if( employeeNumber == null || employeeNumber.isEmpty()){
+			employeeNumber = user.getEid();
+		}
+		return masked ? maskStringForUser(user, employeeNumber, eidMaskPatterns) : employeeNumber;
+	}
+
+	private boolean checkMask(User user){
+
+		assert user != null;
+		boolean checkMask = true;
+		String loginUserType = null;
+		try {
+			loginUserType = getSiteRoleId(SessionManager.getCurrentSessionUserId());
+		} catch (IdUnusedException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		if(SecurityService.isSuperUser()){
+			checkMask = false;
+		}else{
+			if("Instructor".equals(loginUserType) || "TA".equals(loginUserType) || "Teaching Assistant".equals(loginUserType)){
+				checkMask = false;
+			}else if("Student".equals(loginUserType)){
+				checkMask = true;
+			}else{
+				checkMask = true;
+			}
+		}
+		return checkMask;
+	}
+
+	@SuppressWarnings({ "deprecation", "static-access" })
+	private String getSiteRoleId(String userId) throws IdUnusedException{
+
+		String siteId = "";
+		Placement placement = org.sakaiproject.tool.cover.ToolManager.getCurrentPlacement();
+		if(placement == null){
+			if(SessionManager.getCurrentSession() != null){
+
+				if(SessionManager.getCurrentToolSession() == null){
+					return null;
+				}else{
+
+					ToolConfiguration toolConfig = SiteService.findTool(SessionManager.getCurrentToolSession().getId());
+					if(toolConfig != null){
+						siteId = toolConfig.getSiteId();
+					}else{
+						return null;
+					}
+				}
+			}
+		}else{
+			siteId = placement.getContext();
+		}
+
+		return SiteService.getSite(siteId).getMember(userId).getRole().getId();
+
+	}
+
 }
