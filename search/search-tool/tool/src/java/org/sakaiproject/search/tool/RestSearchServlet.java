@@ -118,7 +118,7 @@ public class RestSearchServlet extends HttpServlet
             }
 
             String[] suggestions = searchService.getSearchSuggestions(request.getParameter(REQUEST_PARAMETER_Q), currentSiteId, searchAllMySites);
-            response.setContentType("application/json");
+            response.setContentType("application/json; charset=utf-8");
             result = stringArrayAsJson(suggestions);
         // /sakai-search-tool/xmlsearch
         } else {
