@@ -122,7 +122,8 @@ public class StatsManagerImpl extends HibernateDaoSupport implements StatsManage
 	@Getter @Setter private boolean	lastJobRunDateVisible	= true;
 	@Getter @Setter private boolean eventContextSupported   = false;
 	@Getter @Setter private boolean	enableReportExport		= true;
-	@Getter @Setter private boolean	sortUsersByDisplayName	= false;
+	// @Getter @Setter private boolean	sortUsersByDisplayName	= false;
+	@Getter @Setter private boolean	sortUsersByDisplayName	= true;
 	@Getter @Setter private boolean	displayDetailedEvents	= false;
 
 	/** Controller fields */
