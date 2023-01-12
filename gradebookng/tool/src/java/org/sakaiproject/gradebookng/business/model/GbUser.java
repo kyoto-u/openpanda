@@ -22,9 +22,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
+import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.user.api.PreferencesService;
+
 
 import java.util.Collections;
 import java.util.List;
@@ -69,11 +77,18 @@ public class GbUser implements GbUserBase, Serializable, Comparable<GbUser> {
 	}
 
 	public GbUser(final User u, String studentNumber) {
+		String firstName = u.getProperties().getProperty("givenName;lang-en") == null ? u.getFirstName() : u.getProperties().getProperty("givenName;lang-en");
+		String lastName = u.getProperties().getProperty("sn;lang-en") == null ? u.getLastName() : u.getProperties().getProperty("sn;lang-en");
 		this.userUuid = u.getId();
 		this.displayId = u.getDisplayId();
 		this.displayName = FormatHelper.htmlEscape(u.getDisplayName());
-		this.firstName = FormatHelper.htmlEscape(u.getFirstName());
-		this.lastName = FormatHelper.htmlEscape(u.getLastName());
+		if(!"ja_JP".equals(getLocale())){
+			this.firstName = FormatHelper.htmlEscape(firstName);
+			this.lastName = FormatHelper.htmlEscape(lastName);
+		}else{
+			this.firstName = FormatHelper.htmlEscape(u.getFirstName());
+			this.lastName = FormatHelper.htmlEscape(u.getLastName());
+		}
 		this.studentNumber = FormatHelper.htmlEscape(studentNumber);
 		this.sections = Collections.emptyList();
 		this.sortName = u.getSortName();
@@ -104,4 +119,11 @@ public class GbUser implements GbUserBase, Serializable, Comparable<GbUser> {
 	public String toString() {
 		return displayId;
 	}
+
+	public String getLocale(){
+		PreferencesService preferencesService = (PreferencesService) ComponentManager.get(PreferencesService.class.getName());
+		Locale locale = preferencesService.getLocale(SessionManager.getCurrentSessionUserId());
+		return locale.getLanguage() + "_" + locale.getCountry();
+	}
+
 }
