@@ -312,7 +312,8 @@ public class EditCommentSignupMBean extends SignupUIBaseBean {
 		String eid = attendeeWrapper.getSignupAttendee().getAttendeeUserId();
 		User user = sakaiFacade.getUser(attendeeWrapper.getSignupAttendee().getAttendeeUserId());
 		if(user !=null){
-			eid = user.getEid();
+			//eid = user.getEid();
+		    eid = user.getDisplayId();
 		}
 
 		return eid;
