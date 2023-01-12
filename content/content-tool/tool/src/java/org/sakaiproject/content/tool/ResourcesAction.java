@@ -2126,6 +2126,16 @@ protected static final String PARAM_PAGESIZE = "collections_per_page";
 				ResourceProperties props = contentService.getProperties(id);
 				String name = props.getPropertyFormatted(ResourceProperties.PROP_DISPLAY_NAME);
 				String containingCollectionId = contentService.getContainingCollectionId(id);
+				User user = null;
+				String[] groupUser = id.split("/");
+				if(groupUser.length == 4){
+					try {
+						user = userDirectoryService.getUser(groupUser[3]);
+						name = user.getDisplayName() + "(" + user.getDisplayId() + ")";
+					}catch(UserNotDefinedException e){
+						log.warn("UserNotDefinedException groupUser[3] == " + groupUser[3]);
+					}
+				}
 				if(ContentHostingService.COLLECTION_DROPBOX.equals(containingCollectionId))
 				{
 					Reference ref = entityManager.newReference(contentService.getReference(id));

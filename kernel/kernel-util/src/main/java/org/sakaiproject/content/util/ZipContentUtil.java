@@ -60,6 +60,8 @@ import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 
@@ -197,6 +199,12 @@ public class ZipContentUtil {
 			while(true){
 				try{
 					String newResourceId = resourceId;
+					User user = null;
+					try{
+						user = UserDirectoryService.getUser(resourceName);
+						newResourceId = newResourceId.replace(resourceName, user.getDisplayId());
+					}catch(Exception e){
+					}
 					String newResourceName = resourceName;
 					displayName=newResourceName;
 					count++;
@@ -212,7 +220,8 @@ public class ZipContentUtil {
 						currentEdit = (ContentCollectionEdit) ContentHostingService.getCollection(resourceId + Entity.SEPARATOR);
 						displayName = currentEdit.getProperties().getProperty(ResourcePropertiesEdit.PROP_DISPLAY_NAME);
 						if (displayName != null && displayName.length() > 0) {
-							displayName += ZIP_EXTENSION;
+							//displayName += ZIP_EXTENSION;
+							displayName = user.getDisplayId() + ZIP_EXTENSION;
 						}
 						else {
 							displayName = newResourceName;

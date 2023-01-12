@@ -89,6 +89,7 @@ import org.sakaiproject.thread_local.cover.ThreadLocalManager;
 import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.user.api.User;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ParameterParser;
 import org.sakaiproject.util.ResourceLoader;
@@ -645,6 +646,20 @@ public class ListItem
 
 		if(this.collection)
 		{
+
+			User user = null;
+			if(this.id != null){
+				String[] groupUser = this.id.split("/");
+				if(groupUser.length == 4){
+					try {
+						user = UserDirectoryService.getUser(groupUser[3]);
+						this.name = user.getDisplayName() + "(" + user.getDisplayId() + ")";
+					} catch (UserNotDefinedException e) {
+						log.warn("UserNotDefinedException groupUser[3] == " + groupUser[3]);
+					}
+				}
+			}
+
 			ContentCollection collection = (ContentCollection) entity;
 			String shortSizeStr = null;
 			if(typeDef != null)
