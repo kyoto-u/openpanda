@@ -186,7 +186,7 @@ public class ImportController {
                 // The user doesn't exist in Sakai.
                 if (!userOptional.isPresent()) {
 			if(!userOptional.get().getProperties().getProperty("employeeNumber").isEmpty()){
-				userEid = userOptional.get().getProperties().getProperty("employeeNumber");
+				employeeNumber = userOptional.get().getProperties().getProperty("employeeNumber");
 		}
                     //nonExistingUsers.add(userEid);
                     nonExistingUsers.add(employeeNumber);
