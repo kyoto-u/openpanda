@@ -119,7 +119,8 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
     else {
     	res.setContentType("application/x-zip-compressed");
   	    StringBuilder zipFilename = new StringBuilder();
-  	    zipFilename.append(assessmentName);
+  	    // zipFilename.append(assessmentName);
+	    zipFilename.append("exported-samigo");
   	    String partAndQues = getPartNumAndQuestionNum(publishedItemId);
 	    log.debug("partAndQues = " + partAndQues);
 	    zipFilename.append(partAndQues);
