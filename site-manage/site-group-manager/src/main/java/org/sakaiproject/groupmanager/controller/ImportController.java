@@ -29,7 +29,6 @@ import java.util.StringJoiner;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +42,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.groupmanager.constants.GroupManagerConstants;
 import org.sakaiproject.groupmanager.service.SakaiService;
@@ -184,13 +182,17 @@ public class ImportController {
                 
                 // The user doesn't exist in Sakai.
                 if (!userOptional.isPresent()) {
+			if(!userOptional.get().getProperties().getProperty("employeeNumber").isEmpty()){
+				userEid = userOptional.get().getProperties().getProperty("employeeNumber");
+		}
                     nonExistingUsers.add(userEid);
                     membershipErrors = true;
                     continue;
                 }
 
                 User user = userOptional.get();
-                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getEid());
+                //String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getEid());
+                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getDisplayId());
 
                 //The user is not a member of the site.
                 if (site.getMember(user.getId()) == null) {
