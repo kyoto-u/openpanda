@@ -41,7 +41,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
 
 import uk.org.ponder.messageutil.MessageLocator;
-import uk.org.ponder.localeutil.LocaleGetter;                                                                                          
+import uk.org.ponder.localeutil.LocaleGetter;
 import uk.org.ponder.rsf.builtin.UVBProducer;
 import uk.org.ponder.rsf.components.UIBranchContainer;
 import uk.org.ponder.rsf.components.UIContainer;
@@ -219,7 +219,8 @@ public class CommentGradingPaneProducer implements ViewComponentProducer, ViewPa
 		    UIOutput.make(tofill, "missing-div");
 		    for (User user : missing) {
 		        UIBranchContainer branch = UIBranchContainer.make(tofill, "missing:");
-		        UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		        //UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		        UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getDisplayId()));
 		    }
 		}
 		    

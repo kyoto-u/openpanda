@@ -238,7 +238,8 @@ public class QuestionGradingPaneProducer implements ViewComponentProducer, ViewP
 		    UIOutput.make(tofill, "missing-div");
 		    for (User user : missing) {
 		    	UIBranchContainer branch = UIBranchContainer.make(tofill, "missing:");
-		    	UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		    	//UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getEid()));
+		    	UIOutput.make(branch, "missing-entry", String.format("%s (%s)", user.getSortName(), user.getDisplayId()));
 		    }
 		    if (graded)
 			UIOutput.make(tofill, "zeroMissing", messageLocator.getMessage("simplepage.zero-missing")).
