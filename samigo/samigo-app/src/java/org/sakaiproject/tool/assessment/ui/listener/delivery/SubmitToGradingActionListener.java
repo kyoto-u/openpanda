@@ -21,6 +21,7 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.delivery;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -37,9 +38,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.EntityPropertyTypeException;
@@ -48,10 +47,12 @@ import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.samigo.util.SamigoConstants;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
@@ -75,6 +76,8 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.UserDirectoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -170,6 +173,18 @@ public class SubmitToGradingActionListener implements ActionListener {
 			}
 			
 			delivery.setAnyInvalidFinInput(false);
+
+			String toGradebook = publishedAssessment.getEvaluationModel().getToGradeBook();
+            CaliperIfc caliper = publishedAssessment.getCaliper();
+            if((EvaluationModel.TO_DEFAULT_GRADEBOOK.toString()).equals(toGradebook) && caliper != null && caliper.getSend()
+                && !publishedAssessment.isSendCaliperSuccess()){
+                FacesContext context = FacesContext.getCurrentInstance();
+                String label = caliper.getMail();
+                String err = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_send_fail");
+                String contact = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_send_fail_contact"),label);
+                context.addMessage(null,new FacesMessage(err));
+                context.addMessage(null,new FacesMessage(contact));
+            }
 
 		} catch (GradebookServiceException ge) {
 			log.warn(ge.getMessage(), ge);

@@ -31,12 +31,12 @@ import java.util.Set;
 import org.osid.assessment.Assessment;
 import org.osid.assessment.AssessmentException;
 import org.osid.shared.Type;
-
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentBaseData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentMetaData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.osid.assessment.impl.AssessmentImpl;
@@ -81,7 +81,9 @@ public class AssessmentBaseFacade
   private Set securedIPAddressSet;
   private String assessmentAttachmentMetaData;
   private Long categoryId;
-  
+
+  private CaliperIfc caliper;
+
   /** AssessmentBaseFacade is the class that is exposed to developer
    *  It contains some of the useful methods specified in
    *  org.osid.assessment.Assessment and it implements
@@ -226,6 +228,7 @@ public class AssessmentBaseFacade
         this.assessmentMetaDataSet);
     this.securedIPAddressSet = getSecuredIPAddressSet();
     this.categoryId = getCategoryId();
+    this.caliper = getCaliper();
   }
 
   // the following methods implements
@@ -809,5 +812,28 @@ public class AssessmentBaseFacade
 
   public void setCategoryId(Long categoryId) {
     this.categoryId = categoryId;
+  }
+
+  /**
+   * Get the Caliper of the person who last modified AssessmentBaseFacade
+   * @return
+   * @throws DataFacadeException
+   */
+  public CaliperIfc getCaliper() throws DataFacadeException {
+    try {
+      this.data = (AssessmentBaseIfc) assessment.getData();
+    }
+    catch (AssessmentException ex) {
+      throw new DataFacadeException(ex.getMessage());
+    }
+    return this.data.getCaliper();
+  }
+  /**
+   * set the Caliper of the person who last modified AssessmentBaseFacade
+   * @param caliper
+   */
+  public void setCaliper(CaliperIfc caliper) {
+    this.caliper = caliper;
+    this.data.setCaliper(caliper);
   }
 }

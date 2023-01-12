@@ -21,6 +21,7 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,7 +33,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
@@ -49,6 +49,8 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.tool.assessment.util.TimeLimitValidator;
 import org.sakaiproject.util.api.FormattedText;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Title: Samigo</p>2
@@ -307,6 +309,42 @@ public class SaveAssessmentSettingsListener
     	}			
     }
 
+    //check caliper
+    if(assessmentSettings.isSendCaliper()){
+        if(StringUtils.isEmpty(assessmentSettings.getEndPoint())){
+          error = true;
+          String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_endpoint");
+          String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
+          context.addMessage(null,new FacesMessage(submission_err));
+        }
+        if(StringUtils.isEmpty(assessmentSettings.getApiKey())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_apikey");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }
+        if(StringUtils.isEmpty(assessmentSettings.getThreshold())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_threshold");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }else{
+           try{
+              Double d = new Double(assessmentSettings.getThreshold());
+           }catch (NumberFormatException e){
+               error = true;
+               String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_threshold");
+               String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_numerical"),label);
+               context.addMessage(null,new FacesMessage(submission_err));
+           }
+        }
+        if(StringUtils.isEmpty(assessmentSettings.getMail())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_mail");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }
+    }
 
     if (error){
       String blockDivs = ContextUtil.lookupParam("assessmentSettingsAction:blockDivs");

@@ -489,6 +489,37 @@
       </qtimetadatafield>
       <!--Possible Values -->
       <!--True, False -->
+
+      <qtimetadatafield>
+        <fieldlabel>SEND</fieldlabel>
+        <fieldentry>False</fieldentry>
+      </qtimetadatafield>
+      <!--Possible Values -->
+      <!--True, False -->
+      <qtimetadatafield>
+        <fieldlabel>ENDPOINT</fieldlabel>
+        <fieldentry/>
+      </qtimetadatafield>
+      <!--Possible Values -->
+      <!-- #PCDATA-->
+      <qtimetadatafield>
+        <fieldlabel>APIKEY</fieldlabel>
+        <fieldentry/>
+      </qtimetadatafield>
+      <!--Possible Values -->
+      <!-- #PCDATA-->
+      <qtimetadatafield>
+        <fieldlabel>THRESHOLD</fieldlabel>
+        <fieldentry/>
+      </qtimetadatafield>
+      <!--Possible Values -->
+      <!-- #PCDATA-->
+      <qtimetadatafield>
+        <fieldlabel>MAIL</fieldlabel>
+        <fieldentry/>
+      </qtimetadatafield>
+      <!--Possible Values -->
+      <!-- #PCDATA-->
      <!-- ********************************Graphics*************************************** -->
       <qtimetadatafield>
         <fieldlabel>BGCOLOR</fieldlabel>

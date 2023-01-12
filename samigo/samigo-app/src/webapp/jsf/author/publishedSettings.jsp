@@ -301,7 +301,6 @@
 
   </div>
 
-
     <!-- *** META *** -->
     <h:panelGroup rendered="#{publishedSettings.valueMap.metadataAssess_isInstructorEditable==true}">
       <div class="samigo-subheading">
@@ -309,7 +308,6 @@
       </div>
         <!-- ASSESSMENT METADATA -->
         <h:outputLabel value="#{assessmentSettingsMessages.assessment_metadata}" />
-        
         <div class="form-group row">
             <h:outputLabel for="keywords" value="#{assessmentSettingsMessages.metadata_keywords}"  styleClass="col-md-2 form-control-label"/>
             <div class="col-md-10">
@@ -580,6 +578,32 @@
         <h:selectOneMenu styleClass="categorySelect" id="selectCategory" value="#{publishedSettings.categorySelected}">
           <f:selectItems value="#{publishedSettings.categoriesSelectList}" />
         </h:selectOneMenu>
+      </h:panelGroup>
+      <h:panelGroup layout="block" id="toGradebookCaliper" styleClass="col-md-10 col-md-offset-2" style="display:#{(publishedSettings.toDefaultGradebook)?'block':'none'}">
+        <h:panelGrid columns="3" id="cliperPanel1">
+          <f:verbatim><div class="tier2"></f:verbatim>
+          <h:selectBooleanCheckbox value="#{publishedSettings.sendCaliper}" id="sendCaliper" onclick="changeCaliperChildPanelEnable();" />
+          <h:outputText value="#{assessmentSettingsMessages.send_caliper}" />
+        </h:panelGrid>
+        <h:panelGrid columns="3" id="cliperPanel2">
+          <f:verbatim><div class="tier4"></f:verbatim>
+          <h:outputLabel for="endpoint" value="#{assessmentSettingsMessages.caliper_endpoint}" />
+          <h:inputText id="endpoint" maxlength="250" size="50" value="#{publishedSettings.endPoint}"/>
+          <f:verbatim><div class="tier4"></f:verbatim>
+          <h:outputLabel for="apikey" value="#{assessmentSettingsMessages.caliper_apikey}" />
+          <h:inputText id="apikey" maxlength="250" size="50" value="#{publishedSettings.apiKey}"/>
+          <f:verbatim><div class="tier4"></f:verbatim>
+          <h:outputLabel for="threshold" value="#{assessmentSettingsMessages.caliper_threshold}" />
+          <h:inputText id="threshold" maxlength="250" size="5" value="#{publishedSettings.threshold}"/>
+          <f:verbatim><div class="tier4"></f:verbatim>
+          <h:outputLabel for="mail" value="#{assessmentSettingsMessages.caliper_mail}" />
+          <h:inputText id="mail" maxlength="250" size="50" value="#{publishedSettings.mail}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="3" id="cliperPanel3">
+          <f:verbatim><div class="tier4"></f:verbatim>
+          <h:selectBooleanCheckbox value="#{publishedSettings.retry}" id="retry"/>
+          <h:outputText value="#{assessmentSettingsMessages.caliper_retry}" />
+        </h:panelGrid>
       </h:panelGroup>
     </h:panelGroup>
 

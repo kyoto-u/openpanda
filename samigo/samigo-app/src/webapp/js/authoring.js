@@ -821,6 +821,7 @@ function toggleCategories(checkbox) {
             categoryDiv.fadeOut();
         }
     }
+    changeCaliperPanelEnable();
 }
 
 function expandAccordion(iframId){
@@ -859,4 +860,47 @@ function setAccessibilityAttributes() {
 		//sets aria-describredby attribute
 		$(settingQuerryIdent + ", " + settingQuerryOption).first().attr("aria-describredby", helpBlockId);
 	}
+}
+function changeCaliperPanelEnable(){
+    var id = $('form').attr('id');
+    var aaa = document.getElementById("assessmentSettingsAction:toGradebookCaliper");
+    if($("#"+ id +"\\:toDefaultGradebook").prop('checked')){
+        $("#"+ id +"\\:cliperPanel1").find("input").prop('disabled', '');
+        aaa.style.display = 'block';
+    }else{
+        $("#"+ id +"\\:cliperPanel1").find("input").prop('disabled', 'disabled');
+        aaa.style.display = 'none';
+    }
+    changeCaliperChildPanelEnable();
+}
+function changeCaliperChildPanelEnable(){
+    var id = $('form').attr('id');
+    if($("#"+ id +"\\:toDefaultGradebook").prop('checked')
+      && $("#"+ id +"\\:sendCaliper").prop('checked')){
+        $("#"+ id +"\\:cliperPanel2").find("input").prop('disabled', '');
+        $("#"+ id +"\\:cliperPanel3").find("input").prop('disabled', '');
+    }else{
+        $("#"+ id +"\\:cliperPanel2").find("input").prop('disabled', 'disabled');
+        $("#"+ id +"\\:cliperPanel3").find("input").prop('disabled', 'disabled');
+    }
+}
+function changeCaliperPanelEnableForRadio(){
+    var id = $('form').attr('id');
+    if($("#"+ id +"\\:toDefaultGradebook input[value=1]").prop('checked')){
+        $("#"+ id +"\\:cliperPanel1").find("input").prop('disabled', '');
+    }else{
+        $("#"+ id +"\\:cliperPanel1").find("input").prop('disabled', 'disabled');
+    }
+    changeCaliperChildPanelEnableForRadio();
+}
+function changeCaliperChildPanelEnableForRadio(){
+    var id = $('form').attr('id');
+    if($("#"+ id +"\\:toDefaultGradebook input[value=1]").prop('checked')
+      && $("#"+ id +"\\:sendCaliper").prop('checked')){
+        $("#"+ id +"\\:cliperPanel2").find("input").prop('disabled', '');
+        $("#"+ id +"\\:cliperPanel3").find("input").prop('disabled', '');
+    }else{
+        $("#"+ id +"\\:cliperPanel2").find("input").prop('disabled', 'disabled');
+        $("#"+ id +"\\:cliperPanel3").find("input").prop('disabled', 'disabled');
+    }
 }

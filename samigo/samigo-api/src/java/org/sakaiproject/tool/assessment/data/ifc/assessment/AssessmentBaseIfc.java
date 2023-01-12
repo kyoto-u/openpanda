@@ -134,4 +134,8 @@ public interface AssessmentBaseIfc
   void setCategoryId(Long categoryId);
 
   TypeIfc getType();
+
+  CaliperIfc getCaliper();
+
+  void setCaliper(CaliperIfc caliper);
 }

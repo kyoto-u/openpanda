@@ -24,13 +24,14 @@
 package org.sakaiproject.tool.assessment.qti.helper.assessment;
 
 import java.io.InputStream;
+import java.util.Set;
 
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.qti.asi.Assessment;
-import java.util.Set;
 
 /**
  * Interface for QTI-versioned assessment helper implementation.
@@ -83,6 +84,9 @@ public interface AssessmentHelperIfc
 
   public void updateMetaData(Assessment assessmentXml,
                              AssessmentFacade assessment);
+
+  public void updateCaliper(Assessment assessmentXml,CaliperIfc caliper);
+
 
   /**
    * Set the assessment description.

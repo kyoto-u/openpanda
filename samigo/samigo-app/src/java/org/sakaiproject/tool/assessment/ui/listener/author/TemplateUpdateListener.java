@@ -21,6 +21,7 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,13 +35,13 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import lombok.extern.slf4j.Slf4j;
-
+import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentMetaData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentTemplateData;
+import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
@@ -50,12 +51,14 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
-import org.sakaiproject.tool.assessment.ui.bean.author.TemplateBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.IndexBean;
+import org.sakaiproject.tool.assessment.ui.bean.author.TemplateBean;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.user.cover.UserDirectoryService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Description: Action Listener for template updates</p>
@@ -117,6 +120,49 @@ public class TemplateUpdateListener
     		}
    		}
    	}
+
+    //check caliper
+    boolean error = false;
+    if(templateBean.isSendCaliper()){
+        if(StringUtils.isEmpty(templateBean.getEndPoint())){
+          error = true;
+          String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_endpoint");
+          String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_required"),label);
+          context.addMessage(null,new FacesMessage(submission_err));
+        }
+        if(StringUtils.isEmpty(templateBean.getApiKey())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_apikey");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }
+        if(StringUtils.isEmpty(templateBean.getThreshold())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_threshold");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }else{
+           try{
+              Double d = new Double(templateBean.getThreshold());
+           }catch (NumberFormatException e){
+               error = true;
+               String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_threshold");
+               String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_numerical"),label);
+               context.addMessage(null,new FacesMessage(submission_err));
+           }
+        }
+        if(StringUtils.isEmpty(templateBean.getMail())){
+            error = true;
+            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_mail");
+            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.TemplateMessages","caliper_required"),label);
+            context.addMessage(null,new FacesMessage(submission_err));
+        }
+    }
+    if(error){
+        templateIndex.setOutcome("editTemplate");
+        return;
+    }
+
     templateBean.setTemplateName(tempName);
     updateAssessment(templateBean);
 
@@ -337,6 +383,35 @@ public class TemplateUpdateListener
       }
       template.setLastModifiedBy(AgentFacade.getAgentString());
       template.setLastModifiedDate(new Date());
+
+      // g. set Caliper
+      Caliper caliper = (Caliper) template.getCaliper();
+      if (caliper == null){
+          caliper = new Caliper();
+          caliper.setAssessmentBase(template);
+      }
+      if ((EvaluationModel.TO_DEFAULT_GRADEBOOK.toString()).equals(templateBean.getToGradebook())
+              && templateBean.isSendCaliper()){
+        caliper.setSend(templateBean.isSendCaliper());
+        caliper.setEndPoint(templateBean.getEndPoint());
+        caliper.setApiKey(templateBean.getApiKey());
+        caliper.setThreshold(new Double(templateBean.getThreshold()));
+        caliper.setMail(templateBean.getMail());
+        if(templateBean.isRetry()){
+            caliper.setRetry(true);
+        }else{
+            caliper.setRetry(false);
+        }
+      }else{
+        caliper.setSend(templateBean.isSendCaliper());
+        caliper.setEndPoint(null);
+        caliper.setApiKey(null);
+        caliper.setThreshold(null);
+        caliper.setMail(null);
+        caliper.setRetry(false);
+      }
+      template.setCaliper(caliper);
+
 
       //** save template before dealing with meta data set
       delegate.save((AssessmentTemplateData)template);

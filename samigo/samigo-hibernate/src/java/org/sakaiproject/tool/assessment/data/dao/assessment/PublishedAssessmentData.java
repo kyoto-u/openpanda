@@ -31,15 +31,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SectionDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class PublishedAssessmentData
     implements java.io.Serializable,
@@ -90,6 +91,8 @@ public class PublishedAssessmentData
   private Date lastNeedResubmitDate;
   private Integer timeLimit;
   private Long categoryId;
+  private CaliperIfc caliper;
+  private Boolean sendCaliperSuccess = false;
 
   
   public PublishedAssessmentData() {}
@@ -768,4 +771,19 @@ public class PublishedAssessmentData
   public void setCategoryId(Long categoryId) {
     this.categoryId = categoryId;
   }
+
+
+  public CaliperIfc getCaliper() {
+    return this.caliper;
+  }
+  public void setCaliper(CaliperIfc caliper) {
+    this.caliper = caliper;
+  }
+  public Boolean isSendCaliperSuccess() {
+    return sendCaliperSuccess;
+  }
+  public void setSendCaliperSuccess(Boolean sendCaliperSuccess) {
+    this.sendCaliperSuccess = sendCaliperSuccess;
+  }
+
 }
