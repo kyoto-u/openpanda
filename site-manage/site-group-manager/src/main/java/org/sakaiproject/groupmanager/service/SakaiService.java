@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
-
 import org.springframework.stereotype.Service;
 
 import org.sakaiproject.assignment.api.model.Assignment;
@@ -190,5 +189,21 @@ public class SakaiService  {
         return lockingEntitiesMap;
         
     }
+
+
+    public Optional<User> getUserByEmployeeNumber(String employeeNumber){
+    	try {
+            return Optional.of(userDirectoryService.findUserByAlternativeId(employeeNumber,"employeeNumber"));
+        } catch (Exception e) {
+            log.error("Unable to get user by employeeNumber {}.", employeeNumber);
+            try{
+            	return Optional.of(userDirectoryService.getUserByEid(employeeNumber));
+            }catch(Exception ex){
+            	log.error("Unable to get user by eid {}.", employeeNumber);
+            }
+        }
+    	return Optional.empty();
+    }
+
 
 }
