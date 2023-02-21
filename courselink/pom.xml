@@ -64,7 +64,7 @@
 			<id>sakai-maven</id>
 			<name>Sakai Maven Repo</name>
 			<layout>default</layout>
-			<url>http://source.sakaiproject.org/maven2</url>
+			<url>https://source.sakaiproject.org/maven2</url>
 			<releases>
 			</releases>
 			<snapshots>
@@ -76,7 +76,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>Sakai Plugin Repo</id>
-			<url>http://source.sakaiproject.org/maven2</url>
+			<url>https://source.sakaiproject.org/maven2</url>
 			<releases>
 			</releases>
 			<snapshots>
