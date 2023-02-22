@@ -7,7 +7,7 @@ public class Constant {
 	protected static final int ACCEPT_STATUS = 0;
 	protected static final int REJECT_STATUS = 1;
 
-	protected static final String DASHBOARD_ID = "sakai.dashboard";
+	protected static final String DASHBOARD_ID = "sakai.iframe.site";
 	protected static final String DASHBOARD_AUTO_CREATE = "couselink.dashboard.autocreate";
 	protected static final String SITEINFO_ID = "sakai.siteinfo";
 	protected static final String SITEINFO_IMPORTSELECTION_PARAM= "sakai_action=doMenu_siteInfo_importSelection_direct";
