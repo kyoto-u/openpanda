@@ -31,10 +31,12 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.extern.slf4j.Slf4j;
+import org.xml.sax.SAXException;
+
 import org.sakaiproject.tool.assessment.data.dao.assessment.AttachmentData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
@@ -44,9 +46,6 @@ import org.sakaiproject.tool.assessment.qti.helper.AuthoringHelper;
 import org.sakaiproject.tool.assessment.qti.util.Iso8601DateFormat;
 import org.sakaiproject.tool.assessment.qti.util.Iso8601TimeInterval;
 import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
-import org.xml.sax.SAXException;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Copyright: Copyright (c) 2005/p>
@@ -472,37 +471,6 @@ import lombok.extern.slf4j.Slf4j;
     assessmentXml.setFieldentry("ATTACHMENT", attachment.toString());
   }
 
-  /**
-   * Set caliper settings in XML.
-   * @param assessmentXml
-   * @param caliper
-   */
-  public void updateCaliper(Assessment assessmentXml,CaliperIfc caliper)
-  {
-    // anonymous grading
-    if (caliper.getSend())
-    {
-      assessmentXml.setFieldentry("SEND", "True");
-    }
-    else
-    {
-      assessmentXml.setFieldentry("SEND", "False");
-    }
-    assessmentXml.setFieldentry("ENDPOINT", caliper.getEndPoint());
-    assessmentXml.setFieldentry("APIKEY", caliper.getApiKey());
-    if(caliper.getThreshold() != null){
-        assessmentXml.setFieldentry("THRESHOLD", caliper.getThreshold().toString());
-    }
-    assessmentXml.setFieldentry("MAIL", caliper.getMail());
-    if (caliper.getRetry())
-    {
-      assessmentXml.setFieldentry("RETRY", "True");
-    }
-    else
-    {
-      assessmentXml.setFieldentry("RETRY", "False");
-    }
-  }
 
   /**
    * Look up and set metadata fields

@@ -75,7 +75,6 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessCont
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.RegisteredSecureDeliveryModuleIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.SecuredIPAddressIfc;
@@ -100,10 +99,6 @@ import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -231,14 +226,7 @@ public class PublishedAssessmentSettingsBean extends SpringBeanAutowiringSupport
   
   private String bgColorSelect;
   private String bgImageSelect;
-
-  private boolean sendCaliper = false;
-  private String endPoint;
-  private String apiKey;
-  private String threshold;
-  private String mail;
-  private boolean retry = false;
-
+  
   private List<ExtendedTime> extendedTimes;
   private ExtendedTime extendedTime;
   private ExtendedTime transitoryExtendedTime;
@@ -425,26 +413,6 @@ public class PublishedAssessmentSettingsBean extends SpringBeanAutowiringSupport
 
         this.categoriesSelectList = populateCategoriesSelectList();
         this.categorySelected = getCategoryForAssessmentName(assessment.getTitle());
-
-        // properties of Caliper
-        CaliperIfc caliper = assessment.getCaliper();
-        if (toDefaultGradebook && caliper != null && caliper.getSend()) {
-            this.sendCaliper = caliper.getSend();
-            this.endPoint = caliper.getEndPoint();
-            this.apiKey = caliper.getApiKey();
-            if(caliper.getThreshold() != null){
-                this.threshold = caliper.getThreshold().toString();
-            }
-            this.mail = caliper.getMail();
-            this.retry = caliper.getRetry();
-        }else{
-            this.sendCaliper = false;
-            this.endPoint = null;
-            this.apiKey = null;
-            this.threshold = null;
-            this.mail = null;
-            this.retry = false;
-        }
 
       }
 
@@ -1932,42 +1900,5 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
       server = server.substring(0, index);
       String url = server + extContext.getRequestContextPath();
       return url + "/servlet/Login?id=" + this.alias;
-  }
-
-  public boolean isSendCaliper() {
-    return this.sendCaliper;
-  }
-  public void setSendCaliper(boolean sendCaliper) {
-    this.sendCaliper = sendCaliper;
-  }
-  public String getEndPoint() {
-    return this.endPoint;
-  }
-  public void setEndPoint(String endPoint) {
-    this.endPoint = endPoint;
-  }
-  public String getApiKey() {
-    return this.apiKey;
-  }
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
-  }
-  public String getThreshold() {
-    return this.threshold;
-  }
-  public void setThreshold(String threshold) {
-    this.threshold = threshold;
-  }
-  public String getMail() {
-    return this.mail;
-  }
-  public void setMail(String mail) {
-    this.mail = mail;
-  }
-  public boolean isRetry() {
-    return this.retry;
-  }
-  public void setRetry(boolean retry) {
-    this.retry = retry;
   }
 }

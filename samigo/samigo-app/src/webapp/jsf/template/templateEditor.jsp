@@ -574,35 +574,11 @@
 
        <h:outputText value=" "/>
       <h:panelGroup>
-    <h:selectOneRadio layout="pageDirection" value="#{template.toGradebook}" id="toDefaultGradebook"
-      required="true" onclick="changeCaliperPanelEnableForRadio();">
+    <h:selectOneRadio layout="pageDirection" value="#{template.toGradebook}"
+      required="true">
       <f:selectItem itemValue="2" itemLabel="#{templateMessages.grades_to_none}"/>
       <f:selectItem itemValue="1" itemLabel="#{templateMessages.grades_to_default}"/>
     </h:selectOneRadio>
-    <h:panelGrid columns="3" id="cliperPanel1">
-            <f:verbatim><div class="tier2"></f:verbatim>
-            <h:selectBooleanCheckbox value="#{template.sendCaliper}" id="sendCaliper" onclick="changeCaliperChildPanelEnableForRadio();" />
-            <h:outputText value="#{templateMessages.send_caliper}" />
-          </h:panelGrid>
-          <h:panelGrid columns="3" id="cliperPanel2">
-            <f:verbatim><div class="tier4"></f:verbatim>
-            <h:outputLabel for="endpoint" value="#{templateMessages.caliper_endpoint}" />
-            <h:inputText id="endpoint" maxlength="250" size="50" value="#{template.endPoint}"/>
-            <f:verbatim><div class="tier4"></f:verbatim>
-            <h:outputLabel for="apikey" value="#{templateMessages.caliper_apikey}" />
-            <h:inputText id="apikey" maxlength="250" size="50" value="#{template.apiKey}"/>
-            <f:verbatim><div class="tier4"></f:verbatim>
-            <h:outputLabel for="threshold" value="#{templateMessages.caliper_threshold}" />
-            <h:inputText id="threshold" maxlength="250" size="5" value="#{template.threshold}"/>
-            <f:verbatim><div class="tier4"></f:verbatim>
-            <h:outputLabel for="mail" value="#{templateMessages.caliper_mail}" />
-            <h:inputText id="mail" maxlength="250" size="50" value="#{template.mail}"/>
-          </h:panelGrid>
-          <h:panelGrid columns="3" id="cliperPanel3">
-            <f:verbatim><div class="tier4"></f:verbatim>
-            <h:selectBooleanCheckbox value="#{template.retry}" id="retry"/>
-            <h:outputText value="#{assessmentSettingsMessages.caliper_retry}" />
-          </h:panelGrid>
       </h:panelGroup>
      </h:panelGrid>
     </div>

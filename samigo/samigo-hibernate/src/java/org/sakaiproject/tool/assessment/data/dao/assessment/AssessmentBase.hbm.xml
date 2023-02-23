@@ -46,11 +46,6 @@
       class="org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback"
       cascade="all" />
 
-    <one-to-one name="caliper"
-      class="org.sakaiproject.tool.assessment.data.dao.assessment.Caliper"
-      cascade="all" />
-
-
     <set name="assessmentMetaDataSet" table="SAM_ASSESSMETADATA_T" cascade="all"
       inverse="true">
       <key column="ASSESSMENTID"/>
@@ -282,24 +277,6 @@
       column="ASSESSMENTID" not-null="true" />
     <property name="hostname" type="string" length="255" column="HOSTNAME" not-null="false" />
     <property name="ipAddress" type="string" length="255" column="IPADDRESS" not-null="false" />
-  </class>
-
-  <class name="org.sakaiproject.tool.assessment.data.dao.assessment.Caliper"
-    table="SAM_ASSESSCALIPER_T">
-    <id name="id" column="ASSESSMENTID">
-        <generator class="foreign">
-            <param name="property">assessmentBase</param>
-        </generator>
-    </id>
-    <one-to-one name="assessmentBase"
-      class="org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentBaseData"
-      constrained="true" cascade="all" />
-    <property name="send" type="boolean" column="SEND" not-null="true" />
-    <property name="endPoint" type="string" length="255" column="ENDPOINT" not-null="false" />
-    <property name="apiKey" type="string" length="255" column="APILEY" not-null="false" />
-    <property name="threshold" type="double" column="THRESHOLD" not-null="false" />
-    <property name="mail" type="string" length="255" column="MAIL" not-null="false" />
-    <property name="retry" type="boolean" column="RETRY" not-null="false" />
   </class>
 
 </hibernate-mapping>
