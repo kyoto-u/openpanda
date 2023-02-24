@@ -67,6 +67,7 @@ import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.timesheet.api.TimeSheetService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.ContextualUserDisplayService;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotificationPreferencesRegistration;
@@ -346,5 +347,9 @@ public class AssignmentTestConfiguration {
     @Bean(name = "org.sakaiproject.timesheet.api.TimeSheetService")
     public TimeSheetService timeSheetService() {
         return mock(TimeSheetService.class);
+
+    @Bean(name = "org.sakaiproject.user.api.ContextualUserDisplayService")
+    public ContextualUserDisplayService contextualUserDisplayService() {
+        return mock(ContextualUserDisplayService.class);
     }
 }

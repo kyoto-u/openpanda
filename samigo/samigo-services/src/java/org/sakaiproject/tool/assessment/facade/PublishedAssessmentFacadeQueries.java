@@ -54,47 +54,7 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.api.ToolManager;
-import org.sakaiproject.tool.assessment.data.dao.assessment.Answer;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AnswerFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
-import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemTag;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemText;
-import org.sakaiproject.tool.assessment.data.dao.assessment.ItemTextAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAccessControl;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswer;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAnswerFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAttachmentData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedCaliper;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedEvaluationModel;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemTag;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemTextAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSecuredIPAddress;
-import org.sakaiproject.tool.assessment.data.dao.assessment.SectionAttachment;
-import org.sakaiproject.tool.assessment.data.dao.assessment.SectionData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.SectionMetaData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.SecuredIPAddress;
+import org.sakaiproject.tool.assessment.data.dao.assessment.*;
 import org.sakaiproject.tool.assessment.data.dao.authz.AuthorizationData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.shared.TypeD;
@@ -121,7 +81,6 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import lombok.Setter;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -248,10 +207,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport implem
 				publishedAssessment, a.getAssessmentAttachmentSet(), protocol);
 		publishedAssessment
 				.setAssessmentAttachmentSet(publishedAssessmentAttachmentSet);
-
-		// caliper
-		PublishedCaliper publishedCaliper = preparePublishedCaliper(publishedAssessment, (Caliper) a.getCaliper());
-		publishedAssessment.setCaliper(publishedCaliper);
 
 		publishedAssessment.setCategoryId(a.getCategoryId());
 
@@ -700,17 +655,6 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport implem
 		}
 		return h;
 	}
-
-	public PublishedCaliper preparePublishedCaliper(
-        PublishedAssessmentData p, Caliper e) {
-        if (e == null) {
-            return null;
-        }
-        PublishedCaliper publishedCaliper = new PublishedCaliper(e.getSend(), e.getEndPoint(), e.getApiKey(),
-                                                                    e.getThreshold(), e.getMail(), e.getRetry());
-        publishedCaliper.setAssessmentBase(p);
-        return publishedCaliper;
-    }
 
 	/**
 	 * This was created for GradebookExternalAssessmentService.

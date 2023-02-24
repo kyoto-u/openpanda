@@ -28,10 +28,11 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
@@ -41,8 +42,6 @@ import org.sakaiproject.tool.assessment.ui.bean.author.TemplateBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.api.FormattedText;
-
-import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -209,18 +208,6 @@ public class TemplateLoadListener
        templateBean.setLastModified(template.getLastModifiedDate().toString());
        templateBean.setLastModifiedBy(template.getLastModifiedBy());
        templateBean.setTypeId(template.getTypeId().toString());
-
-       // Caliper
-       Caliper caliper = (Caliper) template.getCaliper();
-       if (caliper != null)
-       {
-         templateBean.setSendCaliper(caliper.getSend());
-         if (caliper.getEndPoint() != null)templateBean.setEndPoint(caliper.getEndPoint());
-         if (caliper.getApiKey() != null)templateBean.setApiKey(caliper.getApiKey());
-         if (caliper.getThreshold() != null)templateBean.setThreshold(caliper.getThreshold().toString());
-         if (caliper.getMail() != null)templateBean.setMail(caliper.getMail());
-         templateBean.setRetry(caliper.getRetry());
-       }
 
        templateBean.setValueMap(template.getAssessmentMetaDataMap
          (template.getAssessmentMetaDataSet()));

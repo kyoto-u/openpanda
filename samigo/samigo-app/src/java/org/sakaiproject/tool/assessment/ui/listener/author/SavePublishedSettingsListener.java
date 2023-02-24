@@ -21,7 +21,6 @@
 
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +33,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -44,7 +44,6 @@ import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentFeedback;
-import org.sakaiproject.tool.assessment.data.dao.assessment.Caliper;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EvaluationModel;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAccessControl;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
@@ -56,7 +55,6 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentBaseIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.CaliperIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.ExtendedTimeFacade;
@@ -79,8 +77,6 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.tool.assessment.util.TimeLimitValidator;
 import org.sakaiproject.util.ResourceLoader;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>Title: Samigo</p>2
@@ -486,44 +482,6 @@ implements ActionListener
 			}			
 		}
 
-		//check caliper
-	    if(assessmentSettings.isSendCaliper()){
-	        if(StringUtils.isEmpty(assessmentSettings.getEndPoint())){
-	          error = true;
-	          String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_endpoint");
-	          String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
-	          context.addMessage(null,new FacesMessage(submission_err));
-	        }
-	        if(StringUtils.isEmpty(assessmentSettings.getApiKey())){
-	            error = true;
-	            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_apikey");
-	            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
-	            context.addMessage(null,new FacesMessage(submission_err));
-	        }
-	        if(StringUtils.isEmpty(assessmentSettings.getThreshold())){
-	            error = true;
-	            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_threshold");
-	            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
-	            context.addMessage(null,new FacesMessage(submission_err));
-	        }else{
-	           try{
-	              Double d = new Double(assessmentSettings.getThreshold());
-	           }catch (NumberFormatException e){
-	               error = true;
-	               String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_threshold");
-	               String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_numerical"),label);
-	               context.addMessage(null,new FacesMessage(submission_err));
-	           }
-	        }
-	        if(StringUtils.isEmpty(assessmentSettings.getMail())){
-	            error = true;
-	            String  label = ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_mail");
-	            String  submission_err = MessageFormat.format(ContextUtil.getLocalizedString("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages","caliper_required"),label);
-	            context.addMessage(null,new FacesMessage(submission_err));
-	        }
-	    }
-
-
 		return error;
 	}
 
@@ -760,34 +718,6 @@ implements ActionListener
 		if (!StringUtils.equals(assessmentSettings.getCategorySelected(), "-1")) {
 			assessment.setCategoryId(Long.parseLong((assessmentSettings.getCategorySelected())));
 		}
-
-		// g. set Caliper
-        CaliperIfc caliper = (CaliperIfc) assessment.getCaliper();
-        if (caliper == null){
-            caliper = new Caliper();
-            caliper.setAssessmentBase(assessment.getData());
-        }
-        if ((EvaluationModel.TO_DEFAULT_GRADEBOOK.toString()).equals(evaluation.getToGradeBook())
-            && assessmentSettings.isSendCaliper()){
-          caliper.setSend(assessmentSettings.isSendCaliper());
-          caliper.setEndPoint(assessmentSettings.getEndPoint());
-          caliper.setApiKey(assessmentSettings.getApiKey());
-          caliper.setThreshold(new Double(assessmentSettings.getThreshold()));
-          caliper.setMail(assessmentSettings.getMail());
-          if(assessmentSettings.isRetry()){
-              caliper.setRetry(true);
-          }else{
-              caliper.setRetry(false);
-          }
-        }else{
-          caliper.setSend(assessmentSettings.isSendCaliper());
-          caliper.setEndPoint(null);
-          caliper.setApiKey(null);
-          caliper.setThreshold(null);
-          caliper.setMail(null);
-          caliper.setRetry(false);
-        }
-        assessment.setCaliper(caliper);
 
 		// update ValueMap: it contains value for thh checkboxes in
 		// publishedSettings.jsp for: hasAvailableDate, hasDueDate,

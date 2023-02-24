@@ -149,14 +149,17 @@
 			@extend .fa-link;
 			/*position: absolute;
 			right: #{$icon-size * 1.5};*/
+			white-space: nowrap;
 		}
 		&--help-popup{
 			@extend .fa;
 			@extend .fa-question;
+			white-space: nowrap;
 		}
 		&--edit{
 			@extend .fa;
 			@extend .fa-pencil;
+			white-space: nowrap;
 		}
 		&--reset{
 			@extend .fa;
