@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="org.sakaiproject.user.api.UserDirectoryProvider"
-		class="org.sakaiproject.unboundid.UnboundidDirectoryProvider" init-method="init"
+		class="jp.ac.kyoto_u.sakai.user.PandaUserDirectoryProvider" init-method="init"
 		destroy-method="destroy">
 
 		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
