@@ -21,7 +21,9 @@ public interface PDFGenerationService {
     //public boolean outputPdf(HttpServletResponse response,ArrayList<ArrayList<Object>> pages, String templateKey);
 
     public boolean outputPdf(HttpServletResponse response,List<String> page,String templateKey);
+    public boolean outputPdf(HttpServletResponse response,List<String> page,String templateKey, String userId);
     public boolean outputPdf(HttpServletResponse response,List<String> page,List<List<String>> pages,String templateKey);
+    public boolean outputPdf(HttpServletResponse response,List<String> page,List<List<String>> pages,String templateKey, String userId);
 
 
 

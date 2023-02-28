@@ -55,15 +55,18 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
      * @return
      */
     public boolean outputPdf(HttpServletResponse response, List<String> page, List<List<String>> pages, String templateKey) {
+	return outputPdf(response, page, pages, templateKey, null);
+    }
+    public boolean outputPdf(HttpServletResponse response, List<String> page, List<List<String>> pages, String templateKey, String userId) {
 
-        if (!existsTemplate(templateKey)) {
+        if (!existsTemplate(templateKey, userId)) {
             log.warn("Template not found. templatePath=" + templateKey);
             return false;
         }
         if (pages == null || pages.size() == 0) {
-            outputPdf(response, page, templateKey);
+            outputPdf(response, page, templateKey, userId);
         } else {
-            String htmlMessage = getRenderedHtmlMessageFix(page, templateKey);
+            String htmlMessage = getRenderedHtmlMessageFix(page, templateKey, userId);
             if (htmlMessage == null) {
                 log.warn("template not correct");
                 return false;
@@ -111,11 +114,14 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
      * @return
      */
     public boolean outputPdf(HttpServletResponse response, List<String> page, String templateKey) {
-        if (!existsTemplate(templateKey)) {
+        return outputPdf(response, page, templateKey, null);
+    }
+    public boolean outputPdf(HttpServletResponse response, List<String> page, String templateKey, String userId) {
+        if (!existsTemplate(templateKey, userId)) {
             log.warn("Template not found. templatePath=" + templateKey);
             return false;
         }
-        String htmlMessage = getRenderedHtmlMessageFix(page, templateKey);
+        String htmlMessage = getRenderedHtmlMessageFix(page, templateKey, userId);
         if (htmlMessage == null) {
             return false;
         }
@@ -139,9 +145,12 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
      * @param templatePath
      * @return
      */
-    private boolean existsTemplate(String templatePath) {
-        Locale locale = new ResourceLoader().getLocale();
-        log.info("looking for " + templatePath + " " + locale);
+    private boolean existsTemplate(String templatePath, String userId) {
+        Locale locale = new ResourceLoader(userId, "").getLocale();
+        log.info("looking for " + templatePath + " in locale: '" + locale + "'");
+        if (locale != null && locale.equals(""))  {
+            locale = null;
+        }
         return emailTemplateService.templateExists(templatePath, locale);
     }
 
@@ -215,10 +224,11 @@ public class PDFGenerationServiceImpl implements PDFGenerationService {
      * @param templateKey
      * @return
      */
-    private String getRenderedHtmlMessageFix(List<String> page, String templateKey) {
-        Locale locale = new ResourceLoader().getLocale();
+    private String getRenderedHtmlMessageFix(List<String> page, String templateKey, String userId) {
+        Locale locale = new ResourceLoader(userId, "").getLocale();
         EmailTemplate emailTemplate = emailTemplateService.getEmailTemplate(templateKey, locale);
         String htmlMessage = emailTemplate.getHtmlMessage();
+        log.info("PDFGenerationServiceImpl: Use HTML Template " + templateKey + " in " + locale);
 
         String regex = "\\{\\$\\d\\}";
         Pattern pattern = Pattern.compile(regex);
