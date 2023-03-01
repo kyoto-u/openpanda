@@ -187,13 +187,18 @@ public class ImportController {
 
                 // The user doesn't exist in Sakai.
                 if (!userOptional.isPresent()) {
-                    nonExistingUsers.add(userEid);
+                    if(!userOptional.get().getProperties().getProperty("employeeNumber").isEmpty()){
+                        employeeNumber = userOptional.get().getProperties().getProperty("employeeNumber");
+	            }
+                    nonExistingUsers.add(employeeNumber);
                     membershipErrors = true;
                     continue;
                 }
 
                 User user = userOptional.get();
-                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), user.getEid());
+                String userDisplayName = String.format("%s (%s)", user.getDisplayName(), 
+			user.getProperties().getProperty("employeeNumber") != null ? 
+				user.getProperties().getProperty("employeeNumber") : user.getEid());
 
                 //The user is not a member of the site.
                 if (site.getMember(user.getId()) == null) {
