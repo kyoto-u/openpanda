@@ -163,8 +163,7 @@ public class Participant {
 	public String getDisplayId() {
 		try {
 			User user = UserDirectoryService.getUser(uniqname);
-			//return user.getDisplayId();
-			return user.getProperties().getProperty("employeeNumber") != null ? user.getProperties().getProperty("employeeNumber") : user.getEid();
+			return user.getDisplayId();
 		} catch (UserNotDefinedException e) {
 			return uniqname;
 		}
