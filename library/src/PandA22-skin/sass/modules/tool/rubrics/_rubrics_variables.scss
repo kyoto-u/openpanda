@@ -1,0 +1,36 @@
+// Rubrics variables
+
+$rubrics-manager-bg:            var(--sakai-background-color-2);
+$rubrics-manager-border-color:  var(--sakai-border-color);
+
+$rubrics-title-bg:              var(--sakai-background-color-2);
+$rubrics-title-active-bg:       var(--sakai-active-color-1);
+$rubrics-title-border-color:    var(--sakai-border-color);
+$rubrics-title-border-size:     1px !default;
+
+$rubrics-icon-bg:               var(--sakai-background-color-2);
+$rubrics-icon-active-bg:        var(--sakai-background-color-3);
+$rubrics-icon-color:            var(--sakai-text-color-2);
+
+$rubrics-lightbox-bg:           var(--sakai-background-color-1);
+$rubrics-lightbox-border-color: var(--sakai-border-color);
+$rubrics-lightbox-border-size:  1px !default;
+
+$rubrics-crit-border-color:     var(--sakai-border-color);
+$rubrics-crit-border-size:      1px !default;
+$rubrics-crit-detail-bg:        var(--sakai-background-color-2);
+$rubrics-crit-detail-color:     var(--sakai-text-color-2);
+$rubrics-crit-actions-bg:       var(--sakai-background-color-2);
+$rubrics-crit-title-color:      var(--sakai-text-color-1);
+$rubrics-crit-item-title-color: var(--sakai-text-color-2);
+
+$rubrics-item-color:            var(--sakai-text-color-2);
+$rubrics-item-points-color:     var(--sakai-text-color-2);
+
+$rubrics-rating-hover-bg:       var(--sakai-active-color-1);
+$rubrics-rating-selected-bg:   var(--sakai-active-color-1);
+
+$rubrics-link-color:            var(--link-color);
+$rubrics-empty-bg:              var(--sakai-background-color-1);
+$rubrics-disabled-label-color:  var(--button-disabled-text-color);
+$rubrics-popover-cancel-color:  var(--button-text-color);

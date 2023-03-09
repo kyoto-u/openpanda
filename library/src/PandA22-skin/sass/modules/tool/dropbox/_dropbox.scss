@@ -1,0 +1,20 @@
+.#{$namespace}sakai-dropbox {
+    .recentItem{
+        padding: 2px;
+        background: url(/library/image/sakai/new_item_back.gif) top right no-repeat;
+    }
+
+    .recentItemInstruction{
+        padding: 0 5px;
+        background: url(/library/image/sakai/new_item_back_inst.png) center left no-repeat;
+    }
+
+    // The alertMessage div is hidden by default and will be rendered by js if form validation warnings are to be shown
+    div.alertMessage {
+        display: none;
+        clear: both;
+    }
+    td.actions2 .dropdown-toggle {
+        padding: 2px 6px;
+    }
+}
