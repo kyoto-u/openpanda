@@ -240,6 +240,42 @@ function removeOptionalAttributeBlock(elem) {
 						</div>
 					</div>
 				#end
+		## optional attributes block
+		#if (!$optionalAttributes.isEmpty())
+			#if ($superUser || $allowUsersToEditOptionalAttributes)
+					#set($attrNum = 1)
+					#foreach ($m_entry in $optionalAttributes.entrySet())
+						#if ($optionalAttributes.containsKey($m_entry.key))
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="optionalAttr_$attrNum">
+						$tlang.getString("usevie.$m_entry.key")
+					</label>
+					<div class="col-sm-3">
+						<input class="form-control sakai-glow" type="hidden" name="optionalAttr_$attrNum" id="optionalAttr_$attrNum" autocomplete="on" value="$formattedText.escapeHtml($m_entry.key)"/>
+						#set($currentValue="")
+						#foreach ($c_entry in $currentAttributes.entrySet())
+							#if ($m_entry.key == $c_entry.key)
+								#set($currentValue=$c_entry.value)
+							#end
+						#end
+						#set($editable='false')
+						#foreach ($attr in $editableOptionalAttributes)
+							#if ($m_entry.key == $attr)
+								#set($editable='true')
+							#end
+						#end
+						#if ($editable == 'true' || $superUser)
+						<input class="form-control sakai-glow" type="text" name="optionalAttrValue_$attrNum" id="optionalAttrValue_$attrNum" autocomplete="on" value="$formattedText.escapeHtml($currentValue)"/>
+						#else
+						$formattedText.escapeHtml($currentValue)
+						#end
+					</div>
+				</div>
+							#set($attrNum = $attrNum+1)
+						#end
+					#end
+			#end
+		#end		
 
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="disabled">
@@ -283,7 +319,7 @@ function removeOptionalAttributeBlock(elem) {
 #end
 
 		## optional attributes block
-		#if (!$optionalAttributes.isEmpty())
+		#if (!$optionalAttributes.isEmpty() && !$allowUsersToEditOptionalAttributes)
 			#if ($superUser)
 				<p class="shorttext"></p>
 				<div id="optionalAttributes">
@@ -313,12 +349,12 @@ function removeOptionalAttributeBlock(elem) {
 			
 			<div class="act">
 				#if($providedUserType)
-					<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" />
+					<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" /> A
 				#else
-					#if($user)
-						<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" />
+					#if($user && !$allowUsersToEditOptionalAttributes)
+						<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" /> B
 					#else
-						<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav2")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" />
+						<input type="submit" id="eventSubmit_doSave" class="active" name="eventSubmit_doSave" value="$tlang.getString("useedi.sav2")" accesskey="s" onclick="SPNR.disableControlsAndSpin( this, null );" /> C
 					#end
 				#end
                 <input type="submit" id="eventSubmit_doCancel" name="eventSubmit_doCancel" value="$tlang.getString("useedi.can")" accesskey="x" onclick="SPNR.disableControlsAndSpin( this, null );" />

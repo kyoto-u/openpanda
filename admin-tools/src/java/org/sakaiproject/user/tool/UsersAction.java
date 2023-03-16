@@ -500,6 +500,7 @@ public class UsersAction extends PagedResourceActionII
 		
 		//optional attributes list
 		context.put("optionalAttributes", getOptionalAttributes());
+		context.put("editableOptionalAttributes", getEditableOptionalAttributes());
 		
 		return "_edit";
 
@@ -584,6 +585,8 @@ public class UsersAction extends PagedResourceActionII
 		context.put("incPw", state.getAttribute("include-password"));
 
 		context.put("providedUserType", isProvidedType(user.getType()));
+
+		context.put("allowUsersToEditOptionalAttributes", isAllowUsersToEditOptionalAttributes());
 		
 		// include type fields (not if single user)
 		boolean singleUser = ((Boolean) state.getAttribute("single-user")).booleanValue();
@@ -629,6 +632,7 @@ public class UsersAction extends PagedResourceActionII
 		
 		//optional attributes lists
 		context.put("optionalAttributes", getOptionalAttributes());
+		context.put("editableOptionalAttributes", getEditableOptionalAttributes());
 		context.put("currentAttributes", getCurrentAttributes((UserEdit) state.getAttribute("user")));
 
 
@@ -663,6 +667,10 @@ public class UsersAction extends PagedResourceActionII
 				UserEdit edit = userDirectoryService.editUser(id);
 				userDirectoryService.cancelEdit(edit);
 				context.put("enableEdit", "true");
+
+				//optional attributes lists
+				context.put("optionalAttributes", getOptionalAttributes());
+				context.put("currentAttributes", getCurrentAttributes((UserEdit)user));
 			}
 			catch (UserNotDefinedException e)
 			{
@@ -1621,6 +1629,9 @@ public class UsersAction extends PagedResourceActionII
 		return atts;
 		
 	}
+	private String[] getEditableOptionalAttributes() {
+		return ServerConfigurationService.getStrings("user.optional.attributes.editable.keys");
+	}
 	
 	/**
 	 * Gets the current attributes (properties) for a user. Converts the ResourceProperties into a Map
@@ -1630,8 +1641,11 @@ public class UsersAction extends PagedResourceActionII
 	private Map<String,String> getCurrentAttributes(UserEdit user) {
 		
 		Map<String,String> atts = new LinkedHashMap<String,String>();
-		
-		ResourceProperties rprops = user.getProperties();
+		ResourceProperties rprops = null;
+
+		if (user != null) {
+			rprops = user.getProperties();
+		}
 		
 		// no props
 		if(rprops == null) {
@@ -1958,6 +1972,15 @@ public class UsersAction extends PagedResourceActionII
 		}
 		return provided;
 	}
+
+	/**
+	 * Check to see if users are allowed to edit optional attributes
+	 * @return
+	 */
+	private boolean isAllowUsersToEditOptionalAttributes() {
+		return ServerConfigurationService.getBoolean("user.optional.attributes.editable", false);
+	}
+
 
 	/**
 	 * Determines whether Account Validator is to be used to ensure that users don't enter bogus email addresses.

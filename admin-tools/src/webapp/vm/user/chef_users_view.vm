@@ -43,6 +43,25 @@
                             <td><label>$tlang.getString("usecre.typ")</label></td>
                             <td>$formattedText.escapeHtml($user.Type)</td>
                         </tr>
+                	## optional attributes block
+                	#if (!$optionalAttributes.isEmpty())
+                                #set($attrNum = 1)
+                                #foreach ($m_entry in $optionalAttributes.entrySet())
+                                        #if ($currentAttributes.containsKey($m_entry.key))
+                                                #set($currentValue="")
+                                                #foreach ($c_entry in $currentAttributes.entrySet())
+                                                        #if ($m_entry.key == $c_entry.key)
+                                                                #set($currentValue=$c_entry.value)
+                                                        #end
+                                                #end
+                       				<tr>
+                       			        	<td><label>$tlang.getString("usevie.$m_entry.key")</label></td>
+							<td>$formattedText.escapeHtml($currentValue)</td>
+                                               	</tr>
+                                                #set($attrNum = $attrNum+1)
+                                        #end
+                                #end
+                	#end
                         #if($enableEdit)
                             <tr>
                                 <td><label>$tlang.getString("disabled")</label></td>
