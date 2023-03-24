@@ -154,8 +154,13 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
         	{
         		log.debug(this + ":fillComponents: cannot find user with eid=" + userEId);
         	}
+
+            String userAffiliation = userRoleEntry.userAffiliation;
+            String userDepartment = userRoleEntry.userDepartment;
+            String userExternalAffiliation = userRoleEntry.userExternalAffiliation;
+
             UIBranchContainer userRow = UIBranchContainer.make(sameRoleForm, "user-row:", userEId);
-            UIOutput.make(userRow, "user-label", displayId + " ( " + userName + " )");
+            UIOutput.make(userRow, "user-label", displayId + " (" + userName + "," + userAffiliation + "," + userDepartment + "," + userExternalAffiliation + ")");
         }
     	
     	UICommand.make(sameRoleForm, "continue", messageLocator.getMessage("gen.continue"), "#{siteAddParticipantHandler.processSameRoleContinue}");

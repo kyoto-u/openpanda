@@ -37,6 +37,7 @@ import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.event.api.UsageSessionService;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
@@ -61,6 +62,7 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserPermissionException;
 import org.sakaiproject.userauditservice.api.UserAuditRegistration;
 import org.sakaiproject.userauditservice.api.UserAuditService;
+import org.sakaiproject.util.BaseResourceProperties;
 import org.sakaiproject.util.api.PasswordFactory;
 
 import lombok.Setter;
@@ -696,6 +698,17 @@ public class SiteAddParticipantHandler {
 						String pw = passwordFactory.generatePassword();
 						uEdit.setPassword(pw);
 
+						// add affiliation properties
+						boolean allowAffiliationRegistration = serverConfigurationService.getBoolean("siteManage.allowAffiliationRegistRation", false);
+
+						if (allowAffiliationRegistration) {
+						        ResourceProperties resourceProperties = new BaseResourceProperties();
+						        resourceProperties.addProperty("affiliation", entry.userAffiliation);
+						        resourceProperties.addProperty("department", entry.userDepartment);
+						        resourceProperties.addProperty("externalAffiliation", entry.userExternalAffiliation);
+						        uEdit.getPropertiesEdit().addAll(resourceProperties);
+						}
+
 						// and save
 						userDirectoryService.commitEdit(uEdit);
 
@@ -950,11 +963,13 @@ public class SiteAddParticipantHandler {
 				if (nonOfficialAccountAll == null) {
 					continue;
 				}
-				
+
+				boolean allowAffiliationRegistration = serverConfigurationService.getBoolean("siteManage.allowAffiliationRegistRation", false);		
+
 				// the format of per user entry is: email address,first name,last name
 				// comma separated
 				String[] nonOfficialAccountParts  = nonOfficialAccountAll.split(",");
-				if (nonOfficialAccountParts.length > 3)
+				if (nonOfficialAccountParts.length > 3 && allowAffiliationRegistration == false)
 				{
 					// if the input contains more fields than "email address,first name,last name", show an alert
 					targettedMessageList.addMessage(new TargettedMessage("add.multiple.nonofficial.alert.more",
@@ -975,6 +990,18 @@ public class SiteAddParticipantHandler {
 				{
 					userFirstName = nonOfficialAccountParts[2].trim();
 				}
+
+				String userAffiliation = "";
+				String userDepartment = "";
+				String userExternalAffiliation = "";
+
+				if (nonOfficialAccountParts.length > 4 && allowAffiliationRegistration == true)
+				{
+				        userAffiliation = nonOfficialAccountParts[3].trim();
+				        userDepartment = "学外登録者";
+				        userExternalAffiliation = nonOfficialAccountParts[4].trim();
+				}
+
 				// remove the trailing dots
 				while (userEid != null && userEid.endsWith(".")) {
 					userEid = userEid.substring(0, userEid.length() - 1);
@@ -1100,7 +1127,12 @@ public class SiteAddParticipantHandler {
 						// update the userRoleTable
 						if (!getUsers().contains(userEid) && !existingUsers.contains(userEid))
 						{
-							userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName));
+
+                                                        if (allowAffiliationRegistration == true)  {
+                                                                userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName, userAffiliation, userDepartment, userExternalAffiliation));
+							}  else  {
+								userRoleEntries.add(new UserRoleEntry(userEid, "", userFirstName, userLastName));
+							}
 							// not existed user, update account
 							updatedNonOfficialAccountParticipant += currentNonOfficialAccount+ "\n";
 						}

@@ -149,6 +149,9 @@ public class ConfirmProducer implements ViewComponentProducer, NavigationCaseRep
             UIBranchContainer userRow = UIBranchContainer.make(confirmForm, "user-row:", userEId);
             UIOutput.make(userRow, "user-name", userName);
             UIOutput.make(userRow, "user-eid", displayId);
+            UIOutput.make(userRow, "user-affiliation", userRoleEntry.userAffiliation);
+            UIOutput.make(userRow, "user-department", userRoleEntry.userDepartment);
+            UIOutput.make(userRow, "user-external-affiliation", userRoleEntry.userExternalAffiliation);
             UIOutput.make(userRow, "user-role", userRoleEntry.role);
             UIOutput.make(userRow, "user-status", handler.statusChoice.equals("active") ? messageLocator.getMessage("sitegen.siteinfolist.active") : messageLocator.getMessage("sitegen.siteinfolist.inactive"));
         }
