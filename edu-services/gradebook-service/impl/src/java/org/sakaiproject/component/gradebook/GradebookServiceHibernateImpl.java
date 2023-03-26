@@ -201,6 +201,34 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 	}
 
 	@Override
+	public List<org.sakaiproject.service.gradebook.shared.Assignment> getAssignmentsForTraining(final String gradebookUid)
+			throws GradebookNotFoundException {
+		return getAssignmentsForTraining(gradebookUid, SortType.SORT_BY_NONE);
+	}
+
+	@Override
+	public List<org.sakaiproject.service.gradebook.shared.Assignment> getAssignmentsForTraining(final String gradebookUid, final SortType sortBy)
+			throws GradebookNotFoundException {
+		if (!isUserAbleToViewAssignments(gradebookUid) && !currentUserHasViewOwnGradesPerm(gradebookUid)) {
+			log.warn("AUTHORIZATION FAILURE: User {} in gradebook {} attempted to get assignments list", getUserUid(), gradebookUid);
+			throw new GradebookSecurityException();
+		}
+
+		final Long gradebookId = getGradebook(gradebookUid).getId();
+
+		final List<GradebookAssignment> internalAssignments = getAssignments(gradebookId);
+
+		sortAssignments(internalAssignments, sortBy, true);
+
+		final List<org.sakaiproject.service.gradebook.shared.Assignment> assignments = new ArrayList<>();
+		for (final GradebookAssignment gradebookAssignment : internalAssignments) {
+			final GradebookAssignment assignment = gradebookAssignment;
+			assignments.add(getAssignmentDefinition(assignment));
+		}
+		return assignments;
+	}
+
+	@Override
 	public List<org.sakaiproject.service.gradebook.shared.Assignment> getAssignments(final String gradebookUid, final SortType sortBy)
 			throws GradebookNotFoundException {
 		if (!isUserAbleToViewAssignments(gradebookUid)) {
