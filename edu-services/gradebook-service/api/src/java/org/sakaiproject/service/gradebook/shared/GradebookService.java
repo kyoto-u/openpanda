@@ -193,11 +193,16 @@ public interface GradebookService extends EntityProducer {
 	public List<Assignment> getAssignments(String gradebookUid)
 			throws GradebookNotFoundException;
 
+	public List<Assignment> getAssignmentsForTraining(String gradebookUid)
+			throws GradebookNotFoundException;
+
 	/**
 	 * @return Returns a list of Assignment objects describing the assignments that are currently defined in the given gradebook, sorted by
 	 *         the given sort type.
 	 */
 	public List<Assignment> getAssignments(String gradebookUid, SortType sortBy)
+			throws GradebookNotFoundException;
+	public List<Assignment> getAssignmentsForTraining(String gradebookUid, SortType sortBy)
 			throws GradebookNotFoundException;
 
 	/**
