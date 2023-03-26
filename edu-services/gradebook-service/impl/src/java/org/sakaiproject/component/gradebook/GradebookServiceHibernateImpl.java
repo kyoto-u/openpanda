@@ -2438,6 +2438,43 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		return score;
 	}
 
+        public Date getAssignmentScoreDateRecorded(final String gradebookUid, final String assignmentName, final String studentUid)
+	        throws GradebookNotFoundException, AssessmentNotFoundException {
+	    final boolean studentRequestingOwnScore = authn.getUserUid().equals(studentUid);
+
+            Date assignmentScoreDateRecorded = (Date)getHibernateTemplate().execute(new HibernateCallback() {
+	        public Object doInHibernate(Session session) throws HibernateException {
+		    GradebookAssignment assignment = getAssignmentWithoutStats(gradebookUid, assignmentName);
+		        if (assignment == null) {
+		            throw new AssessmentNotFoundException("There is no assignment named " + assignmentName + " in gradebook " + gradebookUid);
+		        }
+
+                        if (!studentRequestingOwnScore && !isUserAbleToViewItemForStudent(gradebookUid, assignment.getId(), studentUid)) {
+                            log.error("AUTHORIZATION FAILURE: User " + getUserUid() + " in gradebook " + gradebookUid + " attempted to retrieve grade for student " + studentUid + " for assignment " + assignmentName);
+                                throw new SecurityException("You do not have permission to perform this operation");
+                            }
+
+                            // If this is the student, then the assignment needs to have
+                            // been released.
+                            if (studentRequestingOwnScore && !assignment.isReleased()) {
+                                  log.error("AUTHORIZATION FAILURE: Student " + getUserUid() + " in gradebook " + gradebookUid + " attempted to retrieve score for unreleased assignment " + assignment.getName());
+                                  throw new SecurityException("You do not have permission to perform this operation");
+
+                            }
+
+                            AssignmentGradeRecord gradeRecord = getAssignmentGradeRecord(assignment, studentUid);
+                            if (log.isDebugEnabled()) log.debug("gradeRecord=" + gradeRecord);
+                               if (gradeRecord == null) {
+                                    return null;
+                               } else {
+                                    return gradeRecord.getDateRecorded();
+                            }
+                    }
+               });
+               if (log.isDebugEnabled()) log.debug("returning " + assignmentScoreDateRecorded);
+               return assignmentScoreDateRecorded;
+        }
+
 	@Override
 	public void setAssignmentScoreString(final String gradebookUid, final Long assignmentId, final String studentUid, final String score,
 			final String clientServiceDescription)

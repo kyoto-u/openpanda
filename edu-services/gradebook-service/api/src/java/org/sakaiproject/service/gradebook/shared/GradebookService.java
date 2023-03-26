@@ -891,4 +891,7 @@ public interface GradebookService extends EntityProducer {
 	 */
 	List getGradingEvents(final List<Long> assignmentIds, final Date since);
 
+        public Date getAssignmentScoreDateRecorded(String gradebookUid,
+		String assignmentName, String studentUid) throws GradebookNotFoundException, AssessmentNotFoundException;
+
 }

@@ -61,6 +61,8 @@ import org.sakaiproject.tool.cover.ToolManager;
 public class GradebookServiceHelperImpl implements GradebookServiceHelper
 {
 
+  boolean preserveGradedDate = true;
+
   /**
    * Does a gradebook exist?
    * @param gradebookUId the gradebook id
@@ -256,9 +258,16 @@ public void removeExternalAssessment(String gradebookUId,
         points = score.toString();
         log.info("rounded:  " + ag.getFinalScore() + " to: " + score.toString() );
     }
-    g.updateExternalAssessmentScore(gradebookUId,
-      ag.getPublishedAssessmentId().toString(),
-      ag.getAgentId(),  points);
+
+    if (preserveGradedDate)  {
+      g.updateExternalAssessmentScore(gradebookUId,
+        ag.getPublishedAssessmentId().toString(),
+        ag.getAgentId(),  points, (ag.getGradedDate()!=null)?ag.getGradedDate():ag.getSubmittedDate());
+    }  else  {
+      g.updateExternalAssessmentScore(gradebookUId,
+        ag.getPublishedAssessmentId().toString(),
+        ag.getAgentId(),  points);
+    }
     if (testErrorHandling){
       throw new Exception("Encountered an error in update ExternalAssessmentScore.");
     }

@@ -157,6 +157,25 @@ public interface GradebookExternalAssessmentService {
 			String studentUid, String points)
             throws GradebookNotFoundException, AssessmentNotFoundException;
 
+  /**
+   * Updates an external score for an external assignment in the gradebook.
+   *
+   * @param gradebookUid
+   *	The Uid of the gradebook
+   * @param externalId
+   *	The external ID of the assignment/assessment
+   * @param studentUid
+   *	The unique id of the student
+   * @param points
+   *	The number of points earned on this assessment, or null if a score
+   *	should be removed
+   * @param gradedDate
+   *      The date of points earned on this assessment
+   */
+  public void updateExternalAssessmentScore(String gradebookUid, String externalId,
+		    String studentUid, String points, Date gradedDate)
+            throws GradebookNotFoundException, AssessmentNotFoundException;
+
 	/**
 	 * 
 	 * @param gradebookUid

@@ -851,7 +851,7 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 
 	@Override
 	public void updateExternalAssessmentScore(final String gradebookUid, final String externalId, final String studentUid,
-			final String points)
+                       final String points)
 			throws GradebookNotFoundException, AssessmentNotFoundException {
 		final GradebookAssignment asn = getExternalAssignment(gradebookUid, externalId);
 
@@ -891,6 +891,73 @@ public class GradebookExternalAssessmentServiceImpl extends BaseHibernateManager
 				}
 
 				agr.setDateRecorded(now);
+				agr.setGraderId(getUserUid());
+				log.debug("About to save AssignmentGradeRecord id={}, version={}, studenttId={}, pointsEarned={}", agr.getId(),
+						agr.getVersion(), agr.getStudentId(), agr.getPointsEarned());
+				session.saveOrUpdate(agr);
+
+				// Sync database.
+				postUpdateGradeEvent(gradebookUid, asn.getName(), studentUid, newPointsEarned);
+			} else {
+				log.debug("Ignoring updateExternalAssessmentScore, since the new points value is the same as the old");
+			}
+			return null;
+		};
+		getHibernateTemplate().execute(hc);
+		log.debug("END: Update 1 score for gradebookUid={}, external assessment={} from {}", gradebookUid, externalId,
+				asn.getExternalAppName());
+		log.debug("External assessment score updated in gradebookUid={}, externalId={} by userUid={}, new score={}", gradebookUid,
+				externalId, getUserUid(), points);
+	}
+
+	@Override
+	public void updateExternalAssessmentScore(final String gradebookUid, final String externalId, final String studentUid,
+						  final String points, final Date gradedDate)
+			throws GradebookNotFoundException, AssessmentNotFoundException {
+		final GradebookAssignment asn = getExternalAssignment(gradebookUid, externalId);
+
+		if (asn == null) {
+			throw new AssessmentNotFoundException("There is no assessment id=" + externalId + " in gradebook uid=" + gradebookUid);
+		}
+
+		log.debug("BEGIN: Update 1 score for gradebookUid={}, external assessment={} from {}", gradebookUid, externalId,
+				asn.getExternalAppName());
+
+		final HibernateCallback<?> hc = session -> {
+			final Date now = new Date();
+
+			AssignmentGradeRecord agr = getAssignmentGradeRecord(asn, studentUid);
+
+			// Try to reduce data contention by only updating when the
+			// score has actually changed or property has been set forcing a db update every time.
+			final boolean alwaysUpdate = isUpdateSameScore();
+
+			// TODO: for ungraded items, needs to set ungraded-grades later...
+			final Double oldPointsEarned = (agr == null) ? null : agr.getPointsEarned();
+			final Double newPointsEarned = (points == null) ? null : convertStringToDouble(points);
+			if (alwaysUpdate || (newPointsEarned != null && !newPointsEarned.equals(oldPointsEarned)) ||
+					(newPointsEarned == null && oldPointsEarned != null)) {
+				if (agr == null) {
+					if (newPointsEarned != null) {
+						agr = new AssignmentGradeRecord(asn, studentUid, Double.valueOf(newPointsEarned));
+					} else {
+						agr = new AssignmentGradeRecord(asn, studentUid, null);
+					}
+				} else {
+					if (newPointsEarned != null) {
+						agr.setPointsEarned(Double.valueOf(newPointsEarned));
+					} else {
+						agr.setPointsEarned(null);
+					}
+				}
+
+				// agr.setDateRecorded(now);
+				//KJT-??? Enbuged in creating this method. We need to avoid null date in setting adjusted score. Shoji Kajita
+				if (gradedDate == null)  {
+				    agr.setDateRecorded(now);
+				}  else  {
+				    agr.setDateRecorded(gradedDate);
+				}
 				agr.setGraderId(getUserUid());
 				log.debug("About to save AssignmentGradeRecord id={}, version={}, studenttId={}, pointsEarned={}", agr.getId(),
 						agr.getVersion(), agr.getStudentId(), agr.getPointsEarned());
