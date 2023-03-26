@@ -129,6 +129,7 @@
 				$tlang.getString("sitegen.siteinfolist.siteurl")
 			</th>
 			<td>
+				$!siteDefaultUrl
 				<a id="copyToClipboard" href="$!siteDefaultUrl" >$tlang.getString("sitegen.siteinfolist.copy.clip")</a>
 			</td>
 		</tr>
