@@ -138,8 +138,23 @@ public class DifferentRoleProducer implements ViewComponentProducer, NavigationC
         		log.debug(this + ":fillComponents: cannot find user with eid=" + userEId);
         	}
             // SECOND LINE
+            String userAffiliation = userRoleEntry.userAffiliation;
+            String userDepartment = userRoleEntry.userDepartment;
+            String userExternalAffiliation = userRoleEntry.userExternalAffiliation;
+
             UIBranchContainer userRow = UIBranchContainer.make(differentRoleForm, "user-row:", curItemNum);
-            UIOutput.make(userRow, "user-name", displayId + " ( " + userName + " )");
+            String userAttributes = " (" + userName;
+            if (userAffiliation!=null && (userAffiliation.equals("null") == false&&userAffiliation.equals("") == false))  {
+                userAttributes = userAttributes + "," + userAffiliation;
+            }
+            if (userDepartment!=null && (userDepartment.equals("null") == false&&userDepartment.equals("") == false))  {
+                userAttributes = userAttributes + "," + userDepartment;
+            }
+            if (userExternalAffiliation!=null && (userExternalAffiliation.equals("null") == false&&userExternalAffiliation.equals("") == false))  {
+                userAttributes = userAttributes + "," + userExternalAffiliation;
+            }
+            userAttributes = userAttributes + ")";
+            UIOutput.make(userRow, "user-name", displayId + userAttributes);
             UISelect.make(userRow, "role-select", roleIds.toStringArray(), "siteAddParticipantHandler.userRoleEntries." + i + ".role", handler.getUserRole(userEId));
 
   		}

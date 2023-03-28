@@ -160,7 +160,18 @@ public class SameRoleProducer implements ViewComponentProducer, NavigationCaseRe
             String userExternalAffiliation = userRoleEntry.userExternalAffiliation;
 
             UIBranchContainer userRow = UIBranchContainer.make(sameRoleForm, "user-row:", userEId);
-            UIOutput.make(userRow, "user-label", displayId + " (" + userName + "," + userAffiliation + "," + userDepartment + "," + userExternalAffiliation + ")");
+	    String userAttributes = " (" + userName;
+            if (userAffiliation!=null && (userAffiliation.equals("null") == false&&userAffiliation.equals("") == false))  {
+                userAttributes = userAttributes + "," + userAffiliation;
+            }
+            if (userDepartment!=null && (userDepartment.equals("null") == false&&userDepartment.equals("") == false))  {
+                userAttributes = userAttributes + "," + userDepartment;
+            }
+            if (userExternalAffiliation!=null && (userExternalAffiliation.equals("null") == false&&userExternalAffiliation.equals("") == false))  {
+                userAttributes = userAttributes + "," + userExternalAffiliation;
+            }
+	    userAttributes = userAttributes + ")";
+            UIOutput.make(userRow, "user-label", displayId + userAttributes);
         }
     	
     	UICommand.make(sameRoleForm, "continue", messageLocator.getMessage("gen.continue"), "#{siteAddParticipantHandler.processSameRoleContinue}");
