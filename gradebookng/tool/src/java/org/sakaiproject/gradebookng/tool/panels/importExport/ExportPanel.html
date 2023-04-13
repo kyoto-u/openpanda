@@ -15,6 +15,9 @@
                     <button type="button" class="button_color" wicket:id="downloadFullGradebook">
                         <wicket:message key="importExport.template.button.fullGradebook"/>
                     </button>
+                    <button type="button" class="button_color" wicket:id="downloadFullGradebookExcel">
+                         <wicket:message key="importExport.template.button.fullGradebook.excel"/>
+                     </button>
                     <a role="button" data-toggle="modal" href="#advancedOptions" data-target="#customExportModal">
                         <wicket:message key="importExport.template.button.advancedOptions"/>
                     </a>
@@ -146,12 +149,21 @@
                         </div>
                     </div>
                     <div class="modal-footer act">
-                        <button wicket:id="downloadCustomGradebook" type="button" class="button_color pull-left active" data-dismiss="modal">
-                            <wicket:message key="importExport.template.button.customGradebook"/>
-                        </button>
-                        <button type="button" class="pull-right" data-dismiss="modal">
-                            <wicket:message key="importExport.button.cancel"/>
-                        </button>
+                       <div class="btn-export-download">
+                             <div class="btn-export">
+                                 <button wicket:id="downloadCustomGradebook" type="button" class="button_color pull-left active" data-dismiss="modal">
+                                     <wicket:message key="importExport.template.button.customGradebook"/>
+                                 </button>
+                             </div>
+                             <div class="btn-export">
+                                 <button wicket:id="downloadCustomGradebookExcel" type="button" class="button_color pull-left active" data-dismiss="modal">
+                                     <wicket:message key="importExport.template.button.customGradebook.excel"/>
+                                 </button>
+                             </div>
+                             <button type="button" class="pull-right" data-dismiss="modal">
+                                 <wicket:message key="importExport.button.cancel"/>
+                             </button>
+                         </div>
                     </div>
                 </div>
             </div>
