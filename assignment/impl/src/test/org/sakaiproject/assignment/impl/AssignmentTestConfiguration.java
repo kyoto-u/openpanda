@@ -347,6 +347,7 @@ public class AssignmentTestConfiguration {
     @Bean(name = "org.sakaiproject.timesheet.api.TimeSheetService")
     public TimeSheetService timeSheetService() {
         return mock(TimeSheetService.class);
+    }
 
     @Bean(name = "org.sakaiproject.user.api.ContextualUserDisplayService")
     public ContextualUserDisplayService contextualUserDisplayService() {
