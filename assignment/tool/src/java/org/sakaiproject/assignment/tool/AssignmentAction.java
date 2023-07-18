@@ -15,44 +15,9 @@
  */
 package org.sakaiproject.assignment.tool;
 
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_RESUBMIT_CLOSEDAY;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_RESUBMIT_CLOSEHOUR;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_RESUBMIT_CLOSEMIN;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_RESUBMIT_CLOSEMONTH;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_RESUBMIT_CLOSEYEAR;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_EXTENSION_CLOSEMONTH;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_EXTENSION_CLOSEDAY;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_EXTENSION_CLOSEYEAR;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_EXTENSION_CLOSEHOUR;
-import static org.sakaiproject.assignment.api.AssignmentConstants.ALLOW_EXTENSION_CLOSEMIN;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADEBOOK_INTEGRATION_ADD;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADEBOOK_INTEGRATION_ASSOCIATE;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADEBOOK_INTEGRATION_NO;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_ASSIGNMENT_ID;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_FEEDBACK_ATTACHMENT;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_FEEDBACK_COMMENT;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_FEEDBACK_TEXT;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_PRIVATE_NOTES;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_GRADE;
-import static org.sakaiproject.assignment.api.AssignmentConstants.GRADE_SUBMISSION_SUBMISSION_ID;
-import static org.sakaiproject.assignment.api.AssignmentConstants.NEW_ASSIGNMENT_ADD_TO_GRADEBOOK;
-import static org.sakaiproject.assignment.api.AssignmentConstants.PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT;
-import static org.sakaiproject.assignment.api.AssignmentConstants.STATE_CONTEXT_STRING;
-import static org.sakaiproject.assignment.api.AssignmentConstants.UNGRADED_GRADE_STRING;
-import static org.sakaiproject.assignment.api.AssignmentConstants.UNGRADED_GRADE_TYPE_STRING;
-import static org.sakaiproject.assignment.api.AssignmentServiceConstants.NEW_ASSIGNMENT_CHECK_ANONYMOUS_GRADING;
-import static org.sakaiproject.assignment.api.AssignmentServiceConstants.PROP_ASSIGNMENT_GROUP_FILTER_ENABLED;
-import static org.sakaiproject.assignment.api.AssignmentServiceConstants.REFERENCE_ROOT;
-import static org.sakaiproject.assignment.api.AssignmentServiceConstants.SECURE_UPDATE_ASSIGNMENT;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.CHECK_GRADE_TYPE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.GRADE_TYPE_NONE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.LETTER_GRADE_TYPE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.PASS_FAIL_GRADE_TYPE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.SCORE_GRADE_TYPE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.UNGRADED_GRADE_TYPE;
-import static org.sakaiproject.assignment.api.model.Assignment.GradeType.values;
-
-import org.sakaiproject.util.CalendarUtil;
+import static org.sakaiproject.assignment.api.AssignmentConstants.*;
+import static org.sakaiproject.assignment.api.AssignmentServiceConstants.*;
+import static org.sakaiproject.assignment.api.model.Assignment.GradeType.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -98,19 +63,19 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -168,8 +133,7 @@ import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
-import org.tsugi.basiclti.BasicLTIUtil;
-import org.tsugi.lti13.DeepLinkResponse;
+import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.sakaiproject.calendar.api.Calendar;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendar.api.CalendarEventEdit;
@@ -214,10 +178,11 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.SakaiException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.javax.PagingPosition;
+import org.sakaiproject.lti.api.LTIService;
 import org.sakaiproject.message.api.MessageHeader;
-import org.sakaiproject.rubrics.api.beans.AssociationTransferBean;
 import org.sakaiproject.rubrics.api.RubricsConstants;
 import org.sakaiproject.rubrics.api.RubricsService;
+import org.sakaiproject.rubrics.api.beans.AssociationTransferBean;
 import org.sakaiproject.scoringservice.api.ScoringAgent;
 import org.sakaiproject.scoringservice.api.ScoringComponent;
 import org.sakaiproject.scoringservice.api.ScoringService;
@@ -236,17 +201,18 @@ import org.sakaiproject.taggable.api.TaggingManager;
 import org.sakaiproject.taggable.api.TaggingProvider;
 import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.time.api.UserTimeService;
+import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.user.api.CandidateDetailProvider;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.util.CalendarUtil;
 import org.sakaiproject.util.DateFormatterUtil;
 import org.sakaiproject.util.FileItem;
 import org.sakaiproject.util.ParameterParser;
@@ -256,10 +222,10 @@ import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
-import org.sakaiproject.lti.api.LTIService;
-import org.sakaiproject.basiclti.util.SakaiBLTIUtil;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.tsugi.basiclti.BasicLTIUtil;
+import org.tsugi.lti13.DeepLinkResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVParser;
@@ -474,6 +440,9 @@ public class AssignmentAction extends PagedResourceActionII {
      * state sort submission by submitters last name *
      */
     private static final String SORTED_GRADE_SUBMISSION_BY_LASTNAME = "sorted_grade_submission_by_lastname";
+    
+    private static final String SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER = "sorted_grade_submission_by_employeenumber";
+
     /**
      * state sort submission by submit time *
      */
@@ -508,6 +477,9 @@ public class AssignmentAction extends PagedResourceActionII {
      * state sort submission by submitters last name *
      */
     private static final String SORTED_SUBMISSION_BY_LASTNAME = "sorted_submission_by_lastname";
+    
+    private static final String SORTED_SUBMISSION_BY_EMPLOYEENUMBER = "sorted_submission_by_employeenumber";
+    
     /**
      * state sort submission by submit time *
      */
@@ -4641,6 +4613,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("sortedBy", state.getAttribute(SORTED_GRADE_SUBMISSION_BY));
         context.put("sortedAsc", state.getAttribute(SORTED_GRADE_SUBMISSION_ASC));
         context.put("sort_lastName", SORTED_GRADE_SUBMISSION_BY_LASTNAME);
+        context.put("sort_employeeNumber", SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER);
         context.put("sort_submitTime", SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME);
         context.put("sort_submitStatus", SORTED_GRADE_SUBMISSION_BY_STATUS);
         context.put("sort_submitGrade", SORTED_GRADE_SUBMISSION_BY_GRADE);
@@ -5527,6 +5500,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("sortedAsc", state.getAttribute(SORTED_SUBMISSION_ASC));
 
         context.put("sortedBy_lastName", SORTED_GRADE_SUBMISSION_BY_LASTNAME);
+        context.put("sortedBy_employeeNumber", SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER);
         context.put("sortedBy_submitTime", SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME);
         context.put("sortedBy_grade", SORTED_GRADE_SUBMISSION_BY_GRADE);
         context.put("sortedBy_status", SORTED_GRADE_SUBMISSION_BY_STATUS);
@@ -13577,7 +13551,11 @@ public class AssignmentAction extends PagedResourceActionII {
                                                 User u = null;
                                                 // check for anonymous grading
                                                 if (!isAnon) {
-                                                    u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    //u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    u = userDirectoryService.findUserByAlternativeId(eid,"Site Info");
+                                                    if(u == null){
+                                                    	u = userDirectoryService.getUserByEid(items[IDX_GRADES_CSV_EID]);
+                                                    }
                                                 } else { // anonymous so pull the real eid out of our hash table
                                                     String anonId = items[IDX_GRADES_CSV_EID];
                                                     String id = (String) anonymousSubmissionAndEidTable.get(anonId);
@@ -13636,8 +13614,13 @@ public class AssignmentAction extends PagedResourceActionII {
                                     try {
                                         String eid = hssfRow.getCell(1).getStringCellValue();
                                         if (!assignment.getIsGroup()) {
+                                        	User u = null;
                                             if (!isAnon) {
-                                                User u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                                //User u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                            	u = userDirectoryService.findUserByAlternativeId(hssfRow.getCell(1).getStringCellValue(),"Site Info");
+                                            	if(u == null){
+                                            		u = userDirectoryService.getUserByEid(hssfRow.getCell(1).getStringCellValue()/*user eid*/);
+                                            	}
                                                 if (u == null) throw new Exception("User not found!");
                                                 eid = u.getId();
                                             } else {
@@ -13720,7 +13703,12 @@ public class AssignmentAction extends PagedResourceActionII {
                                 userEid = StringUtils.trimToNull(userEid);
                                 if (!assignment.getIsGroup() && !isAnon) {
                                     try {
-                                        User u = userDirectoryService.getUserByEid(userEid);
+                                        //User u = userDirectoryService.getUserByEid(userEid);
+                                    	User u = null;
+                                    	u = userDirectoryService.findUserByAlternativeId(userEid, "employeeNumber");
+                                    	if(u == null){
+                                        	u = userDirectoryService.getUserByEid(userEid);
+                                        }
                                         if (u != null) userEid = u.getId();
                                     } catch (UserNotDefinedException unde) {
                                         log.warn("User not found: {}", userEid);
@@ -15564,6 +15552,25 @@ public class AssignmentAction extends PagedResourceActionII {
                     String lName2 = u2.getUser() == null ? u2.getGroup().getTitle() : u2.getUser().getSortName();
                     result = compareString(lName1, lName2);
                 }
+                
+            } else if (m_criteria.equals(SORTED_GRADE_SUBMISSION_BY_EMPLOYEENUMBER)) {
+                // sorted by the submitters sort name
+                SubmitterSubmission u1 = (SubmitterSubmission) o1;
+                SubmitterSubmission u2 = (SubmitterSubmission) o2;
+
+                if (u1 == null || u2 == null || (u1.getUser() == null && u1.getGroup() == null) || (u2.getUser() == null && u2.getGroup() == null)) {
+                    result = 1;
+                } else if (m_anon) {
+                    String anon1 = u1.getSubmission().getId(); 
+                    String anon2 = u2.getSubmission().getId(); 
+                    result = compareString(anon1, anon2);
+                } else {
+                    String employeeNumber1 = u1.getUser().getProperties().get("employeeNumber") == null ? u1.getUser().getEid() : (String)u1.getUser().getProperties().get("employeeNumber");
+                    String employeeNumber2 = u2.getUser().getProperties().get("employeeNumber") == null ? u2.getUser().getEid() : (String)u2.getUser().getProperties().get("employeeNumber");
+
+                    result = compareString(employeeNumber1, employeeNumber2);
+                }
+                
             } else if (m_criteria.equals(SORTED_GRADE_SUBMISSION_BY_SUBMIT_TIME)) {
                 // sorted by submission time
                 SubmitterSubmission u1 = (SubmitterSubmission) o1;
